@@ -1,0 +1,438 @@
+import type { IGeneratedFile, Architecture, StateManagement } from '../types.js';
+
+export function generateNextjsProject(
+  projectName: string,
+  architecture: Architecture,
+  stateManagement: StateManagement
+): IGeneratedFile[] {
+  const files: IGeneratedFile[] = [];
+
+  // package.json
+  files.push({
+    path: `${projectName}/package.json`,
+    content: JSON.stringify(
+      {
+        name: projectName,
+        version: '0.1.0',
+        private: true,
+        scripts: {
+          dev: 'next dev',
+          build: 'next build',
+          start: 'next start',
+          lint: 'next lint',
+        },
+        dependencies: {
+          next: '^15.0.0',
+          react: '^19.0.0',
+          'react-dom': '^19.0.0',
+          'class-variance-authority': '^0.7.1',
+          clsx: '^2.1.1',
+          'tailwind-merge': '^3.0.0',
+          'lucide-react': '^0.469.0',
+          ...(stateManagement === 'zustand' ? { zustand: '^5.0.0' } : {}),
+        },
+        devDependencies: {
+          '@types/node': '^22.0.0',
+          '@types/react': '^19.0.0',
+          '@types/react-dom': '^19.0.0',
+          autoprefixer: '^10.4.20',
+          postcss: '^8.4.49',
+          tailwindcss: '^3.4.17',
+          typescript: '^5.7.0',
+        },
+      },
+      null,
+      2
+    ),
+  });
+
+  // next.config.ts
+  files.push({
+    path: `${projectName}/next.config.ts`,
+    content: `import type { NextConfig } from 'next'
+
+const nextConfig: NextConfig = {}
+
+export default nextConfig
+`,
+  });
+
+  // tsconfig.json
+  files.push({
+    path: `${projectName}/tsconfig.json`,
+    content: JSON.stringify(
+      {
+        compilerOptions: {
+          target: 'ES2017',
+          lib: ['dom', 'dom.iterable', 'esnext'],
+          allowJs: true,
+          skipLibCheck: true,
+          strict: true,
+          noEmit: true,
+          esModuleInterop: true,
+          module: 'esnext',
+          moduleResolution: 'bundler',
+          resolveJsonModule: true,
+          isolatedModules: true,
+          jsx: 'preserve',
+          incremental: true,
+          plugins: [{ name: 'next' }],
+          paths: { '@/*': ['./src/*'] },
+        },
+        include: ['next-env.d.ts', '**/*.ts', '**/*.tsx', '.next/types/**/*.ts'],
+        exclude: ['node_modules'],
+      },
+      null,
+      2
+    ),
+  });
+
+  // tailwind.config.ts
+  files.push({
+    path: `${projectName}/tailwind.config.ts`,
+    content: `import type { Config } from 'tailwindcss'
+
+const config: Config = {
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        border: 'hsl(var(--border))',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        primary: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
+        },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
+        },
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
+        },
+      },
+      borderRadius: {
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
+      },
+    },
+  },
+  plugins: [],
+}
+export default config
+`,
+  });
+
+  // postcss.config.mjs
+  files.push({
+    path: `${projectName}/postcss.config.mjs`,
+    content: `/** @type {import('postcss-load-config').Config} */
+const config = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
+
+export default config
+`,
+  });
+
+  // src/app/globals.css
+  files.push({
+    path: `${projectName}/src/app/globals.css`,
+    content: `@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+`,
+  });
+
+  // src/app/layout.tsx
+  files.push({
+    path: `${projectName}/src/app/layout.tsx`,
+    content: `import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata: Metadata = {
+  title: '${projectName}',
+  description: 'Generated by UIForge MCP',
+}
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  return (
+    <html lang="en">
+      <body className={inter.className}>{children}</body>
+    </html>
+  )
+}
+`,
+  });
+
+  // src/app/page.tsx
+  files.push({
+    path: `${projectName}/src/app/page.tsx`,
+    content: `import { Button } from '@/components/ui/button'
+
+export default function Home() {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="text-center space-y-6">
+        <h1 className="text-4xl font-bold tracking-tight">
+          ${projectName}
+        </h1>
+        <p className="text-muted-foreground text-lg">
+          Built with Next.js, Tailwind CSS, and Shadcn/ui
+        </p>
+        <Button size="lg">Get Started</Button>
+      </div>
+    </div>
+  )
+}
+`,
+  });
+
+  // src/lib/utils.ts
+  files.push({
+    path: `${projectName}/src/lib/utils.ts`,
+    content: `import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+`,
+  });
+
+  // Shadcn/ui Button
+  files.push({
+    path: `${projectName}/src/components/ui/button.tsx`,
+    content: `import * as React from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
+import { cn } from '@/lib/utils'
+
+const buttonVariants = cva(
+  'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
+  {
+    variants: {
+      variant: {
+        default: 'bg-primary text-primary-foreground shadow hover:bg-primary/90',
+        destructive: 'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',
+        outline: 'border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground',
+        secondary: 'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
+        ghost: 'hover:bg-accent hover:text-accent-foreground',
+        link: 'text-primary underline-offset-4 hover:underline',
+      },
+      size: {
+        default: 'h-9 px-4 py-2',
+        sm: 'h-8 rounded-md px-3 text-xs',
+        lg: 'h-10 rounded-md px-8',
+        icon: 'h-9 w-9',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'default',
+    },
+  }
+)
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, ...props }, ref) => {
+    return (
+      <button
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Button.displayName = 'Button'
+
+export { Button, buttonVariants }
+`,
+  });
+
+  // Shadcn/ui Input
+  files.push({
+    path: `${projectName}/src/components/ui/input.tsx`,
+    content: `import * as React from 'react'
+import { cn } from '@/lib/utils'
+
+const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
+  ({ className, type, ...props }, ref) => {
+    return (
+      <input
+        type={type}
+        className={cn(
+          'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+          className
+        )}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Input.displayName = 'Input'
+
+export { Input }
+`,
+  });
+
+  // Shadcn/ui Card
+  files.push({
+    path: `${projectName}/src/components/ui/card.tsx`,
+    content: `import * as React from 'react'
+import { cn } from '@/lib/utils'
+
+const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn('rounded-lg border bg-card text-card-foreground shadow-sm', className)} {...props} />
+  )
+)
+Card.displayName = 'Card'
+
+const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn('flex flex-col space-y-1.5 p-6', className)} {...props} />
+  )
+)
+CardHeader.displayName = 'CardHeader'
+
+const CardTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLHeadingElement>>(
+  ({ className, ...props }, ref) => (
+    <h3 ref={ref} className={cn('text-2xl font-semibold leading-none tracking-tight', className)} {...props} />
+  )
+)
+CardTitle.displayName = 'CardTitle'
+
+const CardDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
+  ({ className, ...props }, ref) => (
+    <p ref={ref} className={cn('text-sm text-muted-foreground', className)} {...props} />
+  )
+)
+CardDescription.displayName = 'CardDescription'
+
+const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn('p-6 pt-0', className)} {...props} />
+  )
+)
+CardContent.displayName = 'CardContent'
+
+const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn('flex items-center p-6 pt-0', className)} {...props} />
+  )
+)
+CardFooter.displayName = 'CardFooter'
+
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
+`,
+  });
+
+  // components.json
+  files.push({
+    path: `${projectName}/components.json`,
+    content: JSON.stringify(
+      {
+        $schema: 'https://ui.shadcn.com/schema.json',
+        style: 'default',
+        rsc: true,
+        tsx: true,
+        tailwind: {
+          config: 'tailwind.config.ts',
+          css: 'src/app/globals.css',
+          baseColor: 'slate',
+          cssVariables: true,
+        },
+        aliases: {
+          components: '@/components',
+          utils: '@/lib/utils',
+        },
+      },
+      null,
+      2
+    ),
+  });
+
+  // Zustand store
+  if (stateManagement === 'zustand') {
+    files.push({
+      path: `${projectName}/src/store/use-app-store.ts`,
+      content: `import { create } from 'zustand'
+
+interface AppState {
+  count: number
+  increment: () => void
+  decrement: () => void
+  reset: () => void
+}
+
+export const useAppStore = create<AppState>((set) => ({
+  count: 0,
+  increment: () => set((state) => ({ count: state.count + 1 })),
+  decrement: () => set((state) => ({ count: state.count - 1 })),
+  reset: () => set({ count: 0 }),
+}))
+`,
+    });
+  }
+
+  return files;
+}

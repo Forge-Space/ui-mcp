@@ -1,0 +1,7 @@
+dist/
+node_modules/
+.windsurf/
+.env
+package-lock.json
+plan.MD
+*.tsbuildinfo
