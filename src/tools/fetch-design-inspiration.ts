@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { extractDesignFromUrl } from '../lib/design-extractor.js';
 import { designContextStore } from '../lib/design-context.js';
 

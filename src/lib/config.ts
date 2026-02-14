@@ -1,6 +1,7 @@
 import { z } from 'zod';
+import { ConfigNotInitializedError } from './errors/config.error.js';
 
-const configSchema = z.object({
+export const configSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('production'),
   FIGMA_ACCESS_TOKEN: z.string().optional(),
   LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
@@ -26,7 +27,7 @@ export function loadConfig(): Config {
 
 export function getConfig(): Config {
   if (!config) {
-    throw new Error('Config not loaded. Call loadConfig() first.');
+    throw new ConfigNotInitializedError();
   }
   return config;
 }

@@ -1,12 +1,20 @@
+import { loadConfig } from '../lib/config.js';
 import { designContextStore, DEFAULT_CONTEXT } from '../lib/design-context.js';
 import {
   resolveColorSystemHsl,
   generateCssVariableBlock,
   generateFontImportHtml,
 } from '../lib/templates/css-variables.js';
-import { mapTokensToTailwind } from '../lib/tailwind-mapper.js';
 import { getPreset } from '../lib/design-references/index.js';
 import type { IFigmaDesignToken } from '../lib/types.js';
+
+let mapTokensToTailwind: typeof import('../lib/tailwind-mapper.js').mapTokensToTailwind;
+
+beforeAll(async () => {
+  loadConfig();
+  const mod = await import('../lib/tailwind-mapper.js');
+  mapTokensToTailwind = mod.mapTokensToTailwind;
+});
 
 // ── Design Context Store ────────────────────────────────────
 describe('DesignContextStore', () => {

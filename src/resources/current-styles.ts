@@ -1,4 +1,4 @@
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { designContextStore } from '../lib/design-context.js';
 
 export function registerCurrentStylesResource(server: McpServer): void {
@@ -9,9 +9,9 @@ export function registerCurrentStylesResource(server: McpServer): void {
       description: 'Current design context with typography, colors, spacing, and other style tokens',
       mimeType: 'application/json',
     },
-    async (uri) => {
+    (uri) => {
       const context = designContextStore.get();
-      return {
+      return Promise.resolve({
         contents: [
           {
             uri: uri.href,
@@ -19,7 +19,7 @@ export function registerCurrentStylesResource(server: McpServer): void {
             text: JSON.stringify(context, null, 2),
           },
         ],
-      };
+      });
     }
   );
 }

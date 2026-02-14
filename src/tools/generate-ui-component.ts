@@ -1,8 +1,9 @@
 import { z } from 'zod';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { designContextStore } from '../lib/design-context.js';
 import { auditStyles } from '../lib/style-audit.js';
 import { extractDesignFromUrl } from '../lib/design-extractor.js';
+import { jsxToHtmlAttributes, jsxToSvelte } from '../lib/utils/jsx.utils.js';
 import type { IGeneratedFile, IDesignContext } from '../lib/types.js';
 
 const inputSchema = {
@@ -11,8 +12,12 @@ const inputSchema = {
     .describe(
       'Type of component to generate (e.g., "button", "card", "form", "navbar", "sidebar", "modal", "table", "hero")'
     ),
-  framework: z.enum(['react', 'nextjs', 'vue', 'angular']).describe('Target framework'),
+  framework: z.enum(['react', 'nextjs', 'vue', 'angular', 'svelte', 'html']).describe('Target framework'),
   props: z.record(z.string()).optional().describe('Component props as key-value pairs'),
+  component_library: z
+    .enum(['shadcn', 'radix', 'headlessui', 'primevue', 'material', 'none'])
+    .default('none')
+    .describe('Component library to use in generated code'),
   design_reference_url: z.string().url().optional().describe('URL to extract design inspiration from'),
   existing_tailwind_config: z.string().optional().describe('Existing tailwind.config.js content for style audit'),
   existing_css_variables: z.string().optional().describe('Existing CSS variables for style audit'),
@@ -21,17 +26,25 @@ const inputSchema = {
 export function registerGenerateUiComponent(server: McpServer): void {
   server.tool(
     'generate_ui_component',
-    'Create or iterate UI components with style audit and design context awareness. Supports React, Next.js, Vue, and Angular.',
+    'Create or iterate UI components with style audit and design context awareness. Supports React, Next.js, Vue, Angular, Svelte, and HTML. NOTE: component_library parameter is currently not implemented - all components use raw Tailwind CSS classes. Component library integration is planned for a future release.',
     inputSchema,
     async ({
       component_type,
       framework,
       props,
+      component_library,
       design_reference_url,
       existing_tailwind_config,
       existing_css_variables,
     }) => {
       const warnings: string[] = [];
+
+      // Warn if component_library is specified but not 'none'
+      if (component_library && component_library !== 'none') {
+        warnings.push(
+          `⚠️  Component library '${component_library}' is not yet implemented. Generated component will use raw Tailwind CSS classes.`
+        );
+      }
 
       // Style audit
       if (existing_tailwind_config || existing_css_variables) {
@@ -45,24 +58,26 @@ export function registerGenerateUiComponent(server: McpServer): void {
         try {
           const designData = await extractDesignFromUrl(design_reference_url);
           if (designData.colors.length > 0) {
-            const ctx = designContextStore.get();
-            ctx.colorPalette.primary = designData.colors[0] ?? ctx.colorPalette.primary;
-            if (designData.colors[1]) ctx.colorPalette.secondary = designData.colors[1];
-            if (designData.colors[2]) ctx.colorPalette.accent = designData.colors[2];
-            designContextStore.set(ctx);
+            // designContextStore.get() returns a deep clone, safe to mutate
+            const context = designContextStore.get();
+            context.colorPalette.primary = designData.colors[0] ?? context.colorPalette.primary;
+            if (designData.colors[1]) context.colorPalette.secondary = designData.colors[1];
+            if (designData.colors[2]) context.colorPalette.accent = designData.colors[2];
+            designContextStore.set(context);
           }
           if (designData.typography.fonts.length > 0) {
-            const ctx = designContextStore.get();
-            ctx.typography.fontFamily = `${designData.typography.fonts[0]}, system-ui, sans-serif`;
-            designContextStore.set(ctx);
+            // designContextStore.get() returns a deep clone, safe to mutate
+            const context = designContextStore.get();
+            context.typography.fontFamily = `${designData.typography.fonts[0]}, system-ui, sans-serif`;
+            designContextStore.set(context);
           }
-        } catch (e) {
-          warnings.push(`Design extraction failed: ${String(e)}`);
+        } catch (error) {
+          warnings.push(`Design extraction failed: ${String(error)}`);
         }
       }
 
-      const ctx = designContextStore.get();
-      const files = generateComponent(component_type, framework, ctx, props);
+      const designContext = designContextStore.get();
+      const files = generateComponent(component_type, framework, designContext, props);
 
       const summary = [
         `Generated ${component_type} component for ${framework}`,
@@ -75,7 +90,7 @@ export function registerGenerateUiComponent(server: McpServer): void {
           { type: 'text', text: summary },
           {
             type: 'text',
-            text: JSON.stringify({ files, designContext: ctx }, null, 2),
+            text: JSON.stringify({ files, designContext }, null, 2),
           },
         ],
       };
@@ -86,26 +101,32 @@ export function registerGenerateUiComponent(server: McpServer): void {
 function generateComponent(
   componentType: string,
   framework: string,
-  ctx: IDesignContext,
+  designContext: IDesignContext,
   props?: Record<string, string>
 ): IGeneratedFile[] {
   const componentName = toPascalCase(componentType);
-  const propsInterface = props
-    ? Object.entries(props)
-        .map(([key, type]) => `  ${key}: ${type};`)
-        .join('\n')
-    : '';
+  // Generate only the interface body (not the full interface declaration)
+  const propsInterfaceBody =
+    props && Object.keys(props).length > 0
+      ? Object.entries(props)
+          .map(([key, propType]) => `  ${key}: ${propType};`)
+          .join('\n')
+      : '';
 
   switch (framework) {
     case 'react':
     case 'nextjs':
-      return generateReactComponent(componentName, componentType, ctx, propsInterface, props);
+      return generateReactComponent(componentName, componentType, designContext, propsInterfaceBody, props);
     case 'vue':
-      return generateVueComponent(componentName, componentType, ctx, props);
+      return generateVueComponent(componentName, componentType, designContext, props);
     case 'angular':
-      return generateAngularComponent(componentName, componentType, ctx, props);
+      return generateAngularComponent(componentName, componentType, designContext, props);
+    case 'svelte':
+      return generateSvelteComponent(componentName, componentType, designContext, props);
+    case 'html':
+      return generateHtmlComponent(componentName, componentType, designContext);
     default:
-      return generateReactComponent(componentName, componentType, ctx, propsInterface, props);
+      return generateReactComponent(componentName, componentType, designContext, propsInterfaceBody, props);
   }
 }
 
@@ -113,18 +134,17 @@ function generateReactComponent(
   name: string,
   type: string,
   ctx: IDesignContext,
-  propsInterface: string,
+  propsInterfaceBody: string,
   props?: Record<string, string>
 ): IGeneratedFile[] {
-  const propsType = propsInterface ? `\ninterface ${name}Props {\n${propsInterface}\n}\n` : '';
-  const propsArg = propsInterface ? `{ ${Object.keys(props ?? {}).join(', ')} }: ${name}Props` : '';
+  const propsType = propsInterfaceBody ? `interface ${name}Props {\n${propsInterfaceBody}\n}\n\n` : '';
+  const propsArg = propsInterfaceBody ? `{ ${Object.keys(props ?? {}).join(', ')} }: ${name}Props` : '';
   const body = getComponentBody(type, ctx, 'react');
 
   return [
     {
       path: `components/${kebabCase(name)}.tsx`,
-      content: `import { cn } from '@/lib/utils'\n${propsType}
-export function ${name}(${propsArg}) {
+      content: `${propsType}export function ${name}(${propsArg}) {
   return (
 ${body}
   )
@@ -190,6 +210,66 @@ ${body}
 export class ${name}Component {
 ${inputDecls}
 }
+`,
+    },
+  ];
+}
+
+function generateSvelteComponent(
+  name: string,
+  type: string,
+  ctx: IDesignContext,
+  props?: Record<string, string>
+): IGeneratedFile[] {
+  const propsDecl = props
+    ? Object.entries(props)
+        .map(([key, pType]) => `  export let ${key}: ${pType};`)
+        .join('\n')
+    : '';
+  const body = jsxToSvelte(getComponentBody(type, ctx, 'svelte'));
+
+  return [
+    {
+      path: `components/${kebabCase(name)}.svelte`,
+      content: `<script lang="ts">
+${propsDecl}
+</script>
+
+${body}
+`,
+    },
+  ];
+}
+
+function generateHtmlComponent(name: string, type: string, ctx: IDesignContext): IGeneratedFile[] {
+  const body = jsxToHtmlAttributes(getComponentBody(type, ctx, 'html'));
+
+  return [
+    {
+      path: `components/${kebabCase(name)}.html`,
+      content: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${name}</title>
+  <!-- CDN approach for quick prototyping. Trade-offs: no tree-shaking, runtime network dependency.
+       For production: use build-time Tailwind compilation (npm install tailwindcss) or prebuilt CSS. -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --primary: ${ctx.colorPalette.primary};
+      --background: ${ctx.colorPalette.background};
+      --foreground: ${ctx.colorPalette.foreground};
+      --font-family: ${ctx.typography.fontFamily};
+    }
+    body { font-family: var(--font-family); }
+  </style>
+</head>
+<body>
+${body}
+</body>
+</html>
 `,
     },
   ];

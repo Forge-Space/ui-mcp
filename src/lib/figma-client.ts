@@ -6,6 +6,14 @@ const logger = createLogger('figma-client');
 const FIGMA_API_BASE = 'https://api.figma.com/v1';
 const FIGMA_API_TIMEOUT_MS = 30_000;
 
+/**
+ * Generate a unique temporary ID for Figma variables.
+ * Uses crypto.randomUUID() for thread-safe unique ID generation.
+ */
+function generateTempVariableId(): string {
+  return `temp_var_${Date.now()}_${crypto.randomUUID()}`;
+}
+
 function getToken(): string {
   const token = process.env['FIGMA_ACCESS_TOKEN'];
   if (!token) {
@@ -30,9 +38,7 @@ async function figmaFetch(path: string, options: RequestInit = {}): Promise<unkn
 
   if (!response.ok) {
     const text = await response.text();
-    throw new Error(
-      `Figma API error [${method} ${path}]: ${response.status} ${response.statusText}\n${text}`
-    );
+    throw new Error(`Figma API error [${method} ${path}]: ${response.status} ${response.statusText}\n${text}`);
   }
 
   return response.json();
@@ -82,11 +88,11 @@ export interface FigmaStroke {
   color?: { r: number; g: number; b: number; a: number };
 }
 
-export async function getFile(fileKey: string): Promise<FigmaFileResponse> {
+export function getFile(fileKey: string): Promise<FigmaFileResponse> {
   return figmaFetch(`/files/${fileKey}`) as Promise<FigmaFileResponse>;
 }
 
-export async function getFileNodes(
+export function getFileNodes(
   fileKey: string,
   nodeIds: string[]
 ): Promise<{ nodes: Record<string, { document: FigmaNode }> }> {
@@ -105,7 +111,7 @@ export interface FigmaVariablesResponse {
   };
 }
 
-export async function getVariables(fileKey: string): Promise<FigmaVariablesResponse> {
+export function getVariables(fileKey: string): Promise<FigmaVariablesResponse> {
   return figmaFetch(`/files/${fileKey}/variables/local`) as Promise<FigmaVariablesResponse>;
 }
 
@@ -148,24 +154,25 @@ export async function postVariables(
   collectionName: string = 'UIForge Tokens'
 ): Promise<{ created: number; updated: number; collections: string[] }> {
   // First, get existing variables to check for updates
-  let existingVars: FigmaVariablesResponse | null = null;
+  let existingVariablesResponse: FigmaVariablesResponse | null = null;
   try {
-    existingVars = await getVariables(fileKey);
-  } catch {
+    existingVariablesResponse = await getVariables(fileKey);
+  } catch (e) {
+    logger.debug({ err: e, fileKey }, 'getVariables failed while fetching variables for file');
     // File may not have variables yet
   }
 
-  const existingCollections = existingVars?.meta?.variableCollections ?? {};
-  const existingVariables = existingVars?.meta?.variables ?? {};
+  const existingCollections = existingVariablesResponse?.meta?.variableCollections ?? {};
+  const existingVariables = existingVariablesResponse?.meta?.variables ?? {};
 
   let targetCollectionId: string | undefined;
   let targetModeId: string | undefined;
 
   // Find existing collection
-  for (const [id, col] of Object.entries(existingCollections)) {
-    if ((col as Record<string, unknown>)['name'] === collectionName) {
+  for (const [id, collection] of Object.entries(existingCollections)) {
+    if ((collection as Record<string, unknown>)['name'] === collectionName) {
       targetCollectionId = id;
-      const modes = (col as Record<string, unknown>)['modes'] as Array<{ modeId: string }> | undefined;
+      const modes = (collection as Record<string, unknown>)['modes'] as Array<{ modeId: string }> | undefined;
       if (modes?.[0]) {
         targetModeId = modes[0].modeId;
       }
@@ -182,13 +189,13 @@ export async function postVariables(
   // Create collection if needed
   const isNewCollection = !targetCollectionId;
   if (isNewCollection) {
-    const tempId = `temp_collection_${Date.now()}`;
+    const temporaryCollectionId = `temp_collection_${Date.now()}`;
     payload.variableCollections!.push({
       action: 'CREATE',
-      id: tempId,
+      id: temporaryCollectionId,
       name: collectionName,
     });
-    targetCollectionId = tempId;
+    targetCollectionId = temporaryCollectionId;
     // targetModeId will be determined after POST for new collections
   }
 
@@ -197,9 +204,9 @@ export async function postVariables(
 
   // Map existing variable names to IDs
   const existingVarMap = new Map<string, string>();
-  for (const [id, v] of Object.entries(existingVariables)) {
-    const varObj = v as Record<string, unknown>;
-    existingVarMap.set(varObj['name'] as string, id);
+  for (const [id, variable] of Object.entries(existingVariables)) {
+    const variableData = variable as Record<string, unknown>;
+    existingVarMap.set(variableData['name'] as string, id);
   }
 
   // Track variables that need mode values set
@@ -218,15 +225,16 @@ export async function postVariables(
       variablesNeedingValues.push({ id: existingId, variable });
       updated++;
     } else {
-      const tempVarId = `temp_var_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+      // Use crypto.randomUUID() for thread-safe unique ID generation
+      const temporaryVariableId = generateTempVariableId();
       payload.variables!.push({
         action: 'CREATE',
-        id: tempVarId,
+        id: temporaryVariableId,
         name: variable.name,
         variableCollectionId: targetCollectionId,
         resolvedType: variable.type,
       });
-      variablesNeedingValues.push({ id: tempVarId, variable });
+      variablesNeedingValues.push({ id: temporaryVariableId, variable });
       created++;
     }
   }
@@ -255,7 +263,7 @@ export async function postVariables(
   if (isNewCollection && variablesNeedingValues.length > 0) {
     // Wait for Figma API to propagate the new collection (retry with exponential backoff)
     let newModeId: string | undefined;
-    let updatedVars: FigmaVariablesResponse | undefined;
+    let updatedVariablesResponse: FigmaVariablesResponse | undefined;
     let attempt = 0;
     const startTime = Date.now();
 
@@ -264,7 +272,7 @@ export async function postVariables(
       if (Date.now() - startTime > OVERALL_RETRY_TIMEOUT_MS) {
         throw new Error(
           `Timeout: Failed to retrieve mode ID for collection "${collectionName}" after ${OVERALL_RETRY_TIMEOUT_MS}ms. ` +
-          `The collection was created but variable values could not be set.`
+            `The collection was created but variable values could not be set.`
         );
       }
 
@@ -276,21 +284,21 @@ export async function postVariables(
 
       try {
         // Fetch the newly created collection to get its mode ID
-        updatedVars = await getVariables(fileKey);
+        updatedVariablesResponse = await getVariables(fileKey);
 
         // Check timeout after API call as well
         if (Date.now() - startTime > OVERALL_RETRY_TIMEOUT_MS) {
           throw new Error(
             `Timeout: Failed to retrieve mode ID for collection "${collectionName}" after ${OVERALL_RETRY_TIMEOUT_MS}ms. ` +
-            `The collection was created but variable values could not be set.`
+              `The collection was created but variable values could not be set.`
           );
         }
 
-        const collections = updatedVars.meta?.variableCollections ?? {};
+        const collections = updatedVariablesResponse.meta?.variableCollections ?? {};
 
-        for (const [, col] of Object.entries(collections)) {
-          if ((col as Record<string, unknown>)['name'] === collectionName) {
-            const modes = (col as Record<string, unknown>)['modes'] as Array<{ modeId: string }> | undefined;
+        for (const [, collection] of Object.entries(collections)) {
+          if ((collection as Record<string, unknown>)['name'] === collectionName) {
+            const modes = (collection as Record<string, unknown>)['modes'] as Array<{ modeId: string }> | undefined;
             if (modes?.[0]) {
               newModeId = modes[0].modeId;
             }
@@ -308,17 +316,17 @@ export async function postVariables(
     if (!newModeId) {
       throw new Error(
         `Failed to retrieve mode ID for collection "${collectionName}" after ${MAX_RETRIES} retries. ` +
-        `The collection was created but variable values could not be set. Please try again or check Figma file manually.`
+          `The collection was created but variable values could not be set. Please try again or check Figma file manually.`
       );
     }
 
-    if (newModeId && updatedVars) {
+    if (newModeId && updatedVariablesResponse) {
       // Get the real variable IDs from the response
-      const newVariables = updatedVars.meta?.variables ?? {};
+      const newVariables = updatedVariablesResponse.meta?.variables ?? {};
       const nameToIdMap = new Map<string, string>();
-      for (const [id, v] of Object.entries(newVariables)) {
-        const varObj = v as Record<string, unknown>;
-        nameToIdMap.set(varObj['name'] as string, id);
+      for (const [id, variable] of Object.entries(newVariables)) {
+        const variableData = variable as Record<string, unknown>;
+        nameToIdMap.set(variableData['name'] as string, id);
       }
 
       // Build a second payload with just mode values
@@ -377,6 +385,11 @@ function hexToFigmaColor(hex: string): { r: number; g: number; b: number; a: num
   const g = parseInt(clean.substring(2, 4), 16) / 255;
   const b = parseInt(clean.substring(4, 6), 16) / 255;
   const a = clean.length === 8 ? parseInt(clean.substring(6, 8), 16) / 255 : 1;
+
+  // Validate parsed values are valid numbers (defensive programming)
+  if (isNaN(r) || isNaN(g) || isNaN(b) || isNaN(a)) {
+    throw new Error(`Failed to parse hex color: ${hex}. Parsed values: r=${r}, g=${g}, b=${b}, a=${a}`);
+  }
 
   return { r, g, b, a };
 }

@@ -21,11 +21,18 @@ reviews:
   high_level_summary_placeholder: "@coderabbitai summary"
   high_level_summary_in_walkthrough: true
   high_level_summary_instructions: |
+    UIForge MCP Context: This is a TypeScript MCP server for AI-driven UI generation with 12 tools.
+    Architecture: Tools in src/tools/, libraries in src/lib/, tests in src/__tests__/.
+    Frameworks: React, Next.js, Vue, Angular (full), Svelte (partial), HTML.
+    Zero-cost mandate: No paid services/APIs allowed, all dependencies must be free/open-source.
+    Testing: Jest (not Vitest) with 85%+ coverage, call loadConfig() before dynamic imports.
+
     Generate concise release notes as a bullet-point list highlighting:
-    - New features and tools added
+    - New features and tools added (specify framework if applicable)
     - Bug fixes and improvements
     - Breaking changes (if any)
     - Performance optimizations
+    - Design system or Figma integration changes
     Include a brief summary of test coverage changes if applicable.
 
   # Auto-generate PR titles
@@ -71,6 +78,22 @@ reviews:
       instructions: "Apply when updating GitHub Actions workflows or CI/CD pipeline"
     - label: "breaking-change"
       instructions: "Apply when introducing breaking changes to the API or tool interfaces"
+    - label: "react"
+      instructions: "Apply when modifying React-specific code, components, or templates"
+    - label: "vue"
+      instructions: "Apply when modifying Vue-specific code, components, or templates"
+    - label: "angular"
+      instructions: "Apply when modifying Angular-specific code, components, or templates"
+    - label: "nextjs"
+      instructions: "Apply when modifying Next.js-specific code, app router, or templates"
+    - label: "svelte"
+      instructions: "Apply when modifying Svelte-specific code, components, or templates"
+    - label: "design-system"
+      instructions: "Apply when modifying design tokens, color palettes, typography, or spacing systems"
+    - label: "figma"
+      instructions: "Apply when modifying Figma API integration, token sync, or prototype flows"
+    - label: "image-generation"
+      instructions: "Apply when modifying image generation, SVG rendering, or Satori/Resvg integration"
 
   suggested_reviewers: true
   auto_assign_reviewers: false
@@ -165,6 +188,55 @@ reviews:
         - Ensure scripts are properly defined
         - Verify peer dependencies are correct
         - Check for unused dependencies
+
+    - path: "src/lib/templates/**/*.ts"
+      instructions: |
+        Framework Template Review:
+        - Verify template follows framework-specific best practices
+        - Check for proper TypeScript types in template variables
+        - Ensure generated code is production-ready and idiomatic
+        - Verify template includes all necessary imports and dependencies
+        - Check for proper error handling in template generation
+        - Ensure template supports customization via parameters
+
+    - path: "src/lib/design-references/**/*.ts"
+      instructions: |
+        Design Reference Module Review:
+        - Verify color extraction algorithms are accurate
+        - Check typography detection follows web standards
+        - Ensure spacing/layout pattern detection is robust
+        - Verify design token naming follows semantic conventions
+        - Check for proper handling of edge cases (missing styles, invalid CSS)
+        - Ensure compatibility with various design systems
+
+    - path: "src/lib/image-analyzer.ts"
+      instructions: |
+        Image Analysis Review:
+        - Verify Sharp/Satori integration is correct
+        - Check for proper image format handling (PNG, JPEG, SVG, WebP)
+        - Ensure memory-efficient processing for large images
+        - Verify color palette extraction accuracy
+        - Check for proper error handling with corrupted images
+        - Ensure output formats match design system requirements
+
+    - path: "src/lib/generators/**/*.ts"
+      instructions: |
+        Code Generator Review:
+        - Verify generated code follows framework conventions
+        - Check for proper template variable interpolation
+        - Ensure generated code is syntactically correct
+        - Verify imports are correctly resolved
+        - Check for proper TypeScript type generation
+        - Ensure generator handles edge cases gracefully
+
+    - path: "src/assets/**/*"
+      instructions: |
+        Asset File Review:
+        - Verify font files are properly licensed (OFL, MIT, etc.)
+        - Check for optimized file sizes
+        - Ensure assets are referenced correctly in code
+        - Verify no unnecessary assets are included
+        - Check for proper attribution if required
 
   # Auto-review settings
   auto_review:

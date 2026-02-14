@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { postVariables } from '../lib/figma-client.js';
 import type { IFigmaVariable } from '../lib/types.js';
 

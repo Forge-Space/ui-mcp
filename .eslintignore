@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+coverage/
+
+# Cache
+.eslintcache
+*.tsbuildinfo
+node_modules/.cache/
+
+# Configuration files (already linted by their own rules)
+*.config.js
+*.config.ts
+
+# Test fixtures and snapshots
+**/__fixtures__/
+**/__snapshots__/
+
+# Generated files
+*.min.js

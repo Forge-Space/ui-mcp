@@ -1,5 +1,22 @@
 const FETCH_TIMEOUT_MS = 10_000;
 
+// Private IP address range constants (RFC 1918 and special-use addresses)
+const PRIVATE_IP_CLASS_A = 10; // 10.0.0.0/8
+const PRIVATE_IP_CLASS_B_START = 172; // 172.16.0.0/12
+const PRIVATE_IP_CLASS_B_SECOND_OCTET_MIN = 16;
+const PRIVATE_IP_CLASS_B_SECOND_OCTET_MAX = 31;
+const PRIVATE_IP_CLASS_C_FIRST = 192; // 192.168.0.0/16
+const PRIVATE_IP_CLASS_C_SECOND = 168;
+const LINK_LOCAL_FIRST = 169; // 169.254.0.0/16
+const LINK_LOCAL_SECOND = 254;
+const LOOPBACK_IP = 127; // 127.0.0.0/8
+
+// Extraction limits
+const MAX_COLORS_TO_EXTRACT = 30;
+const MAX_FONTS_TO_EXTRACT = 10;
+const MAX_FONT_SIZES_TO_EXTRACT = 15;
+const MAX_HTML_SIZE = 5_000_000; // 5MB limit to prevent regex performance issues
+
 export interface DesignExtractionResult {
   colors: string[];
   typography: {
@@ -22,9 +39,23 @@ function isPrivateOrLocalUrl(url: string): boolean {
     // Block private IPv4 ranges
     const ipv4Match = hostname.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
     if (ipv4Match) {
-      const [, a, b] = ipv4Match.map(Number);
-      // 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 169.254.0.0/16 (link-local)
-      if (a === 10 || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168) || (a === 169 && b === 254)) {
+      const [, firstOctet, secondOctet] = ipv4Match.map(Number);
+
+      // Validate parsed values are valid numbers
+      if (isNaN(firstOctet) || isNaN(secondOctet)) {
+        return true; // Block invalid IPs
+      }
+
+      // Check against private IP ranges
+      if (
+        firstOctet === PRIVATE_IP_CLASS_A ||
+        firstOctet === LOOPBACK_IP ||
+        (firstOctet === PRIVATE_IP_CLASS_B_START &&
+          secondOctet >= PRIVATE_IP_CLASS_B_SECOND_OCTET_MIN &&
+          secondOctet <= PRIVATE_IP_CLASS_B_SECOND_OCTET_MAX) ||
+        (firstOctet === PRIVATE_IP_CLASS_C_FIRST && secondOctet === PRIVATE_IP_CLASS_C_SECOND) ||
+        (firstOctet === LINK_LOCAL_FIRST && secondOctet === LINK_LOCAL_SECOND)
+      ) {
         return true;
       }
     }
@@ -49,9 +80,23 @@ function isPrivateOrLocalUrl(url: string): boolean {
           // Invalid format after ::ffff: - block it
           return true;
         }
-        const [, a, b] = ipv4Match.map(Number);
-        // Block if the IPv4 part is private
-        if (a === 10 || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168) || (a === 169 && b === 254)) {
+        const [, firstOctet, secondOctet] = ipv4Match.map(Number);
+
+        // Validate parsed values are valid numbers
+        if (isNaN(firstOctet) || isNaN(secondOctet)) {
+          return true; // Block invalid IPs
+        }
+
+        // Block if the IPv4 part is private or loopback
+        if (
+          firstOctet === PRIVATE_IP_CLASS_A ||
+          firstOctet === LOOPBACK_IP ||
+          (firstOctet === PRIVATE_IP_CLASS_B_START &&
+            secondOctet >= PRIVATE_IP_CLASS_B_SECOND_OCTET_MIN &&
+            secondOctet <= PRIVATE_IP_CLASS_B_SECOND_OCTET_MAX) ||
+          (firstOctet === PRIVATE_IP_CLASS_C_FIRST && secondOctet === PRIVATE_IP_CLASS_C_SECOND) ||
+          (firstOctet === LINK_LOCAL_FIRST && secondOctet === LINK_LOCAL_SECOND)
+        ) {
           return true;
         }
         // Public IPv4 in IPv6 format is allowed
@@ -99,7 +144,12 @@ export async function extractDesignFromUrl(
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
 
-    const html = await response.text();
+    let html = await response.text();
+
+    // Truncate HTML to prevent regex performance issues with extremely large documents
+    if (html.length > MAX_HTML_SIZE) {
+      html = html.substring(0, MAX_HTML_SIZE);
+    }
 
     if (extractColors) {
       result.colors = extractColorsFromHtml(html);
@@ -144,7 +194,7 @@ function extractColorsFromHtml(html: string): string[] {
     colors.add(themeColorMatch[1].toLowerCase());
   }
 
-  return [...colors].slice(0, 30);
+  return [...colors].slice(0, MAX_COLORS_TO_EXTRACT);
 }
 
 function extractTypographyFromHtml(html: string): { fonts: string[]; sizes: string[] } {
@@ -175,8 +225,8 @@ function extractTypographyFromHtml(html: string): { fonts: string[]; sizes: stri
   }
 
   return {
-    fonts: [...fonts].slice(0, 10),
-    sizes: [...sizes].slice(0, 15),
+    fonts: [...fonts].slice(0, MAX_FONTS_TO_EXTRACT),
+    sizes: [...sizes].slice(0, MAX_FONT_SIZES_TO_EXTRACT),
   };
 }
 

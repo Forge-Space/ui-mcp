@@ -1,14 +1,15 @@
 import { z } from 'zod';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { IGeneratedFile } from '../lib/types.js';
 import { designContextStore } from '../lib/design-context.js';
 import { generateReactProject } from '../lib/templates/react.js';
 import { generateNextjsProject } from '../lib/templates/nextjs.js';
 import { generateVueProject } from '../lib/templates/vue.js';
 import { generateAngularProject } from '../lib/templates/angular.js';
+import { generateHtmlProject } from '../lib/templates/html.js';
 
 const inputSchema = {
-  framework: z.enum(['react', 'nextjs', 'vue', 'angular']).describe('Frontend framework to scaffold'),
+  framework: z.enum(['react', 'nextjs', 'vue', 'angular', 'html']).describe('Frontend framework to scaffold'),
   styling: z.enum(['tailwindcss']).default('tailwindcss').describe('Styling framework'),
   architecture: z.enum(['flat', 'feature-based', 'atomic']).default('flat').describe('Project architecture pattern'),
   state_management: z
@@ -23,7 +24,7 @@ export function registerScaffoldFullApplication(server: McpServer): void {
     'scaffold_full_application',
     'Generate full project boilerplate for React, Next.js, Vue, or Angular with Tailwind CSS and optional state management',
     inputSchema,
-    async ({ framework, styling: _styling, architecture, state_management, project_name }) => {
+    ({ framework, styling: _styling, architecture, state_management, project_name }) => {
       const ctx = designContextStore.get();
       let files: IGeneratedFile[];
 
@@ -40,6 +41,14 @@ export function registerScaffoldFullApplication(server: McpServer): void {
         case 'angular':
           files = generateAngularProject(project_name, architecture, state_management, ctx);
           break;
+        case 'html':
+          files = generateHtmlProject(project_name, architecture, state_management, ctx);
+          break;
+        default: {
+          // TypeScript exhaustiveness check - this should never happen
+          const _exhaustiveCheck: never = framework;
+          throw new Error(`Unsupported framework: ${_exhaustiveCheck}`);
+        }
       }
 
       const summary = [

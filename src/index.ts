@@ -10,6 +10,10 @@ import { registerFetchDesignInspiration } from './tools/fetch-design-inspiration
 import { registerFigmaContextParser } from './tools/figma-context-parser.js';
 import { registerFigmaPushVariables } from './tools/figma-push-variables.js';
 import { registerAnalyzeDesignReferences } from './tools/analyze-design-references.js';
+import { registerImageToComponent } from './tools/image-to-component.js';
+import { registerGeneratePageTemplate } from './tools/generate-page-template.js';
+import { registerRefineComponent } from './tools/refine-component.js';
+import { registerAuditAccessibility } from './tools/audit-accessibility.js';
 
 // Load and validate configuration BEFORE importing logger
 let config;
@@ -42,6 +46,10 @@ registerFetchDesignInspiration(server);
 registerFigmaContextParser(server);
 registerFigmaPushVariables(server);
 registerAnalyzeDesignReferences(server);
+registerImageToComponent(server);
+registerGeneratePageTemplate(server);
+registerRefineComponent(server);
+registerAuditAccessibility(server);
 
 logger.info('All tools and resources registered');
 

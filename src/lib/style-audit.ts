@@ -63,8 +63,8 @@ export function parseTailwindConfig(configString: string): StyleAuditResult {
       const radiusBlock = borderRadiusMatch[1];
       const radiusEntries: Record<string, string> = {};
       const matches = radiusBlock.matchAll(/['"]?(\w+)['"]?\s*:\s*['"]([^'"]+)['"]/g);
-      for (const m of matches) {
-        radiusEntries[m[1]] = m[2];
+      for (const match of matches) {
+        radiusEntries[match[1]] = match[2];
       }
       if (Object.keys(radiusEntries).length > 0) {
         tokens.borderRadius = {
@@ -75,8 +75,8 @@ export function parseTailwindConfig(configString: string): StyleAuditResult {
         };
       }
     }
-  } catch (e) {
-    warnings.push(`Failed to parse Tailwind config: ${String(e)}`);
+  } catch (error) {
+    warnings.push(`Failed to parse Tailwind config: ${String(error)}`);
   }
 
   return { tokens, warnings };
@@ -108,8 +108,8 @@ export function parseCssVariables(cssString: string): StyleAuditResult {
         colorPalette[camelName] = value;
       }
     }
-  } catch (e) {
-    warnings.push(`Failed to parse CSS variables: ${String(e)}`);
+  } catch (error) {
+    warnings.push(`Failed to parse CSS variables: ${String(error)}`);
   }
 
   const tokens: Partial<IDesignContext> = {};
@@ -151,20 +151,20 @@ export function auditStyles(
   let merged: Partial<IDesignContext> = {};
 
   if (tailwindConfig) {
-    const tw = parseTailwindConfig(tailwindConfig);
-    merged = { ...merged, ...tw.tokens };
-    allWarnings.push(...tw.warnings);
+    const tailwindResult = parseTailwindConfig(tailwindConfig);
+    merged = { ...merged, ...tailwindResult.tokens };
+    allWarnings.push(...tailwindResult.warnings);
   }
 
   if (cssVariables) {
-    const css = parseCssVariables(cssVariables);
+    const cssResult = parseCssVariables(cssVariables);
     // Deep-merge colorPalette: CSS values override TW values, but missing CSS values keep TW values
-    if (css.tokens.colorPalette) {
+    if (cssResult.tokens.colorPalette) {
       const base = merged.colorPalette ?? ({} as Partial<IDesignContext['colorPalette']>);
-      css.tokens.colorPalette = { ...base, ...css.tokens.colorPalette } as IDesignContext['colorPalette'];
+      cssResult.tokens.colorPalette = { ...base, ...cssResult.tokens.colorPalette } as IDesignContext['colorPalette'];
     }
-    merged = { ...merged, ...css.tokens };
-    allWarnings.push(...css.warnings);
+    merged = { ...merged, ...cssResult.tokens };
+    allWarnings.push(...cssResult.warnings);
   }
 
   return { context: merged, warnings: allWarnings };

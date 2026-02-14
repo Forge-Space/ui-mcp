@@ -116,13 +116,48 @@ export interface ITailwindMapping {
   value: string;
 }
 
-export type Framework = 'react' | 'nextjs' | 'vue' | 'angular';
+export type Framework = 'react' | 'nextjs' | 'vue' | 'angular' | 'svelte' | 'html';
 export type Styling = 'tailwindcss';
 export type Architecture = 'flat' | 'feature-based' | 'atomic';
 export type StateManagement = 'useState' | 'zustand' | 'pinia' | 'signals' | 'none';
 export type ImageOutputFormat = 'svg' | 'png';
 export type ImageType = 'wireframe' | 'mockup' | 'component_preview';
 export type PrototypeOutputFormat = 'html' | 'html_bundle';
+
+// --- Component Library Integration ---
+export type ComponentLibraryId = 'shadcn' | 'radix' | 'headlessui' | 'primevue' | 'material' | 'none';
+
+// --- Page Template Types ---
+export type PageTemplateType =
+  | 'landing'
+  | 'dashboard'
+  | 'auth_login'
+  | 'auth_signup'
+  | 'pricing'
+  | 'settings'
+  | 'crud_table'
+  | 'blog_list'
+  | 'onboarding'
+  | 'error_404';
+
+// --- Accessibility Audit ---
+export type AccessibilitySeverity = 'error' | 'warning' | 'info';
+
+export interface IAccessibilityIssue {
+  rule: string;
+  severity: AccessibilitySeverity;
+  message: string;
+  element?: string;
+  suggestion: string;
+  wcagCriteria?: string;
+}
+
+export interface IAccessibilityReport {
+  score: number;
+  issues: IAccessibilityIssue[];
+  summary: { errors: number; warnings: number; info: number };
+  passed: string[];
+}
 
 // --- Design References ---
 
@@ -221,7 +256,7 @@ export interface IScrapedPage {
 export interface IImageAnalysis {
   label: string;
   dominantColors: Array<{ hex: string; percentage: number }>;
-  layoutRegions: Array<{ role: string; bounds: { x: number; y: number; w: number; h: number } }>;
+  layoutRegions: Array<{ role: string; bounds: { x: number; y: number; width: number; height: number } }>;
   detectedComponents: string[];
   dimensions: { width: number; height: number };
 }

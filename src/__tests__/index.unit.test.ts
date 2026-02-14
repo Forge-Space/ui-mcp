@@ -1,6 +1,11 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { loadConfig } from '../lib/config.js';
 
 describe('MCP Server Index', () => {
+  beforeAll(() => {
+    loadConfig();
+  });
+
   it('imports all tool registration functions', async () => {
     const { registerScaffoldFullApplication } = await import('../tools/scaffold-full-application.js');
     const { registerGenerateUiComponent } = await import('../tools/generate-ui-component.js');
@@ -10,6 +15,10 @@ describe('MCP Server Index', () => {
     const { registerFigmaContextParser } = await import('../tools/figma-context-parser.js');
     const { registerFigmaPushVariables } = await import('../tools/figma-push-variables.js');
     const { registerAnalyzeDesignReferences } = await import('../tools/analyze-design-references.js');
+    const { registerImageToComponent } = await import('../tools/image-to-component.js');
+    const { registerGeneratePageTemplate } = await import('../tools/generate-page-template.js');
+    const { registerRefineComponent } = await import('../tools/refine-component.js');
+    const { registerAuditAccessibility } = await import('../tools/audit-accessibility.js');
 
     expect(registerScaffoldFullApplication).toBeDefined();
     expect(registerGenerateUiComponent).toBeDefined();
@@ -19,6 +28,10 @@ describe('MCP Server Index', () => {
     expect(registerFigmaContextParser).toBeDefined();
     expect(registerFigmaPushVariables).toBeDefined();
     expect(registerAnalyzeDesignReferences).toBeDefined();
+    expect(registerImageToComponent).toBeDefined();
+    expect(registerGeneratePageTemplate).toBeDefined();
+    expect(registerRefineComponent).toBeDefined();
+    expect(registerAuditAccessibility).toBeDefined();
   });
 
   it('imports resource registration function', async () => {

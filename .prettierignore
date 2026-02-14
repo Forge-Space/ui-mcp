@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs
+dist/
+coverage/
+*.tsbuildinfo
+
+# Cache directories
+.cache/
+.eslintcache
+node_modules/.cache/
+
+# Environment files
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Generated files
+*.min.js
+*.min.css
+
+# Documentation (preserve formatting)
+CHANGELOG.md
+LICENSE

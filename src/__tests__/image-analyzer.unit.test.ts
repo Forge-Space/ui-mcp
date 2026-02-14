@@ -118,40 +118,40 @@ describe('image-analyzer', () => {
       for (const region of regions) {
         expect(region.bounds.x).toBeGreaterThanOrEqual(0);
         expect(region.bounds.y).toBeGreaterThanOrEqual(0);
-        expect(region.bounds.w).toBeGreaterThan(0);
-        expect(region.bounds.h).toBeGreaterThan(0);
+        expect(region.bounds.width).toBeGreaterThan(0);
+        expect(region.bounds.height).toBeGreaterThan(0);
       }
     });
   });
 
   describe('detectComponentsFromRegions', () => {
     it('detects navigation and header from header region', () => {
-      const regions = [{ role: 'header', bounds: { x: 0, y: 0, w: 1440, h: 80 } }];
+      const regions = [{ role: 'header', bounds: { x: 0, y: 0, width: 1440, height: 80 } }];
       const components = detectComponentsFromRegions(regions);
       expect(components).toContain('navigation');
       expect(components).toContain('header');
     });
 
     it('detects footer from footer region', () => {
-      const regions = [{ role: 'footer', bounds: { x: 0, y: 800, w: 1440, h: 100 } }];
+      const regions = [{ role: 'footer', bounds: { x: 0, y: 800, width: 1440, height: 100 } }];
       const components = detectComponentsFromRegions(regions);
       expect(components).toContain('footer');
     });
 
     it('detects content-section from main-content region', () => {
-      const regions = [{ role: 'main-content', bounds: { x: 0, y: 80, w: 1440, h: 720 } }];
+      const regions = [{ role: 'main-content', bounds: { x: 0, y: 100, width: 1440, height: 700 } }];
       const components = detectComponentsFromRegions(regions);
       expect(components).toContain('content-section');
     });
 
     it('detects sidebar from sidebar region', () => {
-      const regions = [{ role: 'sidebar', bounds: { x: 0, y: 0, w: 300, h: 900 } }];
+      const regions = [{ role: 'sidebar', bounds: { x: 0, y: 0, width: 300, height: 900 } }];
       const components = detectComponentsFromRegions(regions);
       expect(components).toContain('sidebar');
     });
 
     it('returns empty array for unknown regions', () => {
-      const regions = [{ role: 'unknown', bounds: { x: 0, y: 0, w: 100, h: 100 } }];
+      const regions = [{ role: 'unknown', bounds: { x: 0, y: 0, width: 100, height: 100 } }];
       const components = detectComponentsFromRegions(regions);
       expect(components).toEqual([]);
     });

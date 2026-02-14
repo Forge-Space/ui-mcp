@@ -1,9 +1,11 @@
+import { loadConfig } from '../lib/config.js';
 import type { IScrapedPage, IImageAnalysis, IPatternMatch } from '../lib/types.js';
 
 let detectCommonPatterns: typeof import('../lib/pattern-detector.js').detectCommonPatterns;
 let buildSuggestedContext: typeof import('../lib/pattern-detector.js').buildSuggestedContext;
 
 beforeAll(async () => {
+  loadConfig();
   const mod = await import('../lib/pattern-detector.js');
   detectCommonPatterns = mod.detectCommonPatterns;
   buildSuggestedContext = mod.buildSuggestedContext;

@@ -1,7 +1,10 @@
+import { loadConfig } from '../lib/config.js';
+
 let rgbToHex: typeof import('../lib/browser-scraper.js').rgbToHex;
 let normalizeColors: typeof import('../lib/browser-scraper.js').normalizeColors;
 
 beforeAll(async () => {
+  loadConfig();
   const mod = await import('../lib/browser-scraper.js');
   rgbToHex = mod.rgbToHex;
   normalizeColors = mod.normalizeColors;

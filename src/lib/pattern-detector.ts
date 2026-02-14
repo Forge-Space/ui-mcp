@@ -1,4 +1,33 @@
-import type { IPatternMatch, IScrapedPage, IImageAnalysis, IDesignContext } from './types.js';
+import type { IScrapedPage, IImageAnalysis, IPatternMatch, IDesignContext } from './types.js';
+import { createLogger } from './logger.js';
+
+const logger = createLogger('pattern-detector');
+
+// Pattern detection constants
+const _MAX_PATTERNS_PER_CATEGORY = 10; // Maximum patterns to return per category (reserved for future use)
+const CONFIDENCE_PRECISION = 100; // Precision for confidence calculation (e.g., 100 = 2 decimal places)
+const MIN_SOURCES_FOR_PATTERN = 0.3; // Minimum proportion of sources required for a pattern
+
+// Color processing constants
+const HEX_COLOR_LENGTH = 6; // Expected length of hex color without #
+const COLOR_QUANTIZATION_STEP = 16; // RGB quantization step for color rounding
+const DEFAULT_BRIGHTNESS = 128; // Default brightness for invalid colors
+
+// Brightness calculation constants (ITU-R BT.601 standard)
+const BRIGHTNESS_RED_WEIGHT = 299;
+const BRIGHTNESS_GREEN_WEIGHT = 587;
+const BRIGHTNESS_BLUE_WEIGHT = 114;
+const BRIGHTNESS_DIVISOR = 1000;
+
+// Color classification thresholds
+const LIGHT_COLOR_THRESHOLD = 200; // Brightness threshold for light colors
+const DARK_COLOR_THRESHOLD = 80; // Brightness threshold for dark colors
+const MAX_BRIGHTNESS = 256; // Maximum possible brightness value
+
+// Spacing validation constants
+const MAX_SPACING_PX = 200; // Maximum valid spacing in pixels
+const MAX_SPACING_REM = 20; // Maximum valid spacing in rem/em
+
 import { normalizeColors } from './browser-scraper.js';
 
 interface AnalysisInput {
@@ -34,21 +63,21 @@ function detectColorPatterns(pages: IScrapedPage[], images: IImageAnalysis[], to
     }
   }
 
-  for (const img of images) {
-    for (const dc of img.dominantColors) {
-      const rounded = roundHexColor(dc.hex);
+  for (const imageAnalysis of images) {
+    for (const dominantColor of imageAnalysis.dominantColors) {
+      const rounded = roundHexColor(dominantColor.hex);
       if (!colorFrequency.has(rounded)) colorFrequency.set(rounded, new Set());
-      colorFrequency.get(rounded)!.add(img.label);
+      colorFrequency.get(rounded)!.add(imageAnalysis.label);
     }
   }
 
   const patterns: IPatternMatch[] = [];
   for (const [color, sources] of colorFrequency) {
-    if (sources.size >= Math.max(1, Math.ceil(totalSources * 0.3))) {
+    if (sources.size >= Math.max(1, Math.ceil(totalSources * MIN_SOURCES_FOR_PATTERN))) {
       patterns.push({
         category: 'color',
         pattern: color,
-        confidence: Math.round((sources.size / totalSources) * 100) / 100,
+        confidence: Math.round((sources.size / totalSources) * CONFIDENCE_PRECISION) / CONFIDENCE_PRECISION,
         sources: [...sources],
       });
     }
@@ -74,7 +103,7 @@ function detectTypographyPatterns(pages: IScrapedPage[], _totalSources: number):
     patterns.push({
       category: 'typography',
       pattern: font,
-      confidence: Math.round((sources.size / Math.max(1, pages.length)) * 100) / 100,
+      confidence: Math.round((sources.size / Math.max(1, pages.length)) * CONFIDENCE_PRECISION) / CONFIDENCE_PRECISION,
       sources: [...sources],
     });
   }
@@ -92,11 +121,11 @@ function detectLayoutPatterns(pages: IScrapedPage[], images: IImageAnalysis[], t
     }
   }
 
-  for (const img of images) {
-    for (const region of img.layoutRegions) {
+  for (const imageAnalysis of images) {
+    for (const region of imageAnalysis.layoutRegions) {
       const layout = region.role;
       if (!layoutFrequency.has(layout)) layoutFrequency.set(layout, new Set());
-      layoutFrequency.get(layout)!.add(img.label);
+      layoutFrequency.get(layout)!.add(imageAnalysis.label);
     }
   }
 
@@ -105,7 +134,7 @@ function detectLayoutPatterns(pages: IScrapedPage[], images: IImageAnalysis[], t
     patterns.push({
       category: 'layout',
       pattern: layout,
-      confidence: Math.round((sources.size / totalSources) * 100) / 100,
+      confidence: Math.round((sources.size / totalSources) * CONFIDENCE_PRECISION) / CONFIDENCE_PRECISION,
       sources: [...sources],
     });
   }
@@ -121,25 +150,25 @@ function detectComponentPatterns(
   const componentFrequency = new Map<string, Set<string>>();
 
   for (const page of pages) {
-    for (const comp of page.componentTypes) {
-      if (!componentFrequency.has(comp)) componentFrequency.set(comp, new Set());
-      componentFrequency.get(comp)!.add(page.url);
+    for (const componentType of page.componentTypes) {
+      if (!componentFrequency.has(componentType)) componentFrequency.set(componentType, new Set());
+      componentFrequency.get(componentType)!.add(page.url);
     }
   }
 
-  for (const img of images) {
-    for (const comp of img.detectedComponents) {
-      if (!componentFrequency.has(comp)) componentFrequency.set(comp, new Set());
-      componentFrequency.get(comp)!.add(img.label);
+  for (const imageAnalysis of images) {
+    for (const componentType of imageAnalysis.detectedComponents) {
+      if (!componentFrequency.has(componentType)) componentFrequency.set(componentType, new Set());
+      componentFrequency.get(componentType)!.add(imageAnalysis.label);
     }
   }
 
   const patterns: IPatternMatch[] = [];
-  for (const [comp, sources] of componentFrequency) {
+  for (const [componentType, sources] of componentFrequency) {
     patterns.push({
       category: 'component',
-      pattern: comp,
-      confidence: Math.round((sources.size / totalSources) * 100) / 100,
+      pattern: componentType,
+      confidence: Math.round((sources.size / totalSources) * CONFIDENCE_PRECISION) / CONFIDENCE_PRECISION,
       sources: [...sources],
     });
   }
@@ -161,11 +190,12 @@ function detectSpacingPatterns(pages: IScrapedPage[], totalSources: number): IPa
 
   const patterns: IPatternMatch[] = [];
   for (const [spacing, sources] of spacingFrequency) {
-    if (sources.size >= Math.max(1, Math.ceil(totalSources * 0.3))) {
+    if (sources.size >= Math.max(1, Math.ceil(totalSources * MIN_SOURCES_FOR_PATTERN))) {
       patterns.push({
         category: 'spacing',
         pattern: spacing,
-        confidence: Math.round((sources.size / Math.max(1, pages.length)) * 100) / 100,
+        confidence:
+          Math.round((sources.size / Math.max(1, pages.length)) * CONFIDENCE_PRECISION) / CONFIDENCE_PRECISION,
         sources: [...sources],
       });
     }
@@ -178,10 +208,12 @@ export function buildSuggestedContext(patterns: IPatternMatch[]): Partial<IDesig
   const ctx: Partial<IDesignContext> = {};
 
   // Extract color palette from color patterns
-  const colorPatterns = patterns.filter((p) => p.category === 'color').sort((a, b) => b.confidence - a.confidence);
+  const colorPatterns = patterns
+    .filter((pattern) => pattern.category === 'color')
+    .sort((a, b) => b.confidence - a.confidence);
 
   if (colorPatterns.length > 0) {
-    const colors = colorPatterns.map((p) => p.pattern);
+    const colors = colorPatterns.map((pattern) => pattern.pattern);
     ctx.colorPalette = {
       primary: colors[0] ?? '#2563eb',
       primaryForeground: '#ffffff',
@@ -200,7 +232,9 @@ export function buildSuggestedContext(patterns: IPatternMatch[]): Partial<IDesig
   }
 
   // Extract typography from font patterns
-  const fontPatterns = patterns.filter((p) => p.category === 'typography').sort((a, b) => b.confidence - a.confidence);
+  const fontPatterns = patterns
+    .filter((pattern) => pattern.category === 'typography')
+    .sort((a, b) => b.confidence - a.confidence);
 
   if (fontPatterns.length > 0) {
     ctx.typography = {
@@ -227,11 +261,16 @@ export function buildSuggestedContext(patterns: IPatternMatch[]): Partial<IDesig
 
 function roundHexColor(hex: string): string {
   const clean = hex.replace('#', '');
-  if (clean.length !== 6) return hex;
-  const r = Math.round(parseInt(clean.slice(0, 2), 16) / 16) * 16;
-  const g = Math.round(parseInt(clean.slice(2, 4), 16) / 16) * 16;
-  const b = Math.round(parseInt(clean.slice(4, 6), 16) / 16) * 16;
-  return `#${Math.min(r, 255).toString(16).padStart(2, '0')}${Math.min(g, 255).toString(16).padStart(2, '0')}${Math.min(b, 255).toString(16).padStart(2, '0')}`;
+
+  // Validate hex format before processing
+  if (clean.length !== HEX_COLOR_LENGTH || !/^[0-9a-fA-F]{6}$/.test(clean)) {
+    return hex; // Return original if invalid
+  }
+
+  const r = (Math.round(parseInt(clean.slice(0, 2), 16) / COLOR_QUANTIZATION_STEP) * COLOR_QUANTIZATION_STEP) & 0xff;
+  const g = (Math.round(parseInt(clean.slice(2, 4), 16) / COLOR_QUANTIZATION_STEP) * COLOR_QUANTIZATION_STEP) & 0xff;
+  const b = (Math.round(parseInt(clean.slice(4, 6), 16) / COLOR_QUANTIZATION_STEP) * COLOR_QUANTIZATION_STEP) & 0xff;
+  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
 }
 
 function isSystemFont(font: string): boolean {
@@ -270,32 +309,48 @@ function isSystemFont(font: string): boolean {
 }
 
 function normalizeSpacing(spacing: string): string | null {
+  // Validate input to prevent TypeError on null/undefined
+  if (!spacing || typeof spacing !== 'string') return null;
+
   const match = spacing.match(/^(\d+(?:\.\d+)?)(px|rem|em)$/);
   if (!match) return null;
   const value = parseFloat(match[1]);
   const unit = match[2];
-  if (unit === 'px' && value > 0 && value <= 200) return spacing;
-  if ((unit === 'rem' || unit === 'em') && value > 0 && value <= 20) return spacing;
+  if (unit === 'px' && value > 0 && value <= MAX_SPACING_PX) return spacing;
+  if ((unit === 'rem' || unit === 'em') && value > 0 && value <= MAX_SPACING_REM) return spacing;
   return null;
 }
 
 function colorBrightness(hex: string): number {
   const clean = hex.replace('#', '');
-  if (clean.length !== 6) return 128;
+
+  // Validate hex format: must be exactly 6 valid hex characters
+  if (clean.length !== HEX_COLOR_LENGTH || !/^[0-9a-fA-F]{6}$/.test(clean)) {
+    logger.warn({ hex, cleanLength: clean.length }, 'Invalid hex color format, using default brightness');
+    return DEFAULT_BRIGHTNESS;
+  }
+
   const r = parseInt(clean.slice(0, 2), 16);
   const g = parseInt(clean.slice(2, 4), 16);
   const b = parseInt(clean.slice(4, 6), 16);
-  return (r * 299 + g * 587 + b * 114) / 1000;
+
+  // Note: With valid hex format, parseInt should never return NaN, but keep for safety
+  if (isNaN(r) || isNaN(g) || isNaN(b)) {
+    logger.warn({ hex, r, g, b }, 'Failed to parse RGB from hex color, using default brightness');
+    return DEFAULT_BRIGHTNESS;
+  }
+
+  return (r * BRIGHTNESS_RED_WEIGHT + g * BRIGHTNESS_GREEN_WEIGHT + b * BRIGHTNESS_BLUE_WEIGHT) / BRIGHTNESS_DIVISOR;
 }
 
 function findLightestColor(colors: string[]): string | undefined {
   let lightest: string | undefined;
   let maxBrightness = -1;
-  for (const c of colors) {
-    const b = colorBrightness(c);
-    if (b > maxBrightness && b > 200) {
-      maxBrightness = b;
-      lightest = c;
+  for (const color of colors) {
+    const brightness = colorBrightness(color);
+    if (brightness > maxBrightness && brightness > LIGHT_COLOR_THRESHOLD) {
+      maxBrightness = brightness;
+      lightest = color;
     }
   }
   return lightest;
@@ -303,12 +358,12 @@ function findLightestColor(colors: string[]): string | undefined {
 
 function findDarkestColor(colors: string[]): string | undefined {
   let darkest: string | undefined;
-  let minBrightness = 256;
-  for (const c of colors) {
-    const b = colorBrightness(c);
-    if (b < minBrightness && b < 80) {
-      minBrightness = b;
-      darkest = c;
+  let minBrightness = MAX_BRIGHTNESS;
+  for (const color of colors) {
+    const brightness = colorBrightness(color);
+    if (brightness < minBrightness && brightness < DARK_COLOR_THRESHOLD) {
+      minBrightness = brightness;
+      darkest = color;
     }
   }
   return darkest;

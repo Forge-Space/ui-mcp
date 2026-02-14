@@ -1,6 +1,18 @@
-import { mapTokensToTailwind, extractTokensFromFigmaNode, tokensToDesignContext } from '../lib/tailwind-mapper.js';
+import { loadConfig } from '../lib/config.js';
 import type { IFigmaDesignToken } from '../lib/types.js';
 import type { FigmaNode } from '../lib/figma-client.js';
+
+let mapTokensToTailwind: typeof import('../lib/tailwind-mapper.js').mapTokensToTailwind;
+let extractTokensFromFigmaNode: typeof import('../lib/tailwind-mapper.js').extractTokensFromFigmaNode;
+let tokensToDesignContext: typeof import('../lib/tailwind-mapper.js').tokensToDesignContext;
+
+beforeAll(async () => {
+  loadConfig();
+  const mod = await import('../lib/tailwind-mapper.js');
+  mapTokensToTailwind = mod.mapTokensToTailwind;
+  extractTokensFromFigmaNode = mod.extractTokensFromFigmaNode;
+  tokensToDesignContext = mod.tokensToDesignContext;
+});
 
 describe('mapTokensToTailwind', () => {
   it('should map color tokens to text and bg classes', () => {

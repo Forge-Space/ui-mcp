@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { buildPrototype } from '../lib/prototype-builder.js';
 import { designContextStore } from '../lib/design-context.js';
 import type { IScreenElement, ITransition, IDesignContext } from '../lib/types.js';
@@ -66,7 +66,7 @@ export function registerGeneratePrototype(server: McpServer): void {
     'generate_prototype',
     'Create interactive HTML prototypes with screen flows, navigation, and transitions. Output is a standalone HTML file.',
     inputSchema,
-    async ({ screens, navigation_flow, design_context, output_format: _output_format }) => {
+    ({ screens, navigation_flow, design_context, output_format: _output_format }) => {
       const ctx: IDesignContext | undefined = design_context
         ? deepMergeContext(designContextStore.get(), design_context)
         : undefined;

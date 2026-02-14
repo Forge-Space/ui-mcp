@@ -1,11 +1,12 @@
 {
   "name": "uiforge-mcp",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "MCP server for AI-driven UI generation — from code scaffolding to interactive prototypes and design images",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
+    "build:bundle": "tsup",
     "dev": "tsc --watch",
     "start": "node dist/index.js",
     "clean": "rm -rf dist coverage .tsbuildinfo node_modules/.cache",
@@ -19,6 +20,9 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch --onlyChanged",
     "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
+    "deps:check": "ncu",
+    "deps:update": "ncu -u",
+    "deps:update-interactive": "ncu -i",
     "prepare": "husky"
   },
   "dependencies": {
@@ -42,9 +46,11 @@
     "husky": "^9.1.7",
     "jest": "^29.7.0",
     "lint-staged": "^16.2.7",
+    "npm-check-updates": "^17.1.11",
     "prettier": "^3.8.1",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
+    "tsup": "^8.5.1",
     "typescript": "^5.7.0",
     "typescript-eslint": "^8.55.0"
   },

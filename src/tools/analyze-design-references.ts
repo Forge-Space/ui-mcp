@@ -1,10 +1,13 @@
 import { z } from 'zod';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { scrapePage, closeBrowser, normalizeColors } from '../lib/browser-scraper.js';
 import { analyzeImage } from '../lib/image-analyzer.js';
 import { detectCommonPatterns, buildSuggestedContext } from '../lib/pattern-detector.js';
 import { designContextStore } from '../lib/design-context.js';
+import { createLogger } from '../lib/logger.js';
 import type { IScrapedPage, IImageAnalysis, IDesignAnalysisResult } from '../lib/types.js';
+
+const logger = createLogger('analyze-design-references');
 
 const inputSchema = {
   urls: z
@@ -70,8 +73,9 @@ export function registerAnalyzeDesignReferences(server: McpServer): void {
                 data: page.screenshot.toString('base64'),
               });
             }
-          } catch (e) {
-            warnings.push(`Failed to scrape ${url}: ${String(e)}`);
+          } catch (error) {
+            logger.error({ url, error }, 'Failed to scrape URL');
+            warnings.push(`Failed to scrape ${url}: ${String(error)}`);
           }
         }
 
@@ -81,15 +85,17 @@ export function registerAnalyzeDesignReferences(server: McpServer): void {
 
       // --- Phase 2: Analyze attached images ---
       if (images && images.length > 0) {
-        for (let i = 0; i < images.length; i++) {
-          const img = images[i];
+        for (let imageIndex = 0; imageIndex < images.length; imageIndex++) {
+          const imageData = images[imageIndex];
           try {
-            const buffer = Buffer.from(img.data, 'base64');
-            const label = img.label ?? `image-${i + 1}`;
+            const buffer = Buffer.from(imageData.data, 'base64');
+            const label = imageData.label ?? `image-${imageIndex + 1}`;
             const analysis = await analyzeImage(buffer, label);
             imageAnalyses.push(analysis);
-          } catch (e) {
-            warnings.push(`Failed to analyze image ${img.label ?? i + 1}: ${String(e)}`);
+          } catch (error) {
+            const label = imageData.label ?? `image-${imageIndex + 1}`;
+            logger.error({ label, error }, 'Failed to analyze image');
+            warnings.push(`Failed to analyze image ${label}: ${String(error)}`);
           }
         }
       }
@@ -117,15 +123,15 @@ export function registerAnalyzeDesignReferences(server: McpServer): void {
 
       // --- Build result ---
       const references = [
-        ...scrapedPages.map((p) => ({
-          source: p.url,
-          colors: normalizeColors(p.colors),
-          fonts: p.fonts,
-          layouts: p.layoutPatterns,
-          components: p.componentTypes,
+        ...scrapedPages.map((page) => ({
+          source: page.url,
+          colors: normalizeColors(page.colors),
+          fonts: page.fonts,
+          layouts: page.layoutPatterns,
+          components: page.componentTypes,
         })),
         ...imageAnalyses
-          .filter((a) => !scrapedPages.some((p) => p.url === a.label))
+          .filter((a) => !scrapedPages.some((page) => page.url === a.label))
           .map((a) => ({
             source: a.label,
             colors: a.dominantColors.map((c) => c.hex),

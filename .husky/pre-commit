@@ -1,1 +1,13 @@
-npx lint-staged
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Run lint-staged for code quality (exit on failure)
+npx lint-staged || exit 1
+
+# Check for outdated dependencies (non-blocking warning)
+echo "\n🔍 Checking for outdated dependencies..."
+npm run deps:check --silent || echo "⚠️  Some dependencies are outdated. Run 'npm run deps:update-interactive' to update."
+
+# Security audit (non-blocking warning)
+echo "\n🔒 Running security audit..."
+npm audit --audit-level=high --silent || echo "⚠️  Security vulnerabilities detected. Run 'npm audit fix' to resolve."
