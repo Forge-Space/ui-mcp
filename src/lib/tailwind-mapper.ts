@@ -1,5 +1,13 @@
 import type { IFigmaDesignToken, ITailwindMapping, IDesignContext } from './types.js';
 import type { FigmaNode, FigmaFill } from './figma-client.js';
+import { createLogger } from './logger.js';
+
+const logger = createLogger('tailwind-mapper');
+
+// Spacing tolerance constants
+const SPACING_TOLERANCE_PX = 2; // Maximum pixel difference for spacing match
+const FONT_SIZE_TOLERANCE_REM = 0.0625; // Maximum rem difference for font size match
+const LINE_HEIGHT_TOLERANCE = 0.0625; // Maximum difference for line height match
 
 // Tailwind default spacing scale: class suffix → px value
 const SPACING_SCALE: [string, number][] = [
@@ -55,47 +63,51 @@ const LINE_HEIGHT_SCALE: [string, string][] = [
 ];
 
 function closestSpacing(px: number): string {
-  let best = SPACING_SCALE[0];
-  let bestDiff = Math.abs(px - best[1]);
-  for (const entry of SPACING_SCALE) {
-    const diff = Math.abs(px - entry[1]);
-    if (diff < bestDiff) {
-      best = entry;
-      bestDiff = diff;
+  if (!Number.isFinite(px) || px < 0) {
+    logger.warn({ px }, 'Invalid spacing value (NaN, Infinity, -Infinity, or negative), defaulting to 0');
+    return SPACING_SCALE[0][0];
+  }
+  let closestMatch = SPACING_SCALE[0];
+  let closestDifference = Math.abs(px - closestMatch[1]);
+  for (const scaleEntry of SPACING_SCALE) {
+    const difference = Math.abs(px - scaleEntry[1]);
+    if (difference < closestDifference) {
+      closestMatch = scaleEntry;
+      closestDifference = difference;
     }
   }
-  // Use arbitrary value if the closest match is too far off (>2px)
-  return bestDiff <= 2 ? best[0] : `[${px}px]`;
+  // Use arbitrary value if the closest match is too far off
+  return closestDifference <= SPACING_TOLERANCE_PX ? closestMatch[0] : `[${px}px]`;
 }
 
-function closestFontSize(val: string): string {
-  const numericRem = parseFloat(val);
-  if (isNaN(numericRem)) return `[${val}]`;
-  let best = FONT_SIZE_SCALE[0];
-  let bestDiff = Math.abs(numericRem - parseFloat(best[1]));
-  for (const entry of FONT_SIZE_SCALE) {
-    const diff = Math.abs(numericRem - parseFloat(entry[1]));
-    if (diff < bestDiff) {
-      best = entry;
-      bestDiff = diff;
+function closestFontSize(value: string): string {
+  const numericRem = parseFloat(value);
+  if (isNaN(numericRem)) return `[${value}]`;
+  let closestMatch = FONT_SIZE_SCALE[0];
+  let closestDifference = Math.abs(numericRem - parseFloat(closestMatch[1]));
+  for (const scaleEntry of FONT_SIZE_SCALE) {
+    const difference = Math.abs(numericRem - parseFloat(scaleEntry[1]));
+    if (difference < closestDifference) {
+      closestMatch = scaleEntry;
+      closestDifference = difference;
     }
   }
-  return bestDiff <= 0.0625 ? best[0] : `[${val}]`;
+  return closestDifference <= FONT_SIZE_TOLERANCE_REM ? closestMatch[0] : `[${value}]`;
 }
 
-function closestLineHeight(val: string): string {
-  const num = parseFloat(val);
-  if (isNaN(num)) return `[${val}]`;
-  let best = LINE_HEIGHT_SCALE[0];
-  let bestDiff = Math.abs(num - parseFloat(best[1]));
-  for (const entry of LINE_HEIGHT_SCALE) {
-    const diff = Math.abs(num - parseFloat(entry[1]));
-    if (diff < bestDiff) {
-      best = entry;
-      bestDiff = diff;
+function closestLineHeight(value: string): string {
+  const numericValue = parseFloat(value);
+  if (isNaN(numericValue)) return `[${value}]`;
+  let closestMatch = LINE_HEIGHT_SCALE[0];
+  let closestDifference = Math.abs(numericValue - parseFloat(closestMatch[1]));
+  for (const scaleEntry of LINE_HEIGHT_SCALE) {
+    const difference = Math.abs(numericValue - parseFloat(scaleEntry[1]));
+    if (difference < closestDifference) {
+      closestMatch = scaleEntry;
+      closestDifference = difference;
     }
   }
-  return bestDiff <= 0.0625 ? best[0] : `[${val}]`;
+  return closestDifference <= LINE_HEIGHT_TOLERANCE ? closestMatch[0] : `[${value}]`;
 }
 
 function classifyShadow(val: string): string {
@@ -273,7 +285,9 @@ export function extractTokensFromFigmaNode(node: FigmaNode): IFigmaDesignToken[]
     }
     if (style['lineHeightPx']) {
       const lineHeightPx = style['lineHeightPx'] as number;
-      const fontSizePx = Math.max((style['fontSize'] as number) ?? 16, 1);
+      // Use default 16px if fontSize is undefined, null, or 0 to prevent division issues
+      const rawFontSize = style['fontSize'] as number | undefined;
+      const fontSizePx = rawFontSize && rawFontSize > 0 ? rawFontSize : 16;
       tokens.push({
         name: `${node.name}/lineHeight`,
         type: 'string',
