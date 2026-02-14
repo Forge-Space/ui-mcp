@@ -167,7 +167,8 @@ export async function postVariables(
   };
 
   // Create collection if needed
-  if (!targetCollectionId) {
+  const isNewCollection = !targetCollectionId;
+  if (isNewCollection) {
     const tempId = `temp_collection_${Date.now()}`;
     payload.variableCollections!.push({
       action: 'CREATE',
@@ -175,7 +176,7 @@ export async function postVariables(
       name: collectionName,
     });
     targetCollectionId = tempId;
-    targetModeId = undefined; // Will be auto-created
+    // targetModeId will be determined after POST for new collections
   }
 
   let created = 0;
@@ -188,6 +189,9 @@ export async function postVariables(
     existingVarMap.set(varObj['name'] as string, id);
   }
 
+  // Track variables that need mode values set
+  const variablesNeedingValues: Array<{ id: string; variable: IFigmaVariable }> = [];
+
   for (const variable of variables) {
     const existingId = existingVarMap.get(variable.name);
 
@@ -198,6 +202,7 @@ export async function postVariables(
         name: variable.name,
         resolvedType: variable.type,
       });
+      variablesNeedingValues.push({ id: existingId, variable });
       updated++;
     } else {
       const tempVarId = `temp_var_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
@@ -208,20 +213,23 @@ export async function postVariables(
         variableCollectionId: targetCollectionId,
         resolvedType: variable.type,
       });
-
-      if (targetModeId) {
-        let value: unknown = variable.value;
-        if (variable.type === 'COLOR' && typeof variable.value === 'string') {
-          value = hexToFigmaColor(variable.value);
-        }
-        payload.variableModeValues!.push({
-          variableId: tempVarId,
-          modeId: targetModeId,
-          value,
-        });
-      }
-
+      variablesNeedingValues.push({ id: tempVarId, variable });
       created++;
+    }
+  }
+
+  // Set mode values for all variables (both new and updated)
+  if (targetModeId) {
+    for (const { id, variable } of variablesNeedingValues) {
+      let value: unknown = variable.value;
+      if (variable.type === 'COLOR' && typeof variable.value === 'string') {
+        value = hexToFigmaColor(variable.value);
+      }
+      payload.variableModeValues!.push({
+        variableId: id,
+        modeId: targetModeId,
+        value,
+      });
     }
   }
 
@@ -229,6 +237,60 @@ export async function postVariables(
     method: 'POST',
     body: JSON.stringify(payload),
   });
+
+  // If we created a new collection and have variables needing values, make a second POST
+  if (isNewCollection && variablesNeedingValues.length > 0) {
+    // Fetch the newly created collection to get its mode ID
+    const updatedVars = await getVariables(fileKey);
+    const collections = updatedVars.meta?.variableCollections ?? {};
+
+    let newModeId: string | undefined;
+    for (const [, col] of Object.entries(collections)) {
+      if ((col as Record<string, unknown>)['name'] === collectionName) {
+        const modes = (col as Record<string, unknown>)['modes'] as Array<{ modeId: string }> | undefined;
+        if (modes?.[0]) {
+          newModeId = modes[0].modeId;
+        }
+        break;
+      }
+    }
+
+    if (newModeId) {
+      // Get the real variable IDs from the response
+      const newVariables = updatedVars.meta?.variables ?? {};
+      const nameToIdMap = new Map<string, string>();
+      for (const [id, v] of Object.entries(newVariables)) {
+        const varObj = v as Record<string, unknown>;
+        nameToIdMap.set(varObj['name'] as string, id);
+      }
+
+      // Build a second payload with just mode values
+      const valuePatch: PostVariablesPayload = {
+        variableModeValues: [],
+      };
+
+      for (const { variable } of variablesNeedingValues) {
+        const realId = nameToIdMap.get(variable.name);
+        if (realId) {
+          let value: unknown = variable.value;
+          if (variable.type === 'COLOR' && typeof variable.value === 'string') {
+            value = hexToFigmaColor(variable.value);
+          }
+          valuePatch.variableModeValues!.push({
+            variableId: realId,
+            modeId: newModeId,
+            value,
+          });
+        }
+      }
+
+      // POST the values
+      await figmaFetch(`/files/${fileKey}/variables`, {
+        method: 'POST',
+        body: JSON.stringify(valuePatch),
+      });
+    }
+  }
 
   return {
     created,

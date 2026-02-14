@@ -29,6 +29,7 @@ const config: Config = {
     '!src/lib/types.ts',
     '!src/lib/figma-client.ts',
     '!src/lib/design-extractor.ts',
+    '!src/lib/browser-scraper.ts',
     '!src/lib/templates/prototype-shell.ts',
     '!src/__tests__/**',
   ],

@@ -116,26 +116,27 @@ export function parseCssVariables(cssString: string): StyleAuditResult {
   if (Object.keys(colorPalette).length > 0) {
     // Only include colors actually found — no defaults here.
     // Defaults are applied at the design-context layer, not the parser.
-    tokens.colorPalette = {
-      primary: colorPalette['primary'] ?? '',
-      primaryForeground: colorPalette['primaryForeground'] ?? '',
-      secondary: colorPalette['secondary'] ?? '',
-      secondaryForeground: colorPalette['secondaryForeground'] ?? '',
-      accent: colorPalette['accent'] ?? '',
-      accentForeground: colorPalette['accentForeground'] ?? '',
-      background: colorPalette['background'] ?? '',
-      foreground: colorPalette['foreground'] ?? '',
-      muted: colorPalette['muted'] ?? '',
-      mutedForeground: colorPalette['mutedForeground'] ?? '',
-      border: colorPalette['border'] ?? '',
-      destructive: colorPalette['destructive'] ?? '',
-      destructiveForeground: colorPalette['destructiveForeground'] ?? '',
-    };
-    // Strip empty entries
-    for (const [key, val] of Object.entries(tokens.colorPalette)) {
-      if (val === '') {
-        delete (tokens.colorPalette as Record<string, string>)[key];
-      }
+    // Build a partial colorPalette with only the found values
+    const partialColorPalette: Partial<IDesignContext['colorPalette']> = {};
+
+    if (colorPalette['primary']) partialColorPalette.primary = colorPalette['primary'];
+    if (colorPalette['primaryForeground']) partialColorPalette.primaryForeground = colorPalette['primaryForeground'];
+    if (colorPalette['secondary']) partialColorPalette.secondary = colorPalette['secondary'];
+    if (colorPalette['secondaryForeground'])
+      partialColorPalette.secondaryForeground = colorPalette['secondaryForeground'];
+    if (colorPalette['accent']) partialColorPalette.accent = colorPalette['accent'];
+    if (colorPalette['accentForeground']) partialColorPalette.accentForeground = colorPalette['accentForeground'];
+    if (colorPalette['background']) partialColorPalette.background = colorPalette['background'];
+    if (colorPalette['foreground']) partialColorPalette.foreground = colorPalette['foreground'];
+    if (colorPalette['muted']) partialColorPalette.muted = colorPalette['muted'];
+    if (colorPalette['mutedForeground']) partialColorPalette.mutedForeground = colorPalette['mutedForeground'];
+    if (colorPalette['border']) partialColorPalette.border = colorPalette['border'];
+    if (colorPalette['destructive']) partialColorPalette.destructive = colorPalette['destructive'];
+    if (colorPalette['destructiveForeground'])
+      partialColorPalette.destructiveForeground = colorPalette['destructiveForeground'];
+
+    if (Object.keys(partialColorPalette).length > 0) {
+      tokens.colorPalette = partialColorPalette as IDesignContext['colorPalette'];
     }
   }
 

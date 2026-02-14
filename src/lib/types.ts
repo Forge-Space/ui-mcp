@@ -197,3 +197,45 @@ export interface IInspirationSource {
   description: string;
   priority: number;
 }
+
+// --- Design Reference Analysis ---
+
+export interface IDesignReferenceInput {
+  urls?: string[];
+  images?: Array<{ data: string; mimeType: string; label?: string }>;
+}
+
+export interface IScrapedPage {
+  url: string;
+  title: string;
+  screenshot?: Buffer;
+  colors: string[];
+  fonts: string[];
+  fontSizes: string[];
+  spacing: string[];
+  layoutPatterns: string[];
+  componentTypes: string[];
+  meta: Record<string, string>;
+}
+
+export interface IImageAnalysis {
+  label: string;
+  dominantColors: Array<{ hex: string; percentage: number }>;
+  layoutRegions: Array<{ role: string; bounds: { x: number; y: number; w: number; h: number } }>;
+  detectedComponents: string[];
+  dimensions: { width: number; height: number };
+}
+
+export interface IPatternMatch {
+  category: 'color' | 'typography' | 'layout' | 'component' | 'spacing';
+  pattern: string;
+  confidence: number;
+  sources: string[];
+}
+
+export interface IDesignAnalysisResult {
+  references: Array<{ source: string; colors: string[]; fonts: string[]; layouts: string[]; components: string[] }>;
+  commonPatterns: IPatternMatch[];
+  suggestedContext: Partial<IDesignContext>;
+  screenshots: Array<{ source: string; data: string }>;
+}

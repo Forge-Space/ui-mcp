@@ -168,6 +168,16 @@ function buildCssVars(ctx: IDesignContext): string {
   return vars.join('\n');
 }
 
+function escapeJsString(str: string): string {
+  return str
+    .replace(/\\/g, '\\\\')
+    .replace(/'/g, "\\'")
+    .replace(/"/g, '\\"')
+    .replace(/\n/g, '\\n')
+    .replace(/\r/g, '\\r')
+    .replace(/\t/g, '\\t');
+}
+
 function buildNavigationScript(flows: ITransition[]): string {
   const cases = flows
     .map((flow) => {
@@ -175,9 +185,11 @@ function buildNavigationScript(flows: ITransition[]): string {
       const toId = toScreenId(flow.to);
       const animation = flow.animation ?? 'fade';
       const animClass = animation === 'none' ? '' : animation === 'fade' ? 'fade-in' : animation;
+      const trigger = escapeJsString(flow.trigger);
+      const targetElement = flow.targetElement ? `'${escapeJsString(flow.targetElement)}'` : 'null';
 
       return `
-      { from: '${fromId}', to: '${toId}', trigger: '${flow.trigger}', targetElement: ${flow.targetElement ? `'${flow.targetElement}'` : 'null'}, animClass: '${animClass}' }`;
+      { from: '${escapeJsString(fromId)}', to: '${escapeJsString(toId)}', trigger: '${trigger}', targetElement: ${targetElement}, animClass: '${escapeJsString(animClass)}' }`;
     })
     .join(',');
 
@@ -291,12 +303,12 @@ function renderElement(el: IScreenElement, flows: ITransition[]): string {
 }
 
 function buildNavAttrs(el: IScreenElement, flows: ITransition[]): string {
-  const flow = flows.find((f) => f.targetElement === el.id || (f.from && el.action === f.to));
+  const flow = flows.find((f) => f.targetElement === el.id);
   if (!flow) return '';
   const toId = toScreenId(flow.to);
   const anim = flow.animation ?? 'fade';
   const animClass = anim === 'none' ? '' : anim === 'fade' ? 'fade-in' : anim;
-  return ` data-nav-to="${toId}" data-nav-anim="${animClass}" style="cursor: pointer;"`;
+  return ` data-nav-to="${escapeHtml(toId)}" data-nav-anim="${escapeHtml(animClass)}" style="cursor: pointer;"`;
 }
 
 function toScreenId(name: string): string {
@@ -307,7 +319,12 @@ function toScreenId(name: string): string {
 }
 
 function escapeHtml(str: string): string {
-  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 function camelToKebab(str: string): string {

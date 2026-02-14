@@ -91,7 +91,11 @@ async function loadFontsForContext(ctx?: IDesignContext): Promise<FontEntry[]> {
   } catch {
     // Fallback to Inter if requested font not bundled
     if (bodyFamily !== 'Inter') {
-      fonts.push({ name: bodyFamily, data: await loadFont('Inter-400'), weight: 400, style: 'normal' });
+      try {
+        fonts.push({ name: bodyFamily, data: await loadFont('Inter-400'), weight: 400, style: 'normal' });
+      } catch {
+        // Inter also failed - will be caught by the fonts.length === 0 check below
+      }
     }
   }
 

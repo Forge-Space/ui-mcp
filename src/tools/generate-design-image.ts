@@ -4,6 +4,20 @@ import { renderSvg, renderPng } from '../lib/image-renderer.js';
 import { designContextStore } from '../lib/design-context.js';
 import type { IDesignContext, ImageType } from '../lib/types.js';
 
+// Helper for deep merging design context - handles one level of nesting
+function deepMergeContext(base: IDesignContext, override: Partial<IDesignContext>): IDesignContext {
+  return {
+    typography: override.typography ? { ...base.typography, ...override.typography } : base.typography,
+    colorPalette: override.colorPalette ? { ...base.colorPalette, ...override.colorPalette } : base.colorPalette,
+    spacing: override.spacing ? { ...base.spacing, ...override.spacing } : base.spacing,
+    borderRadius: override.borderRadius ? { ...base.borderRadius, ...override.borderRadius } : base.borderRadius,
+    shadows: override.shadows ? { ...base.shadows, ...override.shadows } : base.shadows,
+    iconSet: override.iconSet ?? base.iconSet,
+    animationLib: override.animationLib ?? base.animationLib,
+    buttonVariants: override.buttonVariants ?? base.buttonVariants,
+  };
+}
+
 const inputSchema = {
   description: z.string().describe('What to render in the image (e.g., "Landing page with hero section and CTA")'),
   type: z.enum(['wireframe', 'mockup', 'component_preview']).describe('Type of image to generate'),
@@ -29,7 +43,7 @@ export function registerGenerateDesignImage(server: McpServer): void {
     inputSchema,
     async ({ description, type, width, height, design_context, output_format }) => {
       const ctx: IDesignContext | undefined = design_context
-        ? ({ ...designContextStore.get(), ...design_context } as IDesignContext)
+        ? deepMergeContext(designContextStore.get(), design_context)
         : designContextStore.get();
 
       try {

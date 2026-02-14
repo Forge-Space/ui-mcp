@@ -7,12 +7,17 @@ function deepMerge(target: IDesignContext, source: Partial<IDesignContext>): IDe
   const result = structuredClone(target);
   const res = result as unknown as Record<string, unknown>;
   const src = source as unknown as Record<string, unknown>;
+
   for (const key of Object.keys(src)) {
     const sourceVal = src[key];
     const targetVal = res[key];
+
+    if (sourceVal === undefined) {
+      continue;
+    }
+
     if (
       sourceVal !== null &&
-      sourceVal !== undefined &&
       typeof sourceVal === 'object' &&
       !Array.isArray(sourceVal) &&
       targetVal !== null &&
@@ -20,14 +25,41 @@ function deepMerge(target: IDesignContext, source: Partial<IDesignContext>): IDe
       typeof targetVal === 'object' &&
       !Array.isArray(targetVal)
     ) {
-      res[key] = {
-        ...(targetVal as Record<string, unknown>),
-        ...(sourceVal as Record<string, unknown>),
-      };
-    } else if (sourceVal !== undefined) {
+      // Recursively merge nested objects
+      res[key] = deepMergeObjects(targetVal as Record<string, unknown>, sourceVal as Record<string, unknown>);
+    } else {
       res[key] = structuredClone(sourceVal);
     }
   }
+  return result;
+}
+
+function deepMergeObjects(target: Record<string, unknown>, source: Record<string, unknown>): Record<string, unknown> {
+  const result = { ...target };
+
+  for (const key of Object.keys(source)) {
+    const sourceVal = source[key];
+    const targetVal = result[key];
+
+    if (sourceVal === undefined) {
+      continue;
+    }
+
+    if (
+      sourceVal !== null &&
+      typeof sourceVal === 'object' &&
+      !Array.isArray(sourceVal) &&
+      targetVal !== null &&
+      targetVal !== undefined &&
+      typeof targetVal === 'object' &&
+      !Array.isArray(targetVal)
+    ) {
+      result[key] = deepMergeObjects(targetVal as Record<string, unknown>, sourceVal as Record<string, unknown>);
+    } else {
+      result[key] = sourceVal;
+    }
+  }
+
   return result;
 }
 

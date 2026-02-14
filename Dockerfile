@@ -30,7 +30,8 @@ RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force
 COPY --from=builder /app/dist ./dist
 
 # Bundle local fonts for offline rendering
-COPY src/assets/ ./dist/assets/
+# Copy to /app/assets/ since import.meta.url from dist/lib/ resolves to ../../assets/
+COPY src/assets/ ./assets/
 
 # Run as non-root
 RUN addgroup --system --gid 1001 appgroup && \
