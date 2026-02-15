@@ -61,7 +61,8 @@
   "lint-staged": {
     "src/**/*.ts": [
       "eslint --fix",
-      "prettier --write"
+      "prettier --write",
+      "bash -c 'tsc --noEmit'"
     ]
   }
 }

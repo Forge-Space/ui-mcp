@@ -1,0 +1,16 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "🚀 Running pre-push validations (final CI/CD check)...\n"
+
+# Run full validation suite before push
+echo "🔍 Running complete validation suite..."
+npm run validate || {
+  echo "\n❌ Pre-push validation failed!"
+  echo "💡 Fix the issues above before pushing."
+  echo "💡 You can skip this check with: git push --no-verify (not recommended)"
+  exit 1
+}
+
+echo "\n✅ All pre-push validations passed!"
+echo "🚀 Safe to push to remote.\n"

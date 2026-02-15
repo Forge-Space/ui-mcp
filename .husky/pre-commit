@@ -1,13 +1,41 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-# Run lint-staged for code quality (exit on failure)
-npx lint-staged || exit 1
+echo "🚀 Running pre-commit validations (matching CI/CD pipeline)...\n"
 
-# Check for outdated dependencies (non-blocking warning)
-echo "\n🔍 Checking for outdated dependencies..."
-npm run deps:check --silent || echo "⚠️  Some dependencies are outdated. Run 'npm run deps:update-interactive' to update."
+# 1. Lint and format (via lint-staged for changed files only)
+echo "📝 Running lint and format checks on staged files..."
+npx lint-staged || {
+  echo "❌ Lint/format check failed. Fix the issues above."
+  exit 1
+}
 
-# Security audit (non-blocking warning)
-echo "\n🔒 Running security audit..."
-npm audit --audit-level=high --silent || echo "⚠️  Security vulnerabilities detected. Run 'npm audit fix' to resolve."
+# 2. Type checking (full project)
+echo "\n🔍 Running TypeScript type check..."
+npx tsc --noEmit || {
+  echo "❌ Type check failed. Fix the type errors above."
+  exit 1
+}
+
+# 3. Run tests
+echo "\n🧪 Running tests..."
+npm test -- --bail --passWithNoTests || {
+  echo "❌ Tests failed. Fix the failing tests above."
+  exit 1
+}
+
+# 4. Build verification
+echo "\n� Verifying build..."
+npm run build || {
+  echo "❌ Build failed. Fix the build errors above."
+  exit 1
+}
+
+# Verify build output exists
+if [ ! -f dist/index.js ]; then
+  echo "❌ Build output missing: dist/index.js not found."
+  exit 1
+fi
+
+echo "\n✅ All pre-commit validations passed!"
+echo "📦 Ready to commit and push.\n"

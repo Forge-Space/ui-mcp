@@ -299,8 +299,8 @@ function renderElement(el: IScreenElement, flows: ITransition[]): string {
   const navAttrs = buildNavAttrs(el, flows);
   const styleStr = el.styles
     ? ` style="${Object.entries(el.styles)
-      .map(([k, v]) => `${camelToKebab(k)}: ${v}`)
-      .join('; ')}"`
+        .map(([k, v]) => `${camelToKebab(k)}: ${v}`)
+        .join('; ')}"`
     : '';
 
   switch (el.type) {
