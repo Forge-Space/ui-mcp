@@ -7,9 +7,10 @@ import { generateNextjsProject } from '../lib/templates/nextjs.js';
 import { generateVueProject } from '../lib/templates/vue.js';
 import { generateAngularProject } from '../lib/templates/angular.js';
 import { generateHtmlProject } from '../lib/templates/html.js';
+import { generateSvelteProject } from '../lib/templates/svelte.js';
 
 const inputSchema = {
-  framework: z.enum(['react', 'nextjs', 'vue', 'angular', 'html']).describe('Frontend framework to scaffold'),
+  framework: z.enum(['react', 'nextjs', 'vue', 'angular', 'html', 'svelte']).describe('Frontend framework to scaffold'),
   styling: z.enum(['tailwindcss']).default('tailwindcss').describe('Styling framework'),
   architecture: z.enum(['flat', 'feature-based', 'atomic']).default('flat').describe('Project architecture pattern'),
   state_management: z
@@ -22,7 +23,7 @@ const inputSchema = {
 export function registerScaffoldFullApplication(server: McpServer): void {
   server.tool(
     'scaffold_full_application',
-    'Generate full project boilerplate for React, Next.js, Vue, or Angular with Tailwind CSS and optional state management',
+    'Generate full project boilerplate for React, Next.js, Vue, Angular, Svelte, or HTML with Tailwind CSS and optional state management',
     inputSchema,
     ({ framework, styling: _styling, architecture, state_management, project_name }) => {
       const ctx = designContextStore.get();
@@ -43,6 +44,9 @@ export function registerScaffoldFullApplication(server: McpServer): void {
           break;
         case 'html':
           files = generateHtmlProject(project_name, architecture, state_management, ctx);
+          break;
+        case 'svelte':
+          files = generateSvelteProject(project_name, architecture, state_management, ctx);
           break;
         default: {
           // TypeScript exhaustiveness check - this should never happen
