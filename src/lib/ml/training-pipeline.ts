@@ -50,7 +50,7 @@ export function createTrainingJob(
       `INSERT INTO training_jobs (adapter, status, progress, started_at, examples_count)
        VALUES (?, 'preparing', 0, ?, ?)`
     )
-    .run(adapter, Math.floor(Date.now() / 1000), examplesCount);
+    .run(adapter, Date.now(), examplesCount);
 
   return Number(result.lastInsertRowid);
 }
@@ -66,7 +66,7 @@ export function updateJobStatus(
   error?: string
 ): void {
   const completedAt = status === 'complete' || status === 'failed'
-    ? Math.floor(Date.now() / 1000)
+    ? Date.now()
     : null;
 
   db.prepare(
@@ -92,13 +92,13 @@ export function getLatestJobStatus(
        LIMIT 1`
     )
     .get(adapter) as {
-    adapter: string;
-    status: string;
-    progress: number;
-    error: string | null;
-    started_at: number | null;
-    completed_at: number | null;
-  } | undefined;
+      adapter: string;
+      status: string;
+      progress: number;
+      error: string | null;
+      started_at: number | null;
+      completed_at: number | null;
+    } | undefined;
 
   if (!row) return null;
 
@@ -234,7 +234,9 @@ export function startTrainingJob(
 
   // Spawn training process
   try {
-    const child = spawn('sh', ['-c', cmd], {
+    // Parse command into argv array for safer execution
+    const cmdParts = cmd.split(/\s+/);
+    const child = spawn(cmdParts[0], cmdParts.slice(1), {
       stdio: ['ignore', 'pipe', 'pipe'],
       detached: true,
     });
@@ -259,6 +261,16 @@ export function startTrainingJob(
 
     child.on('close', (code) => {
       activeJobs.delete(adapter);
+
+      // Kill entire process group to prevent orphaned processes
+      if (child.pid) {
+        try {
+          process.kill(-child.pid, 'SIGTERM');
+        } catch (err) {
+          logger.debug({ err }, 'Process group already terminated');
+        }
+      }
+
       if (code === 0 && existsSync(adapterPath)) {
         updateJobStatus(jobId, 'complete', 100, db);
         logger.info({ adapter, jobId }, 'Training completed successfully');

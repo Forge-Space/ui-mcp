@@ -2,6 +2,8 @@
  * Type definitions for the ML subsystem.
  */
 
+import { z } from 'zod';
+
 /** A vector embedding with its source metadata. */
 export interface IEmbedding {
   /** The source entity ID (e.g., component snippet ID or prompt hash). */
@@ -74,3 +76,20 @@ export interface ITrainingStatus {
   startedAt?: number;
   completedAt?: number;
 }
+
+// Zod runtime validation schemas
+export const TrainingExampleSchema = z.object({
+  prompt: z.string().min(1),
+  code: z.string().min(1),
+  score: z.number().min(-1).max(2),
+  params: z.record(z.string()),
+});
+
+export const TrainingStatusSchema = z.object({
+  adapter: z.enum(['quality-scorer', 'prompt-enhancer', 'style-recommender']),
+  status: z.enum(['idle', 'preparing', 'training', 'complete', 'failed']),
+  progress: z.number().min(0).max(100),
+  error: z.string().optional(),
+  startedAt: z.number().optional(),
+  completedAt: z.number().optional(),
+});
