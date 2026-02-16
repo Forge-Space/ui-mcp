@@ -58,23 +58,31 @@ describe('training-data-exporter', () => {
       `INSERT INTO feedback (generation_id, prompt, component_type, variant, mood, industry, style, score, feedback_type, code_hash, created_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     );
-    for (let i = 0; i < count; i++) {
-      // Deterministic score based on index to avoid flaky tests
-      const normalizedIndex = i / Math.max(count - 1, 1);
-      const score = scoreRange[0] + normalizedIndex * (scoreRange[1] - scoreRange[0]);
-      stmt.run(
-        `gen-${i}`,
-        `Create a ${i % 2 === 0 ? 'card' : 'button'} component with ${i % 3 === 0 ? 'glassmorphism' : 'neumorphism'}`,
-        i % 2 === 0 ? 'card' : 'button',
-        'default',
-        'professional',
-        'saas',
-        i % 3 === 0 ? 'glassmorphism' : 'neumorphism',
-        score,
-        i % 2 === 0 ? 'explicit' : 'implicit',
-        `hash-${i}`,
-        Math.floor(Date.now() / 1000) - i * 60
-      );
+
+    try {
+      db.exec('BEGIN');
+      for (let i = 0; i < count; i++) {
+        // Deterministic score based on index to avoid flaky tests
+        const normalizedIndex = i / Math.max(count - 1, 1);
+        const score = scoreRange[0] + normalizedIndex * (scoreRange[1] - scoreRange[0]);
+        stmt.run(
+          `gen-${i}`,
+          `Create a ${i % 2 === 0 ? 'card' : 'button'} component with ${i % 3 === 0 ? 'glassmorphism' : 'neumorphism'}`,
+          i % 2 === 0 ? 'card' : 'button',
+          'default',
+          'professional',
+          'saas',
+          i % 3 === 0 ? 'glassmorphism' : 'neumorphism',
+          score,
+          i % 2 === 0 ? 'explicit' : 'implicit',
+          `hash-${i}`,
+          Math.floor(Date.now() / 1000) - i * 60
+        );
+      }
+      db.exec('COMMIT');
+    } catch (err) {
+      db.exec('ROLLBACK');
+      throw err;
     }
   }
 

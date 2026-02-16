@@ -263,7 +263,9 @@ describe('feedback-tracker', () => {
   });
 
   afterEach(() => {
-    db.close();
+    if (db) {
+      db.close();
+    }
   });
 
   it('recordGeneration stores without error', () => {

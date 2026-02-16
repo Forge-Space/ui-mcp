@@ -39,7 +39,7 @@ describe('feedback-boosted-search', () => {
         db.prepare(
           `INSERT INTO feedback (generation_id, prompt, component_type, score, feedback_type, created_at)
            VALUES (?, ?, ?, ?, ?, ?)`
-        ).run(`gen-${i}`, 'test', 'button', 1.5, 'explicit', Date.now());
+        ).run(`gen-${i}`, 'test', 'button', 1.5, 'explicit', Math.floor(Date.now() / 1000));
       }
 
       const boosted = feedbackBoostedSearch({ type: 'button' }, db);

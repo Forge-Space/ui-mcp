@@ -130,7 +130,12 @@ describe('component-registry search', () => {
 
     expect(exactResult).toBeDefined();
     expect(partialResult).toBeDefined();
-    expect(exactResult!.score).toBeGreaterThan(partialResult!.score);
+
+    if (!exactResult || !partialResult) {
+      throw new Error('searchComponents failed to return expected results');
+    }
+
+    expect(exactResult.score).toBeGreaterThan(partialResult.score);
   });
 
   it('search with mood filter boosts matching snippets', () => {
