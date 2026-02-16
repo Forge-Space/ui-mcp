@@ -14,6 +14,10 @@ import { registerImageToComponent } from './tools/image-to-component.js';
 import { registerGeneratePageTemplate } from './tools/generate-page-template.js';
 import { registerRefineComponent } from './tools/refine-component.js';
 import { registerAuditAccessibility } from './tools/audit-accessibility.js';
+import { registerSubmitFeedback } from './tools/submit-feedback.js';
+import { registerAnalyzeDesignImageForTraining } from './tools/analyze-design-image-for-training.js';
+import { registerManageTraining } from './tools/manage-training.js';
+import { closeDatabase } from './lib/design-references/database/store.js';
 
 // Load and validate configuration BEFORE importing logger
 let config;
@@ -50,6 +54,9 @@ registerImageToComponent(server);
 registerGeneratePageTemplate(server);
 registerRefineComponent(server);
 registerAuditAccessibility(server);
+registerSubmitFeedback(server);
+registerAnalyzeDesignImageForTraining(server);
+registerManageTraining(server);
 
 logger.info('All tools and resources registered');
 
@@ -67,11 +74,13 @@ try {
 // Handle graceful shutdown
 process.on('SIGTERM', () => {
   logger.info('SIGTERM received, shutting down gracefully');
+  closeDatabase();
   process.exit(0);
 });
 
 process.on('SIGINT', () => {
   logger.info('SIGINT received, shutting down gracefully');
+  closeDatabase();
   process.exit(0);
 });
 
