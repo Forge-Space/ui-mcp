@@ -249,7 +249,7 @@ export const ssr = false;
   });
 
   // src/routes/+page.svelte
-  const primaryColor = designContext?.colors?.primary ?? '#3b82f6';
+  const primaryColor = designContext?.colorPalette?.primary ?? '#3b82f6';
   files.push({
     path: `${projectName}/src/routes/+page.svelte`,
     content: `<script lang="ts">
@@ -257,9 +257,9 @@ export const ssr = false;
 </script>
 
 <div class="flex min-h-screen flex-col items-center justify-center bg-background p-8">
-  <div class="max-w-2xl text-center">
-    <h1 class="mb-4 text-4xl font-bold text-foreground">
-      Welcome to ${projectName}
+  <div class="text-center">
+    <h1 class="mb-4 text-4xl font-bold tracking-tight sm:text-6xl">
+      Welcome to <span class="bg-gradient-to-r from-[${primaryColor}] to-purple-600 bg-clip-text text-transparent">${projectName}</span>
     </h1>
     <p class="mb-8 text-lg text-muted-foreground">
       Your SvelteKit application is ready to go. Start building amazing things!

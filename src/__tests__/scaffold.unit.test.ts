@@ -202,10 +202,17 @@ describe('scaffold_full_application', () => {
     });
 
     it('includes Svelte stores when state_management is not none', () => {
+      // Svelte scaffold generates stores for any non-'none' state_management option
       const withStores = generateSvelteProject('svelte-app', 'flat', 'signals');
       const store = withStores.find((f) => f.path.includes('stores/app.ts'));
       expect(store).toBeDefined();
       expect(store!.content).toContain('writable');
+
+      // Verify stores are also generated for other non-none options
+      const withZustand = generateSvelteProject('svelte-app', 'flat', 'zustand');
+      const zustandStore = withZustand.find((f) => f.path.includes('stores/app.ts'));
+      expect(zustandStore).toBeDefined();
+      expect(zustandStore!.content).toContain('writable');
     });
 
     it('does not include stores when state_management is none', () => {
