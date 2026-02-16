@@ -86,15 +86,16 @@ export function feedbackBoostedSearch(
     // Type-level boost
     const typeFeedback = feedbackScores.get(result.snippet.type);
     if (typeFeedback) {
-      // Normalize avgScore from [-1, 2] to [-1, 1] range for boost calculation
-      const normalizedScore = typeFeedback.avgScore / 2;
+      // Normalize avgScore from [-1, 2] to [-1, 1]: (score - 0.5) / 1.5
+      // Maps: -1→-1, 0.5→0, 2→1
+      const normalizedScore = (typeFeedback.avgScore - 0.5) / 1.5;
       boost += normalizedScore * FEEDBACK_BOOST_FACTOR;
     }
 
     // Snippet-level boost (stronger signal)
     const snippetFeedback = snippetScores.get(result.snippet.id);
     if (snippetFeedback) {
-      const normalizedScore = snippetFeedback.avgScore / 2;
+      const normalizedScore = (snippetFeedback.avgScore - 0.5) / 1.5;
       boost += normalizedScore * FEEDBACK_BOOST_FACTOR * 0.5; // Half weight for snippet-specific
     }
 
