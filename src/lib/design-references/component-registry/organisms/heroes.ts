@@ -143,7 +143,7 @@ export const heroSnippets: IComponentSnippet[] = [
   <div className="relative mx-auto max-w-5xl px-4 py-28 sm:px-6 sm:py-36 lg:px-8">
     <div className="text-center">
       <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-zinc-300 backdrop-blur-sm mb-8">
-        <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true" />
+        <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 motion-safe:animate-pulse motion-reduce:animate-none" aria-hidden="true" />
         Now in public beta
       </span>
       <h1 id="hero-gradient-heading" className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-7xl">
