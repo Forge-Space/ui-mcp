@@ -41,7 +41,7 @@ export interface IEnhancementContext {
 /**
  * Enhance a user prompt for better generation results.
  */
-export async function enhancePrompt(
+export function enhancePrompt(
   prompt: string,
   context?: IEnhancementContext
 ): Promise<IEnhancedPrompt> {
@@ -51,7 +51,7 @@ export async function enhancePrompt(
     return enhanceWithModel(prompt, context, start);
   }
 
-  return enhanceWithRules(prompt, context, start);
+  return Promise.resolve(enhanceWithRules(prompt, context, start));
 }
 
 /**

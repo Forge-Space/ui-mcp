@@ -32,6 +32,16 @@ export interface IQualityScore {
  * When the sidecar model is loaded, uses it for prediction.
  * Otherwise, applies structural heuristics.
  */
+// Configurable weights for quality scoring factors
+export const QUALITY_WEIGHTS = {
+  length: 1.0,
+  accessibility: 1.5,
+  semanticHTML: 1.2,
+  styling: 1.0,
+  responsiveness: 1.3,
+  completeness: 1.4,
+};
+
 export async function scoreQuality(
   prompt: string,
   generatedCode: string,
@@ -43,7 +53,7 @@ export async function scoreQuality(
     return scoreWithModel(prompt, generatedCode, params, start);
   }
 
-  return scoreWithHeuristics(prompt, generatedCode, params, start);
+  return Promise.resolve(scoreWithHeuristics(prompt, generatedCode, params, start));
 }
 
 /**

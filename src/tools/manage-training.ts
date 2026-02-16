@@ -31,17 +31,27 @@ const inputSchema = {
     .describe('Name of the adapter: quality-scorer, prompt-enhancer, or style-recommender'),
 };
 
+/**
+ * Register the manage_training MCP tool.
+ * Provides ML training job management for the UIForge sidecar model.
+ *
+ * @param server - MCP server instance
+ */
 export function registerManageTraining(server: McpServer): void {
   server.tool(
     'manage_training',
     'Manage ML training jobs for the UIForge sidecar model. Actions: check_readiness (verify training prerequisites), start_training (begin LoRA fine-tuning), get_status (check job progress), cancel_training (stop running job), list_adapters (show available adapters), get_summary (get training statistics).',
     inputSchema,
-    async ({ action, adapter_name }) => {
+    ({ action, adapter_name }) => {
       try {
         switch (action) {
           case 'check_readiness': {
             if (!adapter_name) {
               throw new Error('adapter_name is required for check_readiness action');
+            }
+            const validAdapters: AdapterType[] = ['quality-scorer', 'prompt-enhancer', 'style-recommender'];
+            if (!validAdapters.includes(adapter_name as AdapterType)) {
+              throw new Error(`Invalid adapter_name: ${adapter_name}. Must be one of: ${validAdapters.join(', ')}`);
             }
             const db = getDatabase();
             const readiness = checkTrainingReadiness(
@@ -144,7 +154,7 @@ export function registerManageTraining(server: McpServer): void {
           }
 
           case 'list_adapters': {
-            const adapters = await listAdapters();
+            const adapters = listAdapters();
             const summary = [
               '📦 Available LoRA Adapters',
               `Total: ${adapters.length}`,
@@ -165,7 +175,7 @@ export function registerManageTraining(server: McpServer): void {
 
           case 'get_summary': {
             const db = getDatabase();
-            const summary = await getTrainingSummary(db);
+            const summary = getTrainingSummary(db);
             const summaryText = [
               '📈 Training System Summary',
               `Total jobs: ${summary.jobs.length}`,

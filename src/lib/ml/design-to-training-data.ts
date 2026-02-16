@@ -70,7 +70,7 @@ function convertToComponentSnippets(
   analysis: IDesignAnalysis,
   generatedCode: string,
   componentName: string,
-  framework: string
+  _framework: string
 ): IComponentSnippet[] {
   const snippets: IComponentSnippet[] = [];
 
@@ -296,7 +296,7 @@ function extractComponentJSX(code: string, componentType: string): string {
   return relevantLines.slice(0, 10).join('\n').trim() || `<div className="placeholder-${componentType}">Content</div>`;
 }
 
-function extractTailwindClasses(code: string, componentType: string): Record<string, string> {
+function extractTailwindClasses(code: string, _componentType: string): Record<string, string> {
   const classMatches = code.match(/className="([^"]+)"/g) || [];
   const classes = classMatches.map(m => m.replace(/className="|"/g, ''));
 

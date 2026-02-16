@@ -85,7 +85,7 @@ export function registerAnalyzeDesignImageForTraining(server: McpServer): void {
       const startTime = Date.now();
 
       try {
-        const ctx = designContextStore.get();
+        const _ctx = designContextStore.get();
         const db = getDatabase();
 
         // Generate component name if not provided
@@ -249,7 +249,7 @@ function detectComponentTypesFromDescription(description: string): string[] {
 function generateSampleCodeForAnalysis(
   name: string,
   componentTypes: string[],
-  framework: string
+  _framework: string
 ): string {
   const components = componentTypes.map(type => {
     switch (type) {

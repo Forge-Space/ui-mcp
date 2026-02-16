@@ -110,9 +110,11 @@ describe('quality-scorer', () => {
     it('includes factor breakdown for heuristic scoring', async () => {
       const result = await scoreQuality('Create a card', WELL_STRUCTURED_CODE, { componentType: 'card' });
       expect(result.factors).toBeDefined();
-      expect(result.factors!.length).toBeDefined();
-      expect(result.factors!.accessibility).toBeDefined();
-      expect(result.factors!.structure).toBeDefined();
+      if (result.factors) {
+        expect(result.factors.length).toBeDefined();
+        expect(result.factors.accessibility).toBeDefined();
+        expect(result.factors.structure).toBeDefined();
+      }
     });
 
     it('tracks latency', async () => {
