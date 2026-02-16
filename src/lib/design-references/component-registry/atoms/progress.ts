@@ -55,13 +55,13 @@ export const progressSnippets: IComponentSnippet[] = [
     industry: ['general', 'saas'],
     visualStyles: ['soft-depth', 'linear-modern', 'corporate-trust'],
     jsx: `<div className="space-y-3" aria-busy="true" aria-label="Loading content">
-  <div className="h-4 w-3/4 animate-pulse rounded-md bg-muted" />
-  <div className="h-4 w-full animate-pulse rounded-md bg-muted" />
-  <div className="h-4 w-5/6 animate-pulse rounded-md bg-muted" />
+  <div className="h-4 w-3/4 animate-pulse motion-reduce:animate-none rounded-md bg-muted" />
+  <div className="h-4 w-full animate-pulse motion-reduce:animate-none rounded-md bg-muted" />
+  <div className="h-4 w-5/6 animate-pulse motion-reduce:animate-none rounded-md bg-muted" />
 </div>`,
     tailwindClasses: {
       wrapper: 'space-y-3',
-      line: 'h-4 animate-pulse rounded-md bg-muted',
+      line: 'h-4 animate-pulse motion-reduce:animate-none rounded-md bg-muted',
     },
     a11y: {
       roles: ['status'],

@@ -41,8 +41,8 @@ export const navigationSnippets: IComponentSnippet[] = [
       mobileToggle: 'inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent md:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
     },
     a11y: {
-      roles: ['navigation', 'menubar', 'menuitem'],
-      ariaAttributes: ['aria-label', 'aria-expanded', 'role="menubar"'],
+      roles: ['navigation'],
+      ariaAttributes: ['aria-label', 'aria-expanded', 'aria-current'],
       keyboardNav: 'Tab through links, Enter to navigate, Escape to close mobile menu',
       contrastRatio: '4.5:1',
       focusVisible: true,

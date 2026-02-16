@@ -152,9 +152,9 @@ export const ctaFooterSnippets: IComponentSnippet[] = [
     seo: { semanticElement: 'footer', landmark: 'contentinfo' },
     responsive: { strategy: 'mobile-first', breakpoints: ['sm', 'lg'] },
     quality: {
-      antiGeneric: ['4-column grid with brand + 3 link groups', 'social icons with aria-labels', 'border-t separator between grid and copyright', 'max-w-xs on brand description'],
+      antiGeneric: ['4-column grid with brand + 3 link groups', 'social icons with aria-labels', 'border-t separator between grid and copyright', 'max-w-xs on brand description', '{{YEAR}} placeholder for dynamic year replacement at runtime'],
       inspirationSource: 'Vercel / shadcn landing footer',
-      craftDetails: ['space-y-3 for comfortable link spacing', 'responsive grid: 1 → 2 → 4 columns'],
+      craftDetails: ['space-y-3 for comfortable link spacing', 'responsive grid: 1 → 2 → 4 columns', 'Replace {{YEAR}} with new Date().getFullYear() in production'],
     },
   },
 ];

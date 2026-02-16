@@ -155,7 +155,7 @@ export const typographySnippets: IComponentSnippet[] = [
     tailwindClasses: {
       code: 'relative rounded-md bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-medium text-foreground',
     },
-    a11y: { roles: ['code'], ariaAttributes: [], keyboardNav: 'N/A', contrastRatio: '4.5:1', focusVisible: false, reducedMotion: true },
+    a11y: { roles: [], ariaAttributes: [], keyboardNav: 'N/A', contrastRatio: '4.5:1', focusVisible: false, reducedMotion: true },
     seo: { semanticElement: 'code' },
     responsive: { strategy: 'mobile-first', breakpoints: [] },
     quality: {
