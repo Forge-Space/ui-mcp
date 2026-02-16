@@ -131,7 +131,8 @@ export function getFeedbackBoost(
     return 1.0; // No boost
   }
 
-  const normalizedScore = row.avg_score / 2; // [-1, 2] → [-0.5, 1]
+  // Normalize avgScore from [-1, 2] to [-1, 1]: (score - 0.5) / 1.5
+  const normalizedScore = (row.avg_score - 0.5) / 1.5;
   const boost = normalizedScore * FEEDBACK_BOOST_FACTOR;
   return Math.max(0.7, Math.min(1.3, 1 + boost));
 }

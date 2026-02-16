@@ -8,7 +8,7 @@
 import pino from 'pino';
 import type { IGeneration, IImplicitSignal, IPromptClassification } from './types.js';
 
-const logger = pino({ name: 'prompt-classifier' });
+const _logger = pino({ name: 'prompt-classifier' });
 
 // Classification thresholds
 const NEW_TASK_CONFIDENCE = 0.8;
@@ -20,8 +20,8 @@ const MINOR_TWEAK_SCORE = 0.5;
 const MINOR_TWEAK_CONFIDENCE = 0.6;
 const RAPID_FOLLOWUP_SCORE = -0.3;
 const RAPID_FOLLOWUP_CONFIDENCE = 0.5;
-const POSITIVE_THRESHOLD = 0.3;
-const NEGATIVE_THRESHOLD = -0.3;
+const _POSITIVE_THRESHOLD = 0.3;
+const _NEGATIVE_THRESHOLD = -0.3;
 
 // --- Keyword dictionaries ---
 

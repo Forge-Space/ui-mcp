@@ -9,7 +9,7 @@ import type Database from 'better-sqlite3';
 import { createHash } from 'node:crypto';
 import { classifyPromptPair } from './prompt-classifier.js';
 import { fingerprint } from './pattern-detector.js';
-import type { IGeneration, IFeedback, ICodePattern } from './types.js';
+import type { IFeedback, IGeneration } from './types.js';
 import pino from 'pino';
 
 const logger = pino({ name: 'feedback-tracker' });
