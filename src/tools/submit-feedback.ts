@@ -10,6 +10,12 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { getDatabase } from '../lib/design-references/database/store.js';
 import { recordExplicitFeedback, getFeedbackStats } from '../lib/feedback/feedback-tracker.js';
 
+/**
+ * Register the submit_feedback MCP tool.
+ * Allows users to provide explicit feedback on generated components for self-learning.
+ *
+ * @param server - MCP server instance
+ */
 export function registerSubmitFeedback(server: McpServer): void {
   server.tool(
     'submit_feedback',
@@ -26,7 +32,7 @@ export function registerSubmitFeedback(server: McpServer): void {
         .optional()
         .describe('Optional comment explaining why the output was good or bad'),
     },
-    async ({ generation_id, rating, comment }) => {
+    ({ generation_id, rating, comment }) => {
       try {
         const db = getDatabase();
         const feedback = recordExplicitFeedback(generation_id, rating, db, comment);

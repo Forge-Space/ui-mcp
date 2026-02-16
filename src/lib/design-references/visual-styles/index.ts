@@ -1,6 +1,5 @@
 import pino from 'pino';
-import type { IVisualStyle, VisualStyleId } from '../component-registry/types.js';
-import type { IComponentSnippet } from '../component-registry/types.js';
+import type { IVisualStyle, VisualStyleId, IComponentSnippet } from '../component-registry/types.js';
 
 const logger = pino({ name: 'visual-styles' });
 

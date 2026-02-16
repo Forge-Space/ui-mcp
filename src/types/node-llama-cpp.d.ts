@@ -19,7 +19,8 @@ declare module 'node-llama-cpp' {
     dispose(): Promise<void>;
   }
 
-  export interface LlamaContextSequence {}
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  export interface LlamaContextSequence { }
 
   export class LlamaChatSession {
     constructor(opts: { contextSequence: LlamaContextSequence });

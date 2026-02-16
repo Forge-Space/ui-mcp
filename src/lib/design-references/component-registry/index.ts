@@ -20,7 +20,7 @@ const logger = pino({ name: 'component-registry' });
 const registry: IComponentSnippet[] = [];
 
 // Mood affinities for partial matching
-const moodAffinities: Record<string, string[]> = {
+const moodAffinities: Record<MoodTag, MoodTag[]> = {
   bold: ['energetic', 'premium'],
   calm: ['minimal', 'professional'],
   playful: ['creative', 'warm', 'energetic'],
@@ -31,6 +31,8 @@ const moodAffinities: Record<string, string[]> = {
   futuristic: ['premium', 'bold'],
   creative: ['playful', 'warm'],
   corporate: ['professional'],
+  energetic: ['bold', 'playful'],
+  warm: ['playful', 'creative'],
 };
 
 /**
@@ -41,6 +43,20 @@ export function registerSnippet(snippet: IComponentSnippet): void {
   // Validate snippet
   if (!snippet || !snippet.id || typeof snippet.id !== 'string') {
     logger.warn({ snippet }, 'Invalid snippet: missing or invalid id');
+    return;
+  }
+
+  // Validate required string fields
+  if (!snippet.type || typeof snippet.type !== 'string' || !snippet.type.trim()) {
+    logger.warn({ snippet }, 'Invalid snippet: missing or invalid type');
+    return;
+  }
+  if (!snippet.variant || typeof snippet.variant !== 'string' || !snippet.variant.trim()) {
+    logger.warn({ snippet }, 'Invalid snippet: missing or invalid variant');
+    return;
+  }
+  if (!Array.isArray(snippet.tags)) {
+    logger.warn({ snippet }, 'Invalid snippet: tags must be an array');
     return;
   }
 
@@ -279,14 +295,15 @@ export function injectAnimations(
   const keys = Object.keys(newTailwindClasses);
 
   if (keys.length === 0) {
-    // Handle empty tailwindClasses object
-    logger.debug(
-      { snippetId: snippet.id, animationIds },
-      'snippet.tailwindClasses is empty, creating default root key for animations'
-    );
-    newTailwindClasses['root'] = additionalClasses.join(' ').trim();
+    newTailwindClasses.root = additionalClasses.join(' ').trim();
   } else {
-    const rootKey = keys[0];
+    // Prefer explicit 'root' or 'container' keys, otherwise use first key
+    let rootKey = 'root' in newTailwindClasses ? 'root' :
+      'container' in newTailwindClasses ? 'container' :
+        keys[0];
+    if (rootKey !== 'root' && rootKey !== 'container') {
+      logger.warn({ snippetId: snippet.id, animationIds, rootKey }, 'No root/container key found, using first key');
+    }
     newTailwindClasses[rootKey] = `${newTailwindClasses[rootKey]} ${additionalClasses.join(' ')}`.trim();
   }
 
@@ -386,9 +403,12 @@ export function getBestMatchWithFeedback(
         style: options?.style,
       };
       const boosted = feedbackBoostedSearch(query, db);
-      return boosted[0]?.snippet;
+      if (boosted.length > 0 && boosted[0]?.snippet) {
+        return boosted[0].snippet;
+      }
+      // Fall through to base search if empty result
     } catch (err) {
-      logger.warn({ error: err }, 'Feedback boosting failed, using base results');
+      logger.error({ err, type }, 'Failed to apply feedback boost, falling back to base search');
     }
   }
 

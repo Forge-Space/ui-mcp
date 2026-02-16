@@ -31,3 +31,17 @@ export function getConfig(): Config {
   }
   return config;
 }
+
+/**
+ * Safely parse JSON with fallback to empty object on error.
+ * Used for parsing JSON fields from database to avoid crashes on malformed data.
+ */
+export function safeJSONParse<T = any>(jsonString: string | null | undefined): T {
+  if (!jsonString) return {} as T;
+  try {
+    return JSON.parse(jsonString) as T;
+  } catch (err) {
+    console.error('Failed to parse JSON, returning empty object:', err);
+    return {} as T;
+  }
+}

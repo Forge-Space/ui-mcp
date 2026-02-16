@@ -3,39 +3,57 @@
 
 echo "🚀 Running pre-commit validations (matching CI/CD pipeline)...\n"
 
+FAILED=0
+
 # 1. Lint and format (via lint-staged for changed files only)
 echo "📝 Running lint and format checks on staged files..."
-npx lint-staged || {
-  echo "❌ Lint/format check failed. Fix the issues above."
-  exit 1
-}
+if ! npx lint-staged; then
+  echo "❌ Lint/format check failed."
+  FAILED=1
+else
+  echo "✅ Lint/format check passed."
+fi
 
 # 2. Type checking (full project)
 echo "\n🔍 Running TypeScript type check..."
-npx tsc --noEmit || {
-  echo "❌ Type check failed. Fix the type errors above."
-  exit 1
-}
+if ! npx tsc --noEmit; then
+  echo "❌ Type check failed."
+  FAILED=1
+else
+  echo "✅ Type check passed."
+fi
 
 # 3. Run tests
 echo "\n🧪 Running tests..."
-npm test -- --bail --passWithNoTests || {
-  echo "❌ Tests failed. Fix the failing tests above."
-  exit 1
-}
-
-# 4. Build verification
-echo "\n� Verifying build..."
-npm run build || {
-  echo "❌ Build failed. Fix the build errors above."
-  exit 1
-}
-
-# Verify build output exists
-if [ ! -f dist/index.js ]; then
-  echo "❌ Build output missing: dist/index.js not found."
-  exit 1
+if ! npm test -- --bail --passWithNoTests; then
+  echo "❌ Tests failed."
+  FAILED=1
+else
+  echo "✅ Tests passed."
 fi
 
-echo "\n✅ All pre-commit validations passed!"
-echo "📦 Ready to commit and push.\n"
+# 4. Build verification
+echo "\n📦 Verifying build..."
+if ! npm run build; then
+  echo "❌ Build failed."
+  FAILED=1
+else
+  echo "✅ Build passed."
+  # Verify build output exists
+  if [ ! -f dist/index.js ]; then
+    echo "❌ Build output missing: dist/index.js not found."
+    FAILED=1
+  fi
+fi
+
+# Summary
+echo "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+if [ $FAILED -eq 0 ]; then
+  echo "✅ All pre-commit validations passed!"
+  echo "📦 Ready to commit and push."
+else
+  echo "❌ Some validations failed. Please fix the issues above."
+  echo "💡 All validation steps were run to show all issues at once."
+  exit 1
+fi
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
