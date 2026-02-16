@@ -445,18 +445,8 @@ function hydrateSnippetsBatch(ids: string[], d: Database.Database): IComponentSn
     }
   }
 
-  // Build snippets with safe JSON parsing
+  // Build snippets with safe JSON parsing (using imported safeJSONParse from config.js)
   return allRows.map((row) => {
-    const safeJSONParse = (json: string | null, fieldName: string, fallback: any = null) => {
-      if (!json) return fallback;
-      try {
-        return JSON.parse(json);
-      } catch (err) {
-        logger.error({ id: row.id, fieldName, error: err }, 'Failed to parse JSON field');
-        return fallback;
-      }
-    };
-
     return {
       id: row.id,
       name: row.name,
@@ -470,10 +460,10 @@ function hydrateSnippetsBatch(ids: string[], d: Database.Database): IComponentSn
       jsx: row.jsx,
       tailwindClasses: tailwindMap.get(row.id) ?? {},
       css: row.css ?? undefined,
-      a11y: safeJSONParse(row.a11y_json, 'a11y_json', { roles: [], ariaAttributes: [], keyboardNav: [] }),
-      seo: safeJSONParse(row.seo_json, 'seo_json', undefined),
-      responsive: safeJSONParse(row.responsive_json, 'responsive_json', { breakpoints: [], fluidTypography: false }),
-      quality: safeJSONParse(row.quality_json, 'quality_json', { score: 0, issues: [] }),
+      a11y: safeJSONParse(row.a11y_json, { roles: [], ariaAttributes: [], keyboardNav: [] }),
+      seo: row.seo_json ? safeJSONParse(row.seo_json) : undefined,
+      responsive: safeJSONParse(row.responsive_json, { breakpoints: [], fluidTypography: false }),
+      quality: safeJSONParse(row.quality_json, { score: 0, issues: [] }),
     };
   });
 }
