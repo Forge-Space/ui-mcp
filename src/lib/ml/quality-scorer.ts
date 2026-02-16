@@ -42,7 +42,7 @@ export const QUALITY_WEIGHTS = {
   completeness: 1.4,
 };
 
-export async function scoreQuality(
+export function scoreQuality(
   prompt: string,
   generatedCode: string,
   params?: { componentType?: string; framework?: string; style?: string }

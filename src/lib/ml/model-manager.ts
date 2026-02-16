@@ -193,28 +193,21 @@ export function getDiskUsage(): { totalBytes: number; breakdown: Record<string, 
 /**
  * Recursively calculate directory size.
  */
-function getDirectorySize(dirPath: string): number {
-  let size = 0;
-  if (!existsSync(dirPath)) return 0;
+function getDirectorySize(dir: string): number {
+  if (!existsSync(dir)) return 0;
+  const stat = statSync(dir);
+  if (!stat.isDirectory()) return stat.size;
 
-  try {
-    const items = readdirSync(dirPath);
-    for (const item of items) {
-      try {
-        const itemPath = join(dirPath, item);
-        const stats = statSync(itemPath);
-        if (stats.isDirectory()) {
-          size += getDirectorySize(itemPath);
-        } else {
-          size += stats.size;
-        }
-      } catch {
-        // Skip unreadable items
-      }
+  let total = 0;
+  const files = readdirSync(dir);
+  for (const file of files) {
+    const filePath = join(dir, file);
+    const fileStat = statSync(filePath);
+    if (fileStat.isDirectory()) {
+      total += getDirectorySize(filePath); // Recursive call
+    } else {
+      total += fileStat.size;
     }
-  } catch {
-    // Skip unreadable directory
   }
-
-  return size;
+  return total;
 }

@@ -9,8 +9,9 @@
  */
 
 import { existsSync } from 'node:fs';
+import path from 'node:path';
 import pino from 'pino';
-import { getModelPath, getAdapterPath, isModelAvailable, isAdapterAvailable } from './model-manager.js';
+import { getModelPath, getAdapterPath, type ModelId } from './model-manager.js';
 import type { AdapterType } from './types.js';
 
 const logger = pino({ name: 'sidecar-model' });
@@ -96,15 +97,19 @@ export async function loadSidecar(
   }
 
   // Check model availability
-  if (!isModelAvailable(modelId)) {
-    logger.warn({ modelId }, 'Base model not found — sidecar will use heuristic fallback');
+  const modelPath = getModelPath(modelId);
+  if (!existsSync(modelPath)) {
+    logger.warn({ modelId, modelPath }, 'Base model not found — sidecar will use heuristic fallback');
     return false;
   }
 
   // Check adapter availability
-  if (adapter && !isAdapterAvailable(adapter)) {
-    logger.warn({ adapter }, 'LoRA adapter not found — loading base model only');
-    adapter = undefined;
+  if (adapter) {
+    const adapterPath = getAdapterPath(adapter);
+    if (!existsSync(adapterPath)) {
+      logger.warn({ adapter, adapterPath }, 'LoRA adapter not found — loading base model only');
+      adapter = undefined;
+    }
   }
 
   try {

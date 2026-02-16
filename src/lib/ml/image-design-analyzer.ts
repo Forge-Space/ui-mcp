@@ -8,9 +8,9 @@
 import type { MoodTag, IndustryTag, VisualStyleId } from '../design-references/component-registry/types.js';
 
 // Quality scoring thresholds
-const MIN_QUALITY_SCORE = 0.0;
-const HIGH_QUALITY_THRESHOLD = 0.6;
-const EXCELLENT_QUALITY_THRESHOLD = 0.8;
+export const MIN_QUALITY_SCORE = 0.3;
+export const HIGH_QUALITY_THRESHOLD = 0.7;
+export const EXCELLENT_QUALITY_THRESHOLD = 0.9;
 
 // Spacing validation
 const MIN_SPACING_PX = 0;
@@ -221,7 +221,7 @@ function detectComponents(
  */
 function detectLayout(description: string, code: string): IDesignAnalysis['layout'] {
   const hasGrid = code.includes('grid') || description.toLowerCase().includes('grid');
-  const hasFlex = code.includes('flex') || description.toLowerCase().includes('flex');
+  const _hasFlex = description.toLowerCase().includes('flex');
   const hasResponsive = code.includes('md:') || code.includes('lg:') || code.includes('sm:');
 
   let type = 'flex';
