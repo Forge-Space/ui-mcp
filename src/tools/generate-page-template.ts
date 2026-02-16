@@ -71,11 +71,14 @@ export function registerGeneratePageTemplate(server: McpServer): void {
 
         // RAG metadata for the response
         const registrySize = getRegistrySize();
+        const designParams = [
+          mood && `Mood: ${mood}`,
+          industry && `Industry: ${industry}`,
+          visual_style && `Style: ${visual_style}`,
+        ].filter(Boolean).join(' | ');
+
         const ragInfo = registrySize > 0
-          ? `\n📚 RAG Registry: ${registrySize} snippets loaded` +
-          (mood ? ` | Mood: ${mood}` : '') +
-          (industry ? ` | Industry: ${industry}` : '') +
-          (visual_style ? ` | Style: ${visual_style}` : '')
+          ? `\n📚 RAG Registry: ${registrySize} snippets loaded${designParams ? ` | ${designParams}` : ''}`
           : '';
 
         const summary = [

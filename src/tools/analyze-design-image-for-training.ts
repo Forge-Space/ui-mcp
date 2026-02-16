@@ -85,11 +85,13 @@ export function registerAnalyzeDesignImageForTraining(server: McpServer): void {
       const startTime = Date.now();
 
       try {
-        const _ctx = designContextStore.get();
         const db = getDatabase();
 
         // Generate component name if not provided
         const name = component_name ?? `DesignRef_${Date.now()}`;
+
+        // Use provided description or generate a default one
+        const analysisDescription = description ?? 'Analyzed design reference';
 
         logger.info(
           {
@@ -105,15 +107,14 @@ export function registerAnalyzeDesignImageForTraining(server: McpServer): void {
         // Step 1: Analyze the image description to detect components
         // In a real implementation, this would use vision AI to analyze the actual image
         // For now, we use the description and generate sample code to extract patterns from
-        const detectedDescription = description || 'Modern UI design with multiple components';
-        const componentTypes = detectComponentTypesFromDescription(detectedDescription);
+        const componentTypes = detectComponentTypesFromDescription(analysisDescription);
 
         // Step 2: Generate sample code to analyze (simulating image-to-code conversion)
         // In production, this would use actual vision AI to generate code from the image
         const generatedCode = generateSampleCodeForAnalysis(name, componentTypes, framework);
 
         // Step 3: Extract design patterns from the generated code and description
-        const analysis = extractDesignPatterns(detectedDescription, generatedCode, componentTypes);
+        const analysis = extractDesignPatterns(analysisDescription, generatedCode, componentTypes);
 
         logger.info(
           {

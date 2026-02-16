@@ -14,6 +14,7 @@ import { recordGeneration } from '../lib/feedback/index.js';
 import { getDatabase } from '../lib/design-references/database/store.js';
 
 // Track generation count for pattern promotion
+// Note: This is incremented after successful generation to avoid race conditions
 let generationCount = 0;
 
 const logger = pino({ name: 'generate-ui-component' });
