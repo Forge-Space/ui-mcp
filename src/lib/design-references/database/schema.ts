@@ -108,9 +108,11 @@ export const CREATE_TABLES = `
     mood         TEXT,
     industry     TEXT,
     style        TEXT,
-    score        REAL NOT NULL,       -- -1 to 2
+    score        REAL NOT NULL CHECK(score >= -1 AND score <= 2),       -- -1 to 2
     feedback_type TEXT NOT NULL,      -- explicit | implicit
     code_hash    TEXT,
+    rating       INTEGER,              -- Optional rating field
+    confidence   REAL,                 -- Optional confidence field
     created_at   INTEGER NOT NULL DEFAULT (unixepoch())
   );
 
