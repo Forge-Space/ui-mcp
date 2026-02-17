@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIForge MCP Server - Interactive Documentation</title>
+    <meta name="description" content="Professional interactive documentation for UIForge MCP Server with 13 AI-powered tools for code generation, design, and development. Features dark mode, accessibility, and modern UI/UX.">
+    <meta name="keywords" content="UIForge, MCP, Model Context Protocol, AI, UI generation, React, Next.js, Vue, Angular, TypeScript, Tailwind CSS, frontend development, code generation, design tools">
+    <meta name="author" content="UIForge MCP Team">
+    
+    <!-- Open Graph meta tags -->
+    <meta property="og:title" content="UIForge MCP Server - Interactive Documentation">
+    <meta property="og:description" content="Professional interactive documentation for UIForge MCP Server with 13 AI-powered tools for code generation, design, and development.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="/assets/anvil-logo.svg">
+    <meta property="og:image:alt" content="UIForge MCP Server Logo">
+    <meta property="og:url" content="https://uiforge-mcp.dev/docs">
+    <meta property="og:site_name" content="UIForge MCP Server">
+    
+    <!-- Twitter Card meta tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="UIForge MCP Server - Interactive Documentation">
+    <meta name="twitter:description" content="Professional interactive documentation for UIForge MCP Server with 13 AI-powered tools for code generation, design, and development.">
+    <meta name="twitter:image" content="/assets/anvil-logo.svg">
+    <meta name="twitter:site" content="@uiforge">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/text-logo.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/assets/anvil-logo.svg" type="image/svg+xml">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/assets/anvil-logo.svg" as="image">
+    <link rel="preload" href="/assets/text-logo.svg" as="image">
+    
+    <!-- Scripts -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <!-- Custom styles -->
+    <style>
+        /* CSS custom properties for theme switching */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-tertiary: #94a3b8;
+            --border-color: #e2e8f0;
+            --border-hover: #cbd5e1;
+            --accent-blue: #3b82f6;
+            --accent-blue-hover: #2563eb;
+            --accent-green: #10b981;
+            --accent-purple: #8b5cf6;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --logo-filter: none;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --border-color: #374151;
+            --border-hover: #4b5563;
+            --accent-blue: #60a5fa;
+            --accent-blue-hover: #3b82f6;
+            --accent-green: #34d399;
+            --accent-purple: #a78bfa;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.25);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+            --logo-filter: brightness(0) invert(1);
+        }
+
+        /* Base styles */
+        * {
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        /* Logo styles */
+        .logo-anvil, .logo-text {
+            filter: var(--logo-filter);
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .logo-anvil:hover {
+            transform: rotate(3deg) scale(1.05);
+        }
+
+        .logo-text:hover {
+            transform: scale(1.05);
+        }
+
+        /* Accessibility styles */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .sr-only:focus {
+            position: static;
+            width: auto;
+            height: auto;
+            padding: 0.5rem 1rem;
+            margin: 0;
+            overflow: visible;
+            clip: auto;
+            white-space: normal;
+        }
+
+        /* Focus styles */
+        .focus-visible:focus {
+            outline: 2px solid var(--accent-blue);
+            outline-offset: 2px;
+        }
+
+        /* Skip link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--accent-blue);
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 100;
+        }
+
+        .skip-link:focus {
+            top: 6px;
+        }
+
+        /* Line clamp utility */
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Component styles */
+        .theme-toggle {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--border-hover);
+        }
+
+        .tool-card {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tool-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-blue);
+        }
+
+        .tool-card:focus-visible {
+            outline: 2px solid var(--accent-blue);
+            outline-offset: 2px;
+        }
+
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        [data-theme="dark"] .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+            background-color: var(--bg-primary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .badge {
+            background-color: var(--bg-tertiary);
+            color: var(--text-secondary);
+        }
+
+        .badge-primary {
+            background-color: var(--accent-blue);
+            color: white;
+        }
+
+        .badge-success {
+            background-color: var(--accent-green);
+            color: white;
+        }
+
+        .badge-purple {
+            background-color: var(--accent-purple);
+            color: white;
+        }
+
+        /* Code block styles */
+        .code-block {
+            background-color: #1e293b;
+            color: #f1f5f9;
+            font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+        }
+
+        /* Responsive typography */
+        @media (max-width: 640px) {
+            .responsive-heading {
+                font-size: 1.5rem;
+                line-height: 1.2;
+            }
+        }
+
+        /* Animation classes */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip to main content link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useMemo, useEffect, createContext, useContext } = React;
+        const { Search, Filter, X, ExternalLink, Copy, Check, Moon, Sun } = lucide;
+
+        const tools = [
+            {
+                id: 'scaffold_full_application',
+                name: 'Scaffold Full Application',
+                description: 'Generate complete project boilerplate with React, Next.js, Vue, Angular, or HTML + Tailwind CSS',
+                category: 'Code Generation',
+                frameworks: ['React', 'Next.js', 'Vue', 'Angular', 'HTML'],
+                examples: [
+                    'Create a React dashboard with authentication',
+                    'Generate a Next.js e-commerce site',
+                    'Build a Vue.js admin panel'
+                ]
+            },
+            {
+                id: 'generate_ui_component',
+                name: 'Generate UI Component',
+                description: 'Create or iterate UI components with style audit and design context awareness',
+                category: 'Code Generation',
+                frameworks: ['React', 'Vue', 'Angular', 'HTML'],
+                examples: [
+                    'Create a responsive navigation component',
+                    'Generate a form with validation',
+                    'Build a card component with hover effects'
+                ]
+            },
+            {
+                id: 'generate_prototype',
+                name: 'Generate Interactive Prototype',
+                description: 'Create clickable HTML prototypes with screen flows and navigation',
+                category: 'Design',
+                frameworks: ['HTML'],
+                examples: [
+                    'Create a mobile app prototype',
+                    'Design a user flow for checkout',
+                    'Build an interactive wireframe'
+                ]
+            },
+            {
+                id: 'generate_design_image',
+                name: 'Generate Design Image',
+                description: 'Generate SVG/PNG mockup images of UI screens and components',
+                category: 'Design',
+                frameworks: ['SVG', 'PNG'],
+                examples: [
+                    'Create a landing page mockup',
+                    'Generate a mobile app design',
+                    'Design a dashboard layout'
+                ]
+            },
+            {
+                id: 'fetch_design_inspiration',
+                name: 'Fetch Design Inspiration',
+                description: 'Extract visual metadata (colors, typography, layout) from URLs',
+                category: 'Context',
+                frameworks: ['Web'],
+                examples: [
+                    'Analyze a website for color palette',
+                    'Extract typography from a design system',
+                    'Get layout patterns from a reference site'
+                ]
+            },
+            {
+                id: 'analyze_design_references',
+                name: 'Analyze Design References',
+                description: 'Analyze design references from URLs and images, detect common patterns',
+                category: 'Context',
+                frameworks: ['Web', 'Images'],
+                examples: [
+                    'Compare multiple design references',
+                    'Extract common UI patterns',
+                    'Analyze design consistency'
+                ]
+            },
+            {
+                id: 'figma_context_parser',
+                name: 'Figma Context Parser',
+                description: 'Read Figma file nodes, extract tokens, map to Tailwind CSS',
+                category: 'Integration',
+                frameworks: ['Figma', 'Tailwind'],
+                examples: [
+                    'Extract design tokens from Figma',
+                    'Convert Figma styles to Tailwind',
+                    'Sync design system with code'
+                ]
+            },
+            {
+                id: 'figma_push_variables',
+                name: 'Figma Push Variables',
+                description: 'Write design tokens back to Figma as Variables',
+                category: 'Integration',
+                frameworks: ['Figma'],
+                examples: [
+                    'Push color variables to Figma',
+                    'Update typography tokens',
+                    'Sync spacing values'
+                ]
+            },
+            {
+                id: 'image_to_component',
+                name: 'Image to Component',
+                description: 'Convert screenshot/mockup/wireframe image into framework-specific component code',
+                category: 'Code Generation',
+                frameworks: ['React', 'Vue', 'Angular', 'HTML'],
+                examples: [
+                    'Convert a screenshot to React code',
+                    'Turn a mockup into Vue component',
+                    'Generate HTML from wireframe'
+                ]
+            },
+            {
+                id: 'generate_page_template',
+                name: 'Generate Page Template',
+                description: 'Generate pre-built page templates (landing, dashboard, auth, pricing, CRUD, etc.)',
+                category: 'Code Generation',
+                frameworks: ['React', 'Next.js', 'Vue', 'Angular', 'HTML'],
+                examples: [
+                    'Create a landing page template',
+                    'Generate a dashboard layout',
+                    'Build an authentication flow'
+                ]
+            },
+            {
+                id: 'refine_component',
+                name: 'Refine Component',
+                description: 'Iteratively improve existing components via natural language feedback',
+                category: 'Code Generation',
+                frameworks: ['React', 'Vue', 'Angular', 'HTML'],
+                examples: [
+                    'Improve component accessibility',
+                    'Add responsive design',
+                    'Enhance component performance'
+                ]
+            },
+            {
+                id: 'audit_accessibility',
+                name: 'Audit Accessibility',
+                description: 'Audit component code for WCAG 2.1 violations with fix suggestions',
+                category: 'Quality',
+                frameworks: ['React', 'Vue', 'Angular', 'HTML'],
+                examples: [
+                    'Check accessibility compliance',
+                    'Generate accessibility fixes',
+                    'Audit color contrast ratios'
+                ]
+            },
+            {
+                id: 'analyze_design_image_for_training',
+                name: 'Analyze Design Image for Training',
+                description: 'Extract design patterns from images for ML training data generation',
+                category: 'ML/AI',
+                frameworks: ['Images', 'ML'],
+                examples: [
+                    'Extract patterns from UI designs',
+                    'Generate training data from screenshots',
+                    'Analyze design for ML models'
+                ]
+            }
+        ];
+
+        // Theme context
+        const ThemeContext = createContext(null);
+
+        const ThemeProvider = ({ children }) => {
+            const [theme, setTheme] = useState('light');
+            const [isSystemDark, setIsSystemDark] = useState(false);
+
+            useEffect(() => {
+                const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+                setIsSystemDark(mediaQuery.matches);
+
+                const handleChange = (e) => {
+                    setIsSystemDark(e.matches);
+                };
+
+                mediaQuery.addEventListener('change', handleChange);
+                return () => mediaQuery.removeEventListener('change', handleChange);
+            }, []);
+
+            useEffect(() => {
+                const savedTheme = localStorage.getItem('uiforge-theme');
+                if (savedTheme) {
+                    setTheme(savedTheme);
+                } else if (isSystemDark) {
+                    setTheme('dark');
+                }
+            }, [isSystemDark]);
+
+            useEffect(() => {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('uiforge-theme', theme);
+            }, [theme]);
+
+            const toggleTheme = () => {
+                setTheme(prev => prev === 'light' ? 'dark' : 'light');
+            };
+
+            return React.createElement(ThemeContext.Provider, {
+                value: { theme, toggleTheme, isSystemDark, isDarkMode: theme === 'dark' },
+                children
+            });
+        };
+
+        const useTheme = () => {
+            const context = useContext(ThemeContext);
+            if (!context) {
+                throw new Error('useTheme must be used within ThemeProvider');
+            }
+            return context;
+        };
+
+        // Logo component
+        const Logo = ({ variant, size, className = '', alt }) => {
+            const sizeClasses = {
+                sm: 'w-8 h-8',
+                md: 'w-12 h-12',
+                lg: 'w-16 h-16'
+            };
+
+            const defaultAlt = variant === 'anvil' 
+                ? 'UIForge MCP Server - Anvil Logo' 
+                : 'UIForge MCP Server - Text Logo';
+
+            return React.createElement('img', {
+                src: `/assets/${variant}-logo.svg`,
+                alt: alt || defaultAlt,
+                className: `${sizeClasses[size]} ${className} logo-${variant} transition-transform hover:scale-105`,
+                loading: 'eager',
+                decoding: 'async'
+            });
+        };
+
+        function InteractiveDocs() {
+            const [searchTerm, setSearchTerm] = useState('');
+            const [selectedCategory, setSelectedCategory] = useState('all');
+            const [selectedFrameworks, setSelectedFrameworks] = useState([]);
+            const [selectedTool, setSelectedTool] = useState(null);
+            const [copiedExample, setCopiedExample] = useState(null);
+            const { theme, toggleTheme, isDarkMode } = useTheme();
+
+            const categories = [...new Set(tools.map(tool => tool.category))];
+            const allFrameworks = [...new Set(tools.flatMap(tool => tool.frameworks))];
+
+            const filteredTools = useMemo(() => {
+                return tools.filter(tool => {
+                    const matchesSearch = tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                        tool.description.toLowerCase().includes(searchTerm.toLowerCase());
+                    const matchesCategory = selectedCategory === 'all' || tool.category === selectedCategory;
+                    const matchesFrameworks = selectedFrameworks.length === 0 ||
+                                             selectedFrameworks.some(framework => tool.frameworks.includes(framework));
+                    return matchesSearch && matchesCategory && matchesFrameworks;
+                });
+            }, [searchTerm, selectedCategory, selectedFrameworks]);
+
+            const handleFrameworkToggle = (framework) => {
+                setSelectedFrameworks(prev => 
+                    prev.includes(framework)
+                        ? prev.filter(f => f !== framework)
+                        : [...prev, framework]
+                );
+            };
+
+            const copyExample = async (example) => {
+                try {
+                    await navigator.clipboard.writeText(example);
+                    setCopiedExample(example);
+                    setTimeout(() => setCopiedExample(null), 2000);
+                } catch (err) {
+                    console.error('Failed to copy text: ', err);
+                }
+            };
+
+            const handleModalClose = () => {
+                setSelectedTool(null);
+            };
+
+            const handleEscapeKey = (e) => {
+                if (e.key === 'Escape' && selectedTool) {
+                    handleModalClose();
+                }
+            };
+
+            useEffect(() => {
+                document.addEventListener('keydown', handleEscapeKey);
+                return () => document.removeEventListener('keydown', handleEscapeKey);
+            }, [selectedTool]);
+
+            return React.createElement(ThemeProvider, null,
+                React.createElement('div', { className: 'min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 transition-colors duration-300' },
+                    React.createElement('div', { className: 'container mx-auto px-4 py-8 max-w-7xl' },
+                        // Header
+                        React.createElement('header', { 
+                            role: 'banner', 
+                            className: 'mb-12 text-center' 
+                        },
+                            React.createElement('div', { className: 'mb-8' },
+                                // Logo and Title
+                                React.createElement('div', { className: 'flex flex-col items-center justify-center gap-6 mb-6' },
+                                    React.createElement('div', { className: 'flex items-center gap-4' },
+                                        React.createElement(Logo, { 
+                                            variant: 'anvil', 
+                                            size: 'lg', 
+                                            className: 'transform hover:rotate-3 transition-transform duration-300' 
+                                        }),
+                                        React.createElement('div', { className: 'hidden sm:block' },
+                                            React.createElement(Logo, { 
+                                                variant: 'text', 
+                                                size: 'lg', 
+                                                className: 'transform hover:scale-105 transition-transform duration-300' 
+                                            })
+                                        )
+                                    ),
+                                    React.createElement('div', null,
+                                        React.createElement('h1', { 
+                                            className: 'text-4xl md:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-2 transition-colors responsive-heading' 
+                                        }, 'UIForge MCP Server'),
+                                        React.createElement('p', { 
+                                            className: 'text-xl text-slate-600 dark:text-slate-300 mb-4 transition-colors' 
+                                        }, 'Interactive Documentation')
+                                    )
+                                ),
+
+                                // Theme Toggle
+                                React.createElement('div', { className: 'flex justify-center mb-6' },
+                                    React.createElement('button', {
+                                        onClick: toggleTheme,
+                                        className: 'theme-toggle p-3 rounded-lg focus-visible focus:ring-2 focus:ring-blue-500',
+                                        'aria-label': `Switch to ${isDarkMode ? 'light' : 'dark'} mode`,
+                                        title: `Switch to ${isDarkMode ? 'light' : 'dark'} mode`
+                                    },
+                                        isDarkMode 
+                                            ? React.createElement(Sun, { className: 'w-5 h-5' })
+                                            : React.createElement(Moon, { className: 'w-5 h-5' })
+                                    )
+                                ),
+
+                                // Status Badges
+                                React.createElement('div', { className: 'flex flex-wrap items-center justify-center gap-4 text-sm' },
+                                    React.createElement('span', { className: 'badge badge-primary' }, 'Version 0.4.1'),
+                                    React.createElement('span', { className: 'badge badge-success' }, '13 Tools Available'),
+                                    React.createElement('span', { className: 'badge badge-purple' }, 'Zero-Cost Architecture')
+                                )
+                            ),
+                            
+                            // Installation Guide
+                            React.createElement('div', { className: 'max-w-3xl mx-auto text-left tool-card rounded-xl p-6 mb-8' },
+                                React.createElement('h2', { className: 'text-lg font-semibold mb-4 flex items-center gap-2' }, '🚀 Quick Installation'),
+                                React.createElement('div', { className: 'space-y-4' },
+                                    React.createElement('div', { className: 'bg-slate-50 dark:bg-slate-700 rounded-lg p-4 border border-slate-200 dark:border-slate-600' },
+                                        React.createElement('p', { className: 'text-sm font-medium mb-2' }, 'Using NPX (Recommended):'),
+                                        React.createElement('code', { className: 'code-block text-sm px-3 py-2 rounded block' }, 'npx -y uiforge-mcp@latest')
+                                    ),
+                                    React.createElement('div', { className: 'bg-slate-50 dark:bg-slate-700 rounded-lg p-4 border border-slate-200 dark:border-slate-600' },
+                                        React.createElement('p', { className: 'text-sm font-medium mb-2' }, 'Using Docker:'),
+                                        React.createElement('code', { className: 'code-block text-sm px-3 py-2 rounded block' }, 'docker run -i uiforge-mcp:latest')
+                                    )
+                                )
+                            )
+                        ),
+
+                        // Search and Filters
+                        React.createElement('section', { 
+                            'aria-label': 'Search and filters', 
+                            className: 'mb-8 space-y-4' 
+                        },
+                            React.createElement('div', { className: 'relative' },
+                                React.createElement('div', { className: 'absolute left-3 top-1/2 transform -translate-y-1/2' },
+                                    React.createElement(Search, { className: 'w-5 h-5 text-slate-400 dark:text-slate-500' })
+                                ),
+                                React.createElement('input', {
+                                    type: 'text',
+                                    placeholder: 'Search tools...',
+                                    value: searchTerm,
+                                    onChange: (e) => setSearchTerm(e.target.value),
+                                    className: 'w-full pl-10 pr-4 py-3 border border-slate-200 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus-visible focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+                                    'aria-label': 'Search tools'
+                                })
+                            ),
+
+                            React.createElement('div', { className: 'flex flex-wrap gap-4 items-center' },
+                                React.createElement('div', { className: 'flex items-center gap-2' },
+                                    React.createElement(Filter, { className: 'w-4 h-4 text-slate-500 dark:text-slate-400' }),
+                                    React.createElement('select', {
+                                        value: selectedCategory,
+                                        onChange: (e) => setSelectedCategory(e.target.value),
+                                        className: 'px-3 py-2 border border-slate-200 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus-visible focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+                                        'aria-label': 'Filter by category'
+                                    },
+                                        React.createElement('option', { value: 'all' }, 'All Categories'),
+                                        ...categories.map(category => 
+                                            React.createElement('option', { key: category, value: category }, category)
+                                        )
+                                    )
+                                ),
+
+                                React.createElement('div', { className: 'flex items-center gap-2' },
+                                    React.createElement('span', { className: 'text-sm font-medium' }, 'Frameworks:'),
+                                    React.createElement('div', { 
+                                        className: 'flex flex-wrap gap-2',
+                                        role: 'group',
+                                        'aria-label': 'Filter by frameworks'
+                                    },
+                                        ...allFrameworks.map(framework =>
+                                            React.createElement('button', {
+                                                key: framework,
+                                                onClick: () => handleFrameworkToggle(framework),
+                                                className: `px-3 py-1 text-sm rounded-full transition-all duration-200 focus-visible focus:ring-2 focus:ring-blue-500 ${
+                                                    selectedFrameworks.includes(framework)
+                                                        ? 'bg-blue-500 text-white shadow-md transform scale-105'
+                                                        : 'badge hover:bg-slate-300 dark:hover:bg-slate-600'
+                                                }`,
+                                                'aria-label': `Toggle ${framework} filter`,
+                                                'aria-pressed': selectedFrameworks.includes(framework)
+                                            }, framework)
+                                        )
+                                    )
+                                )
+                            )
+                        ),
+
+                        // Tools Grid
+                        React.createElement('main', { id: 'main-content', role: 'main' },
+                            React.createElement('section', { 'aria-label': 'Available tools' },
+                                React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8' },
+                                    ...filteredTools.map(tool =>
+                                        React.createElement('article', {
+                                            key: tool.id,
+                                            onClick: () => setSelectedTool(tool),
+                                            className: 'tool-card rounded-xl p-6 cursor-pointer focus-visible',
+                                            role: 'button',
+                                            tabIndex: 0,
+                                            'aria-label': `View details for ${tool.name}`,
+                                            onKeyDown: (e) => {
+                                                if (e.key === 'Enter' || e.key === ' ') {
+                                                    e.preventDefault();
+                                                    setSelectedTool(tool);
+                                                }
+                                            }
+                                        },
+                                            React.createElement('div', { className: 'mb-4' },
+                                                React.createElement('h3', { className: 'text-lg font-semibold mb-2' }, tool.name),
+                                                React.createElement('span', { className: 'badge badge-primary' }, tool.category)
+                                            ),
+                                            
+                                            React.createElement('p', { className: 'text-sm mb-4 line-clamp-3' }, tool.description),
+                                            
+                                            React.createElement('div', { className: 'flex flex-wrap gap-1 mb-4' },
+                                                ...tool.frameworks.map(framework =>
+                                                    React.createElement('span', {
+                                                        key: framework,
+                                                        className: 'badge'
+                                                    }, framework)
+                                                )
+                                            ),
+                                            
+                                            React.createElement('div', { className: 'flex items-center text-blue-600 dark:text-blue-400 text-sm font-medium' },
+                                                React.createElement('span', null, 'View Details'),
+                                                React.createElement(ExternalLink, { className: 'w-4 h-4 ml-1' })
+                                            )
+                                        )
+                                    )
+                                ),
+
+                                // Results Count
+                                React.createElement('div', { className: 'text-center text-sm' },
+                                    `Showing ${filteredTools.length} of ${tools.length} tools`
+                                )
+                            )
+                        )
+                    ),
+
+                    // Tool Detail Modal
+                    selectedTool && React.createElement('div', { 
+                        className: 'modal-overlay fixed inset-0 flex items-center justify-center p-4 z-50',
+                        onClick: handleModalClose,
+                        role: 'dialog',
+                        'aria-modal': 'true',
+                        'aria-labelledby': 'modal-title'
+                    },
+                        React.createElement('div', { 
+                            className: 'modal-content rounded-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto',
+                            onClick: (e) => e.stopPropagation()
+                        },
+                            React.createElement('div', { className: 'p-6' },
+                                React.createElement('div', { className: 'flex items-center justify-between mb-6' },
+                                    React.createElement('h2', { 
+                                        id: 'modal-title', 
+                                        className: 'text-2xl font-bold' 
+                                    }, selectedTool.name),
+                                    React.createElement('button', {
+                                        onClick: handleModalClose,
+                                        className: 'p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg focus-visible focus:ring-2 focus:ring-blue-500',
+                                        'aria-label': 'Close modal'
+                                    },
+                                        React.createElement(X, { className: 'w-5 h-5 text-slate-500 dark:text-slate-400' })
+                                ),
+
+                                React.createElement('div', { className: 'mb-6' },
+                                    React.createElement('span', { className: 'badge badge-primary mb-4' }, selectedTool.category),
+                                    React.createElement('p', { className: 'leading-relaxed' }, selectedTool.description)
+                                ),
+
+                                React.createElement('div', { className: 'mb-6' },
+                                    React.createElement('h3', { className: 'text-lg font-semibold mb-3' }, 'Supported Frameworks'),
+                                    React.createElement('div', { className: 'flex flex-wrap gap-2' },
+                                        ...selectedTool.frameworks.map(framework =>
+                                            React.createElement('span', {
+                                                key: framework,
+                                                className: 'badge'
+                                            }, framework)
+                                        )
+                                    )
+                                ),
+
+                                React.createElement('div', null,
+                                    React.createElement('h3', { className: 'text-lg font-semibold mb-3' }, 'Example Usage'),
+                                    React.createElement('div', { className: 'space-y-3' },
+                                        ...selectedTool.examples.map((example, index) =>
+                                            React.createElement('div', { key: index, className: 'bg-slate-50 dark:bg-slate-700 rounded-lg p-4 border border-slate-200 dark:border-slate-600' },
+                                                React.createElement('div', { className: 'flex items-center justify-between' },
+                                                    React.createElement('p', null, example),
+                                                    React.createElement('button', {
+                                                        onClick: () => copyExample(example),
+                                                        className: 'p-2 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg focus-visible focus:ring-2 focus:ring-blue-500',
+                                                        'aria-label': `Copy example: ${example}`
+                                                    },
+                                                    copiedExample === example 
+                                                        ? React.createElement(Check, { className: 'w-4 h-4 text-green-600' })
+                                                        : React.createElement(Copy, { className: 'w-4 h-4 text-slate-500 dark:text-slate-400' })
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+
+        ReactDOM.render(React.createElement(InteractiveDocs), document.getElementById('root'));
+    </script>
+</body>
+</html>

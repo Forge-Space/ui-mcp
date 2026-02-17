@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+# UIForge MCP Server Entry Point
+# This script wraps the Node.js execution for proper shell integration
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+NODE_EXEC="node"
+
+# Find the main entry point - handle both local and NPX installation structures
+if [ -f "$SCRIPT_DIR/dist/index.js" ]; then
+    MAIN_FILE="$SCRIPT_DIR/dist/index.js"
+elif [ -f "$SCRIPT_DIR/index.js" ]; then
+    MAIN_FILE="$SCRIPT_DIR/index.js"
+elif [ -f "$SCRIPT_DIR/../dist/index.js" ]; then
+    MAIN_FILE="$SCRIPT_DIR/../dist/index.js"
+elif [ -f "$SCRIPT_DIR/../index.js" ]; then
+    MAIN_FILE="$SCRIPT_DIR/../index.js"
+else
+    echo "Error: Cannot find main entry point"
+    echo "Searched in:"
+    echo "  $SCRIPT_DIR/dist/index.js"
+    echo "  $SCRIPT_DIR/index.js" 
+    echo "  $SCRIPT_DIR/../dist/index.js"
+    echo "  $SCRIPT_DIR/../index.js"
+    exit 1
+fi
+
+# Run the MCP server
+exec "$NODE_EXEC" "$MAIN_FILE" "$@"
