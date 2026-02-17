@@ -77,7 +77,7 @@ export function registerManageTraining(server: McpServer): void {
               `Job ID: ${job.jobId}`,
               `Adapter: ${adapter_name}`,
               `Status: ${job.status}`,
-              `Started: ${new Date(job.status.startedAt || Date.now()).toLocaleString()}`,
+              `Started: ${new Date(job.status.startedAt ?? Date.now()).toLocaleString()}`,
               `Progress: ${job.status.progress}%`,
               '\n💡 Use get_status action to check progress',
             ].join('\n');
@@ -107,7 +107,7 @@ export function registerManageTraining(server: McpServer): void {
               `Progress: ${status.progress}%`,
               status.error ? `\n❌ Error: ${status.error}` : '',
               status.status === 'complete'
-                ? `\n✅ Completed at ${new Date(status.completedAt || Date.now()).toLocaleString()}`
+                ? `\n✅ Completed at ${new Date(status.completedAt ?? Date.now()).toLocaleString()}`
                 : '',
             ]
               .filter(Boolean)
