@@ -106,7 +106,7 @@ export function buildPromptEnhancerData(examples: ITrainingExample[]): IPromptEn
   for (const e of examples) {
     const key = e.params.componentType ?? 'unknown';
     if (!byType.has(key)) byType.set(key, []);
-    byType.get(key)!.push(e);
+    byType.get(key)?.push(e);
   }
 
   const rows: IPromptEnhancerRow[] = [];
@@ -122,7 +122,7 @@ export function buildPromptEnhancerData(examples: ITrainingExample[]): IPromptEn
         instruction:
           'Improve the following UI generation prompt to produce better results that will be accepted by the user.',
         input: b.prompt,
-        output: good[0]!.prompt,
+        output: good[0]?.prompt ?? '',
       });
     }
   }
@@ -140,7 +140,7 @@ export function buildStyleRecommenderData(examples: ITrainingExample[]): IStyleR
     .map((e) => ({
       instruction: 'Given the following UI generation request, recommend the best visual style.',
       input: e.prompt,
-      output: e.params.style!,
+      output: e.params.style ?? '',
     }));
 }
 

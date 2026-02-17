@@ -133,7 +133,7 @@ function extractColorPalette(code: string): IDesignAnalysis['colors'] {
   };
 
   for (const [category, pattern] of Object.entries(colorPatterns)) {
-    const matches = code.match(pattern) || [];
+    const matches = code.match(pattern) ?? [];
     colors[category as keyof typeof colors] = [...new Set(matches)];
   }
 
@@ -144,10 +144,10 @@ function extractColorPalette(code: string): IDesignAnalysis['colors'] {
  * Extract typography information from generated code.
  */
 function extractTypography(code: string): IDesignAnalysis['typography'] {
-  const fontFamilies = [...new Set(code.match(/font-(?:sans|serif|mono)/g) || ['font-sans'])];
-  const headingSizes = [...new Set(code.match(/text-(?:xl|2xl|3xl|4xl|5xl|6xl)/g) || [])];
-  const bodySizes = [...new Set(code.match(/text-(?:xs|sm|base|lg)/g) || ['text-base'])];
-  const weights = [...new Set(code.match(/font-(?:light|normal|medium|semibold|bold|extrabold)/g) || [])];
+  const fontFamilies = [...new Set(code.match(/font-(?:sans|serif|mono)/g) ?? ['font-sans'])];
+  const headingSizes = [...new Set(code.match(/text-(?:xl|2xl|3xl|4xl|5xl|6xl)/g) ?? [])];
+  const bodySizes = [...new Set(code.match(/text-(?:xs|sm|base|lg)/g) ?? ['text-base'])];
+  const weights = [...new Set(code.match(/font-(?:light|normal|medium|semibold|bold|extrabold)/g) ?? [])];
 
   return {
     fontFamilies,
@@ -161,13 +161,13 @@ function extractTypography(code: string): IDesignAnalysis['typography'] {
  * Extract spacing system from generated code.
  */
 function extractSpacing(code: string): IDesignAnalysis['spacing'] {
-  const paddingClasses = [...new Set(code.match(/p[xytblr]?-\d+/g) || [])];
-  const marginClasses = [...new Set(code.match(/m[xytblr]?-\d+/g) || [])];
-  const gapClasses = [...new Set(code.match(/gap-\d+/g) || [])];
+  const paddingClasses = [...new Set(code.match(/p[xytblr]?-\d+/g) ?? [])];
+  const marginClasses = [...new Set(code.match(/m[xytblr]?-\d+/g) ?? [])];
+  const gapClasses = [...new Set(code.match(/gap-\d+/g) ?? [])];
 
   // Infer spacing system base
   const spacingValues = [...paddingClasses, ...marginClasses, ...gapClasses]
-    .map((c) => parseInt(c.match(/\d+/)?.[0] || '0'))
+    .map((c) => parseInt(c.match(/\d+/)?.[0] ?? '0'))
     .filter((v) => v > MIN_SPACING_PX && v <= MAX_SPACING_PX);
 
   const minSpacing = spacingValues.length > 0 ? Math.min(...spacingValues) : COMMON_SPACING_BASES[0];
@@ -333,7 +333,7 @@ function calculateQualityScore(
  * Extract metadata about the design.
  */
 function extractMetadata(description: string, code: string): IDesignAnalysis['metadata'] {
-  const componentCount = (code.match(/<[A-Z]/g) || []).length;
+  const componentCount = (code.match(/<[A-Z]/g) ?? []).length;
   const complexity = componentCount < 3 ? 'simple' : componentCount < 8 ? 'moderate' : 'complex';
 
   // Modernity indicators

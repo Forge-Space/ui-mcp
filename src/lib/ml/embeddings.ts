@@ -13,7 +13,9 @@ import type { IEmbedding, ISimilarityResult, IEmbeddingConfig } from './types.js
 const logger = pino({ name: 'ml-embeddings' });
 
 // Lazy-loaded pipeline
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let extractor: any = null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let pipelineFn: any = null;
 
 const DEFAULT_CONFIG: IEmbeddingConfig = {
@@ -43,6 +45,7 @@ export function getEmbeddingConfig(): IEmbeddingConfig {
  * Lazily initialize the sentence-transformer pipeline.
  * Downloads the model on first use if not cached.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function getExtractor(): Promise<any> {
   if (extractor) return extractor;
 
@@ -57,6 +60,7 @@ async function getExtractor(): Promise<any> {
     pipelineFn = transformers.pipeline;
     // Configure Transformers.js to use our cache dir
     if (transformers.env) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (transformers.env as any).cacheDir = config.cacheDir;
     }
   }
@@ -102,6 +106,7 @@ export async function embedBatch(texts: string[]): Promise<Float32Array[]> {
     const batch = texts.slice(i, i + BATCH_SIZE);
     // Parallelize within batch for better performance
     const batchPromises = batch.map((text) =>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ext(text, { pooling: 'mean', normalize: true }).then((output: any) => new Float32Array(output.data))
     );
     const batchResults = await Promise.all(batchPromises);
@@ -140,7 +145,7 @@ export function cosineSimilarity(a: Float32Array, b: Float32Array): number {
   }
   let dot = 0;
   for (let i = 0; i < a.length; i++) {
-    dot += a[i]! * b[i]!;
+    dot += (a[i] ?? 0) * (b[i] ?? 0);
   }
   return dot;
 }

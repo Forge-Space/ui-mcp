@@ -9,9 +9,8 @@
  */
 
 import { existsSync } from 'node:fs';
-import path from 'node:path';
 import pino from 'pino';
-import { getModelPath, getAdapterPath, type ModelId } from './model-manager.js';
+import { getModelPath, getAdapterPath } from './model-manager.js';
 import type { AdapterType } from './types.js';
 
 const logger = pino({ name: 'sidecar-model' });

@@ -356,13 +356,13 @@ function parseProgress(line: string): number | null {
   // Try to parse "progress: 45%" or "epoch 2/3" patterns
   const percentMatch = line.match(/(\d+(?:\.\d+)?)%/);
   if (percentMatch) {
-    return Math.min(99, parseFloat(percentMatch[1]!));
+    return Math.min(99, parseFloat(percentMatch[1] ?? '0'));
   }
 
   const epochMatch = line.match(/epoch\s+(\d+)\s*\/\s*(\d+)/i);
   if (epochMatch) {
-    const current = parseInt(epochMatch[1]!, 10);
-    const total = parseInt(epochMatch[2]!, 10);
+    const current = parseInt(epochMatch[1] ?? '0', 10);
+    const total = parseInt(epochMatch[2] ?? '1', 10);
     return Math.min(99, Math.round((current / total) * 100));
   }
 
