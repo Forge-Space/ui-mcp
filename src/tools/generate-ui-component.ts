@@ -109,6 +109,59 @@ const inputSchema = {
   skip_ml: z.boolean().optional().default(false).describe('Skip ML enhancement and scoring for pure generation'),
 };
 
+export function generateComponent(
+  componentType: string,
+  framework: string,
+  designContext: IDesignContext,
+  props?: Record<string, string>,
+  ragOptions?: IRagOptions,
+  registryMatch?: ReturnType<typeof getBestMatch>,
+  componentLibrary?: string
+): IGeneratedFile[] {
+  const componentName = toPascalCase(componentType);
+  // Generate only the interface body (not the full interface declaration)
+  const propsInterfaceBody =
+    props && Object.keys(props).length > 0
+      ? Object.entries(props)
+        .map(([key, propType]) => `  ${key}: ${propType};`)
+        .join('\n')
+      : '';
+
+  switch (framework) {
+    case 'react':
+    case 'nextjs':
+      return generateReactComponent(
+        componentName,
+        componentType,
+        designContext,
+        propsInterfaceBody,
+        props,
+        ragOptions,
+        registryMatch,
+        componentLibrary
+      );
+    case 'vue':
+      return generateVueComponent(componentName, componentType, designContext, props, ragOptions, registryMatch, componentLibrary);
+    case 'angular':
+      return generateAngularComponent(componentName, componentType, designContext, props, ragOptions, registryMatch, componentLibrary);
+    case 'svelte':
+      return generateSvelteComponent(componentName, componentType, designContext, props, ragOptions, registryMatch, componentLibrary);
+    case 'html':
+      return generateHtmlComponent(componentName, componentType, designContext, ragOptions, registryMatch, componentLibrary);
+    default:
+      return generateReactComponent(
+        componentName,
+        componentType,
+        designContext,
+        propsInterfaceBody,
+        props,
+        ragOptions,
+        registryMatch,
+        componentLibrary
+      );
+  }
+}
+
 export function registerGenerateUiComponent(server: McpServer): void {
   server.tool(
     'generate_ui_component',
@@ -212,7 +265,7 @@ export function registerGenerateUiComponent(server: McpServer): void {
         registryMatch = getBestMatch(component_type, ragOptions);
       }
 
-      const files = generateComponent(component_type, framework, designContext, props, ragOptions, registryMatch);
+      const files = generateComponent(component_type, framework, designContext, props, ragOptions, registryMatch, component_library);
 
       // ML: Quality scoring (unless skip_ml)
       let qualityScore = null;
@@ -272,12 +325,11 @@ export function registerGenerateUiComponent(server: McpServer): void {
       // Build metadata about registry match
       const ragInfo = registryMatch
         ? `\n📚 RAG Match: "${registryMatch.name}" (${registryMatch.id})` +
-          `\n   Quality: ${registryMatch.quality.inspirationSource}` +
-          `\n   A11y: ${registryMatch.a11y.keyboardNav}${
-            registryMatch.quality.antiGeneric.length > 0
-              ? `\n   Anti-generic: ${registryMatch.quality.antiGeneric.join(', ')}`
-              : ''
-          }`
+        `\n   Quality: ${registryMatch.quality.inspirationSource}` +
+        `\n   A11y: ${registryMatch.a11y.keyboardNav}${registryMatch.quality.antiGeneric.length > 0
+          ? `\n   Anti-generic: ${registryMatch.quality.antiGeneric.join(', ')}`
+          : ''
+        }`
         : '\n📚 RAG: No registry match — using fallback template';
 
       const summary = [
@@ -299,67 +351,380 @@ export function registerGenerateUiComponent(server: McpServer): void {
           ml: skipML
             ? null
             : {
-                promptEnhanced: !!promptEnhancement,
-                enhancements: promptEnhancement?.additions ?? [],
-                qualityScore: qualityScore?.score ?? null,
-                qualitySource: qualityScore?.source ?? null,
-                qualityFactors: qualityScore?.factors ?? null,
-                isLikelyAccepted: qualityScore ? qualityScore.score >= 7.0 : null,
-              },
+              promptEnhanced: !!promptEnhancement,
+              enhancements: promptEnhancement?.additions ?? [],
+              qualityScore: qualityScore?.score ?? null,
+              qualitySource: qualityScore?.source ?? null,
+              qualityFactors: qualityScore?.factors ?? null,
+              isLikelyAccepted: qualityScore ? qualityScore.score >= 7.0 : null,
+            },
         },
       };
     }
   );
 }
 
-function generateComponent(
+/**
+ * Transform component JSX to use specific component library patterns
+ */
+function transformComponentForLibrary(
+  jsxBody: string,
+  library: string,
   componentType: string,
-  framework: string,
-  designContext: IDesignContext,
-  props?: Record<string, string>,
-  ragOptions?: IRagOptions,
-  registryMatch?: ReturnType<typeof getBestMatch>
-): IGeneratedFile[] {
-  const componentName = toPascalCase(componentType);
-  // Generate only the interface body (not the full interface declaration)
-  const propsInterfaceBody =
-    props && Object.keys(props).length > 0
-      ? Object.entries(props)
-          .map(([key, propType]) => `  ${key}: ${propType};`)
-          .join('\n')
-      : '';
-
-  switch (framework) {
-    case 'react':
-    case 'nextjs':
-      return generateReactComponent(
-        componentName,
-        componentType,
-        designContext,
-        propsInterfaceBody,
-        props,
-        ragOptions,
-        registryMatch
-      );
-    case 'vue':
-      return generateVueComponent(componentName, componentType, designContext, props, ragOptions, registryMatch);
-    case 'angular':
-      return generateAngularComponent(componentName, componentType, designContext, props, ragOptions, registryMatch);
-    case 'svelte':
-      return generateSvelteComponent(componentName, componentType, designContext, props, ragOptions, registryMatch);
-    case 'html':
-      return generateHtmlComponent(componentName, componentType, designContext, ragOptions, registryMatch);
+  designContext: IDesignContext
+): string {
+  switch (library) {
+    case 'shadcn':
+      return transformForShadcnUI(jsxBody, componentType, designContext);
+    case 'radix':
+      return transformForRadixUI(jsxBody, componentType, designContext);
+    case 'headlessui':
+      return transformForHeadlessUI(jsxBody, componentType, designContext);
+    case 'primevue':
+      return transformForPrimeVue(jsxBody, componentType, designContext);
+    case 'material':
+      return transformForMaterialUI(jsxBody, componentType, designContext);
     default:
-      return generateReactComponent(
-        componentName,
-        componentType,
-        designContext,
-        propsInterfaceBody,
-        props,
-        ragOptions,
-        registryMatch
-      );
+      return jsxBody;
   }
+}
+
+/**
+ * Transform JSX for shadcn/ui components
+ */
+function transformForShadcnUI(
+  jsxBody: string,
+  componentType: string,
+  designContext: IDesignContext
+): string {
+  // Add shadcn/ui imports and cn utility
+  const imports = `import { cn } from "@/lib/utils"
+${getShadcnImports(componentType)}`;
+
+  // Transform common patterns to shadcn/ui components
+  let transformed = jsxBody;
+
+  // Button transformations
+  transformed = transformed.replace(
+    /<button([^>]*?)className="([^"]*?)"/g,
+    '<Button$1className="$2"'
+  );
+  transformed = transformed.replace(
+    /<\/button>/g,
+    '</Button>'
+  );
+
+  // Input transformations
+  transformed = transformed.replace(
+    /<input([^>]*?)className="([^"]*?)"/g,
+    '<Input$1className="$2"'
+  );
+
+  // Card transformations
+  transformed = transformed.replace(
+    /<div[^>]*?className="[^"]*?border[^"]*?rounded[^"]*?p-4[^"]*?"/g,
+    '<Card>'
+  );
+
+  // Badge transformations
+  transformed = transformed.replace(
+    /<span[^>]*?className="[^"]*?inline-flex[^"]*?items-center[^"]*?px-2[^"]*?py-1[^"]*?rounded-full[^"]*?text-xs[^"]*?font-medium[^"]*?"/g,
+    '<Badge variant="secondary">'
+  );
+
+  return `${imports}
+
+${transformed}`;
+}
+
+/**
+ * Get shadcn/ui imports based on component type
+ */
+function getShadcnImports(componentType: string): string {
+  const imports = new Set<string>();
+
+  switch (componentType) {
+    case 'button':
+      imports.add('Button');
+      break;
+    case 'input':
+      imports.add('Input');
+      break;
+    case 'card':
+      imports.add('Card');
+      imports.add('CardHeader');
+      imports.add('CardContent');
+      imports.add('CardFooter');
+      break;
+    case 'dialog':
+    case 'modal':
+      imports.add('Dialog');
+      imports.add('DialogContent');
+      imports.add('DialogHeader');
+      imports.add('DialogFooter');
+      imports.add('DialogTitle');
+      imports.add('DialogDescription');
+      break;
+    case 'dropdown':
+    case 'select':
+      imports.add('DropdownMenu');
+      imports.add('DropdownMenuContent');
+      imports.add('DropdownMenuItem');
+      imports.add('DropdownMenuTrigger');
+      break;
+    case 'tabs':
+      imports.add('Tabs');
+      imports.add('TabsList');
+      imports.add('TabsTrigger');
+      imports.add('TabsContent');
+      break;
+    case 'table':
+      imports.add('Table');
+      imports.add('TableHeader');
+      imports.add('TableBody');
+      imports.add('TableRow');
+      imports.add('TableCell');
+      imports.add('TableHead');
+      break;
+    case 'toast':
+      imports.add('Toast');
+      break;
+    case 'tooltip':
+      imports.add('Tooltip');
+      imports.add('TooltipContent');
+      imports.add('TooltipProvider');
+      break;
+    case 'badge':
+      imports.add('Badge');
+      break;
+    case 'avatar':
+      imports.add('Avatar');
+      imports.add('AvatarImage');
+      imports.add('AvatarFallback');
+      break;
+  }
+
+  return Array.from(imports)
+    .map(imp => `import { ${imp} } from "@/components/ui/${imp}"`)
+    .join('\n');
+}
+
+/**
+ * Transform JSX for Radix UI components
+ */
+function transformForRadixUI(
+  jsxBody: string,
+  componentType: string,
+  designContext: IDesignContext
+): string {
+  // Add Radix UI imports
+  const imports = getRadixImports(componentType);
+
+  let transformed = jsxBody;
+
+  // Button transformations
+  transformed = transformed.replace(
+    /<button([^>]*?)className="([^"]*?)"/g,
+    '<Button$1className="$2"'
+  );
+  transformed = transformed.replace(
+    /<\/button>/g,
+    '</Button>'
+  );
+
+  // Dialog transformations
+  transformed = transformed.replace(
+    /<div[^>]*?className="[^"]*?fixed[^"]*?inset-0[^"]*?bg-black[^"]*?bg-opacity-50[^"]*?flex[^"]*?items-center[^"]*?justify-center"/g,
+    '<DialogOverlay>'
+  );
+
+  return `${imports}
+
+${transformed}`;
+}
+
+/**
+ * Get Radix UI imports based on component type
+ */
+function getRadixImports(componentType: string): string {
+  const imports = new Set<string>();
+
+  switch (componentType) {
+    case 'button':
+      imports.add('Button');
+      break;
+    case 'dialog':
+    case 'modal':
+      imports.add('Dialog');
+      imports.add('DialogOverlay');
+      imports.add('DialogContent');
+      imports.add('DialogHeader');
+      imports.add('DialogFooter');
+      imports.add('DialogTitle');
+      imports.add('DialogTrigger');
+      break;
+    case 'dropdown':
+    case 'select':
+      imports.add('DropdownMenu');
+      imports.add('DropdownMenuTrigger');
+      imports.add('DropdownMenuContent');
+      imports.add('DropdownMenuItem');
+      imports.add('DropdownMenuSeparator');
+      imports.add('DropdownMenuLabel');
+      break;
+    case 'tabs':
+      imports.add('Tabs');
+      imports.add('TabsList');
+      imports.add('TabsTrigger');
+      imports.add('TabsContent');
+      break;
+    case 'tooltip':
+      imports.add('Tooltip');
+      imports.add('TooltipProvider');
+      imports.add('TooltipContent');
+      imports.add('TooltipTrigger');
+      break;
+  }
+
+  return Array.from(imports)
+    .map(imp => `import * from "@radix-ui/react-${imp}"`)
+    .join('\n');
+}
+
+/**
+ * Transform JSX for Headless UI components
+ */
+function transformForHeadlessUI(
+  jsxBody: string,
+  componentType: string,
+  designContext: IDesignContext
+): string {
+  // Add Headless UI imports
+  const imports = getHeadlessUIImports(componentType);
+
+  let transformed = jsxBody;
+
+  // Button transformations
+  transformed = transformed.replace(
+    /<button([^>]*?)className="([^"]*?)"/g,
+    '<Button$1className="$2"'
+  );
+  transformed = transformed.replace(
+    /<\/button>/g,
+    '</Button>'
+  );
+
+  return `${imports}
+
+${transformed}`;
+}
+
+/**
+ * Get Headless UI imports based on component type
+ */
+function getHeadlessUIImports(componentType: string): string {
+  const imports = new Set<string>();
+
+  switch (componentType) {
+    case 'button':
+      imports.add('Button');
+      break;
+    case 'dialog':
+    case 'modal':
+      imports.add('Dialog');
+      imports.add('DialogPanel');
+      imports.add('DialogTitle');
+      imports.add('DialogOverlay');
+      break;
+    case 'dropdown':
+    case 'select':
+      imports.add('Menu');
+      imports.add('MenuButton');
+      imports.add('MenuItem');
+      imports.add('MenuItems');
+      imports.add('MenuDivider');
+      break;
+  }
+
+  return Array.from(imports)
+    .map(imp => `import { ${imp} } from "@headlessui/react"`)
+    .join('\n');
+}
+
+/**
+ * Transform JSX for PrimeVue components (Vue-specific)
+ */
+function transformForPrimeVue(
+  jsxBody: string,
+  componentType: string,
+  designContext: IDesignContext
+): string {
+  // This would be used in Vue component generation
+  return jsxBody; // Placeholder for Vue implementation
+}
+
+/**
+ * Transform JSX for Material UI components
+ */
+function transformForMaterialUI(
+  jsxBody: string,
+  componentType: string,
+  designContext: IDesignContext
+): string {
+  // Add Material UI imports
+  const imports = getMaterialUIImports(componentType);
+
+  let transformed = jsxBody;
+
+  // Button transformations
+  transformed = transformed.replace(
+    /<button([^>]*?)className="([^"]*?)"/g,
+    '<Button$1className="$2"'
+  );
+  transformed = transformed.replace(
+    /<\/button>/g,
+    '</Button>'
+  );
+
+  return `${imports}
+
+${transformed}`;
+}
+
+/**
+ * Get Material UI imports based on component type
+ */
+function getMaterialUIImports(componentType: string): string {
+  const imports = new Set<string>();
+
+  switch (componentType) {
+    case 'button':
+      imports.add('Button');
+      break;
+    case 'card':
+      imports.add('Card');
+      imports.add('CardContent');
+      imports.add('CardActions');
+      break;
+    case 'textfield':
+    case 'input':
+      imports.add('TextField');
+      break;
+    case 'chip':
+      imports.add('Chip');
+      break;
+    case 'dialog':
+    case 'modal':
+      imports.add('Dialog');
+      imports.add('DialogTitle');
+      imports.add('DialogContent');
+      imports.add('DialogActions');
+      break;
+  }
+
+  return Array.from(imports)
+    .map(imp => `import { ${imp} } from "@mui/material"`)
+    .join('\n');
 }
 
 function generateReactComponent(
@@ -369,16 +734,33 @@ function generateReactComponent(
   propsInterfaceBody: string,
   props?: Record<string, string>,
   ragOptions?: IRagOptions,
-  registryMatch?: ReturnType<typeof getBestMatch>
+  registryMatch?: ReturnType<typeof getBestMatch>,
+  componentLibrary?: string
 ): IGeneratedFile[] {
   const propsType = propsInterfaceBody ? `interface ${name}Props {\n${propsInterfaceBody}\n}\n\n` : '';
   const propsArg = propsInterfaceBody ? `{ ${Object.keys(props ?? {}).join(', ')} }: ${name}Props` : '';
-  const body = getComponentBody(type, ctx, 'react', ragOptions, registryMatch);
+
+  // Generate component body with component library integration
+  let body = getComponentBody(type, ctx, 'react', ragOptions, registryMatch);
+  let libraryImports = '';
+
+  // Apply component library transformations
+  if (componentLibrary && componentLibrary !== 'none') {
+    const transformed = transformComponentForLibrary(body, componentLibrary, type, ctx);
+    // Extract imports from the transformed content
+    const importMatch = transformed.match(/^(import [^\n]+(?:\nimport [^\n]+)*)\n\n/);
+    if (importMatch) {
+      libraryImports = importMatch[1] + '\n\n';
+      body = transformed.replace(importMatch[1] + '\n\n', '');
+    } else {
+      body = transformed;
+    }
+  }
 
   return [
     {
       path: `components/${kebabCase(name)}.tsx`,
-      content: `${propsType}export function ${name}(${propsArg}) {
+      content: `${libraryImports}${propsType}export function ${name}(${propsArg}) {
   return (
 ${body}
   )
@@ -394,12 +776,13 @@ function generateVueComponent(
   ctx: IDesignContext,
   props?: Record<string, string>,
   ragOptions?: IRagOptions,
-  registryMatch?: ReturnType<typeof getBestMatch>
+  registryMatch?: ReturnType<typeof getBestMatch>,
+  componentLibrary?: string
 ): IGeneratedFile[] {
   const propsBlock = props
     ? Object.entries(props)
-        .map(([key, pType]) => `  ${key}: { type: ${vueType(pType)}, required: true },`)
-        .join('\n')
+      .map(([key, pType]) => `  ${key}: { type: ${vueType(pType)}, required: true },`)
+      .join('\n')
     : '';
   const body = getComponentBody(type, ctx, 'vue', ragOptions, registryMatch);
 
@@ -424,12 +807,13 @@ function generateAngularComponent(
   ctx: IDesignContext,
   props?: Record<string, string>,
   ragOptions?: IRagOptions,
-  registryMatch?: ReturnType<typeof getBestMatch>
+  registryMatch?: ReturnType<typeof getBestMatch>,
+  componentLibrary?: string
 ): IGeneratedFile[] {
   const inputDecls = props
     ? Object.entries(props)
-        .map(([key, pType]) => `  @Input() ${key}!: ${pType};`)
-        .join('\n')
+      .map(([key, pType]) => `  @Input() ${key}!: ${pType};`)
+      .join('\n')
     : '';
   const body = getComponentBody(type, ctx, 'angular', ragOptions, registryMatch);
 
@@ -459,12 +843,13 @@ function generateSvelteComponent(
   ctx: IDesignContext,
   props?: Record<string, string>,
   ragOptions?: IRagOptions,
-  registryMatch?: ReturnType<typeof getBestMatch>
+  registryMatch?: ReturnType<typeof getBestMatch>,
+  componentLibrary?: string
 ): IGeneratedFile[] {
   const propsDecl = props
     ? Object.entries(props)
-        .map(([key, pType]) => `  export let ${key}: ${pType};`)
-        .join('\n')
+      .map(([key, pType]) => `  export let ${key}: ${pType};`)
+      .join('\n')
     : '';
   const body = jsxToSvelte(getComponentBody(type, ctx, 'svelte', ragOptions, registryMatch));
 
@@ -486,7 +871,8 @@ function generateHtmlComponent(
   type: string,
   ctx: IDesignContext,
   ragOptions?: IRagOptions,
-  registryMatch?: ReturnType<typeof getBestMatch>
+  registryMatch?: ReturnType<typeof getBestMatch>,
+  componentLibrary?: string
 ): IGeneratedFile[] {
   const body = jsxToHtmlAttributes(getComponentBody(type, ctx, 'html', ragOptions, registryMatch));
 

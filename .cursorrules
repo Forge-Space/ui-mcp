@@ -1,0 +1,49 @@
+# UIForge MCP Cursor Rules
+
+## Environment Setup
+- Always load environment variables from .env file
+- Set FIGMA_ACCESS_TOKEN for Figma integration
+- Use NODE_ENV=development for local development
+
+## Development Guidelines
+- Follow TypeScript strict mode
+- Use semantic HTML5 elements
+- Implement proper error handling
+- Write comprehensive tests
+- Follow MCP server patterns
+
+## Component Library Integration
+- Test component library integration thoroughly
+- Verify shadcn/ui, Radix UI, Headless UI, Material UI imports
+- Check responsive design on multiple viewports
+- Ensure accessibility compliance (WCAG 2.1)
+
+## Figma Integration
+- Always validate FIGMA_ACCESS_TOKEN before use
+- Handle Figma API rate limits gracefully
+- Test bidirectional token flow
+- Verify design token mapping
+
+## Code Quality
+- Run ESLint and Prettier before commits
+- Maintain test coverage above 80%
+- Use proper TypeScript types
+- Follow established naming conventions
+
+## MCP Server Development
+- Use proper error handling for all tools
+- Implement input validation with Zod schemas
+- Provide helpful error messages
+- Test all tool edge cases
+
+## Debugging
+- Use LOG_LEVEL=debug for troubleshooting
+- Check environment variable loading
+- Test with different Node.js versions
+- Verify MCP tool responses
+
+## Security
+- Never commit FIGMA_ACCESS_TOKEN to version control
+- Use environment variables for sensitive data
+- Validate all external API calls
+- Implement proper error boundaries
