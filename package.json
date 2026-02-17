@@ -1,7 +1,7 @@
 {
   "name": "uiforge-mcp",
-  "version": "0.4.1",
-  "description": "MCP server for AI-driven UI generation — from code scaffolding to interactive prototypes and design images",
+  "version": "0.4.2",
+  "description": "AI-driven UI generation via Model Context Protocol. Generate React, Next.js, Vue, Angular applications from natural language. Screenshot-to-code, interactive prototypes, design mockups, accessibility auditing. Zero cost, open source.",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
@@ -69,8 +69,40 @@
   },
   "files": [
     "dist",
+    "bin",
     "README.md",
     "LICENSE"
+  ],
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "ui-generation",
+    "react",
+    "nextjs",
+    "vue",
+    "angular",
+    "typescript",
+    "tailwindcss",
+    "frontend",
+    "web-development",
+    "component-library",
+    "design-system",
+    "prototyping",
+    "accessibility",
+    "figma",
+    "screenshot-to-code",
+    "code-generation",
+    "cli-tool",
+    "docker",
+    "npm-package",
+    "open-source",
+    "ai-tools",
+    "ui-components",
+    "responsive-design",
+    "wcag",
+    "a11y",
+    "productivity"
   ],
   "license": "MIT",
   "lint-staged": {
@@ -78,5 +110,8 @@
       "eslint --fix",
       "prettier --write"
     ]
+  },
+  "overrides": {
+    "ajv": "^8.18.0"
   }
 }
