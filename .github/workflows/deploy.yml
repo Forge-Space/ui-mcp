@@ -1,6 +1,8 @@
 name: Deploy
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       version_type:
@@ -66,7 +68,7 @@ jobs:
         run: |
           CURRENT_VERSION=$(node -p "require('./package.json').version")
           echo "Current version: $CURRENT_VERSION"
-          
+
           case "${{ github.event.inputs.version_type }}" in
             "patch")
               NEXT_VERSION=$(echo $CURRENT_VERSION | awk -F. '{print $1"."$2"."($3+1)}')
@@ -82,10 +84,10 @@ jobs:
               exit 1
               ;;
           esac
-          
+
           echo "Next version: $NEXT_VERSION"
           echo "version=$NEXT_VERSION" >> $GITHUB_OUTPUT
-          
+
           # Check if prerelease (contains -)
           if [[ "$NEXT_VERSION" == *"-" ]]; then
             echo "is_prerelease=true" >> $GITHUB_OUTPUT
@@ -109,7 +111,7 @@ jobs:
         run: |
           # Check if package.json is valid
           node -e "JSON.parse(require('fs').readFileSync('package.json', 'utf8'))"
-          
+
           # Check required fields
           REQUIRED_FIELDS=("name" "version" "description" "main" "bin")
           for field in "${REQUIRED_FIELDS[@]}"; do
@@ -147,7 +149,7 @@ jobs:
         run: |
           COVERAGE=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')
           echo "Coverage: $COVERAGE%"
-          
+
           if (( $(echo "$COVERAGE < 80" | bc -l) )); then
             echo "::warning::Coverage is below 80%: $COVERAGE%"
           fi
@@ -165,7 +167,7 @@ jobs:
           npm pack --dry-run > /dev/null
           PACKAGE_SIZE=$(du -k *.tgz | cut -f1)
           echo "Package size: ${PACKAGE_SIZE}KB"
-          
+
           if [ $PACKAGE_SIZE -gt 1024 ]; then
             echo "::warning::Package size exceeds 1MB: ${PACKAGE_SIZE}KB"
           fi
@@ -174,13 +176,13 @@ jobs:
       - name: Validate binary
         run: |
           npm run build
-          
+
           # Check if binary exists and is executable
           if [ ! -f "dist/index.js" ]; then
             echo "::error::Binary not found after build"
             exit 1
           fi
-          
+
           # Test binary help
           timeout 10s node dist/index.js --help || true
 
@@ -280,7 +282,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [preflight, qa, build]
     if: needs.preflight.outputs.should_publish == 'true' && github.event.inputs.dry_run != 'true'
-    environment: production
+    environment:
+      name: production
+      url: https://github.com/lucassantana/uiforge-mcp
     steps:
       - uses: actions/checkout@v4
 
@@ -308,7 +312,7 @@ jobs:
         run: |
           VERSION="${{ needs.preflight.outputs.version }}"
           npm view uiforge-mcp@$VERSION
-          
+
           # Test installation
           cd /tmp
           npm i -g uiforge-mcp@$VERSION
@@ -335,13 +339,13 @@ jobs:
         run: |
           VERSION="${{ needs.preflight.outputs.version }}"
           PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
-          
+
           if [ -n "$PREV_TAG" ]; then
             CHANGELOG=$(git log --pretty=format:"- %s (%h)" $PREV_TAG..HEAD)
           else
             CHANGELOG=$(git log --pretty=format:"- %s (%h)")
           fi
-          
+
           echo "changelog<<EOF" >> $GITHUB_OUTPUT
           echo "$CHANGELOG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -355,33 +359,32 @@ jobs:
           release_name: Release v${{ needs.preflight.outputs.version }}
           body: |
             ## 🚀 Release v${{ needs.preflight.outputs.version }}
-            
+
             ### 📦 Package Installation
             ```bash
             npm install -g uiforge-mcp@${{ needs.preflight.outputs.version }}
             ```
-            
+
             ### 🐳 Docker Installation
             ```bash
             docker pull lucassantana/uiforge-mcp:v${{ needs.preflight.outputs.version }}
             ```
-            
+
             ### 📋 Changes
             ${{ steps.changelog.outputs.changelog }}
-            
+
             ### ✅ Validation Results
             - ✅ All tests passed
             - ✅ Code quality checks passed
             - ✅ Security audit completed
             - ✅ Docker image built successfully
             - ✅ Package published to npm
-            
+
             ---
-            
+
             🤖 This release was automatically created by GitHub Actions.
           draft: false
           prerelease: ${{ needs.preflight.outputs.is_prerelease }}
-          artifacts: "*.tgz"
 
   # Update version and push
   update-version:
@@ -430,7 +433,7 @@ jobs:
           echo "**Dry Run:** ${{ github.event.inputs.dry_run }}" >> $GITHUB_STEP_SUMMARY
           echo "**Create Release:** ${{ github.event.inputs.create_release }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           echo "| Job | Status |" >> $GITHUB_STEP_SUMMARY
           echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
           echo "| Pre-flight | ${{ needs.preflight.result }} |" >> $GITHUB_STEP_SUMMARY
@@ -440,7 +443,7 @@ jobs:
           echo "| Publish | ${{ needs.publish.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Release | ${{ needs.release.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           if [[ "${{ needs.publish.result }}" == "success" ]]; then
             echo "✅ Package successfully published to npm!" >> $GITHUB_STEP_SUMMARY
             echo "📦 Install with: \`npm install -g uiforge-mcp@${{ needs.preflight.outputs.version }}\`" >> $GITHUB_STEP_SUMMARY

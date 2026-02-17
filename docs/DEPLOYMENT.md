@@ -2,6 +2,24 @@
 
 This document describes the deployment process for UIForge MCP, including automated workflows and manual procedures.
 
+## 🌳 Trunk Based Development (TBD)
+
+UIForge MCP follows **Trunk Based Development** with the flow: **feature branch → release branch → main**.
+
+For detailed branching strategy, see [Branching Strategy Guide](./BRANCHING_STRATEGY.md).
+
+### Branch Types
+
+- **Main branch**: Always deployable, reflects production state
+- **Release branches**: Integration and stabilization (`release/vX.Y.Z`)
+- **Feature branches**: Short-lived development (`feature/feature-name`)
+
+### Deployment Flow
+
+1. **Feature Development**: Work in feature branches
+2. **Integration**: Merge features to release branch
+3. **Release**: Merge release branch to main → triggers deployment
+
 ## 🚀 Automated Deployment (GitHub Actions)
 
 ### Prerequisites
@@ -12,23 +30,37 @@ This document describes the deployment process for UIForge MCP, including automa
    - `DOCKER_PASSWORD`: Docker Hub access token
 
 2. **Branch Protection**:
+
    - Deployment can only run from `main` branch
    - Clean working directory required
 
 3. **Version Management**:
+
    - Uses semantic versioning (patch/minor/major)
    - Automatic Git tagging
    - GitHub release creation
 
 ### Workflow Trigger
 
-The deployment workflow is triggered manually via `workflow_dispatch`:
+The deployment workflow is triggered by:
+
+1. **Automatic**: When release branches are merged to `main` branch
+2. **Manual**: Via `workflow_dispatch` in GitHub Actions UI
 
 ```bash
-# In GitHub UI: Actions > Deploy > Run workflow
+# Automatic trigger: Merge release/1.0.0 -> main
+# Manual trigger: Actions > Deploy > Run workflow
 ```
 
-**Parameters:**
+**Deployment Strategy:**
+
+- Release branches (`release/1.0.0`, `release/1.0.1`, etc.) are developed and tested
+- When ready, release branches are merged to `main` branch
+- This merge automatically triggers the deployment workflow
+- Production environment is configured to only accept deployments from `main` branch
+
+**Manual Parameters:**
+
 - **Version Type**: `patch` | `minor` | `major` (default: patch)
 - **Dry Run**: Skip actual npm publish (default: false)
 - **Create Release**: Generate GitHub release (default: true)
@@ -36,6 +68,7 @@ The deployment workflow is triggered manually via `workflow_dispatch`:
 ### Workflow Stages
 
 #### 1. Pre-flight Checks
+
 - Verify main branch
 - Check for uncommitted changes
 - Calculate next version
@@ -43,6 +76,7 @@ The deployment workflow is triggered manually via `workflow_dispatch`:
 - Check for existing version tags
 
 #### 2. Quality Assurance
+
 - Full validation (lint, format, typecheck, test)
 - Coverage threshold check (80% minimum)
 - Security audit
@@ -50,28 +84,33 @@ The deployment workflow is triggered manually via `workflow_dispatch`:
 - Binary validation
 
 #### 3. Build Artifacts
+
 - Compile TypeScript
 - Generate package hash
 - Create npm package
 - Upload as artifact
 
 #### 4. Docker Build
+
 - Multi-platform build (amd64, arm64)
 - Push to Docker Hub
 - Test container startup
 - Size validation
 
 #### 5. Publish to npm
+
 - Download package artifact
 - Publish with provenance
 - Verify installation
 
 #### 6. Create Release
+
 - Generate changelog
 - Create GitHub release
 - Attach package artifact
 
 #### 7. Update Version
+
 - Update package.json
 - Commit and tag
 - Push to main
@@ -192,6 +231,7 @@ The workflow uses these key actions:
 ### Common Issues
 
 #### 1. "Working directory is not clean"
+
 ```bash
 git status
 git add .
@@ -199,6 +239,7 @@ git commit -m "chore: prepare for deployment"
 ```
 
 #### 2. "Version already exists"
+
 ```bash
 git tag -l | grep "v0.4.2"
 # If tag exists locally but not remotely:
@@ -207,11 +248,13 @@ git tag -d v0.4.2
 ```
 
 #### 3. "npm publish requires OTP"
+
 - Check `NPM_TOKEN` has correct permissions
 - Ensure 2FA is properly configured
 - Use automation token (not personal token)
 
 #### 4. "Docker push failed"
+
 - Verify `DOCKER_USERNAME` and `DOCKER_PASSWORD`
 - Check Docker Hub permissions
 - Ensure image name is correct
@@ -221,11 +264,13 @@ git tag -d v0.4.2
 If deployment fails:
 
 1. **npm Package**:
+
    ```bash
    npm deprecate uiforge-mcp@0.4.2 "Deployment issue, use previous version"
    ```
 
 2. **Docker Image**:
+
    ```bash
    docker pull lucassantana/uiforge-mcp:previous-tag
    docker tag lucassantana/uiforge-mcp:previous-tag lucassantana/uiforge-mcp:latest
@@ -233,6 +278,7 @@ If deployment fails:
    ```
 
 3. **Git Tag**:
+
    ```bash
    git tag -d v0.4.2
    git push origin --delete v0.4.2
@@ -243,18 +289,21 @@ If deployment fails:
 ### Post-Deployment Checks
 
 1. **npm Package**:
+
    ```bash
    npm view uiforge-mcp@0.4.2
    npm info uiforge-mcp
    ```
 
 2. **Docker Image**:
+
    ```bash
    docker pull lucassantana/uiforge-mcp:v0.4.2
    docker run --rm lucassantana/uiforge-mcp:v0.4.2 --help
    ```
 
 3. **GitHub Release**:
+
    - Check release notes
    - Verify attached artifacts
    - Confirm tag creation
