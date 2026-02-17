@@ -477,11 +477,11 @@ docker run -i uiforge-mcp
 ### 📋 **Usage Examples**
 
 ```bash
-# Parse Figma design tokens
-figma_context_parser(file_key="ABC123")
+# Parse Figma design tokens (JSON-RPC)
+echo '{"jsonrpc": "2.0", "id": 1, "method": "tools/call", "params": {"name": "figma_context_parser", "arguments": {"file_key": "ABC123"}}}' | node dist/index.js
 
-# Push variables to Figma
-figma_push_variables(file_key="ABC123", variables=[...])
+# Push variables to Figma (JSON-RPC)
+echo '{"jsonrpc": "2.0", "id": 2, "method": "tools/call", "params": {"name": "figma_push_variables", "arguments": {"file_key": "ABC123", "variables": [{"name": "primary-color", "value": "#3b82f6"}]}}}' | node dist/index.js
 ```
 
 ## Production Deployment

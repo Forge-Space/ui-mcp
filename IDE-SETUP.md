@@ -43,7 +43,7 @@ LOG_LEVEL=debug
 
 ```json
 {
-  "version": "0.10.0",
+  "version": "0.2.0",
   "configurations": [
     {
       "name": "Debug UIForge MCP",
@@ -107,20 +107,10 @@ LOG_LEVEL=debug
 
 ```cursorrules
 # UIForge MCP Environment
-Always load environment variables from .env file
+environment.loadEnv: true
+environment.envFile: .env
 Set FIGMA_ACCESS_TOKEN for Figma integration
 ```
-
-2. **Project Configuration:**
-   - Add to `.cursorrules`:
-   ```json
-   {
-     "environment": {
-       "loadEnv": true,
-       "envFile": ".env"
-     }
-   }
-   ```
 
 ### Windsurf IDE
 
@@ -187,8 +177,11 @@ Most IDEs support environment variable injection:
 ### Verify Figma Integration
 
 ```bash
-# Test if token is loaded
-node -e "console.log('FIGMA_ACCESS_TOKEN:', process.env.FIGMA_ACCESS_TOKEN)"
+# Test if token is loaded (source .env first)
+source .env && node -e "console.log('FIGMA_ACCESS_TOKEN:', process.env.FIGMA_ACCESS_TOKEN ? '✅ Set' : '❌ Not set')"
+
+# Alternative using dotenv-cli
+npx dotenv -e .env -- node -e "console.log('FIGMA_ACCESS_TOKEN:', process.env.FIGMA_ACCESS_TOKEN ? '✅ Set' : '❌ Not set')"
 ```
 
 ### Test MCP Server with Environment
@@ -217,7 +210,7 @@ echo '{"jsonrpc": "2.0", "id": 1, "method": "tools/call", "params": {"name": "fi
    ```bash
    # Check if .env file exists
    ls -la .env
-   
+
    # Verify token is set
    grep FIGMA_ACCESS_TOKEN .env
    ```
@@ -247,11 +240,10 @@ LOG_LEVEL=debug node dist/index.js
 
 ```dockerfile
 # Dockerfile
-ENV FIGMA_ACCESS_TOKEN=""
 ENV NODE_ENV=production
 ENV LOG_LEVEL=info
 
-# Override at runtime
+# Pass secrets at runtime (never bake into image)
 docker run -e FIGMA_ACCESS_TOKEN=your_token uiforge-mcp
 ```
 
