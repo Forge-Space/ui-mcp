@@ -28,7 +28,7 @@ import type {
 // --- Singleton ---
 
 let db: Database.Database | null = null;
-let dbPath: string | null = null;
+let _dbPath: string | null = null;
 
 /**
  * Get or create the SQLite database connection.
@@ -51,7 +51,7 @@ export function getDatabase(customPath?: string): Database.Database {
   db.prepare('INSERT OR REPLACE INTO meta (key, value) VALUES (?, ?)').run('schema_version', String(SCHEMA_VERSION));
 
   logger.info({ dbPath: resolvedPath }, 'Database opened/created');
-  dbPath = resolvedPath;
+  _dbPath = resolvedPath;
   return db;
 }
 
@@ -73,7 +73,7 @@ export function closeDatabase(): void {
   if (db) {
     db.close();
     db = null;
-    dbPath = null;
+    _dbPath = null;
   }
 }
 
