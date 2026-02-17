@@ -1,14 +1,103 @@
-# UIForge MCP Server
+# 🎨 UIForge MCP Server
 
-MCP server for AI-driven UI generation — from code scaffolding to interactive
-prototypes and design images. Scaffold frontend apps (React, Next.js, Vue,
-Angular, vanilla HTML/CSS/JS + Tailwind/Shadcn), generate UI components with
-style-aware context, convert screenshots to code, create page templates, audit
-accessibility, iteratively refine components, create interactive HTML
-prototypes, render SVG/PNG mockups, and integrate with Figma for bidirectional
-design token flow.
+> **AI-driven UI generation via Model Context Protocol** Generate complete
+> applications, components, and designs from natural language
 
-Built on the
+## 🏆 **Badges**
+
+[![npm version](https://img.shields.io/npm/v/uiforge-mcp.svg)](https://www.npmjs.com/package/uiforge-mcp)
+[![npm downloads](https://img.shields.io/npm/dm/uiforge-mcp.svg)](https://www.npmjs.com/package/uiforge-mcp)
+[![GitHub stars](https://img.shields.io/github/stars/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp)
+[![GitHub forks](https://img.shields.io/github/forks/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp)
+[![GitHub issues](https://img.shields.io/github/issues/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp/pulls)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub release](https://img.shields.io/github/release/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp/releases)
+[![GitHub commits since latest release](https://img.shields.io/github/commits-since/LucasSantana-Dev/uiforge-mcp/latest.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp/commits)
+[![GitHub last commit](https://img.shields.io/github/last-commit/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp/commits)
+[![GitHub contributors](https://img.shields.io/github/contributors/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp/graphs/contributors)
+[![GitHub repo size](https://img.shields.io/github/repo-size/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp)
+[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp)
+
+### 🧪 **Quality & Testing**
+
+[![Tests](https://img.shields.io/github/actions/workflows/ci.yml/LucasSantana-Dev/uiforge-mcp?label=tests)](https://github.com/LucasSantana-Dev/uiforge-mcp/actions)
+[![Coverage](https://img.shields.io/codecov/c/github/LucasSantana-Dev/uiforge-mcp)](https://codecov.io/gh/LucasSantana-Dev/uiforge-mcp)
+[![Test Coverage](https://img.shields.io/badge/coverage-84%25-brightgreen)](https://github.com/LucasSantana-Dev/uiforge-mcp)
+[![Tests Passing](https://img.shields.io/badge/tests-550%2F550-brightgreen)](https://github.com/LucasSantana-Dev/uiforge-mcp)
+[![Test Suites](https://img.shields.io/badge/suites-39%2F39-brightgreen)](https://github.com/LucasSantana-Dev/uiforge-mcp)
+
+### 🔧 **Build & Deployment**
+
+[![Build Status](https://img.shields.io/github/actions/workflows/ci.yml/LucasSantana-Dev/uiforge-mcp?label=build)](https://github.com/LucasSantana-Dev/uiforge-mcp/actions)
+[![Docker Build](https://img.shields.io/github/actions/workflows/ci.yml/LucasSantana-Dev/uiforge-mcp?label=docker)](https://github.com/LucasSantana-Dev/uiforge-mcp/actions)
+[![Docker Image Size](https://img.shields.io/docker/image-size/LucasSantanaDev/uiforge-mcp/latest)](https://hub.docker.com/r/LucasSantanaDev/uiforge-mcp)
+[![Docker Pulls](https://img.shields.io/docker/pulls/LucasSantanaDev/uiforge-mcp.svg)](https://hub.docker.com/r/LucasSantanaDev/uiforge-mcp)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](https://www.typescriptlang.org/)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D22-green)](https://nodejs.org/)
+
+### 🛡️ **Security & Standards**
+
+[![CodeQL](https://img.shields.io/github/actions/workflows/codeql.yml/LucasSantana-Dev/uiforge-mcp)](https://github.com/LucasSantana-Dev/uiforge-mcp/security)
+[![Security Audit](https://img.shields.io/github/actions/workflows/ci.yml/LucasSantana-Dev/uiforge-mcp?label=security)](https://github.com/LucasSantana-Dev/uiforge-mcp/actions)
+[![Dependency Check](https://img.shields.io/github/actions/workflows/ci.yml/LucasSantana-Dev/uiforge-mcp?label=deps)](https://github.com/LucasSantana-Dev/uiforge-mcp/actions)
+[![ESLint](https://img.shields.io/github/actions/workflows/ci.yml/LucasSantana-Dev/uiforge-mcp?label=lint)](https://github.com/LucasSantana-Dev/uiforge-mcp/actions)
+[![Prettier](https://img.shields.io/badge/code%20style-prettier-ff69b4.svg)](https://prettier.io/)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow)](https://conventionalcommits.org)
+
+### 🌟 **Platform & Integration**
+
+[![Model Context Protocol](https://img.shields.io/badge/MCP-1.26.0-blue)](https://modelcontextprotocol.io)
+[![Figma API](https://img.shields.io/badge/Figma%20API-Integrated-purple)](https://www.figma.com/developers/api)
+[![React](https://img.shields.io/badge/React-18-blue)](https://reactjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
+[![Vue.js](https://img.shields.io/badge/Vue.js-3-green)](https://vuejs.org/)
+[![Angular](https://img.shields.io/badge/Angular-18-red)](https://angular.io/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2FF)](https://tailwindcss.com/)
+[![Playwright](https://img.shields.io/badge/Playwright-1.58-2EAD33)](https://playwright.dev/)
+
+### 📊 **Activity & Community**
+
+[![GitHub Activity](https://img.shields.io/github/last-commit/LucasSantana-Dev/uiforge-mcp)](https://github.com/LucasSantana-Dev/uiforge-mcp/graphs/commit-activity)
+[![GitHub Issue Milestone](https://img.shields.io/github/milestones/LucasSantana-Dev/uiforge-mcp)](https://github.com/LucasSantana-Dev/uiforge-mcp/milestones)
+[![GitHub Discussions](https://img.shields.io/github/discussions/LucasSantana-Dev/uiforge-mcp)](https://github.com/LucasSantana-Dev/uiforge-mcp/discussions)
+[![GitHub Watchers](https://img.shields.io/github/watchers/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp/watchers)
+[![GitHub Tag](https://img.shields.io/github/tag/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp/tags)
+[![GitHub License](https://img.shields.io/github/license/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp/blob/main/LICENSE)
+
+### 💎 **Zero-Cost & Open Source**
+
+[![100% Free](https://img.shields.io/badge/Price-Free-green)](https://github.com/LucasSantana-Dev/uiforge-mcp)
+[![No API Keys](https://img.shields.io/badge/API-None-brightgreen)](https://github.com/LucasSantana-Dev/uiforge-mcp)
+[![Self-Hosted](https://img.shields.io/badge/Deployment-Self--Hosted-blue)](https://github.com/LucasSantana-Dev/uiforge-mcp)
+[![Zero Dependencies](https://img.shields.io/badge/Dependencies-0%20Cloud-orange)](https://github.com/LucasSantana-Dev/uiforge-mcp)
+[![MIT License](https://img.shields.io/badge/License-MIT-yellow)](https://opensource.org/licenses/MIT)
+[![Open Source](https://img.shields.io/badge/Open%20Source-%E2%9C%9F%8D-blue)](https://github.com/LucasSantana-Dev/uiforge-mcp)
+
+## ✨ **What It Does**
+
+UIForge MCP is a powerful **Model Context Protocol server** that transforms
+natural language into production-ready UI. From full-stack applications to
+individual components, interactive prototypes to design mockups — all generated
+with AI precision.
+
+### 🚀 **Key Capabilities**
+
+- 🏗️ **Full Application Scaffolding** - React, Next.js, Vue, Angular, HTML
+- 🎨 **Component Generation** - Style-aware, framework-specific code
+- 📸 **Screenshot-to-Code** - Convert images to working components
+- 🎭 **Interactive Prototypes** - Clickable HTML prototypes with navigation
+- 🖼️ **Design Mockups** - SVG/PNG UI mockups and wireframes
+- ♿ **Accessibility Auditing** - WCAG 2.1 compliance with fixes
+- 🔗 **Figma Integration** - Bidirectional design token flow
+- 🎯 **Template Library** - Landing pages, dashboards, auth flows
+
+## 🛠️ **Zero-Cost Architecture**
+
+✅ **100% Free & Open Source** ✅ **No API Keys Required** ✅ **Self-Hosted
+Only** ✅ **MIT License** ✅ **No Cloud Dependencies**
+
+Built with the
 [Model Context Protocol TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk).
 
 ## Tools
@@ -34,11 +123,50 @@ Built on the
 | ------------------------------ | ----------------------------------------------------------------------- |
 | `application://current-styles` | Current `IDesignContext` as JSON — session-scoped style source of truth |
 
-## Quick Start
+## 🚀 **Quick Start**
 
-### 🚀 MCP Integration (Recommended)
+### **Option 1: NPX (Instant Setup)** ⚡
 
-Use UIForge MCP directly in your IDE without cloning the repository:
+```bash
+npx -y uiforge-mcp@latest
+```
+
+### **Option 2: Global Install** 📦
+
+```bash
+npm install -g uiforge-mcp
+uiforge-mcp
+```
+
+### **Option 3: Docker** 🐳
+
+```bash
+docker build -t uiforge-mcp .
+docker run --rm -i uiforge-mcp
+```
+
+---
+
+## 🔧 **IDE Integration**
+
+Add to your IDE's MCP configuration (Windsurf, Cursor, etc.):
+
+```json
+{
+  "mcpServers": {
+    "uiforge-mcp": {
+      "command": "npx",
+      "args": ["-y", "uiforge-mcp@latest"],
+      "env": {
+        "FIGMA_ACCESS_TOKEN": "your_token_here",
+        "NODE_ENV": "production"
+      }
+    }
+  }
+}
+```
+
+> **💡 Tip:** Use Docker for production, NPX for quick testing
 
 #### Option 1: Docker (Production Ready)
 
@@ -50,8 +178,11 @@ Add to your IDE's MCP configuration:
     "uiforge-mcp": {
       "command": "docker",
       "args": [
-        "run", "--rm", "-i",
-        "-e", "FIGMA_ACCESS_TOKEN",
+        "run",
+        "--rm",
+        "-i",
+        "-e",
+        "FIGMA_ACCESS_TOKEN",
         "uiforge-mcp:latest"
       ],
       "env": {
@@ -79,7 +210,8 @@ Add to your IDE's MCP configuration:
 }
 ```
 
-**📖 Full Setup Guide**: See [MCP_SETUP_GUIDE.md](./MCP_SETUP_GUIDE.md) for detailed configuration options.
+**📖 Full Setup Guide**: See [MCP_SETUP_GUIDE.md](./MCP_SETUP_GUIDE.md) for
+detailed configuration options.
 
 ### Option 3: Local Development
 
@@ -138,13 +270,15 @@ npm run docker:run
 
 ## MCP Integration
 
-UIForge MCP server can be integrated with any MCP-compatible IDE using standard Docker or NPX commands.
+UIForge MCP server can be integrated with any MCP-compatible IDE using standard
+Docker or NPX commands.
 
 ### 🎯 Quick Setup (No Clone Required)
 
 #### Docker Integration (Recommended)
 
 1. **Build Docker image once:**
+
    ```bash
    docker pull uiforge-mcp:latest
    # Or build from source: docker build -t uiforge-mcp:latest .
@@ -157,8 +291,11 @@ UIForge MCP server can be integrated with any MCP-compatible IDE using standard 
        "uiforge-mcp": {
          "command": "docker",
          "args": [
-           "run", "--rm", "-i",
-           "-e", "FIGMA_ACCESS_TOKEN",
+           "run",
+           "--rm",
+           "-i",
+           "-e",
+           "FIGMA_ACCESS_TOKEN",
            "uiforge-mcp:latest"
          ],
          "env": {
@@ -191,17 +328,20 @@ Add to your IDE's MCP configuration:
 ### 🔧 IDE-Specific Setup
 
 #### Windsurf
+
 1. Open `/Users/lucassantana/.codeium/windsurf/mcp_config.json`
 2. Add one of the configurations above
 3. Restart Windsurf
 4. Tools appear automatically in the interface
 
 #### Cursor IDE
+
 1. Open `.cursorrules` or MCP settings
 2. Add the configuration
 3. Restart Cursor
 
 #### VS Code (with MCP extension)
+
 1. Open MCP settings
 2. Add the configuration
 3. Reload VS Code
@@ -209,6 +349,7 @@ Add to your IDE's MCP configuration:
 ### 📋 Available Tools After Setup
 
 Once connected, you'll have access to all 13 MCP tools:
+
 - `generate_ui_component` - Create React/Vue/Angular components
 - `scaffold_full_application` - Generate full applications
 - `analyze_design_image_for_training` - Analyze UI designs
@@ -226,7 +367,8 @@ Set your Figma token in the MCP configuration:
 }
 ```
 
-**📖 Complete Guide**: See [MCP_SETUP_GUIDE.md](./MCP_SETUP_GUIDE.md) for detailed instructions.
+**📖 Complete Guide**: See [MCP_SETUP_GUIDE.md](./MCP_SETUP_GUIDE.md) for
+detailed instructions.
 
 ## IDE Setup
 
@@ -239,6 +381,7 @@ Run the automated setup script for complete IDE configuration:
 ```
 
 This script:
+
 - ✅ Creates `.env` from `.env.example`
 - ✅ Installs VS Code extensions (if available)
 - ✅ Installs Node.js dependencies
@@ -248,17 +391,20 @@ This script:
 ### 📚 Manual IDE Configuration
 
 #### VS Code
+
 - **Extensions**: TypeScript, ESLint, Prettier, REST Client
 - **Debug Configuration**: `.vscode/launch.json` (auto-loads `.env`)
 - **Tasks**: Build and start tasks configured
 - **Settings**: Environment file auto-loading enabled
 
 #### Cursor IDE
+
 - **Environment**: `.cursorrules` configured for UIForge MCP
 - **Auto-loading**: `.env` file automatically detected
 - **Development**: Optimized for MCP server development
 
 #### Windsurf IDE
+
 - **Configuration**: `.windsurf/` directory with MCP development rules
 - **Environment**: `.env` file automatically loaded
 - **Integration**: Seamless MCP tool development
@@ -276,7 +422,8 @@ NODE_ENV=development
 LOG_LEVEL=debug
 ```
 
-**📖 Detailed Instructions**: See [IDE-SETUP.md](./IDE-SETUP.md) for comprehensive IDE configuration guide.
+**📖 Detailed Instructions**: See [IDE-SETUP.md](./IDE-SETUP.md) for
+comprehensive IDE configuration guide.
 
 ## Test Coverage
 
