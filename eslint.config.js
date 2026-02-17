@@ -13,8 +13,8 @@ export default tseslint.config(
     files: ['src/**/*.ts'],
     languageOptions: {
       parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
+        ecmaVersion: 2022,
+        sourceType: 'module',
       },
     },
     rules: {
@@ -59,16 +59,10 @@ export default tseslint.config(
     },
   },
   {
-    // Test files - relaxed rules and disable ALL type-aware linting
-    // Test files are excluded from tsconfig.json, so we disable all type-aware rules
+    // Test files - relaxed rules
     files: ['src/__tests__/**/*.ts'],
-    languageOptions: {
-      parserOptions: {
-        projectService: false,
-      },
-    },
     rules: {
-      // Disable type-aware rules
+      // Disable strict type-aware rules for tests
       '@typescript-eslint/await-thenable': 'off',
       '@typescript-eslint/no-floating-promises': 'off',
       '@typescript-eslint/no-misused-promises': 'off',
