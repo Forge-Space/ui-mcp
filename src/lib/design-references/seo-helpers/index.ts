@@ -35,9 +35,9 @@ export function generateMetaTags(config: IMetaConfig): string {
   // Open Graph
   if (config.openGraph) {
     const og = config.openGraph;
-    tags.push(`<meta property="og:title" content="${escapeHtml(og.title || config.title)}" />`);
-    tags.push(`<meta property="og:description" content="${escapeHtml(og.description || config.description)}" />`);
-    tags.push(`<meta property="og:type" content="${escapeHtml(og.type || 'website')}" />`);
+    tags.push(`<meta property="og:title" content="${escapeHtml(og.title ?? config.title)}" />`);
+    tags.push(`<meta property="og:description" content="${escapeHtml(og.description ?? config.description)}" />`);
+    tags.push(`<meta property="og:type" content="${escapeHtml(og.type ?? 'website')}" />`);
     if (og.image) tags.push(`<meta property="og:image" content="${escapeHtml(og.image)}" />`);
     if (og.url) tags.push(`<meta property="og:url" content="${escapeHtml(og.url)}" />`);
     if (og.siteName) tags.push(`<meta property="og:site_name" content="${escapeHtml(og.siteName)}" />`);
@@ -46,11 +46,11 @@ export function generateMetaTags(config: IMetaConfig): string {
   // Twitter Card
   if (config.twitter) {
     const tw = config.twitter;
-    tags.push(`<meta name="twitter:card" content="${escapeHtml(tw.card || 'summary_large_image')}" />`);
+    tags.push(`<meta name="twitter:card" content="${escapeHtml(tw.card ?? 'summary_large_image')}" />`);
     if (tw.site) tags.push(`<meta name="twitter:site" content="${escapeHtml(tw.site)}" />`);
     if (tw.creator) tags.push(`<meta name="twitter:creator" content="${escapeHtml(tw.creator)}" />`);
-    tags.push(`<meta name="twitter:title" content="${escapeHtml(tw.title || config.title)}" />`);
-    tags.push(`<meta name="twitter:description" content="${escapeHtml(tw.description || config.description)}" />`);
+    tags.push(`<meta name="twitter:title" content="${escapeHtml(tw.title ?? config.title)}" />`);
+    tags.push(`<meta name="twitter:description" content="${escapeHtml(tw.description ?? config.description)}" />`);
     if (tw.image) tags.push(`<meta name="twitter:image" content="${escapeHtml(tw.image)}" />`);
   }
 
@@ -80,9 +80,9 @@ export function generateNextMetadata(config: IMetaConfig): string {
   if (config.openGraph) {
     const og = config.openGraph;
     lines.push('  openGraph: {');
-    lines.push(`    title: ${JSON.stringify(og.title || config.title)},`);
-    lines.push(`    description: ${JSON.stringify(og.description || config.description)},`);
-    lines.push(`    type: ${JSON.stringify(og.type || 'website')},`);
+    lines.push(`    title: ${JSON.stringify(og.title ?? config.title)},`);
+    lines.push(`    description: ${JSON.stringify(og.description ?? config.description)},`);
+    lines.push(`    type: ${JSON.stringify(og.type ?? 'website')},`);
     if (og.image) lines.push(`    images: [${JSON.stringify(og.image)}],`);
     if (og.url) lines.push(`    url: ${JSON.stringify(og.url)},`);
     if (og.siteName) lines.push(`    siteName: ${JSON.stringify(og.siteName)},`);
@@ -92,11 +92,11 @@ export function generateNextMetadata(config: IMetaConfig): string {
   if (config.twitter) {
     const tw = config.twitter;
     lines.push('  twitter: {');
-    lines.push(`    card: ${JSON.stringify(tw.card || 'summary_large_image')},`);
+    lines.push(`    card: ${JSON.stringify(tw.card ?? 'summary_large_image')},`);
     if (tw.site) lines.push(`    site: ${JSON.stringify(tw.site)},`);
     if (tw.creator) lines.push(`    creator: ${JSON.stringify(tw.creator)},`);
-    lines.push(`    title: ${JSON.stringify(tw.title || config.title)},`);
-    lines.push(`    description: ${JSON.stringify(tw.description || config.description)},`);
+    lines.push(`    title: ${JSON.stringify(tw.title ?? config.title)},`);
+    lines.push(`    description: ${JSON.stringify(tw.description ?? config.description)},`);
     if (tw.image) lines.push(`    images: [${JSON.stringify(tw.image)}],`);
     lines.push('  },');
   }

@@ -47,8 +47,8 @@ export function extractSkeleton(code: string): string {
   let lastDepth = 0;
 
   while ((match = tagRegex.exec(clean)) !== null) {
-    const fullTag = match[0]!;
-    const tagName = match[1]!.toLowerCase();
+    const fullTag = match[0] ?? '';
+    const tagName = match[1]?.toLowerCase() ?? '';
 
     // Skip self-closing tags that are decorative
     const isSelfClosing = fullTag.endsWith('/>') || VOID_TAGS.has(tagName);
