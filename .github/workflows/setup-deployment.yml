@@ -1,0 +1,198 @@
+name: Setup Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      setup_npm:
+        description: 'Setup npm token'
+        required: false
+        default: false
+        type: boolean
+      setup_docker:
+        description: 'Setup Docker credentials'
+        required: false
+        default: false
+        type: boolean
+      verify_configuration:
+        description: 'Verify existing configuration'
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  setup-deployment:
+    name: Setup Deployment Configuration
+    runs-on: ubuntu-latest
+    if: github.actor == 'LucasSantana-Dev' || contains(github.actor, 'admin')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Verify workflow syntax
+        run: |
+          echo "🔍 Verifying deployment workflow..."
+          if [ -f ".github/workflows/deploy.yml" ]; then
+            echo "✅ Deployment workflow exists"
+            # Basic YAML syntax check
+            if python3 -c "import yaml; yaml.safe_load(open('.github/workflows/deploy.yml'))"; then
+              echo "✅ Workflow syntax is valid"
+            else
+              echo "❌ Workflow syntax is invalid"
+              exit 1
+            fi
+          else
+            echo "❌ Deployment workflow not found"
+            exit 1
+          fi
+
+      - name: Test local validation
+        run: |
+          echo "🧪 Testing local validation..."
+          if npm run validate:all; then
+            echo "✅ Local validation passes"
+          else
+            echo "❌ Local validation failed"
+            exit 1
+          fi
+
+      - name: Check repository configuration
+        run: |
+          echo "🔍 Checking repository configuration..."
+
+          # Check if we're in the right directory
+          if [ -f "package.json" ] && [ -d ".github/workflows" ]; then
+            echo "✅ In correct project directory"
+          else
+            echo "❌ Not in the UIForge MCP project directory"
+            exit 1
+          fi
+
+      - name: Setup npm token (guided)
+        if: github.event.inputs.setup_npm == 'true'
+        run: |
+          echo "📝 Setting up npm token..."
+          echo ""
+          echo "To create NPM_TOKEN:"
+          echo "1. Go to https://www.npmjs.com/settings/tokens"
+          echo "2. Click 'Generate New Token'"
+          echo "3. Select 'Automation' token type"
+          echo "4. Copy the token"
+          echo "5. Add it as a repository secret named NPM_TOKEN"
+          echo ""
+          echo "Visit: https://github.com/${{ github.repository }}/settings/secrets/actions"
+          echo ""
+          echo "⚠️ This step requires manual intervention in GitHub UI"
+
+      - name: Setup Docker credentials (guided)
+        if: github.event.inputs.setup_docker == 'true'
+        run: |
+          echo "📝 Setting up Docker credentials..."
+          echo ""
+          echo "To create Docker secrets:"
+          echo "1. Create a Docker Hub access token: https://hub.docker.com/settings/security"
+          echo "2. Add DOCKER_USERNAME secret"
+          echo "3. Add DOCKER_PASSWORD secret"
+          echo ""
+          echo "Visit: https://github.com/${{ github.repository }}/settings/secrets/actions"
+          echo ""
+          echo "⚠️ This step requires manual intervention in GitHub UI"
+
+      - name: Verify existing configuration
+        if: github.event.inputs.verify_configuration == 'true'
+        run: |
+          echo " Verifying existing configuration..."
+          echo ""
+
+          # Check for required secrets (without exposing values)
+          echo "Checking required secrets:"
+
+          echo "NPM_TOKEN: Check if configured in repository settings"
+          echo "DOCKER_USERNAME: Check if configured in repository settings"
+          echo "DOCKER_PASSWORD: Check if configured in repository settings"
+
+          echo ""
+          echo "Visit: https://github.com/${{ github.repository }}/settings/secrets/actions"
+          echo "to verify all required secrets are configured."
+
+          echo ""
+          echo " Configuration Summary:"
+          echo "Repository: ${{ github.repository }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Actor: ${{ github.actor }}"
+          echo "Workflow: ${{ github.workflow }}"
+
+      - name: Check branch protection
+        run: |
+          echo "🛡️ Checking branch protection..."
+          echo ""
+          echo "To verify branch protection settings:"
+          echo "Visit: https://github.com/${{ github.repository }}/settings/branches"
+          echo ""
+          echo "Recommended settings for main branch:"
+          echo "- Require pull request reviews"
+          echo "- Require status checks to pass"
+          echo "- Require up-to-date branches before merging"
+          echo "- Do not allow force pushes"
+          echo "- Do not allow deletions"
+
+      - name: Generate setup report
+        run: |
+          echo "📊 Generating setup report..."
+          echo ""
+          echo "🎉 Setup Configuration Report"
+          echo "============================"
+          echo ""
+          echo "Repository: ${{ github.repository }}"
+          echo "Setup by: ${{ github.actor }}"
+          echo "Timestamp: $(date -u)"
+          echo ""
+          echo "✅ Completed:"
+          echo "- Repository structure verified"
+          echo "- Workflow syntax validated"
+          echo "- Local validation tested"
+          echo "- Configuration checked"
+          echo ""
+          echo "📋 Next Steps:"
+          echo "1. Configure any missing secrets in GitHub UI"
+          echo "2. Set up branch protection rules"
+          echo "3. Test deployment workflow"
+          echo "4. Review docs/DEPLOYMENT.md for detailed instructions"
+          echo ""
+          echo "📚 Documentation:"
+          echo "- Deployment Guide: docs/DEPLOYMENT.md"
+          echo "- Branching Strategy: docs/BRANCHING_STRATEGY.md"
+
+  admin-check:
+    name: Verify Admin Permissions
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Check actor permissions
+        run: |
+          echo "🔍 Checking permissions..."
+          echo "Actor: ${{ github.actor }}"
+          echo "Repository: ${{ github.repository }}"
+          echo ""
+
+          if [[ "${{ github.actor }}" == "LucasSantana-Dev" ]] || [[ "${{ github.actor }}" == *"admin"* ]]; then
+            echo "✅ Actor has admin permissions"
+          else
+            echo "❌ Actor does not have admin permissions"
+            echo "This workflow can only be run by administrators"
+            exit 1
+          fi

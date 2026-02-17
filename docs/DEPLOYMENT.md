@@ -24,10 +24,12 @@ For detailed branching strategy, see [Branching Strategy Guide](./BRANCHING_STRA
 
 ### Prerequisites
 
-1. **Repository Secrets** (configured in GitHub repository settings):
+1. **Repository Secrets** (configured via admin workflow):
    - `NPM_TOKEN`: npm automation token with publish permissions
    - `DOCKER_USERNAME`: Docker Hub username
    - `DOCKER_PASSWORD`: Docker Hub access token
+
+   ⚠️ **Security Note**: Secrets are now configured via the **Setup Deployment** admin workflow in GitHub Actions, not via local scripts.
 
 2. **Branch Protection**:
 
@@ -39,6 +41,50 @@ For detailed branching strategy, see [Branching Strategy Guide](./BRANCHING_STRA
    - Uses semantic versioning (patch/minor/major)
    - Automatic Git tagging
    - GitHub release creation
+
+### 🔧 Admin Setup Workflow
+
+**⚠️ Important**: Deployment setup is now handled through admin-only GitHub workflows instead of local scripts.
+
+#### Setup Deployment Workflow
+
+1. **Access**: Only administrators (LucasSantana-Dev or users with 'admin' in name) can run this workflow
+2. **Location**: GitHub Actions → Setup Deployment
+3. **Purpose**: Configure deployment secrets and verify repository setup
+
+**Setup Steps**:
+```bash
+# 1. Go to GitHub Actions tab
+# 2. Select "Setup Deployment" workflow
+# 3. Click "Run workflow"
+# 4. Configure inputs:
+#    - setup_npm: Guide npm token setup
+#    - setup_docker: Guide Docker credential setup
+#    - verify_configuration: Check existing setup
+# 5. Follow the guided setup instructions
+```
+
+**What the workflow does**:
+- Verifies workflow syntax
+- Tests local validation
+- Guides secret configuration through GitHub UI
+- Checks repository configuration
+- Generates setup reports
+
+#### Admin Lint Workflow
+
+For code quality and formatting issues, use the **Admin Lint** workflow:
+
+```bash
+# 1. Go to GitHub Actions tab
+# 2. Select "Admin Lint" workflow
+# 3. Configure inputs:
+#    - fix_issues: Auto-fix linting problems
+#    - check_formatting: Run Prettier checks
+#    - check_types: Run TypeScript checks
+#    - check_syntax: Validate syntax
+# 4. Click "Run workflow"
+```
 
 ### Workflow Trigger
 

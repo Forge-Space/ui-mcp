@@ -1,0 +1,151 @@
+name: Admin Lint
+
+on:
+  workflow_dispatch:
+    inputs:
+      fix_issues:
+        description: 'Automatically fix linting issues'
+        required: false
+        default: false
+        type: boolean
+      check_formatting:
+        description: 'Check code formatting'
+        required: false
+        default: true
+        type: boolean
+      check_types:
+        description: 'Check TypeScript types'
+        required: false
+        default: true
+        type: boolean
+      check_syntax:
+        description: 'Check basic syntax'
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  admin-lint:
+    name: Admin Lint Checks
+    runs-on: ubuntu-latest
+    if: github.actor == 'LucasSantana-Dev' || contains(github.actor, 'admin')
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: TypeScript type checking
+        if: github.event.inputs.check_types == 'true'
+        run: |
+          echo "🔍 Running TypeScript type checking..."
+          if npx tsc --noEmit; then
+            echo "✅ TypeScript type checking passed"
+          else
+            echo "❌ TypeScript type checking failed"
+            exit 1
+          fi
+
+      - name: Prettier format check
+        if: github.event.inputs.check_formatting == 'true'
+        run: |
+          echo "🔍 Running Prettier format check..."
+          if npx prettier --check "src/**/*.ts"; then
+            echo "✅ Prettier format check passed"
+          else
+            echo "❌ Prettier format check failed"
+            if [ "${{ github.event.inputs.fix_issues }}" == "true" ]; then
+              echo "🔧 Attempting to fix formatting issues..."
+              npx prettier --write "src/**/*.ts"
+              echo "✅ Formatting issues fixed"
+            else
+              exit 1
+            fi
+          fi
+
+      - name: Basic syntax check
+        if: github.event.inputs.check_syntax == 'true'
+        run: |
+          echo "🔍 Running basic syntax check..."
+          # Use Node.js to check for syntax errors, but skip .d.ts files
+          files=$(find src -name "*.ts" ! -name "*.d.ts")
+          
+          for file in $files; do
+            if [ -n "$file" ]; then
+              if node -c "$file"; then
+                echo "✅ $file syntax OK"
+              else
+                echo "❌ Syntax error in $file"
+                exit 1
+              fi
+            fi
+          done
+          echo "✅ Basic syntax check passed"
+
+      - name: ESLint check
+        run: |
+          echo "🔍 Running ESLint..."
+          if npx eslint src --ext .ts; then
+            echo "✅ ESLint passed"
+          else
+            echo "❌ ESLint failed"
+            if [ "${{ github.event.inputs.fix_issues }}" == "true" ]; then
+              echo "🔧 Attempting to fix ESLint issues..."
+              npx eslint src --ext .ts --fix
+              echo "✅ ESLint issues fixed"
+            else
+              exit 1
+            fi
+          fi
+
+      - name: Generate lint report
+        run: |
+          echo "📊 Generating lint report..."
+          echo ""
+          echo "🎉 Admin Lint Report"
+          echo "==================="
+          echo ""
+          echo "Repository: ${{ github.repository }}"
+          echo "Run by: ${{ github.actor }}"
+          echo "Timestamp: $(date -u)"
+          echo ""
+          echo "📋 Configuration:"
+          echo "- TypeScript types: ${{ github.event.inputs.check_types }}"
+          echo "- Code formatting: ${{ github.event.inputs.check_formatting }}"
+          echo "- Basic syntax: ${{ github.event.inputs.check_syntax }}"
+          echo "- Auto-fix enabled: ${{ github.event.inputs.fix_issues }}"
+          echo ""
+          echo "✅ All lint checks completed successfully!"
+
+  admin-check:
+    name: Verify Admin Permissions
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: Check actor permissions
+        run: |
+          echo "🔍 Checking permissions..."
+          echo "Actor: ${{ github.actor }}"
+          echo "Repository: ${{ github.repository }}"
+          echo ""
+          
+          if [[ "${{ github.actor }}" == "LucasSantana-Dev" ]] || [[ "${{ github.actor }}" == *"admin"* ]]; then
+            echo "✅ Actor has admin permissions"
+          else
+            echo "❌ Actor does not have admin permissions"
+            echo "This workflow can only be run by administrators"
+            exit 1
+          fi
