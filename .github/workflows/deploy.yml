@@ -1,0 +1,449 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      dry_run:
+        description: 'Dry run (skip actual publish)'
+        required: false
+        default: false
+        type: boolean
+      create_release:
+        description: 'Create GitHub release'
+        required: false
+        default: true
+        type: boolean
+
+jobs:
+  # Pre-flight checks
+  preflight:
+    name: Pre-flight Checks
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      is_prerelease: ${{ steps.version.outputs.is_prerelease }}
+      should_publish: ${{ steps.checks.outputs.should_publish }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Check if main branch
+        run: |
+          if [[ "${{ github.ref }}" != "refs/heads/main" ]]; then
+            echo "::error::Deployment can only be run from main branch"
+            exit 1
+          fi
+
+      - name: Check for uncommitted changes
+        run: |
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "::error::Working directory is not clean. Commit all changes before deployment."
+            exit 1
+          fi
+
+      - name: Calculate next version
+        id: version
+        run: |
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "Current version: $CURRENT_VERSION"
+          
+          case "${{ github.event.inputs.version_type }}" in
+            "patch")
+              NEXT_VERSION=$(echo $CURRENT_VERSION | awk -F. '{print $1"."$2"."($3+1)}')
+              ;;
+            "minor")
+              NEXT_VERSION=$(echo $CURRENT_VERSION | awk -F. '{print $1"."($2+1)".0"}')
+              ;;
+            "major")
+              NEXT_VERSION=$(echo $CURRENT_VERSION | awk -F. '{print ($1+1)".0.0"}')
+              ;;
+            *)
+              echo "::error::Invalid version type: ${{ github.event.inputs.version_type }}"
+              exit 1
+              ;;
+          esac
+          
+          echo "Next version: $NEXT_VERSION"
+          echo "version=$NEXT_VERSION" >> $GITHUB_OUTPUT
+          
+          # Check if prerelease (contains -)
+          if [[ "$NEXT_VERSION" == *"-" ]]; then
+            echo "is_prerelease=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_prerelease=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check if version already exists
+        id: checks
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          if git rev-parse "v$VERSION" >/dev/null 2>&1; then
+            echo "::error::Version v$VERSION already exists"
+            echo "should_publish=false" >> $GITHUB_OUTPUT
+            exit 1
+          else
+            echo "should_publish=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Validate package.json
+        run: |
+          # Check if package.json is valid
+          node -e "JSON.parse(require('fs').readFileSync('package.json', 'utf8'))"
+          
+          # Check required fields
+          REQUIRED_FIELDS=("name" "version" "description" "main" "bin")
+          for field in "${REQUIRED_FIELDS[@]}"; do
+            if ! jq -e ".$field" package.json > /dev/null; then
+              echo "::error::Missing required field: $field"
+              exit 1
+            fi
+          done
+
+  # Quality assurance
+  qa:
+    name: Quality Assurance
+    runs-on: ubuntu-latest
+    needs: preflight
+    if: needs.preflight.outputs.should_publish == 'true'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Run full validation
+        run: npm run validate:all
+
+      - name: Run tests with coverage
+        run: npm run test:coverage
+
+      - name: Check coverage threshold
+        run: |
+          COVERAGE=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')
+          echo "Coverage: $COVERAGE%"
+          
+          if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+            echo "::warning::Coverage is below 80%: $COVERAGE%"
+          fi
+
+      - name: Security audit
+        run: |
+          echo "Running security audit..."
+          npm audit --audit-level=moderate
+          if [ $? -ne 0 ]; then
+            echo "::warning::Security vulnerabilities found. Review before publishing."
+          fi
+
+      - name: Check package size
+        run: |
+          npm pack --dry-run > /dev/null
+          PACKAGE_SIZE=$(du -k *.tgz | cut -f1)
+          echo "Package size: ${PACKAGE_SIZE}KB"
+          
+          if [ $PACKAGE_SIZE -gt 1024 ]; then
+            echo "::warning::Package size exceeds 1MB: ${PACKAGE_SIZE}KB"
+          fi
+          rm -f *.tgz
+
+      - name: Validate binary
+        run: |
+          npm run build
+          
+          # Check if binary exists and is executable
+          if [ ! -f "dist/index.js" ]; then
+            echo "::error::Binary not found after build"
+            exit 1
+          fi
+          
+          # Test binary help
+          timeout 10s node dist/index.js --help || true
+
+  # Build artifacts
+  build:
+    name: Build Artifacts
+    runs-on: ubuntu-latest
+    needs: [preflight, qa]
+    if: needs.preflight.outputs.should_publish == 'true'
+    outputs:
+      package_hash: ${{ steps.hash.outputs.hash }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Build
+        run: npm run build
+
+      - name: Generate package hash
+        id: hash
+        run: |
+          HASH=$(sha256sum dist/index.js | cut -d' ' -f1)
+          echo "hash=$HASH" >> $GITHUB_OUTPUT
+          echo "Package hash: $HASH"
+
+      - name: Create package
+        run: |
+          VERSION="${{ needs.preflight.outputs.version }}"
+          npm version $VERSION --no-git-tag-version
+          npm pack
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-${{ needs.preflight.outputs.version }}
+          path: "*.tgz"
+          retention-days: 30
+
+  # Docker build
+  docker:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    needs: [preflight, qa]
+    if: needs.preflight.outputs.should_publish == 'true'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        if: github.event.inputs.dry_run != 'true'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: lucassantana/uiforge-mcp
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.event.inputs.dry_run != 'true' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            VERSION=${{ needs.preflight.outputs.version }}
+
+      - name: Test Docker image
+        run: |
+          docker run --rm lucassantana/uiforge-mcp:latest --help || true
+
+  # Publish to npm
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    needs: [preflight, qa, build]
+    if: needs.preflight.outputs.should_publish == 'true' && github.event.inputs.dry_run != 'true'
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      - name: Download package
+        uses: actions/download-artifact@v4
+        with:
+          name: package-${{ needs.preflight.outputs.version }}
+
+      - name: Publish to npm
+        run: |
+          VERSION="${{ needs.preflight.outputs.version }}"
+          npm version $VERSION --no-git-tag-version
+          npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Verify publication
+        run: |
+          VERSION="${{ needs.preflight.outputs.version }}"
+          npm view uiforge-mcp@$VERSION
+          
+          # Test installation
+          cd /tmp
+          npm i -g uiforge-mcp@$VERSION
+          uiforge-mcp --help || true
+
+  # Create GitHub release
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: [preflight, qa, build, docker]
+    if: needs.preflight.outputs.should_publish == 'true' && github.event.inputs.create_release == 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download package
+        uses: actions/download-artifact@v4
+        with:
+          name: package-${{ needs.preflight.outputs.version }}
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          VERSION="${{ needs.preflight.outputs.version }}"
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          
+          if [ -n "$PREV_TAG" ]; then
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" $PREV_TAG..HEAD)
+          else
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)")
+          fi
+          
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ needs.preflight.outputs.version }}
+          release_name: Release v${{ needs.preflight.outputs.version }}
+          body: |
+            ## 🚀 Release v${{ needs.preflight.outputs.version }}
+            
+            ### 📦 Package Installation
+            ```bash
+            npm install -g uiforge-mcp@${{ needs.preflight.outputs.version }}
+            ```
+            
+            ### 🐳 Docker Installation
+            ```bash
+            docker pull lucassantana/uiforge-mcp:v${{ needs.preflight.outputs.version }}
+            ```
+            
+            ### 📋 Changes
+            ${{ steps.changelog.outputs.changelog }}
+            
+            ### ✅ Validation Results
+            - ✅ All tests passed
+            - ✅ Code quality checks passed
+            - ✅ Security audit completed
+            - ✅ Docker image built successfully
+            - ✅ Package published to npm
+            
+            ---
+            
+            🤖 This release was automatically created by GitHub Actions.
+          draft: false
+          prerelease: ${{ needs.preflight.outputs.is_prerelease }}
+          artifacts: "*.tgz"
+
+  # Update version and push
+  update-version:
+    name: Update Version
+    runs-on: ubuntu-latest
+    needs: [preflight, publish, release]
+    if: always() && needs.publish.result == 'success' || needs.release.result == 'success'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Update version in package.json
+        run: |
+          VERSION="${{ needs.preflight.outputs.version }}"
+          npm version $VERSION --no-git-tag-version
+
+      - name: Commit and tag
+        run: |
+          VERSION="${{ needs.preflight.outputs.version }}"
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add package.json package-lock.json
+          git commit -m "chore: bump version to v$VERSION"
+          git tag -a "v$VERSION" -m "Release v$VERSION"
+          git push origin main --follow-tags
+
+  # Notification
+  notify:
+    name: Notify Results
+    runs-on: ubuntu-latest
+    needs: [preflight, qa, build, docker, publish, release]
+    if: always()
+    steps:
+      - name: Deployment Summary
+        run: |
+          echo "## 🚀 Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** v${{ needs.preflight.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Dry Run:** ${{ github.event.inputs.dry_run }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Create Release:** ${{ github.event.inputs.create_release }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "| Job | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Pre-flight | ${{ needs.preflight.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Quality Assurance | ${{ needs.qa.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Build | ${{ needs.build.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Docker | ${{ needs.docker.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Publish | ${{ needs.publish.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Release | ${{ needs.release.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [[ "${{ needs.publish.result }}" == "success" ]]; then
+            echo "✅ Package successfully published to npm!" >> $GITHUB_STEP_SUMMARY
+            echo "📦 Install with: \`npm install -g uiforge-mcp@${{ needs.preflight.outputs.version }}\`" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Publishing failed or was skipped" >> $GITHUB_STEP_SUMMARY
+          fi

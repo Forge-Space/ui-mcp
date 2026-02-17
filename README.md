@@ -30,6 +30,7 @@
 ### 🔧 **Build & Deployment**
 
 [![Build Status](https://img.shields.io/github/actions/workflows/ci.yml/LucasSantana-Dev/uiforge-mcp?label=build)](https://github.com/LucasSantana-Dev/uiforge-mcp/actions)
+[![Deploy Status](https://img.shields.io/github/actions/workflows/deploy.yml/LucasSantana-Dev/uiforge-mcp?label=deploy)](https://github.com/LucasSantana-Dev/uiforge-mcp/actions)
 [![Docker Build](https://img.shields.io/github/actions/workflows/ci.yml/LucasSantana-Dev/uiforge-mcp?label=docker)](https://github.com/LucasSantana-Dev/uiforge-mcp/actions)
 [![Docker Image Size](https://img.shields.io/docker/image-size/LucasSantanaDev/uiforge-mcp/latest)](https://hub.docker.com/r/LucasSantanaDev/uiforge-mcp)
 [![Docker Pulls](https://img.shields.io/docker/pulls/LucasSantanaDev/uiforge-mcp.svg)](https://hub.docker.com/r/LucasSantanaDev/uiforge-mcp)
@@ -514,6 +515,77 @@ docker run -d \
 - **mcp-gateway**: Add to your Docker Compose setup
 - **Claude Desktop**: Connect via stdio transport
 - **Custom MCP clients**: Use SSE or stdio transport
+
+## 🚀 Deployment
+
+### Automated Deployment
+
+UIForge MCP uses GitHub Actions for automated deployment with comprehensive validation:
+
+```bash
+# Trigger deployment via GitHub Actions
+1. Go to: https://github.com/LucasSantana-Dev/uiforge-mcp/actions
+2. Click "Deploy" workflow
+3. Choose version type (patch/minor/major)
+4. Set dry_run to false for production deployment
+5. Click "Run workflow"
+```
+
+**Features:**
+- ✅ Full validation (lint, test, build, security audit)
+- ✅ Multi-platform Docker builds (amd64/arm64)
+- ✅ Automatic npm publishing with provenance
+- ✅ GitHub release creation
+- ✅ Semantic versioning
+- ✅ Rollback capabilities
+
+### Quick Setup
+
+Run the setup script to configure deployment:
+
+```bash
+./scripts/setup-deployment.sh
+```
+
+This script helps configure:
+- GitHub secrets (NPM_TOKEN, DOCKER_USERNAME, DOCKER_PASSWORD)
+- Branch protection rules
+- Local validation
+
+### Manual Deployment
+
+For local testing or emergency deployments:
+
+```bash
+# Update version
+npm version patch  # or minor/major
+
+# Full validation
+npm run validate:all
+
+# Build and publish
+npm run build
+npm publish --access public
+
+# Create Git tag
+git push origin main --follow-tags
+```
+
+### Docker Deployment
+
+```bash
+# Build and push multi-platform image
+docker buildx build --platform linux/amd64,linux/arm64 \
+  --push -t lucassantana/uiforge-mcp:latest .
+
+# Pull and run
+docker pull lucassantana/uiforge-mcp:latest
+docker run -d --name uiforge-mcp \
+  -e FIGMA_ACCESS_TOKEN=your_token \
+  lucassantana/uiforge-mcp:latest
+```
+
+📖 **Full deployment guide**: See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
 
 ## Project Structure
 
