@@ -11,10 +11,10 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
@@ -38,10 +38,10 @@ jobs:
     name: Type Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
@@ -59,10 +59,10 @@ jobs:
       matrix:
         node-version: [22, 24]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
@@ -95,7 +95,7 @@ jobs:
       - name: Generate coverage report
         if: matrix.node-version == 22
         run: |
-          echo "## 📊 Coverage Report" >> $GITHUB_STEP_SUMMARY
+          echo "## Coverage Report" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
           if [ -f coverage/coverage-summary.json ]; then
@@ -104,7 +104,6 @@ jobs:
             echo "| Metric | Coverage |" >> $GITHUB_STEP_SUMMARY
             echo "|--------|----------|" >> $GITHUB_STEP_SUMMARY
 
-            # Extract coverage percentages
             LINES=$(cat coverage/coverage-summary.json | jq '.total.lines.pct // 0')
             FUNCTIONS=$(cat coverage/coverage-summary.json | jq '.total.functions.pct // 0')
             BRANCHES=$(cat coverage/coverage-summary.json | jq '.total.branches.pct // 0')
@@ -116,11 +115,10 @@ jobs:
             echo "| Statements | ${STATEMENTS}% |" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
 
-            # Check if coverage meets threshold
             if (( $(echo "$LINES >= 80" | bc -l) )); then
-              echo "✅ Line coverage meets 80% threshold" >> $GITHUB_STEP_SUMMARY
+              echo "Line coverage meets 80% threshold" >> $GITHUB_STEP_SUMMARY
             else
-              echo "❌ Line coverage below 80% threshold" >> $GITHUB_STEP_SUMMARY
+              echo "Line coverage below 80% threshold" >> $GITHUB_STEP_SUMMARY
             fi
           fi
 
@@ -128,10 +126,10 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
@@ -151,7 +149,7 @@ jobs:
     name: Docker Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -188,10 +186,10 @@ jobs:
       contents: read
       security-events: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
@@ -229,10 +227,10 @@ jobs:
       contents: read
       security-events: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
@@ -258,10 +256,10 @@ jobs:
     name: Dependency Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
