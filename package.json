@@ -1,11 +1,11 @@
 {
-  "name": "@forge-ai/ui-mcp",
+  "name": "@forgespace/ui-mcp",
   "version": "0.5.0",
   "description": "AI-driven UI generation via Model Context Protocol. Generate React, Next.js, Vue, Angular applications from natural language.",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "forge-ai-ui-mcp": "dist/index.js"
+    "forgespace-ui-mcp": "dist/index.js"
   },
   "scripts": {
     "build": "tsc",
@@ -16,8 +16,8 @@
     "clean": "rm -rf dist coverage .tsbuildinfo node_modules/.cache",
     "validate": "npm run lint:check && npm run format:check && npm run test",
     "validate:all": "npm run lint; npm run format:check; npx tsc --noEmit; npm test; npm run build",
-    "docker:build": "docker build -t forge-ai-ui-mcp:latest .",
-    "docker:run": "docker run -i forge-ai-ui-mcp:latest",
+    "docker:build": "docker build -t forgespace-ui-mcp:latest .",
+    "docker:run": "docker run -i forgespace-ui-mcp:latest",
     "lint": "eslint . --ext .js,.ts --fix",
     "lint:fix": "eslint src/ --fix",
     "format": "prettier --write .",
@@ -34,11 +34,7 @@
     "lint:check": "eslint . --ext .js,.ts",
     "pre-commit": "npm run lint && npm run format && npm run test",
     "prepack": "npm run build",
-    "publish": "npm publish --access public",
-    "integrate": "node scripts/integrate.js",
-    "integrate:mcp-gateway": "node scripts/integrate.js --project=mcp-gateway",
-    "integrate:uiforge-mcp": "node scripts/integrate.js --project=uiforge-mcp",
-    "integrate:uiforge-webapp": "node scripts/integrate.js --project=uiforge-webapp"
+    "publish": "npm publish --access public"
   },
   "dependencies": {
     "@huggingface/transformers": "^3.8.1",
@@ -53,7 +49,7 @@
     "zod": "^4.0.0"
   },
   "devDependencies": {
-    "@forge-ai/core": "^1.1.1",
+    "@forgespace/core": "^1.1.1",
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.17.0",
     "@types/better-sqlite3": "^7.6.13",
@@ -76,36 +72,12 @@
     "@types/fs-extra": "^11.0.1",
     "@types/semver": "^7.5.0"
   },
-  "engines": {
-    "node": ">=22"
-  },
-  "files": [
-    "dist",
-    "bin",
-    "README.md",
-    "LICENSE"
-  ],
-  "keywords": [
-    "mcp",
-    "model-context-protocol",
-    "ai",
-    "ui-generation",
-    "react",
-    "nextjs",
-    "forge-ai",
-    "typescript",
-    "tailwindcss",
-    "frontend",
-    "web-development"
-  ],
+  "engines": { "node": ">=22" },
+  "files": ["dist", "bin", "README.md", "LICENSE"],
+  "keywords": ["mcp", "model-context-protocol", "ai", "ui-generation", "react", "nextjs", "forgespace", "typescript"],
   "license": "MIT",
   "lint-staged": {
-    "src/**/*.ts": [
-      "eslint --fix",
-      "prettier --write"
-    ]
+    "src/**/*.ts": ["eslint --fix", "prettier --write"]
   },
-  "overrides": {
-    "ajv": "^8.18.0"
-  }
+  "overrides": { "ajv": "^8.18.0" }
 }
