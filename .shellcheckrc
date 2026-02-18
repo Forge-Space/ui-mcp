@@ -1,0 +1,23 @@
+# .shellcheckrc
+#
+# Strict shellcheck configuration for all Forge shell scripts.
+# Canonical source: forge-patterns/patterns/shell/linting/.shellcheckrc
+# Philosophy: mirrors TypeScript strictTypeChecked and Python ruff's broad rule selection.
+#
+# Usage:
+#   shellcheck --rcfile=.shellcheckrc script.sh
+#   Or shellcheck auto-discovers this file in the repo root.
+
+# All Forge scripts target bash explicitly.
+shell=bash
+
+# Enable all optional checks (not active by default):
+#   SC2250 — prefer "${var}" over "$var" in most contexts
+#   SC2248 — prefer double-quoting even simple variable expansions
+#   SC2312 — consider invoking command separately to avoid masking return value
+enable=all
+
+# Disabled rules — structural false positives only:
+#   SC1091 — "not following source": sourced files are not on PATH at lint time.
+#   SC2034 — "variable appears unused": false positive in sourced helper files.
+disable=SC1091,SC2034
