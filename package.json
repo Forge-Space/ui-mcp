@@ -76,6 +76,14 @@
   "files": ["dist", "bin", "README.md", "LICENSE"],
   "keywords": ["mcp", "model-context-protocol", "ai", "ui-generation", "react", "nextjs", "forgespace", "typescript"],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Forge-Space/ui-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Forge-Space/ui-mcp/issues"
+  },
+  "homepage": "https://github.com/Forge-Space/ui-mcp#readme",
   "lint-staged": {
     "src/**/*.ts": ["eslint --fix", "prettier --write"]
   },
