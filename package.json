@@ -1,11 +1,11 @@
 {
-  "name": "uiforge-mcp",
+  "name": "@forge-ai/ui-mcp",
   "version": "0.5.0",
-  "description": "AI-driven UI generation via Model Context Protocol. Generate React, Next.js, Vue, Angular applications from natural language. Screenshot-to-code, interactive prototypes, design mockups, accessibility auditing. Zero cost, open source.",
+  "description": "AI-driven UI generation via Model Context Protocol. Generate React, Next.js, Vue, Angular applications from natural language.",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "uiforge-mcp": "dist/index.js"
+    "forge-ai-ui-mcp": "dist/index.js"
   },
   "scripts": {
     "build": "tsc",
@@ -16,8 +16,8 @@
     "clean": "rm -rf dist coverage .tsbuildinfo node_modules/.cache",
     "validate": "npm run lint:check && npm run format:check && npm run test",
     "validate:all": "npm run lint; npm run format:check; npx tsc --noEmit; npm test; npm run build",
-    "docker:build": "docker build -t uiforge-mcp:latest .",
-    "docker:run": "docker run -i uiforge-mcp:latest",
+    "docker:build": "docker build -t forge-ai-ui-mcp:latest .",
+    "docker:run": "docker run -i forge-ai-ui-mcp:latest",
     "lint": "eslint . --ext .js,.ts --fix",
     "lint:fix": "eslint src/ --fix",
     "format": "prettier --write .",
@@ -92,29 +92,11 @@
     "ui-generation",
     "react",
     "nextjs",
-    "vue",
-    "angular",
+    "forge-ai",
     "typescript",
     "tailwindcss",
     "frontend",
-    "web-development",
-    "component-library",
-    "design-system",
-    "prototyping",
-    "accessibility",
-    "figma",
-    "screenshot-to-code",
-    "code-generation",
-    "cli-tool",
-    "docker",
-    "npm-package",
-    "open-source",
-    "ai-tools",
-    "ui-components",
-    "responsive-design",
-    "wcag",
-    "a11y",
-    "productivity"
+    "web-development"
   ],
   "license": "MIT",
   "lint-staged": {
