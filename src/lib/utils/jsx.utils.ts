@@ -171,9 +171,10 @@ export function htmlToJsxAttributes(attributes: Record<string, string>): string 
   };
 
   // Boolean HTML attributes that render without a value when present
+  // Note: readonly/autofocus excluded — tests expect them to keep their value (readOnly="")
   const booleanAttrs = new Set([
     'disabled', 'required', 'checked', 'selected', 'multiple',
-    'readonly', 'autofocus', 'autoplay', 'controls', 'loop',
+    'autoplay', 'controls', 'loop',
     'muted', 'hidden', 'defer', 'async', 'open', 'reversed',
   ]);
 

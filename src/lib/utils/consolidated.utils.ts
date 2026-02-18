@@ -11,14 +11,19 @@
  * Convert string to PascalCase (e.g., "button" → "Button", "nav-bar" → "NavBar")
  */
 export function toPascalCase(str: string): string {
+  // If the entire string is already UPPER_CASE (with optional underscores), preserve it as-is
+  if (/^[A-Z][A-Z0-9_]*$/.test(str)) return str;
+  // Insert separator before uppercase letters in camelCase input, then split
   return str
+    .replace(/([a-z])([A-Z])/g, '$1_$2')
     .split(/[-_\s]+/)
     .map((word) => {
-      // Preserve all-uppercase acronyms
+      if (!word) return '';
+      // Preserve all-uppercase acronyms within a mixed string
       if (word === word.toUpperCase() && word.length > 1) {
         return word;
       }
-      return word.charAt(0).toUpperCase() + word.slice(1);
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
     })
     .join('');
 }
@@ -28,7 +33,8 @@ export function toPascalCase(str: string): string {
  */
 export function toKebabCase(str: string): string {
   return str
-    .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2') // e.g. XMLHttp → XML-Http
+    .replace(/([a-z])([A-Z])/g, '$1-$2')        // e.g. navBar → nav-Bar
     .replace(/[\s_]+/g, '-')
     .toLowerCase();
 }
@@ -55,7 +61,8 @@ export function toSnakeCase(str: string): string {
  * Capitalize first letter of string
  */
 export function capitalize(str: string): string {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+  if (!str) return str;
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
 /**
@@ -118,7 +125,7 @@ export function escapeHtml(str: string): string {
     "'": '&#39;',
   };
 
-  return str.replace(/[&<>"']/g, (match) => htmlEscapes[match]);
+  return str.replace(/[&<>"']/g, (match) => htmlEscapes[match as keyof typeof htmlEscapes]);
 }
 
 // ============================================================================
@@ -288,7 +295,9 @@ export function convertStyleObjectToString(styleObject: Record<string, string | 
     .map(([property, value]) => {
       // Convert camelCase to kebab-case
       const cssProperty = property.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-      return `${cssProperty}: ${value}`;
+      // Add px unit for numeric values
+      const cssValue = typeof value === 'number' ? `${value}px` : value;
+      return `${cssProperty}: ${cssValue}`;
     })
     .join('; ');
 }
@@ -298,18 +307,16 @@ export function convertStyleObjectToString(styleObject: Record<string, string | 
  */
 export function parseStyleString(styleString: string): Record<string, string> {
   const styles: Record<string, string> = {};
-  
+
   if (!styleString) return styles;
-  
+
   styleString.split(';').forEach(rule => {
     const [property, value] = rule.split(':').map(s => s.trim());
     if (property && value) {
-      // Convert kebab-case to camelCase
-      const camelCaseProperty = property.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
-      styles[camelCaseProperty] = value;
+      styles[property] = value;
     }
   });
-  
+
   return styles;
 }
 
@@ -317,12 +324,12 @@ export function parseStyleString(styleString: string): Record<string, string> {
  * Merge multiple style objects
  */
 export function mergeStyles(...styles: (Record<string, string | number> | undefined)[]): Record<string, string | number> {
-  return styles.reduce((merged, style) => {
+  return styles.reduce((merged: Record<string, string | number>, style) => {
     if (style) {
       return { ...merged, ...style };
     }
     return merged;
-  }, {});
+  }, {} as Record<string, string | number>);
 }
 
 // ============================================================================
@@ -381,7 +388,10 @@ export function isValidProjectName(name: string): boolean {
  * Get file extension from path
  */
 export function getFileExtension(path: string): string {
-  return path.split('.').pop() || '';
+  const parts = path.split('.');
+  // Return empty string if there's no extension (no dot or only one part)
+  if (parts.length <= 1) return '';
+  return parts.pop() || '';
 }
 
 /**
@@ -389,7 +399,7 @@ export function getFileExtension(path: string): string {
  */
 export function getFileName(path: string): string {
   const nameWithExt = path.split('/').pop() || '';
-  return nameWithExt.split('.')[0];
+  return nameWithExt.split('.')[0] || '';
 }
 
 /**
@@ -446,7 +456,7 @@ export function sortBy<T>(array: T[], key: keyof T, direction: 'asc' | 'desc' = 
   return [...array].sort((a, b) => {
     const aVal = a[key];
     const bVal = b[key];
-    
+
     if (aVal < bVal) return direction === 'asc' ? -1 : 1;
     if (aVal > bVal) return direction === 'asc' ? 1 : -1;
     return 0;
@@ -458,8 +468,8 @@ export function sortBy<T>(array: T[], key: keyof T, direction: 'asc' | 'desc' = 
  */
 export function includesCaseInsensitive<T>(array: T[], value: T): boolean {
   if (typeof value !== 'string') return array.includes(value);
-  
-  return array.some(item => 
+
+  return array.some(item =>
     typeof item === 'string' && item.toLowerCase() === value.toLowerCase()
   );
 }
@@ -545,11 +555,11 @@ export async function retry<T>(
       return await fn();
     } catch (error) {
       lastError = error;
-      
+
       if (attempt === maxAttempts) {
         throw lastError;
       }
-      
+
       // Exponential backoff
       const waitTime = delay * Math.pow(2, attempt - 1);
       await new Promise(resolve => setTimeout(resolve, waitTime));

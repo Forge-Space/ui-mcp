@@ -102,6 +102,7 @@ describe('submit-feedback', () => {
         const input = { generation_id: 'test', rating, feedback_type: 'explicit' };
         expect(input.rating).toBeGreaterThanOrEqual(1);
         expect(input.rating).toBeLessThanOrEqual(10);
+        expect(Number.isInteger(input.rating)).toBe(true);
       }).toThrow();
     });
   });
