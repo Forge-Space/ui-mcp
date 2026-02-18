@@ -1,6 +1,6 @@
 /**
  * Barrel export for utility functions
+ * Consolidated utilities to reduce duplication and improve organization
  */
 
-export * from './string.utils.js';
-export * from './jsx.utils.js';
+export * from './consolidated.utils.js';
