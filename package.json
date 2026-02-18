@@ -53,7 +53,7 @@
     "zod": "^4.0.0"
   },
   "devDependencies": {
-    "@uiforge/forge-patterns": "file:../forge-patterns",
+    "@uiforge/forge-patterns": "^1.1.1",
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.17.0",
     "@types/better-sqlite3": "^7.6.13",
