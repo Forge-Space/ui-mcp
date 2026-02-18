@@ -48,7 +48,7 @@ jobs:
           args: --severity-threshold=${{ env.SNYK_SEVERITY_THRESHOLD }} --org=${{ env.SNYK_ORGANIZATION }}
           
       - name: Upload Snyk results
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
           sarif_file: snyk.sarif
@@ -81,7 +81,7 @@ jobs:
           args: code --severity-threshold=${{ env.SNYK_SEVERITY_THRESHOLD }} --org=${{ env.SNYK_ORGANIZATION }}
           
       - name: Upload Snyk Code results
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
           sarif_file: snyk.sarif
@@ -143,7 +143,7 @@ jobs:
         run: npm ci --legacy-peer-deps
         
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         with:
           languages: ${{ matrix.language }}
           queries: security-extended,security-and-quality
@@ -152,7 +152,7 @@ jobs:
         run: npm run build
         
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
         with:
           category: "/language:${{matrix.language }}"
 
