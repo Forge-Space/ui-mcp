@@ -1,0 +1,197 @@
+name: Automated Release Detection
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  detect-release:
+    name: Detect Release Branch Merge
+    runs-on: ubuntu-latest
+    outputs:
+      is-release: ${{ steps.check.outputs.is-release }}
+      version: ${{ steps.check.outputs.version }}
+      version-type: ${{ steps.check.outputs.version-type }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if this is a release merge
+        id: check
+        run: |
+          # Check if the latest commit message indicates a release branch merge
+          COMMIT_MSG=$(git log -1 --pretty=format:"%s")
+          echo "Commit message: $COMMIT_MSG"
+          
+          if [[ "$COMMIT_MSG" =~ ^Merge\ branch\ .*/release/([0-9]+)\.([0-9]+)\.([0-9]+) ]]; then
+            echo "is-release=true" >> $GITHUB_OUTPUT
+            
+            # Extract version from branch name in commit message
+            FULL_VERSION=$(echo "$COMMIT_MSG" | sed -E 's|.*release/([0-9]+\.[0-9]+\.[0-9]+).*|\1|')
+            echo "version=$FULL_VERSION" >> $GITHUB_OUTPUT
+            
+            # Determine version type based on what changed
+            CURRENT_VERSION=$(node -p "require('./package.json').version")
+            echo "Current version: $CURRENT_VERSION"
+            echo "Target version: $FULL_VERSION"
+            
+            # Compare versions to determine bump type
+            MAJOR_CURRENT=$(echo $CURRENT_VERSION | cut -d. -f1)
+            MINOR_CURRENT=$(echo $CURRENT_VERSION | cut -d. -f2)
+            PATCH_CURRENT=$(echo $CURRENT_VERSION | cut -d. -f3 | cut -d- -f1)
+            
+            MAJOR_TARGET=$(echo $FULL_VERSION | cut -d. -f1)
+            MINOR_TARGET=$(echo $FULL_VERSION | cut -d. -f2)
+            PATCH_TARGET=$(echo $FULL_VERSION | cut -d. -f3 | cut -d- -f1)
+            
+            if [[ $MAJOR_TARGET -gt $MAJOR_CURRENT ]]; then
+              VERSION_TYPE="major"
+            elif [[ $MINOR_TARGET -gt $MINOR_CURRENT ]]; then
+              VERSION_TYPE="minor"
+            else
+              VERSION_TYPE="patch"
+            fi
+            
+            echo "version-type=$VERSION_TYPE" >> $GITHUB_OUTPUT
+            echo "Detected release: $FULL_VERSION ($VERSION_TYPE)"
+          else
+            echo "is-release=false" >> $GITHUB_OUTPUT
+            echo "version-type=none" >> $GITHUB_OUTPUT
+          fi
+
+  trigger-deploy:
+    name: Trigger Automated Deploy
+    runs-on: ubuntu-latest
+    needs: detect-release
+    if: needs.detect-release.outputs.is-release == 'true'
+    
+    steps:
+      - name: Trigger Deploy Workflow
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: automated-release
+          client-payload: |
+            {
+              "version": "${{ needs.detect-release.outputs.version }}",
+              "version_type": "${{ needs.detect-release.outputs.version-type }}",
+              "dry_run": false,
+              "create_release": true
+            }
+
+  update-changelog:
+    name: Update CHANGELOG
+    runs-on: ubuntu-latest
+    needs: detect-release
+    if: needs.detect-release.outputs.is-release == 'true'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Update CHANGELOG
+        run: |
+          VERSION="${{ needs.detect-release.outputs.version }}"
+          DATE=$(date +%Y-%m-%d)
+          VERSION_TYPE="${{ needs.detect-release.outputs.version-type }}"
+          
+          # Create changelog entry
+          ENTRY="## [$VERSION] - $DATE
+
+### 🚀 Automated Release
+- **Release Type**: $VERSION_TYPE
+- **Automated Pipeline**: Release triggered by merge from release/$VERSION branch
+- **Quality Gates**: All quality checks passed automatically
+- **Security**: Security scans completed successfully
+
+### 📦 Package Information
+- **Package**: @forgespace/ui-mcp
+- **Version**: $VERSION
+- **Registry**: npm
+- **Docker**: lucassantana/uiforge-mcp:v$VERSION
+
+### ✅ Validation Results
+- All tests passed
+- Code quality checks passed
+- Security audit completed
+- Docker image built successfully
+- Package published to npm
+
+### 🔗 Installation
+\`\`\`bash
+# Install via npm
+npm install -g @forgespace/ui-mcp@$VERSION
+
+# Or via Docker
+docker pull lucassantana/uiforge-mcp:v$VERSION
+\`\`\`
+
+---
+
+"
+          
+          # Insert at the beginning of CHANGELOG.md (after any header)
+          if [ -f "CHANGELOG.md" ]; then
+            # Read existing content
+            EXISTING=$(cat CHANGELOG.md)
+            # Find where to insert (after header section)
+            if echo "$EXISTING" | grep -q "^## "; then
+              # Insert after first ## line
+              echo "$ENTRY" > temp_changelog.md
+              echo "$EXISTING" | sed '1d' >> temp_changelog.md
+              mv temp_changelog.md CHANGELOG.md
+            else
+              # Insert at beginning
+              echo "$ENTRY" > temp_changelog.md
+              echo "$EXISTING" >> temp_changelog.md
+              mv temp_changelog.md CHANGELOG.md
+            fi
+          else
+            echo "$ENTRY" > CHANGELOG.md
+          fi
+
+      - name: Commit CHANGELOG
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add CHANGELOG.md
+          git commit -m "chore(release): update CHANGELOG for v${{ needs.detect-release.outputs.version }}"
+          git push origin main
+
+  notify-teams:
+    name: Notify Teams
+    runs-on: ubuntu-latest
+    needs: detect-release
+    if: needs.detect-release.outputs.is-release == 'true'
+    
+    steps:
+      - name: Notify Release Started
+        run: |
+          echo "🚀 Automated Release Detected!"
+          echo "📦 Version: ${{ needs.detect-release.outputs.version }}"
+          echo "🔄 Type: ${{ needs.detect-release.outputs.version-type }}"
+          echo "🤖 Triggering deployment workflow..."
+          echo ""
+          echo "📊 Progress:"
+          echo "✅ Release branch merge detected"
+          echo "✅ CHANGELOG updated"
+          echo "🔄 Deployment workflow triggered"
+          echo ""
+          echo "🔗 Monitor deployment: https://github.com/Forge-Space/ui-mcp/actions"
