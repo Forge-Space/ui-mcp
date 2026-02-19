@@ -42,13 +42,13 @@ jobs:
             echo "Target version: $FULL_VERSION"
             
             # Compare versions to determine bump type
-            MAJOR_CURRENT=$(echo $CURRENT_VERSION | cut -d. -f1)
-            MINOR_CURRENT=$(echo $CURRENT_VERSION | cut -d. -f2)
-            PATCH_CURRENT=$(echo $CURRENT_VERSION | cut -d. -f3 | cut -d- -f1)
+            MAJOR_CURRENT=$(echo "$CURRENT_VERSION" | cut -d. -f1)
+            MINOR_CURRENT=$(echo "$CURRENT_VERSION" | cut -d. -f2)
+            PATCH_CURRENT=$(echo "$CURRENT_VERSION" | cut -d. -f3 | cut -d- -f1)
             
-            MAJOR_TARGET=$(echo $FULL_VERSION | cut -d. -f1)
-            MINOR_TARGET=$(echo $FULL_VERSION | cut -d. -f2)
-            PATCH_TARGET=$(echo $FULL_VERSION | cut -d. -f3 | cut -d- -f1)
+            MAJOR_TARGET=$(echo "$FULL_VERSION" | cut -d. -f1)
+            MINOR_TARGET=$(echo "$FULL_VERSION" | cut -d. -f2)
+            PATCH_TARGET=$(echo "$FULL_VERSION" | cut -d. -f3 | cut -d- -f1)
             
             if [[ $MAJOR_TARGET -gt $MAJOR_CURRENT ]]; then
               VERSION_TYPE="major"
@@ -59,31 +59,39 @@ jobs:
             fi
             
             echo "version-type=$VERSION_TYPE" >> $GITHUB_OUTPUT
-            echo "Detected release: $FULL_VERSION ($VERSION_TYPE)"
+            echo "✅ Release detected: $FULL_VERSION ($VERSION_TYPE)"
           else
             echo "is-release=false" >> $GITHUB_OUTPUT
-            echo "version-type=none" >> $GITHUB_OUTPUT
+            echo "Not a release merge"
           fi
 
   trigger-deploy:
-    name: Trigger Automated Deploy
+    name: Trigger Deploy Workflow
     runs-on: ubuntu-latest
     needs: detect-release
     if: needs.detect-release.outputs.is-release == 'true'
     
     steps:
-      - name: Trigger Deploy Workflow
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          event-type: automated-release
-          client-payload: |
-            {
-              "version": "${{ needs.detect-release.outputs.version }}",
-              "version_type": "${{ needs.detect-release.outputs.version-type }}",
-              "dry_run": false,
-              "create_release": true
-            }
+      - name: Trigger deployment workflow
+        run: |
+          echo "🚀 Triggering automated deployment..."
+          echo "📦 Version: ${{ needs.detect-release.outputs.version }}"
+          echo "🔄 Type: ${{ needs.detect-release.outputs.version-type }}"
+          
+          # Trigger the deploy workflow via repository dispatch
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/Forge-Space/ui-mcp/dispatches \
+            -d '{
+              "event_type": "automated-release",
+              "client_payload": {
+                "version": "${{ needs.detect-release.outputs.version }}",
+                "version_type": "${{ needs.detect-release.outputs.version-type }}",
+                "dry_run": false,
+                "create_release": true
+              }
+            }'
 
   update-changelog:
     name: Update CHANGELOG
@@ -101,57 +109,51 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci --legacy-peer-deps
 
       - name: Update CHANGELOG
         run: |
           VERSION="${{ needs.detect-release.outputs.version }}"
           DATE=$(date +%Y-%m-%d)
           VERSION_TYPE="${{ needs.detect-release.outputs.version-type }}"
-          
+
           # Create changelog entry
           ENTRY="## [$VERSION] - $DATE
 
-### 🚀 Automated Release
-- **Release Type**: $VERSION_TYPE
-- **Automated Pipeline**: Release triggered by merge from release/$VERSION branch
-- **Quality Gates**: All quality checks passed automatically
-- **Security**: Security scans completed successfully
+          ### 🚀 Automated Release
+          - **Release Type**: $VERSION_TYPE
+          - **Automated Pipeline**: Release triggered by merge from release/$VERSION branch
+          - **Quality Gates**: All quality checks passed automatically
+          - **Security**: Security scans completed successfully
 
-### 📦 Package Information
-- **Package**: @forgespace/ui-mcp
-- **Version**: $VERSION
-- **Registry**: npm
-- **Docker**: lucassantana/uiforge-mcp:v$VERSION
+          ### 📦 Package Information
+          - **Package**: @forgespace/ui-mcp
+          - **Version**: $VERSION
+          - **Registry**: npm
+          - **Docker**: lucassantana/uiforge-mcp:v$VERSION
 
-### ✅ Validation Results
-- All tests passed
-- Code quality checks passed
-- Security audit completed
-- Docker image built successfully
-- Package published to npm
+          ### ✅ Validation Results
+          - All tests passed
+          - Code quality checks passed
+          - Security audit completed
+          - Docker image built successfully
+          - Package published to npm
 
-### 🔗 Installation
-\`\`\`bash
-# Install via npm
-npm install -g @forgespace/ui-mcp@$VERSION
+          ### 🔗 Installation
+          \`\`\`bash
+          # Install via npm
+          npm install -g @forgespace/ui-mcp@$VERSION
 
-# Or via Docker
-docker pull lucassantana/uiforge-mcp:v$VERSION
-\`\`\`
+          # Or via Docker
+          docker pull lucassantana/uiforge-mcp:v$VERSION
+          \`\`\`
 
----
+          ---
 
-"
-          
-          # Insert at the beginning of CHANGELOG.md (after any header)
-          if [ -f "CHANGELOG.md" ]; then
-            # Read existing content
+          "
+
+          # Update CHANGELOG.md
+          if [ -f CHANGELOG.md ]; then
             EXISTING=$(cat CHANGELOG.md)
-            # Find where to insert (after header section)
             if echo "$EXISTING" | grep -q "^## "; then
               # Insert after first ## line
               echo "$ENTRY" > temp_changelog.md
