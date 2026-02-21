@@ -87,6 +87,7 @@ export function registerAnalyzeDesignReferences(server: McpServer): void {
       if (images && images.length > 0) {
         for (let imageIndex = 0; imageIndex < images.length; imageIndex++) {
           const imageData = images[imageIndex];
+          if (!imageData) continue;
           try {
             const buffer = Buffer.from(imageData.data, 'base64');
             const label = imageData.label ?? `image-${imageIndex + 1}`;

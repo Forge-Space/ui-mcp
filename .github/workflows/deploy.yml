@@ -24,6 +24,8 @@ on:
         required: false
         default: true
         type: boolean
+  repository_dispatch:
+    types: [automated-release]
 
 jobs:
   # Pre-flight checks
@@ -69,27 +71,41 @@ jobs:
           CURRENT_VERSION=$(node -p "require('./package.json').version")
           echo "Current version: $CURRENT_VERSION"
 
-          case "${{ github.event.inputs.version_type }}" in
-            "patch")
-              NEXT_VERSION=$(echo $CURRENT_VERSION | awk -F. '{print $1"."$2"."($3+1)}')
-              ;;
-            "minor")
-              NEXT_VERSION=$(echo $CURRENT_VERSION | awk -F. '{print $1"."($2+1)".0"}')
-              ;;
-            "major")
-              NEXT_VERSION=$(echo $CURRENT_VERSION | awk -F. '{print ($1+1)".0.0"}')
-              ;;
-            *)
-              echo "::error::Invalid version type: ${{ github.event.inputs.version_type }}"
-              exit 1
-              ;;
-          esac
+          # Handle automated release event
+          if [[ "${{ github.event_name }}" == "repository_dispatch" ]]; then
+            VERSION="${{ github.event.client_payload.version }}"
+            VERSION_TYPE="${{ github.event.client_payload.version_type }}"
+            DRY_RUN="${{ github.event.client_payload.dry_run }}"
+            CREATE_RELEASE="${{ github.event.client_payload.create_release }}"
+            echo "Using automated release: $VERSION ($VERSION_TYPE)"
+          else
+            case "${{ github.event.inputs.version_type }}" in
+              "patch")
+                NEXT_VERSION=$(echo $CURRENT_VERSION | awk -F. '{print $1"."$2"."($3+1)}')
+                ;;
+              "minor")
+                NEXT_VERSION=$(echo $CURRENT_VERSION | awk -F. '{print $1"."($2+1)".0"}')
+                ;;
+              "major")
+                NEXT_VERSION=$(echo $CURRENT_VERSION | awk -F. '{print ($1+1)".0.0"}')
+                ;;
+              *)
+                echo "::error::Invalid version type: ${{ github.event.inputs.version_type }}"
+                exit 1
+                ;;
+            esac
+            VERSION="$NEXT_VERSION"
+            VERSION_TYPE="${{ github.event.inputs.version_type }}"
+            DRY_RUN="${{ github.event.inputs.dry_run }}"
+            CREATE_RELEASE="${{ github.event.inputs.create_release }}"
+          fi
 
-          echo "Next version: $NEXT_VERSION"
-          echo "version=$NEXT_VERSION" >> $GITHUB_OUTPUT
+          echo "Next version: $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
 
           # Check if prerelease (contains -)
-          if [[ "$NEXT_VERSION" == *"-" ]]; then
+          if [[ "$VERSION" == *"-" ]]; then
             echo "is_prerelease=true" >> $GITHUB_OUTPUT
           else
             echo "is_prerelease=false" >> $GITHUB_OUTPUT
@@ -242,7 +258,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Login to Docker Hub
-        if: github.event.inputs.dry_run != 'true'
+        if: github.event.inputs.dry_run != 'true' && github.event.client_payload.dry_run != 'true'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
@@ -264,7 +280,7 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          push: ${{ github.event.inputs.dry_run != 'true' }}
+          push: ${{ github.event.inputs.dry_run != 'true' && github.event.client_payload.dry_run != 'true' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
@@ -281,7 +297,7 @@ jobs:
     name: Publish to npm
     runs-on: ubuntu-latest
     needs: [preflight, qa, build]
-    if: needs.preflight.outputs.should_publish == 'true' && github.event.inputs.dry_run != 'true'
+    if: needs.preflight.outputs.should_publish == 'true' && github.event.inputs.dry_run != 'true' && github.event.client_payload.dry_run != 'true'
     steps:
       - uses: actions/checkout@v4
 
@@ -320,7 +336,7 @@ jobs:
     name: Create Release
     runs-on: ubuntu-latest
     needs: [preflight, qa, build, docker]
-    if: needs.preflight.outputs.should_publish == 'true' && github.event.inputs.create_release == 'true'
+    if: needs.preflight.outputs.should_publish == 'true' && (github.event.inputs.create_release == 'true' || github.event.client_payload.create_release == 'true')
     steps:
       - uses: actions/checkout@v4
         with:
@@ -427,8 +443,9 @@ jobs:
           echo "## 🚀 Deployment Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Version:** v${{ needs.preflight.outputs.version }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Dry Run:** ${{ github.event.inputs.dry_run }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Create Release:** ${{ github.event.inputs.create_release }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Trigger:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Dry Run:** ${{ github.event.inputs.dry_run || github.event.client_payload.dry_run }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Create Release:** ${{ github.event.inputs.create_release || github.event.client_payload.create_release }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
           echo "| Job | Status |" >> $GITHUB_STEP_SUMMARY
