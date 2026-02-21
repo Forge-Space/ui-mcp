@@ -165,7 +165,7 @@ function extractPageStyles(page: Page): Promise<ExtractedStyles> {
       const layoutPatterns = new Set<string>();
       const componentTypes = new Set<string>();
 
-      const elements = document.querySelectorAll('*');
+      const elements = Array.from(document.querySelectorAll('*'));
       let count = 0;
 
       for (const element of elements) {
@@ -225,7 +225,7 @@ function extractPageStyles(page: Page): Promise<ExtractedStyles> {
       }
 
       // Check for CSS frameworks
-      const links = document.querySelectorAll('link[href], script[src]');
+      const links = Array.from(document.querySelectorAll('link[href], script[src]'));
       for (const link of links) {
         const href = link.getAttribute('href') ?? link.getAttribute('src') ?? '';
         if (/tailwind/i.test(href)) layoutPatterns.add('tailwindcss');
@@ -262,7 +262,7 @@ function extractMeta(page: Page): Promise<Record<string, string>> {
     const titleEl = document.querySelector('title');
     if (titleEl?.textContent) meta['title'] = titleEl.textContent;
 
-    const metaTags = document.querySelectorAll('meta[name], meta[property]');
+    const metaTags = Array.from(document.querySelectorAll('meta[name], meta[property]'));
     for (const tag of metaTags) {
       const name = tag.getAttribute('name') ?? tag.getAttribute('property') ?? '';
       const content = tag.getAttribute('content') ?? '';

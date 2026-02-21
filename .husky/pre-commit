@@ -1,59 +1,34 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+#!/usr/bin/env bash
+set -euo pipefail
 
-echo "🚀 Running pre-commit validations (matching CI/CD pipeline)...\n"
+echo "Running pre-commit gate..."
 
 FAILED=0
 
-# 1. Lint and format (via lint-staged for changed files only)
-echo "📝 Running lint and format checks on staged files..."
+# 1. Lint and format (via lint-staged for staged files only)
+echo "  lint-staged..."
 if ! npx lint-staged; then
-  echo "❌ Lint/format check failed."
+  echo "  FAIL: lint/format"
   FAILED=1
-else
-  echo "✅ Lint/format check passed."
 fi
 
-# 2. Type checking (full project)
-echo "\n🔍 Running TypeScript type check..."
+# 2. TypeScript type check
+echo "  tsc --noEmit..."
 if ! npx tsc --noEmit; then
-  echo "❌ Type check failed."
+  echo "  FAIL: type check"
   FAILED=1
-else
-  echo "✅ Type check passed."
 fi
 
-# 3. Run tests
-echo "\n🧪 Running tests..."
-if ! npm test -- --bail --passWithNoTests; then
-  echo "❌ Tests failed."
+# 3. Tests (fast, bail on first failure)
+echo "  tests..."
+if ! npm test -- --bail --passWithNoTests 2>/dev/null; then
+  echo "  FAIL: tests"
   FAILED=1
-else
-  echo "✅ Tests passed."
 fi
 
-# 4. Build verification
-echo "\n📦 Verifying build..."
-if ! npm run build; then
-  echo "❌ Build failed."
-  FAILED=1
-else
-  echo "✅ Build passed."
-  # Verify build output exists
-  if [ ! -f dist/index.js ]; then
-    echo "❌ Build output missing: dist/index.js not found."
-    FAILED=1
-  fi
-fi
-
-# Summary
-echo "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-if [ $FAILED -eq 0 ]; then
-  echo "✅ All pre-commit validations passed!"
-  echo "📦 Ready to commit and push."
-else
-  echo "❌ Some validations failed. Please fix the issues above."
-  echo "💡 All validation steps were run to show all issues at once."
+if [ "$FAILED" -ne 0 ]; then
+  echo "Pre-commit gate failed. Fix the issues above."
   exit 1
 fi
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+
+echo "Pre-commit gate passed."

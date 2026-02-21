@@ -128,19 +128,6 @@ export class FigmaService {
               unit: 'px',
             };
           }
-        } else if (type === 'EFFECT' && typeof value === 'object') {
-          // Handle effect-type variables
-          tokens.effects[tokenName] = {
-            value: value,
-            type: variable.effectType || 'unknown',
-            // Extract common effect properties
-            ...(value.offset && { offset: value.offset }),
-            ...(value.radius && { radius: value.radius }),
-            ...(value.color && { color: value.color }),
-            ...(value.spread && { spread: value.spread }),
-            ...(value.blendMode && { blendMode: value.blendMode }),
-            ...(value.visible !== undefined && { visible: value.visible })
-          };
         } else if (type === 'STRING' && typeof value === 'string') {
           tokens.typography[tokenName] = {
             value: value,
@@ -161,7 +148,7 @@ export class FigmaService {
    */
   validateFileKey(fileKey: string): boolean {
     // Figma file keys are typically 22 characters long and contain only alphanumeric characters
-    const figmaKeyRegex = /^[a-zA-Z0-9]{22}$/;
+    const figmaKeyRegex = /^[a-zA-Z0-9]{22,}$/;
     return figmaKeyRegex.test(fileKey);
   }
 

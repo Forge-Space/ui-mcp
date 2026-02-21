@@ -21,10 +21,10 @@ interface FontEntry {
 const fontCache = new Map<string, ArrayBuffer>();
 
 const BUNDLED_FONTS: Record<string, { local: string; family: string; weight: number }> = {
-  'Inter-400': { local: 'Inter-Regular.ttf', family: 'Inter', weight: 400 },
-  'Inter-700': { local: 'Inter-Bold.ttf', family: 'Inter', weight: 700 },
-  'Manrope-400': { local: 'Manrope-Regular.ttf', family: 'Manrope', weight: 400 },
-  'Manrope-700': { local: 'Manrope-Bold.ttf', family: 'Manrope', weight: 700 },
+  'Inter-400': { local: 'Inter-Regular.woff2', family: 'Inter', weight: 400 },
+  'Inter-700': { local: 'Inter-Bold.woff2', family: 'Inter', weight: 700 },
+  'Manrope-400': { local: 'Manrope-Regular.woff2', family: 'Manrope', weight: 400 },
+  'Manrope-700': { local: 'Manrope-Bold.woff2', family: 'Manrope', weight: 700 },
 };
 
 async function fetchTtfFromGoogleFonts(family: string, weight: number): Promise<ArrayBuffer> {
@@ -54,7 +54,7 @@ async function loadFont(key: string): Promise<ArrayBuffer> {
   if (entry) {
     // Local-first: try bundled font file (TTF)
     try {
-      const localPath = new URL(`../../assets/fonts/${entry.local}`, import.meta.url);
+      const localPath = new URL(`../assets/fonts/${entry.local}`, import.meta.url);
       const buffer = await readFile(localPath);
       const ab = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
       fontCache.set(key, ab);

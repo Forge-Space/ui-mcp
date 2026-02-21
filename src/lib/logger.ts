@@ -52,7 +52,7 @@ function createConsoleFallback(name?: string): Logger {
     debug: (...args: unknown[]) => console.debug(prefix, ...args),
     fatal: (...args: unknown[]) => console.error(`${prefix} FATAL:`, ...args),
     trace: (...args: unknown[]) => console.debug(`${prefix} TRACE:`, ...args),
-    silent: () => undefined,
+    silent: (): void => undefined,
     child: (bindings: Record<string, unknown>) => {
       const moduleName = typeof bindings.module === 'string' ? bindings.module : name;
       return createConsoleFallback(moduleName);

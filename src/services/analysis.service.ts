@@ -75,12 +75,12 @@ export class AnalysisService {
         .map(s => ({
           url: s.content,
           title: String(s.metadata?.title ?? 'Unknown'),
-          colors: [],
-          fonts: [],
-          fontSizes: [],
-          spacing: [],
-          layoutPatterns: [],
-          componentTypes: [],
+          colors: [] as string[],
+          fonts: [] as string[],
+          fontSizes: [] as string[],
+          spacing: [] as string[],
+          layoutPatterns: [] as string[],
+          componentTypes: [] as string[],
           meta: {},
         }));
 
@@ -88,9 +88,9 @@ export class AnalysisService {
         .filter(s => s.type === 'image')
         .map(s => ({
           label: String(s.metadata?.label ?? 'image'),
-          dominantColors: [],
-          layoutRegions: [],
-          detectedComponents: [],
+          dominantColors: [] as { hex: string; percentage: number }[],
+          layoutRegions: [] as { role: string; bounds: { x: number; y: number; width: number; height: number } }[],
+          detectedComponents: [] as string[],
           dimensions: { width: 0, height: 0 },
         }));
 

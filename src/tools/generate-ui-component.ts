@@ -281,7 +281,30 @@ export function registerGenerateUiComponent(server: McpServer): void {
       if (!skipML && files.length > 0) {
         try {
           const db = getDatabase();
-          recordGeneration(generation, files[0]?.content || '', db, component_type);
+          const generationRecord = {
+            id: `gen-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+            tool: 'generate_ui_component' as const,
+            params: {
+              component_type,
+              framework,
+              props: props ? JSON.stringify(props) : '',
+              component_library,
+              design_reference_url: design_reference_url || '',
+              existing_tailwind_config: existing_tailwind_config || '',
+              existing_css_variables: existing_css_variables || '',
+              variant: variant || '',
+              mood: mood || '',
+              industry: industry || '',
+              visual_style: visual_style || '',
+              skip_ml: skip_ml.toString(),
+            },
+            componentType: component_type,
+            framework,
+            outputHash: '',
+            timestamp: Date.now(),
+            sessionId: `session-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+          };
+          recordGeneration(generationRecord, files[0]?.content || '', db, component_type);
         } catch (err) {
           logger.warn({ error: err }, 'Generation recording failed');
         }

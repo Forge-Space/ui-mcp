@@ -4,17 +4,31 @@ module.exports = {
     node: true,
     es2022: true
   },
-  extends: ['eslint:recommended', 'prettier'],
+  extends: ['eslint:recommended', '@typescript-eslint/recommended', 'prettier'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2022,
-    sourceType: 'module'
+    sourceType: 'module',
+    project: './tsconfig.json'
   },
   plugins: ['@typescript-eslint'],
   rules: {
     // Core consistency rules
     'no-console': 'warn',
     'no-debugger': 'error',
+    'prefer-const': 'error',
+    'prefer-template': 'warn',
+    'no-duplicate-imports': 'error',
+    'require-await': 'error',
+
+    // Code quality rules
+    'no-var': 'error',
+    'object-shorthand': 'error',
+    'prefer-arrow-callback': 'error',
+    eqeqeq: ['error', 'always'],
+    'no-eval': 'error',
+    'no-implied-eval': 'error',
+
     // TypeScript rules
     '@typescript-eslint/no-unused-vars': [
       'warn',
@@ -24,56 +38,34 @@ module.exports = {
       }
     ],
     '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-non-null-assertion': 'warn',
-
-    // Code quality rules
-    'no-var': 'error',
-    'object-shorthand': 'error',
-    'prefer-arrow-callback': 'error',
-    'prefer-destructuring': ['error', { object: true, array: false }],
-
-    // Security rules
-    'no-eval': 'error',
-    'no-implied-eval': 'error',
-    'no-new-func': 'error',
-    'no-script-url': 'error',
-
-    // Best practices
-    eqeqeq: ['error', 'always'],
-    'no-else-return': 'error',
-    'no-empty-function': 'warn',
-    'no-magic-numbers': ['warn', { ignore: [-1, 0, 1, 2, 100, 1000] }],
-    'no-return-await': 'error',
-    'no-throw-literal': 'error',
-    'prefer-promise-reject-errors': 'error',
-
-    // Style rules (handled by Prettier)
-    quotes: ['error', 'single', { avoidEscape: true }],
-    semi: ['error', 'always'],
-    'comma-dangle': ['error', 'never']
+    '@typescript-eslint/no-floating-promises': 'error',
+    '@typescript-eslint/prefer-nullish-coalescing': 'warn',
+    '@typescript-eslint/prefer-optional-chain': 'warn',
+    '@typescript-eslint/no-non-null-assertion': 'warn'
   },
   overrides: [
     {
-      files: ['*.js'],
+      files: ['**/__tests__/**', '**/*.test.*', '**/*.spec.*'],
       rules: {
-        '@typescript-eslint/no-var-requires': 'off'
+        '@typescript-eslint/no-explicit-any': 'off',
+        'no-console': 'off',
+        '@typescript-eslint/no-floating-promises': 'off'
       }
     },
     {
-      files: ['*.ts'],
-      rules: {
-        '@typescript-eslint/no-var-requires': 'error'
-      }
-    },
-    {
-      files: ['scripts/**/*.js', 'scripts/**/*.sh'],
+      files: ['*.config.js', '*.config.ts'],
       rules: {
         'no-console': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-var-requires': 'off'
+      }
+    },
+    {
+      files: ['scripts/**/*.js', 'scripts/**/*.ts'],
+      rules: {
+        'no-console': 'off'
       }
     }
   ],
-  ignorePatterns: ['node_modules/', 'dist/', 'build/', 'coverage/', '*.min.js', '!.eslintrc.js']
+  ignorePatterns: ['node_modules/', 'dist/', 'build/', 'coverage/', '*.min.js']
 };
