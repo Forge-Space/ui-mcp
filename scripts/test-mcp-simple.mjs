@@ -44,7 +44,7 @@ setTimeout(() => {
   
   const json = JSON.stringify(initMsg);
   const frame = `Content-Length: ${Buffer.byteLength(json)}\r\n\r\n${json}`;
-  console.log('Frame:', frame.slice(0, 100) + '...');
+  console.log('Frame:', `${frame.slice(0, 100)  }...`);
   proc.stdin.write(frame);
 }, 1000);
 

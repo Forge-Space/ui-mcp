@@ -396,7 +396,7 @@ async function main() {
   });
 
   // ── Summary ────────────────────────────────────────────────────
-  console.log('\n' + '═'.repeat(50));
+  console.log(`\n${  '═'.repeat(50)}`);
   console.log(`\n📊 Results: ${passed} passed, ${failed} failed\n`);
 
   if (failures.length > 0) {
