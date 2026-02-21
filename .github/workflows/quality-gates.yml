@@ -56,7 +56,7 @@ jobs:
           echo "📦 Checking bundle size..."
           
           if [ -f dist/index.js ]; then
-            SIZE=$(stat -f%s dist/index.js)
+            SIZE=$(stat -c%s dist/index.js)
             SIZE_KB=$((SIZE / 1024))
             echo "Bundle size: ${SIZE_KB}KB"
             
@@ -142,13 +142,13 @@ jobs:
           fi
           
           if [ -f dist/index.js ]; then
-            SIZE=$(stat -f%s dist/index.js)
+            SIZE=$(stat -c%s dist/index.js)
             SIZE_KB=$((SIZE / 1024))
             echo "- Bundle Size: ${SIZE_KB}KB" >> $GITHUB_STEP_SUMMARY
           fi
           
           TODO_COUNT=$(grep -r "TODO\|FIXME\|HACK\|XXX" src/ --include="*.ts" --include="*.js" | wc -l || echo "0")
-          echo "- TODO Comments: $TODO_COUNT" >> $ITHUB_STEP_SUMMARY
+          echo "- TODO Comments: $TODO_COUNT" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           
           echo "### 🎯 Quality Score" >> $GITHUB_STEP_SUMMARY
