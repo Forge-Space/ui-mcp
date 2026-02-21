@@ -29,7 +29,7 @@
     "deps:check": "ncu",
     "deps:update": "ncu -u",
     "deps:update-interactive": "ncu -i",
-    "prepare": "npm run build && husky install",
+    "prepare": "husky install || true",
     "prepublishOnly": "npm run build",
     "lint:check": "eslint . --ext .js,.ts",
     "pre-commit": "npm run lint && npm run format && npm run test",

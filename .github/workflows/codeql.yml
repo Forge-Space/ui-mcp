@@ -63,14 +63,4 @@ jobs:
         uses: github/codeql-action/analyze@v4
         with:
           category: "/language:${{ matrix.language }}"
-          # Upload results to GitHub Security tab
-          upload: true
-          # Fail the workflow if vulnerabilities are found (optional)
-          # fail-on: error
-
-      - name: Upload SARIF results
-        if: always()
-        uses: github/codeql-action/upload-sarif@v4
-        with:
-          sarif_file: ../results
-          category: "/language:${{ matrix.language }}"
+          # Upload results to GitHub Security tab (handled automatically)
