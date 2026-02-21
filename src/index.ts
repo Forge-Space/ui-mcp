@@ -4,6 +4,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { loadConfig } from './lib/config.js';
 import { registerCurrentStylesResource } from './resources/current-styles.js';
+import { registerForgeContextResources } from './resources/forge-context.js';
 import { registerScaffoldFullApplication } from './tools/scaffold-full-application.js';
 import { registerGenerateUiComponent } from './tools/generate-ui-component.js';
 import { registerGeneratePrototype } from './tools/generate-prototype.js';
@@ -20,6 +21,7 @@ import { registerSubmitFeedback } from './tools/submit-feedback.js';
 import { registerAnalyzeDesignImageForTraining } from './tools/analyze-design-image-for-training.js';
 import { registerManageTraining } from './tools/manage-training.js';
 import { registerAnalyzeComponentLibrary } from './tools/analyze-component-library.js';
+import { registerForgeContextTools } from './tools/forge-context.js';
 import { closeDatabase } from './lib/design-references/database/store.js';
 
 // Load and validate configuration BEFORE importing logger
@@ -41,8 +43,9 @@ const server = new McpServer({
   version: '0.1.0',
 });
 
-// Register resource
+// Register resources
 registerCurrentStylesResource(server);
+registerForgeContextResources(server);
 
 // Register tools
 registerScaffoldFullApplication(server);
@@ -61,6 +64,12 @@ registerSubmitFeedback(server);
 registerAnalyzeDesignImageForTraining(server);
 registerManageTraining(server);
 registerAnalyzeComponentLibrary(server);
+try {
+  registerForgeContextTools(server);
+  logger.info('Forge context tools registered successfully');
+} catch (error) {
+  logger.error({ error }, 'Failed to register forge context tools');
+}
 
 logger.info('All tools and resources registered');
 

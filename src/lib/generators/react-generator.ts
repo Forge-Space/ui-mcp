@@ -72,8 +72,8 @@ export class ReactGenerator extends BaseGenerator {
     // Component file
     files.push(this.createComponentFile(componentName, componentType, props, designContext, componentLibrary));
 
-    // Storybook file (optional)
-    if (process.env.NODE_ENV !== 'production') {
+    // Storybook file (optional) - only when using component libraries
+    if (process.env.NODE_ENV !== 'production' && componentLibrary && componentLibrary !== 'none') {
       files.push(this.createStorybookFile(componentName, componentType, designContext));
     }
 
@@ -268,18 +268,19 @@ ${componentCode}
 
 export default ${componentName};`;
     } else {
-      // Use default Tailwind CSS generation
+      // Use default Tailwind CSS generation with appropriate HTML element
+      const htmlElement = this.getHtmlElementForComponentType(componentType);
+      const elementClasses = this.getTailwindClassesForComponentType(componentType);
+      const rawComponentName = componentType.toLowerCase();
+
       content = `${propsInterface}import React from 'react';
 import clsx from 'clsx';
 
-export const ${componentName}: React.FC<${componentName}Props> = (${Object.keys(props).length > 0 ? '{' : ''}${Object.keys(props).join(', ')}${Object.keys(props).length > 0 ? '}' : ''}) => {
+export const ${rawComponentName}: React.FC<${rawComponentName}Props> = (${Object.keys(props).length > 0 ? '{' : ''}${Object.keys(props).join(', ')}${Object.keys(props).length > 0 ? '}' : ''}) => {
   return (
-    <div
+    <${htmlElement}
       className={clsx(
-        'p-4 rounded-lg',
-        'bg-white',
-        'shadow-md',
-        'border border-gray-200'
+        '${elementClasses}'
       )}
       style={{
         backgroundColor: '${designContext.colorPalette.background}',
@@ -287,17 +288,12 @@ export const ${componentName}: React.FC<${componentName}Props> = (${Object.keys(
         borderColor: '${designContext.colorPalette.muted}',
       }}
     >
-      <h2 className="text-xl font-semibold mb-2" style={{ color: '${designContext.colorPalette.primary}' }}>
-        ${componentName}
-      </h2>
-      <p>
-        This is a ${componentType} component with custom styling.
-      </p>
-    </div>
+      ${rawComponentName}
+    </${htmlElement}>
   );
 };
 
-export default ${componentName};`;
+export default ${rawComponentName};`;
     }
 
     return {
@@ -677,5 +673,63 @@ export function ${componentName}(${this.generatePropsInterface(props)}) {
     }).join(', ');
 
     return `{ ${propDefinitions} }`;
+  }
+
+  private getHtmlElementForComponentType(componentType: string): string {
+    const elementMap: Record<string, string> = {
+      button: 'button',
+      input: 'input',
+      card: 'div',
+      dialog: 'dialog',
+      modal: 'dialog',
+      form: 'form',
+      nav: 'nav',
+      header: 'header',
+      footer: 'footer',
+      section: 'section',
+      article: 'article',
+      aside: 'aside',
+      main: 'main',
+      img: 'img',
+      link: 'a',
+      text: 'p',
+      heading: 'h2',
+      list: 'ul',
+      listItem: 'li',
+      table: 'table',
+      row: 'tr',
+      cell: 'td',
+    };
+
+    return elementMap[componentType.toLowerCase()] || 'div';
+  }
+
+  private getTailwindClassesForComponentType(componentType: string): string {
+    const classMap: Record<string, string> = {
+      button: 'px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors',
+      input: 'px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500',
+      card: 'p-4 rounded-lg bg-white shadow-md border border-gray-200',
+      dialog: 'p-6 rounded-lg bg-white shadow-lg border border-gray-200',
+      modal: 'fixed inset-0 flex items-center justify-center bg-black bg-opacity-50',
+      form: 'space-y-4',
+      nav: 'flex space-x-4',
+      header: 'pb-4 border-b border-gray-200',
+      footer: 'pt-4 border-t border-gray-200',
+      section: 'py-8',
+      article: 'prose max-w-none',
+      aside: 'w-64',
+      main: 'flex-1',
+      img: 'max-w-full h-auto',
+      link: 'text-blue-500 hover:text-blue-700 underline',
+      text: 'text-gray-700',
+      heading: 'text-2xl font-bold mb-4',
+      list: 'list-disc list-inside space-y-2',
+      listItem: 'ml-4',
+      table: 'w-full border-collapse',
+      row: 'border-b',
+      cell: 'px-4 py-2 border',
+    };
+
+    return classMap[componentType.toLowerCase()] || 'p-4';
   }
 }

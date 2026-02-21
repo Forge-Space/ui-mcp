@@ -132,7 +132,7 @@ describe('Shared Utilities', () => {
     it('should generate random IDs', () => {
       const id1 = generateRandomId();
       const id2 = generateRandomId();
-      
+
       expect(typeof id1).toBe('string');
       expect(typeof id2).toBe('string');
       expect(id1).not.toBe(id2);
@@ -155,7 +155,7 @@ describe('Shared Utilities', () => {
     it('should convert JSX to HTML', () => {
       const jsx = '<div className="container" onClick={handleClick}>Hello</div>';
       const html = jsxToHtml(jsx);
-      
+
       expect(html).toContain('class="container"');
       expect(html).toContain('onclick=');
     });
@@ -163,7 +163,7 @@ describe('Shared Utilities', () => {
     it('should convert JSX to Svelte', () => {
       const jsx = '<div className="container" onClick={handleClick}>Hello</div>';
       const svelte = jsxToSvelte(jsx);
-      
+
       expect(svelte).toContain('class="container"');
       expect(svelte).toContain('on:click=');
     });
@@ -171,7 +171,7 @@ describe('Shared Utilities', () => {
     it('should convert HTML attributes to JSX', () => {
       const attrs = { class: 'container', for: 'input', readonly: true };
       const jsx = htmlToJsxAttributes(attrs);
-      
+
       expect(jsx).toContain('className=');
       expect(jsx).toContain('htmlFor=');
     });
@@ -184,7 +184,7 @@ describe('Shared Utilities', () => {
         fontSize: '16px',
         marginTop: 10,
       };
-      
+
       const css = convertStyleObjectToString(style);
       expect(css).toContain('background-color: #ffffff');
       expect(css).toContain('font-size: 16px');
@@ -194,7 +194,7 @@ describe('Shared Utilities', () => {
     it('should parse style string to object', () => {
       const css = 'background-color: #ffffff; font-size: 16px; margin-top: 10px';
       const style = parseStyleString(css);
-      
+
       expect(style).toEqual({
         'background-color': '#ffffff',
         'font-size': '16px',
@@ -205,7 +205,7 @@ describe('Shared Utilities', () => {
     it('should merge styles', () => {
       const style1 = { color: 'red', fontSize: '14px' };
       const style2 = { backgroundColor: 'blue', fontSize: '16px' };
-      
+
       const merged = mergeStyles(style1, style2);
       expect(merged).toEqual({
         color: 'red',
@@ -247,7 +247,7 @@ describe('Shared Utilities', () => {
         { type: 'fruit', name: 'banana' },
         { type: 'vegetable', name: 'carrot' }
       ];
-      
+
       const grouped = groupBy(data, 'type');
       expect(grouped.fruit).toHaveLength(2);
       expect(grouped.vegetable).toHaveLength(1);
@@ -259,12 +259,12 @@ describe('Shared Utilities', () => {
         { name: 'Alice', age: 25 },
         { name: 'Bob', age: 35 }
       ];
-      
+
       const sorted = sortBy(data, 'name');
       expect(sorted[0].name).toBe('Alice');
       expect(sorted[1].name).toBe('Bob');
       expect(sorted[2].name).toBe('Charlie');
-      
+
       const sortedDesc = sortBy(data, 'age', 'desc');
       expect(sortedDesc[0].age).toBe(35);
       expect(sortedDesc[2].age).toBe(25);
@@ -304,7 +304,7 @@ describe('Shared Utilities', () => {
       expect(isObject([])).toBe(false);
       expect(isObject(null)).toBe(false);
       expect(isObject('string')).toBe(false);
-      expect(isNumber(123)).toBe(false);
+      expect(isObject(123)).toBe(false);
     });
 
     it('should identify array values', () => {

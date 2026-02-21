@@ -286,13 +286,7 @@ function checkLandmarks(code: string, issues: IAccessibilityIssue[], passed: str
 }
 
 function checkHeadingHierarchy(code: string, issues: IAccessibilityIssue[], passed: string[]): void {
-  const matches = code.matchAll(/<h([1-6])/gi);
-  const headings: number[] = [];
-  for (const match of matches) {
-    if (match[1]) {
-      headings.push(parseInt(match[1], 10));
-    }
-  }
+  const headings = [...code.matchAll(/<h([1-6])/gi)].map((m) => parseInt(m[1], 10));
 
   if (headings.length === 0 && code.length > 300) {
     issues.push({

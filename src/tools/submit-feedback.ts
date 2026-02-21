@@ -26,6 +26,7 @@ export function registerSubmitFeedback(server: McpServer): void {
         .number()
         .min(1)
         .max(10)
+        .int()
         .describe('Rating from 1 (poor) to 10 (excellent)'),
       feedback_type: z
         .enum(['explicit', 'implicit'])
