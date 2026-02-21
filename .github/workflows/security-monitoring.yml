@@ -191,7 +191,7 @@ jobs:
     needs: [security-scan, coverage-monitoring]
     steps:
       - name: Create issue for failures
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const { owner, repo } = context.repo;
