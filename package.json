@@ -49,7 +49,7 @@
     "zod": "^4.0.0"
   },
   "devDependencies": {
-    "@forgespace/core": "^1.1.1",
+    "@forgespace/core": "^1.1.4",
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.17.0",
     "@types/better-sqlite3": "^7.6.13",
