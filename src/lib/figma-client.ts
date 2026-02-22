@@ -190,7 +190,7 @@ export async function postVariables(
   const isNewCollection = !targetCollectionId;
   if (isNewCollection) {
     const temporaryCollectionId = `temp_collection_${Date.now()}`;
-    payload.variableCollections!.push({
+    payload.variableCollections?.push({
       action: 'CREATE',
       id: temporaryCollectionId,
       name: collectionName,
@@ -216,7 +216,7 @@ export async function postVariables(
     const existingId = existingVarMap.get(variable.name);
 
     if (existingId) {
-      payload.variables!.push({
+      payload.variables?.push({
         action: 'UPDATE',
         id: existingId,
         name: variable.name,
@@ -227,7 +227,7 @@ export async function postVariables(
     } else {
       // Use crypto.randomUUID() for thread-safe unique ID generation
       const temporaryVariableId = generateTempVariableId();
-      payload.variables!.push({
+      payload.variables?.push({
         action: 'CREATE',
         id: temporaryVariableId,
         name: variable.name,
@@ -246,7 +246,7 @@ export async function postVariables(
       if (variable.type === 'COLOR' && typeof variable.value === 'string') {
         value = hexToFigmaColor(variable.value);
       }
-      payload.variableModeValues!.push({
+      payload.variableModeValues?.push({
         variableId: id,
         modeId: targetModeId,
         value,
@@ -341,7 +341,7 @@ export async function postVariables(
           if (variable.type === 'COLOR' && typeof variable.value === 'string') {
             value = hexToFigmaColor(variable.value);
           }
-          valuePatch.variableModeValues!.push({
+          valuePatch.variableModeValues?.push({
             variableId: realId,
             modeId: newModeId,
             value,

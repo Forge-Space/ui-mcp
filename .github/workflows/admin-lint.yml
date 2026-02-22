@@ -4,22 +4,22 @@ on:
   workflow_dispatch:
     inputs:
       fix_issues:
-        description: 'Automatically fix linting issues'
+        description: "Automatically fix linting issues"
         required: false
         default: false
         type: boolean
       check_formatting:
-        description: 'Check code formatting'
+        description: "Check code formatting"
         required: false
         default: true
         type: boolean
       check_types:
-        description: 'Check TypeScript types'
+        description: "Check TypeScript types"
         required: false
         default: true
         type: boolean
       check_syntax:
-        description: 'Check basic syntax'
+        description: "Check basic syntax"
         required: false
         default: true
         type: boolean
@@ -33,7 +33,7 @@ jobs:
     name: Admin Lint Checks
     runs-on: ubuntu-latest
     if: github.actor == 'LucasSantana-Dev' || contains(github.actor, 'admin')
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -81,7 +81,7 @@ jobs:
           echo "🔍 Running basic syntax check..."
           # Use Node.js to check for syntax errors, but skip .d.ts files
           files=$(find src -name "*.ts" ! -name "*.d.ts")
-          
+
           for file in $files; do
             if [ -n "$file" ]; then
               if node -c "$file"; then
@@ -97,13 +97,13 @@ jobs:
       - name: ESLint check
         run: |
           echo "🔍 Running ESLint..."
-          if npx eslint src --ext .ts; then
+          if npx eslint src; then
             echo "✅ ESLint passed"
           else
             echo "❌ ESLint failed"
             if [ "${{ github.event.inputs.fix_issues }}" == "true" ]; then
               echo "🔧 Attempting to fix ESLint issues..."
-              npx eslint src --ext .ts --fix
+              npx eslint src --fix
               echo "✅ ESLint issues fixed"
             else
               exit 1
@@ -133,7 +133,7 @@ jobs:
     name: Verify Admin Permissions
     runs-on: ubuntu-latest
     if: always()
-    
+
     steps:
       - name: Check actor permissions
         run: |
@@ -141,7 +141,7 @@ jobs:
           echo "Actor: ${{ github.actor }}"
           echo "Repository: ${{ github.repository }}"
           echo ""
-          
+
           if [[ "${{ github.actor }}" == "LucasSantana-Dev" ]] || [[ "${{ github.actor }}" == *"admin"* ]]; then
             echo "✅ Actor has admin permissions"
           else

@@ -26,7 +26,7 @@ describe('submit-feedback', () => {
     const validInput = {
       generation_id: 'test-gen-123',
       rating: 5,
-      feedback_type: 'explicit'
+      feedback_type: 'explicit',
     };
 
     // Get the registered handler
@@ -62,7 +62,7 @@ describe('submit-feedback', () => {
       issues: ['color_contrast', 'keyboard_navigation'],
       strengths: ['responsive_design', 'accessibility'],
       component_type: 'button',
-      framework: 'react'
+      framework: 'react',
     };
 
     // Get the registered handler
@@ -97,7 +97,7 @@ describe('submit-feedback', () => {
   it('should validate rating range', () => {
     const invalidRatings = [0, 11, -1, 1.5];
 
-    invalidRatings.forEach(rating => {
+    invalidRatings.forEach((rating) => {
       expect(() => {
         const input = { generation_id: 'test', rating, feedback_type: 'explicit' };
         expect(input.rating).toBeGreaterThanOrEqual(1);
@@ -110,7 +110,7 @@ describe('submit-feedback', () => {
   it('should validate feedback type', () => {
     const invalidTypes = ['invalid', 'automatic', 'manual'];
 
-    invalidTypes.forEach(type => {
+    invalidTypes.forEach((type) => {
       expect(() => {
         const input = { generation_id: 'test', rating: 5, feedback_type: type };
         expect(['explicit', 'implicit']).toContain(input.feedback_type);
@@ -121,7 +121,7 @@ describe('submit-feedback', () => {
   it('should require generation_id parameter', () => {
     const invalidInput = {
       rating: 5,
-      feedback_type: 'explicit'
+      feedback_type: 'explicit',
     };
 
     expect(() => {
@@ -134,7 +134,7 @@ describe('submit-feedback', () => {
   it('should require rating parameter', () => {
     const invalidInput = {
       generation_id: 'test-gen-123',
-      feedback_type: 'explicit'
+      feedback_type: 'explicit',
     };
 
     expect(() => {
@@ -147,7 +147,7 @@ describe('submit-feedback', () => {
   it('should require feedback_type parameter', () => {
     const invalidInput = {
       generation_id: 'test-gen-123',
-      rating: 5
+      rating: 5,
     };
 
     expect(() => {

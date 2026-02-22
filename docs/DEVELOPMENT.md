@@ -3,6 +3,7 @@
 ## 🏗️ Development Workflow
 
 ### Prerequisites
+
 - Node.js 22+
 - npm or yarn
 - Git
@@ -12,28 +13,33 @@
 ### Getting Started
 
 1. **Clone Repository**
+
 ```bash
 git clone https://github.com/LucasSantana-Dev/uiforge-mcp.git
 cd uiforge-mcp
 ```
 
 2. **Install Dependencies**
+
 ```bash
 npm install
 ```
 
 3. **Set Up Environment**
+
 ```bash
 cp .env.example .env
 # Edit .env with your configuration
 ```
 
 4. **Run Tests**
+
 ```bash
 npm test
 ```
 
 5. **Start Development**
+
 ```bash
 npm run dev
 ```
@@ -100,6 +106,7 @@ src/
 ## 🔧 Development Commands
 
 ### Core Commands
+
 ```bash
 npm run dev              # Start development server
 npm run build            # Build for production
@@ -113,6 +120,7 @@ npm run validate         # Run all validation checks
 ```
 
 ### Docker Commands
+
 ```bash
 npm run docker:build     # Build Docker image
 npm run docker:run       # Run Docker container
@@ -120,6 +128,7 @@ npm run docker:dev       # Development with Docker
 ```
 
 ### Quality Commands
+
 ```bash
 npm run test:security    # Run security tests
 npm run test:integration # Run integration tests
@@ -130,6 +139,7 @@ npm run docs              # Generate documentation
 ## 🧪 Testing Strategy
 
 ### Test Structure
+
 - **Unit Tests**: Individual function and class testing
 - **Integration Tests**: Tool and service integration
 - **End-to-End Tests**: Complete workflow testing
@@ -138,6 +148,7 @@ npm run docs              # Generate documentation
 ### Writing Tests
 
 #### Unit Test Example
+
 ```typescript
 import { describe, it, expect } from '@jest/globals';
 import { toPascalCase } from '../lib/utils/string.utils.js';
@@ -151,6 +162,7 @@ describe('string.utils', () => {
 ```
 
 #### Tool Test Example
+
 ```typescript
 import { describe, it, expect, beforeEach } from '@jest/globals';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
@@ -172,21 +184,25 @@ describe('generate-ui-component', () => {
 ### Test Categories
 
 #### 1. Tool Registration Tests
+
 - Verify tools register without errors
 - Check tool metadata (name, description)
 - Validate input schemas
 
 #### 2. Functionality Tests
+
 - Test core functionality with various inputs
 - Validate output formats
 - Check error handling
 
 #### 3. Integration Tests
+
 - Test tool interactions
 - Verify service integration
 - Test end-to-end workflows
 
 #### 4. Performance Tests
+
 - Measure execution time
 - Test memory usage
 - Validate resource cleanup
@@ -194,26 +210,31 @@ describe('generate-ui-component', () => {
 ### Running Tests
 
 #### All Tests
+
 ```bash
 npm test
 ```
 
 #### Specific Test File
+
 ```bash
 npm test -- tools/generate-ui-component.test.ts
 ```
 
 #### Test Pattern
+
 ```bash
 npm test -- --testNamePattern="should convert"
 ```
 
 #### Coverage Report
+
 ```bash
 npm run test:coverage
 ```
 
 #### Watch Mode
+
 ```bash
 npm run test:watch
 ```
@@ -264,8 +285,10 @@ Framework-specific generators:
 export class GeneratorFactory {
   static create(framework: Framework): IGenerator {
     switch (framework) {
-      case 'react': return new ReactGenerator();
-      case 'vue': return new VueGenerator();
+      case 'react':
+        return new ReactGenerator();
+      case 'vue':
+        return new VueGenerator();
       // ... other frameworks
     }
   }
@@ -279,7 +302,7 @@ Design context store:
 ```typescript
 class DesignContextStore {
   private static instance: DesignContextStore;
-  
+
   static getInstance(): DesignContextStore {
     if (!DesignContextStore.instance) {
       DesignContextStore.instance = new DesignContextStore();
@@ -311,10 +334,12 @@ export function registerNewTool(server: McpServer): void {
     async ({ parameter1, parameter2 }) => {
       // Implementation
       return {
-        content: [{
-          type: 'text',
-          text: `Tool executed with ${parameter1}`
-        }]
+        content: [
+          {
+            type: 'text',
+            text: `Tool executed with ${parameter1}`,
+          },
+        ],
       };
     }
   );
@@ -388,10 +413,12 @@ export class NewFrameworkGenerator extends BaseGenerator {
     designContext: IDesignContext
   ): IGeneratedFile[] {
     // Implementation
-    return [{
-      path: `components/${componentType}.new-framework`,
-      content: 'Generated component code'
-    }];
+    return [
+      {
+        path: `components/${componentType}.new-framework`,
+        content: 'Generated component code',
+      },
+    ];
   }
 }
 ```
@@ -427,9 +454,9 @@ export function generateNewFrameworkProject(
       content: JSON.stringify({
         name,
         dependencies: {
-          'new-framework': '^1.0.0'
-        }
-      })
+          'new-framework': '^1.0.0',
+        },
+      }),
     },
     // ... other files
   ];
@@ -446,10 +473,7 @@ Add tests for the new framework generator and templates.
 
 ```json
 {
-  "extends": [
-    "@typescript-eslint/recommended",
-    "prettier"
-  ],
+  "extends": ["@typescript-eslint/recommended", "prettier"],
   "rules": {
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/explicit-function-return-type": "warn",
@@ -526,11 +550,11 @@ import { Readable } from 'stream';
 function createFileStream(files: IGeneratedFile[]): Readable {
   return new Readable({
     read() {
-      files.forEach(file => {
+      files.forEach((file) => {
         this.push(file.content);
       });
       this.push(null);
-    }
+    },
   });
 }
 ```
@@ -607,7 +631,7 @@ DEBUG=uiforge:* npm run dev
 
 ### Code Documentation
 
-```typescript
+````typescript
 /**
  * Generates a UI component based on the specified parameters
  * @param componentType - Type of component to generate
@@ -627,7 +651,7 @@ export async function generateComponent(
 ): Promise<IGeneratedFile[]> {
   // Implementation
 }
-```
+````
 
 ### API Documentation
 
@@ -654,13 +678,13 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Run tests
         run: npm test
-      
+
       - name: Upload coverage
         uses: codecov/codecov-action@v5
 ```
@@ -716,6 +740,8 @@ LOG_LEVEL=debug
 ---
 
 **Need help?**
+
 - Check [Architecture Documentation](./ARCHITECTURE.md)
 - Review [API Reference](../README.md#api-reference)
-- Join [Discussions](https://github.com/LucasSantana-Dev/uiforge-mcp/discussions)
+- Join
+  [Discussions](https://github.com/LucasSantana-Dev/uiforge-mcp/discussions)

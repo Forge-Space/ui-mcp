@@ -86,7 +86,9 @@ describe('Component Library Integration', () => {
       const cardFile = files[0];
 
       // Should contain card imports
-      expect(cardFile.content).toContain('import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "components/ui/card"');
+      expect(cardFile.content).toContain(
+        'import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "components/ui/card"'
+      );
     });
 
     it('should generate shadcn/ui input component', () => {
@@ -108,7 +110,9 @@ describe('Component Library Integration', () => {
       const dialogFile = files[0];
 
       // Should contain card wrapper imports (shadcn dialog uses Card component)
-      expect(dialogFile.content).toContain('import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "components/ui/card"');
+      expect(dialogFile.content).toContain(
+        'import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "components/ui/card"'
+      );
     });
   });
 
@@ -200,7 +204,7 @@ describe('Component Library Integration', () => {
       const files = generateComponent('button', 'react', mockDesignContext, {}, undefined, undefined, 'none');
 
       expect(files).toHaveLength(2); // Component + test file
-      const buttonFile = files.find(f => f.path.includes('.tsx'));
+      const buttonFile = files.find((f) => f.path.includes('.tsx'));
 
       if (!buttonFile) {
         throw new Error('Component file not found');
@@ -219,7 +223,7 @@ describe('Component Library Integration', () => {
       const files = generateComponent('button', 'vue', mockDesignContext, {}, undefined, undefined, 'primevue');
 
       expect(files).toHaveLength(2); // Component + test file
-      const vueFile = files.find(f => f.path.includes('.vue'));
+      const vueFile = files.find((f) => f.path.includes('.vue'));
 
       if (!vueFile) {
         throw new Error('Vue component file not found');
@@ -237,7 +241,7 @@ describe('Component Library Integration', () => {
       const files = generateComponent('button', 'angular', mockDesignContext, {}, undefined, undefined, 'material');
 
       expect(files).toHaveLength(2); // Component + test file
-      const angularFile = files.find(f => f.path.includes('.component.ts'));
+      const angularFile = files.find((f) => f.path.includes('.component.ts'));
 
       if (!angularFile) {
         throw new Error('Angular component file not found');
@@ -255,7 +259,7 @@ describe('Component Library Integration', () => {
       const files = generateComponent('button', 'svelte', mockDesignContext, {}, undefined, undefined, 'headlessui');
 
       expect(files).toHaveLength(2); // Component + test file
-      const svelteFile = files.find(f => f.path.includes('.svelte'));
+      const svelteFile = files.find((f) => f.path.includes('.svelte'));
 
       if (!svelteFile) {
         throw new Error('Svelte component file not found');

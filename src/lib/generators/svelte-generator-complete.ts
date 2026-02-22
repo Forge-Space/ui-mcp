@@ -2,7 +2,7 @@ import { BaseGenerator } from './base-generator.js';
 import type { IGeneratedFile, IDesignContext, Architecture, StateManagement, Framework } from '../types.js';
 import { createLogger } from '../logger.js';
 
-const logger = createLogger('svelte-generator');
+const _logger = createLogger('svelte-generator');
 
 /**
  * Svelte Generator - Generates Svelte components and projects
@@ -71,7 +71,7 @@ export class SvelteGenerator extends BaseGenerator {
    */
   generateComponent(
     componentType: string,
-    props: Record<string, any>,
+    props: Record<string, unknown>,
     designContext: IDesignContext
   ): IGeneratedFile[] {
     this.logStart('component', componentType);
@@ -98,12 +98,12 @@ export class SvelteGenerator extends BaseGenerator {
   private createPackageJsonFile(projectName: string, stateManagement: StateManagement): IGeneratedFile {
     const dependencies: Record<string, string> = {
       '@sveltejs/kit': '^2.0.0',
-      'svelte': '^4.2.0',
-      'clsx': '^2.0.0',
-      'tailwindcss': '^3.4.0',
+      svelte: '^4.2.0',
+      clsx: '^2.0.0',
+      tailwindcss: '^3.4.0',
       'tailwind-merge': '^2.0.0',
-      'postcss': '^8.4.0',
-      'autoprefixer': '^10.4.0',
+      postcss: '^8.4.0',
+      autoprefixer: '^10.4.0',
     };
 
     const devDependencies: Record<string, string> = {
@@ -113,18 +113,18 @@ export class SvelteGenerator extends BaseGenerator {
       '@types/node': '^20.0.0',
       '@typescript-eslint/eslint-plugin': '^6.0.0',
       '@typescript-eslint/parser': '^6.0.0',
-      'eslint': '^8.45.0',
+      eslint: '^8.45.0',
       'eslint-config-prettier': '^9.0.0',
       'eslint-plugin-svelte': '^2.35.0',
-      'prettier': '^3.0.0',
+      prettier: '^3.0.0',
       'prettier-plugin-svelte': '^3.0.0',
-      'svelte': '^4.2.0',
+      svelte: '^4.2.0',
       'svelte-check': '^3.4.0',
-      'tslib': '^2.6.0',
-      'typescript': '^5.0.0',
-      'vite': '^5.0.0',
+      tslib: '^2.6.0',
+      typescript: '^5.0.0',
+      vite: '^5.0.0',
       '@testing-library/svelte': '^4.0.0',
-      'vitest': '^1.0.0',
+      vitest: '^1.0.0',
     };
 
     // Add state management dependencies
@@ -354,7 +354,10 @@ export default {
     };
   }
 
-  private createStateManagementFiles(stateManagement: StateManagement, designContext: IDesignContext): IGeneratedFile[] {
+  private createStateManagementFiles(
+    stateManagement: StateManagement,
+    _designContext: IDesignContext
+  ): IGeneratedFile[] {
     const files: IGeneratedFile[] = [];
 
     if (stateManagement === 'stores') {
@@ -416,17 +419,18 @@ export const toggleTheme = () => {
   private createComponentFile(
     componentName: string,
     componentType: string,
-    props: Record<string, any>,
+    props: Record<string, unknown>,
     designContext: IDesignContext
   ): IGeneratedFile {
-    const propsInterface = Object.keys(props).length > 0
-      ? `interface ${componentName}Props {\n${Object.entries(props)
-          .map(([key, type]) => `  ${key}: ${type};`)
-          .join('\n')}\n}\n\n`
-      : '';
+    const propsInterface =
+      Object.keys(props).length > 0
+        ? `interface ${componentName}Props {\n${Object.entries(props)
+            .map(([key, type]) => `  ${key}: ${type};`)
+            .join('\n')}\n}\n\n`
+        : '';
 
     const content = `${propsInterface}<script lang="ts">
-  export let ${Object.keys(props).length > 0 ? '{ ' + Object.keys(props).join(', ') + ' }' : ''}: ${componentName}Props = ${Object.keys(props).length > 0 ? '{}' : 'undefined'};
+  export let ${Object.keys(props).length > 0 ? `{ ${Object.keys(props).join(', ')} }` : ''}: ${componentName}Props = ${Object.keys(props).length > 0 ? '{}' : 'undefined'};
 </script>
 
 <div class="p-4 rounded-lg shadow-md border border-border bg-card" style="background-color: ${designContext.colorPalette.background}; color: ${designContext.colorPalette.foreground};">
@@ -442,7 +446,9 @@ export const toggleTheme = () => {
     <div class="mt-4 p-3 bg-muted rounded-md">
       <h3 class="font-medium text-sm mb-2">Props:</h3>
       <ul class="text-xs space-y-1">
-        ${Object.entries(props).map(([key, type]) => `<li><code>${key}</code>: ${type}</li>`).join('')}
+        ${Object.entries(props)
+          .map(([key, type]) => `<li><code>${key}</code>: ${type}</li>`)
+          .join('')}
       </ul>
     </div>
   {/if}
@@ -461,8 +467,8 @@ export const toggleTheme = () => {
 
   private createStorybookFile(
     componentName: string,
-    componentType: string,
-    designContext: IDesignContext
+    _componentType: string,
+    _designContext: IDesignContext
   ): IGeneratedFile {
     const content = `<script context="module">
   import type { Meta, StoryObj } from '@storybook/svelte';
@@ -490,11 +496,7 @@ export const toggleTheme = () => {
     };
   }
 
-  private createTestFile(
-    componentName: string,
-    componentType: string,
-    designContext: IDesignContext
-  ): IGeneratedFile {
+  private createTestFile(componentName: string, componentType: string, _designContext: IDesignContext): IGeneratedFile {
     const content = `import { render, screen } from '@testing-library/svelte';
 import { describe, it, expect } from 'vitest';
 import { ${componentName} } from './${componentName}.svelte';
@@ -537,14 +539,14 @@ describe('${componentName}', () => {
     };
   }
 
-  private createTypeDefinitionsFile(
-    componentName: string,
-    props: Record<string, any>
-  ): IGeneratedFile {
+  private createTypeDefinitionsFile(componentName: string, props: Record<string, unknown>): IGeneratedFile {
     const content = `export interface ${componentName}Props {
-${Object.entries(props).length > 0
-  ? Object.entries(props).map(([key, type]) => `  ${key}: ${type};`).join('\n')
-  : '  // No props defined'
+${
+  Object.entries(props).length > 0
+    ? Object.entries(props)
+        .map(([key, type]) => `  ${key}: ${type};`)
+        .join('\n')
+    : '  // No props defined'
 }
 }
 
@@ -658,40 +660,29 @@ This project is ready for deployment to:
   }
 
   protected getShadcnImports(): string[] {
-    return [
-      "import { cn } from '@/lib/utils'",
-      "import * as Slot from '@radix-ui/react-slot'"
-    ];
+    return ["import { cn } from '@/lib/utils'", "import * as Slot from '@radix-ui/react-slot'"];
   }
 
   protected getRadixImports(): string[] {
-    return [
-      "import * as RadixIcons from '@radix-ui/react-icons'",
-      "import * as RadixSlot from '@radix-ui/react-slot'"
-    ];
+    return ["import * as RadixIcons from '@radix-ui/react-icons'", "import * as RadixSlot from '@radix-ui/react-slot'"];
   }
 
   protected getHeadlessUIImports(): string[] {
-    return [
-      "import { Button as HeadlessButton } from '@headlessui/vue'"
-    ];
+    return ["import { Button as HeadlessButton } from '@headlessui/vue'"];
   }
 
   protected getPrimeVueImports(): string[] {
-    return [
-      "import Button from 'primevue/button'",
-      "import InputText from 'primevue/inputtext'"
-    ];
+    return ["import Button from 'primevue/button'", "import InputText from 'primevue/inputtext'"];
   }
 
   protected getMaterialImports(): string[] {
     return [
       "import { Button as MaterialButton } from '@mui/material'",
-      "import { TextField as MaterialTextField } from '@mui/material'"
+      "import { TextField as MaterialTextField } from '@mui/material'",
     ];
   }
 
-  protected generateShadcnComponent(componentType: string, props: Record<string, any>): string {
+  protected generateShadcnComponent(_componentType: string, _props: Record<string, unknown>): string {
     return `<script lang="ts">
   import { cn } from '$lib/utils';
   import { Button } from '$lib/components/ui/button';
@@ -706,7 +697,7 @@ This project is ready for deployment to:
 </Button>`;
   }
 
-  protected generateRadixComponent(componentType: string, props: Record<string, any>): string {
+  protected generateRadixComponent(_componentType: string, _props: Record<string, unknown>): string {
     return `<script lang="ts">
   import * as Slider from '@radix-ui/themes/components/slider';
 </script>
@@ -719,7 +710,7 @@ This project is ready for deployment to:
 </Slider.Root>`;
   }
 
-  protected generateHeadlessUIComponent(componentType: string, props: Record<string, any>): string {
+  protected generateHeadlessUIComponent(_componentType: string, _props: Record<string, unknown>): string {
     return `<script lang="ts">
   // Headless UI not directly supported in Svelte, use Radix UI instead
 </script>
@@ -729,7 +720,7 @@ This project is ready for deployment to:
 </div>`;
   }
 
-  protected generatePrimeVueComponent(componentType: string, props: Record<string, any>): string {
+  protected generatePrimeVueComponent(_componentType: string, _props: Record<string, unknown>): string {
     return `<script lang="ts">
   // PrimeVue is Vue-specific, not available for Svelte
 </script>
@@ -739,7 +730,7 @@ This project is ready for deployment to:
 </div>`;
   }
 
-  protected generateMaterialComponent(componentType: string, props: Record<string, any>): string {
+  protected generateMaterialComponent(_componentType: string, _props: Record<string, unknown>): string {
     return `<script lang="ts">
   // Material-UI is React-specific, not available for Svelte
 </script>
@@ -749,7 +740,7 @@ This project is ready for deployment to:
 </div>`;
   }
 
-  protected generateTailwindComponent(componentType: string, props: Record<string, any>): string {
+  protected generateTailwindComponent(_componentType: string, _props: Record<string, unknown>): string {
     return `<script lang="ts">
   export let className = '';
   export let variant = 'default';

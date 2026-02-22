@@ -121,7 +121,7 @@ export function generateComponent(
   registryMatch?: ReturnType<typeof getBestMatch>,
   componentLibrary?: string
 ): IGeneratedFile[] {
-  const componentName = toPascalCase(componentType);
+  const _componentName = toPascalCase(componentType);
 
   // Convert props to Record<string, any> for the generator
   const generatorProps = props || {};
@@ -142,13 +142,15 @@ export function generateComponent(
     const componentName = toPascalCase(componentType);
 
     // Simple fallback component
-    return [{
-      path: `src/components/${componentName}.tsx`,
-      content: `// Fallback component for ${framework}
+    return [
+      {
+        path: `src/components/${componentName}.tsx`,
+        content: `// Fallback component for ${framework}
 export function ${componentName}() {
   return <div>${componentName} - ${componentType}</div>;
-}`
-    }];
+}`,
+      },
+    ];
   }
 }
 
@@ -770,7 +772,7 @@ function getMaterialUIImports(componentType: string): string {
     .join('\n');
 }
 
-function generateReactComponent(
+function _generateReactComponent(
   name: string,
   type: string,
   _ctx: IDesignContext,
@@ -813,7 +815,7 @@ ${body}
   ];
 }
 
-function generateVueComponent(
+function _generateVueComponent(
   name: string,
   type: string,
   _designContext: IDesignContext,
@@ -844,7 +846,7 @@ ${body}
   ];
 }
 
-function generateAngularComponent(
+function _generateAngularComponent(
   name: string,
   type: string,
   _designContext: IDesignContext,
@@ -880,7 +882,7 @@ ${inputDecls}
   ];
 }
 
-function generateSvelteComponent(
+function _generateSvelteComponent(
   name: string,
   type: string,
   _designContext: IDesignContext,
@@ -909,7 +911,7 @@ ${body}
   ];
 }
 
-function generateHtmlComponent(
+function _generateHtmlComponent(
   name: string,
   type: string,
   ctx: IDesignContext,

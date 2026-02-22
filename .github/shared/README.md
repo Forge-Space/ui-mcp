@@ -2,7 +2,10 @@
 
 ## 📦 Overview
 
-This directory contains centralized GitHub configurations, workflows, templates, and scripts shared across all UIForge projects. This package ensures consistency, reduces duplication, and simplifies maintenance across the entire UIForge ecosystem.
+This directory contains centralized GitHub configurations, workflows, templates,
+and scripts shared across all UIForge projects. This package ensures
+consistency, reduces duplication, and simplifies maintenance across the entire
+UIForge ecosystem.
 
 ## 🗂️ Directory Structure
 
@@ -32,6 +35,7 @@ This directory contains centralized GitHub configurations, workflows, templates,
 ### For New Projects
 
 1. **Copy the shared package**:
+
    ```bash
    # Clone the shared package to your project
    cp -r /path/to/uiforge-shared/.github/shared ./github/
@@ -63,12 +67,14 @@ This directory contains centralized GitHub configurations, workflows, templates,
 ### Workflows
 
 #### Base CI/CD (`workflows/base-ci.yml`)
+
 - **Purpose**: Comprehensive CI/CD pipeline for all project types
 - **Features**: Linting, testing, building, security scanning
 - **Inputs**: Project type, Node.js/Python versions, feature toggles
 - **Usage**: Reference as reusable workflow in project CI
 
 #### Security Scanning (`workflows/security-scan.yml`)
+
 - **Purpose**: Multi-tool security vulnerability scanning
 - **Tools**: Snyk, CodeQL, Trufflehog, npm audit
 - **Schedule**: Daily scans + event-driven
@@ -77,18 +83,21 @@ This directory contains centralized GitHub configurations, workflows, templates,
 ### Configurations
 
 #### Renovate (`configs/renovate.json5`)
+
 - **Purpose**: Automated dependency management
 - **Features**: Auto-merge, semantic commits, vulnerability alerts
 - **Schedule**: Weekly updates (Monday 3AM UTC)
 - **Customization**: Project-specific rules and groups
 
 #### Codecov (`configs/codecov.yml`)
+
 - **Purpose**: Code coverage reporting and thresholds
 - **Threshold**: 80% minimum coverage
 - **Features**: Multi-format reporting, PR comments
 - **Integration**: GitHub Actions and CI pipelines
 
 #### Branch Protection (`configs/branch-protection.yml`)
+
 - **Purpose**: Git branch protection rules
 - **Rules**: Tiered protection for main, release, dev, feature branches
 - **Features**: Required reviewers, status checks, force push restrictions
@@ -97,6 +106,7 @@ This directory contains centralized GitHub configurations, workflows, templates,
 ### Scripts
 
 #### MCP Wrapper (`scripts/mcp-wrapper.sh`)
+
 - **Purpose**: Unified MCP server connection script
 - **Support**: Cursor and MCP Client configurations
 - **Features**: JWT authentication, Docker container execution
@@ -105,12 +115,14 @@ This directory contains centralized GitHub configurations, workflows, templates,
 ### Templates
 
 #### PR Template (`templates/pr-template-master.md`)
+
 - **Purpose**: Comprehensive pull request template
 - **Sections**: Problem statement, solution, testing, security, documentation
 - **Customization**: Project-specific sections and requirements
 - **Integration**: Place as `.github/PULL_REQUEST_TEMPLATE.md`
 
 #### Issue Templates
+
 - **Bug Report**: Structured bug reporting with reproduction steps
 - **Feature Request**: Comprehensive feature proposal with acceptance criteria
 - **Usage**: Place in `.github/ISSUE_TEMPLATE/` directory
@@ -120,14 +132,16 @@ This directory contains centralized GitHub configurations, workflows, templates,
 ### Project-Specific Adaptations
 
 1. **Environment Variables**:
+
    ```yaml
    env:
-     NODE_VERSION: "22"
-     PYTHON_VERSION: "3.12"
-     COVERAGE_THRESHOLD: "80"
+     NODE_VERSION: '22'
+     PYTHON_VERSION: '3.12'
+     COVERAGE_THRESHOLD: '80'
    ```
 
 2. **Workflow Inputs**:
+
    ```yaml
    uses: ./.github/shared/workflows/base-ci.yml
    with:
@@ -161,6 +175,7 @@ This directory contains centralized GitHub configurations, workflows, templates,
 ## 📋 Implementation Checklist
 
 ### Setup Verification
+
 - [ ] Shared package copied to project
 - [ ] Workflows reference shared templates
 - [ ] Configurations adapted for project
@@ -168,6 +183,7 @@ This directory contains centralized GitHub configurations, workflows, templates,
 - [ ] Templates placed in correct locations
 
 ### Testing Validation
+
 - [ ] CI/CD pipeline runs successfully
 - [ ] Security scans execute properly
 - [ ] Dependency management works
@@ -175,6 +191,7 @@ This directory contains centralized GitHub configurations, workflows, templates,
 - [ ] Templates render correctly
 
 ### Documentation Updates
+
 - [ ] Project README references shared package
 - [ ] Setup instructions updated
 - [ ] Customization documented
@@ -183,21 +200,25 @@ This directory contains centralized GitHub configurations, workflows, templates,
 ## 🚀 Benefits
 
 ### Consistency
+
 - Standardized patterns across all projects
 - Unified security and quality standards
 - Consistent development workflows
 
 ### Maintainability
+
 - Single source of truth for configurations
 - Reduced duplication and maintenance overhead
 - Centralized updates and improvements
 
 ### Developer Experience
+
 - Familiar patterns across projects
 - Reduced setup time for new projects
 - Clear documentation and guidelines
 
 ### Quality Assurance
+
 - Tested and validated configurations
 - Security best practices built-in
 - Automated quality gates and checks
@@ -207,6 +228,7 @@ This directory contains centralized GitHub configurations, workflows, templates,
 ### From Existing Configurations
 
 1. **Backup Current Setup**:
+
    ```bash
    mkdir -p .github/backup
    cp -r .github/workflows .github/backup/
@@ -214,6 +236,7 @@ This directory contains centralized GitHub configurations, workflows, templates,
    ```
 
 2. **Install Shared Package**:
+
    ```bash
    # Copy shared package
    cp -r /path/to/shared/.github/shared .github/
@@ -296,7 +319,5 @@ This directory contains centralized GitHub configurations, workflows, templates,
 
 ---
 
-**Version**: 1.0.0
-**Last Updated**: 2025-02-17
-**Maintainer**: UIForge Development Team
-**License**: MIT
+**Version**: 1.0.0 **Last Updated**: 2025-02-17 **Maintainer**: UIForge
+Development Team **License**: MIT

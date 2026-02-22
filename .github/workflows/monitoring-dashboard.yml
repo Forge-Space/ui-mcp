@@ -3,21 +3,21 @@ name: Monitoring Dashboard
 on:
   schedule:
     # Run monitoring dashboard daily at 8 AM UTC
-    - cron: '0 8 * * *'
+    - cron: "0 8 * * *"
   workflow_dispatch:
     inputs:
       generate_report:
-        description: 'Generate comprehensive monitoring report'
+        description: "Generate comprehensive monitoring report"
         required: false
         default: true
         type: boolean
       check_health:
-        description: 'Check overall project health'
+        description: "Check overall project health"
         required: false
         default: true
         type: boolean
       send_alerts:
-        description: 'Send alerts for critical issues'
+        description: "Send alerts for critical issues"
         required: false
         default: false
         type: boolean
@@ -64,7 +64,7 @@ jobs:
             echo "⚠️ Found $LARGE_FILES large files (>1MB)" >> $GITHUB_STEP_SUMMARY
             find . -type f -size +1M -not -path "./node_modules/*" -not -path "./.git/*" -exec ls -lh {} \; >> $GITHUB_STEP_SUMMARY
           else
-            echo "✅ No large files found" >> $GITHUB_SUMMARY
+            echo "✅ No large files found" >> $GITHUB_STEP_SUMMARY
           fi
 
       - name: Check build health
@@ -76,7 +76,7 @@ jobs:
             echo "✅ Build successful" >> $GITHUB_STEP_SUMMARY
 
             if [ -f dist/index.js ]; then
-              SIZE=$(stat -f%s dist/index.js)
+              SIZE=$(stat -c%s dist/index.js)
               SIZE_KB=$((SIZE / 1024))
               echo "✅ Bundle created: ${SIZE_KB}KB" >> $GITHUB_STEP_SUMMARY
             fi
@@ -107,7 +107,7 @@ jobs:
               LINES=$(cat coverage/coverage-summary.json | jq '.total.lines.pct // 0')
               echo "✅ Coverage: ${LINES}%" >> $GITHUB_STEP_SUMMARY
 
-              if (( $(echo "$LINES >= 80" | bc -l) ); then
+              if (( $(echo "$LINES >= 80" | bc -l) )); then
                 echo "✅ Coverage threshold met" >> $GITHUB_STEP_SUMMARY
               else
                 echo "⚠️ Coverage below threshold (80%)" >> $GITHUB_STEP_SUMMARY
@@ -151,7 +151,7 @@ jobs:
           elif [ $SCORE -ge 50 ]; then
             echo "🟠 **Fair** - Some attention needed" >> $GITHUB_STEP_SUMMARY
           else
-            echo "🔴 **Poor** - Immediate attention required" >> $GITHUB_SUMMARY
+            echo "🔴 **Poor** - Immediate attention required" >> $GITHUB_STEP_SUMMARY
           fi
 
   metrics-collection:
@@ -205,7 +205,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 📦 Dependency Metrics" >> $GITHUB_STEP_SUMMARY
           echo "- Production Dependencies: $DEPS" >> $GITHUB_STEP_SUMMARY
-          echo "- Development Dependencies: $DEV_DEPS" >> $GITHUB_SUMMARY
+          echo "- Development Dependencies: $DEV_DEPS" >> $GITHUB_STEP_SUMMARY
           echo "- Total Dependencies: $(($DEPS + $DEV_DEPS))" >> $GITHUB_STEP_SUMMARY
 
           # Test metrics
@@ -219,13 +219,13 @@ jobs:
             echo "### 🧪 Test Coverage Metrics" >> $GITHUB_STEP_SUMMARY
             echo "- Lines: ${LINES}%" >> $GITHUB_STEP_SUMMARY
             echo "- Functions: ${FUNCTIONS}%" >> $GITHUB_STEP_SUMMARY
-            echo "- Branches: ${BRANCHES}%" >> $STEP_SUMMARY
+            echo "- Branches: ${BRANCHES}%" >> $GITHUB_STEP_SUMMARY
             echo "- Statements: ${STATEMENTS}%" >> $GITHUB_STEP_SUMMARY
           fi
 
           # Build metrics
           if [ -f dist/index.js ]; then
-            SIZE=$(stat -f%s dist/index.js)
+            SIZE=$(stat -c%s dist/index.js)
             SIZE_KB=$((SIZE / 1024))
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "### 📦 Build Metrics" >> $GITHUB_STEP_SUMMARY
@@ -258,7 +258,7 @@ jobs:
       - name: Run CodeQL analysis
         uses: github/codeql-action/init@v4
         with:
-          languages: typescript, javascript
+          languages: javascript-typescript
 
       - name: Perform CodeQL analysis
         uses: github/codeql-action/analyze@v4

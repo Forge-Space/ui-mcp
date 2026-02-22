@@ -5,7 +5,7 @@
  * TypeScript types, accessibility features, and responsive design.
  */
 
-import type { IGeneratedFile, IDesignContext, ComponentLibraryId } from '../../types.js';
+import type { IGeneratedFile, IDesignContext } from '../../types.js';
 
 export interface ShadcnTemplate {
   name: string;
@@ -28,12 +28,7 @@ export const buttonTemplate: ShadcnTemplate = {
   name: 'Button',
   description: 'A versatile button component with multiple variants and sizes',
   category: 'form',
-  dependencies: [
-    '@radix-ui/react-slot',
-    'class-variance-authority',
-    'clsx',
-    'tailwind-merge'
-  ],
+  dependencies: ['@radix-ui/react-slot', 'class-variance-authority', 'clsx', 'tailwind-merge'],
   files: [
     {
       path: 'components/ui/button.tsx',
@@ -93,7 +88,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 )
 Button.displayName = "Button"
 
-export { Button, buttonVariants }`
+export { Button, buttonVariants }`,
     },
     {
       path: 'components/ui/button.test.tsx',
@@ -130,7 +125,7 @@ describe("Button", () => {
     expect(button).toBeDisabled()
     expect(button).toHaveAttribute("disabled")
   })
-})`
+})`,
     },
     {
       path: 'components/ui/button.stories.tsx',
@@ -220,9 +215,9 @@ export const Icon: Story = {
     size: "icon",
     children: "🔥",
   },
-}`
-    }
-  ]
+}`,
+    },
+  ],
 };
 
 /**
@@ -315,9 +310,9 @@ const CardFooter = React.forwardRef<
 ))
 CardFooter.displayName = "CardFooter"
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }`
-    }
-  ]
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }`,
+    },
+  ],
 };
 
 /**
@@ -356,9 +351,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 )
 Input.displayName = "Input"
 
-export { Input }`
-    }
-  ]
+export { Input }`,
+    },
+  ],
 };
 
 /**
@@ -378,7 +373,7 @@ export function getShadcnTemplates(): ShadcnTemplate[] {
  */
 export function getShadcnTemplate(name: string): ShadcnTemplate | undefined {
   const templates = getShadcnTemplates();
-  return templates.find(template => template.name.toLowerCase() === name.toLowerCase());
+  return templates.find((template) => template.name.toLowerCase() === name.toLowerCase());
 }
 
 /**
@@ -387,7 +382,7 @@ export function getShadcnTemplate(name: string): ShadcnTemplate | undefined {
 export function generateShadcnComponent(
   templateName: string,
   designContext: IDesignContext,
-  customizations?: Record<string, any>
+  customizations?: Record<string, unknown>
 ): IGeneratedFile[] {
   const template = getShadcnTemplate(templateName);
 
@@ -395,9 +390,9 @@ export function generateShadcnComponent(
     throw new Error(`Template "${templateName}" not found`);
   }
 
-  return template.files.map(file => ({
+  return template.files.map((file) => ({
     path: file.path,
-    content: applyDesignContext(file.content, designContext, customizations)
+    content: applyDesignContext(file.content, designContext, customizations),
   }));
 }
 
@@ -407,7 +402,7 @@ export function generateShadcnComponent(
 function applyDesignContext(
   content: string,
   designContext: IDesignContext,
-  customizations?: Record<string, any>
+  customizations?: Record<string, unknown>
 ): string {
   let result = content;
 
@@ -433,7 +428,7 @@ function applyDesignContext(
 
   // Apply spacing customizations
   if (designContext.spacing) {
-    const { unit } = designContext.spacing;
+    const { unit: _unit } = designContext.spacing;
     // This would require more sophisticated parsing for Tailwind classes
     // For now, we'll keep the default spacing
   }

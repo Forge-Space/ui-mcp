@@ -324,7 +324,7 @@ export function composeSection(
 
   if (results.length === 0) return undefined;
 
-  let snippet = results[0]!.snippet;
+  let snippet = results[0].snippet;
 
   if (options?.style) {
     snippet = applyVisualStyle(snippet, options.style);
@@ -348,7 +348,7 @@ export function getBestMatch(
 ): IComponentSnippet | undefined {
   // Try exact type + variant first
   if (options?.variant) {
-    const exact = registry.find((s) => s.type === type.toLowerCase() && s.variant === options.variant!.toLowerCase());
+    const exact = registry.find((s) => s.type === type.toLowerCase() && s.variant === options.variant?.toLowerCase());
     if (exact) return exact;
   }
 
@@ -361,7 +361,7 @@ export function getBestMatch(
     style: options?.style,
   });
 
-  if (results.length > 0) return results[0]!.snippet;
+  if (results.length > 0) return results[0].snippet;
 
   // Fallback: just type match
   const typeMatch = registry.find((s) => s.type === type.toLowerCase());

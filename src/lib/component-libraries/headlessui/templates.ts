@@ -281,15 +281,15 @@ export function getHeadlessTemplates(): HeadlessTemplate[] {
 }
 
 export function getHeadlessTemplate(name: string): HeadlessTemplate | undefined {
-  return getHeadlessTemplates().find(t => t.name.toLowerCase() === name.toLowerCase());
+  return getHeadlessTemplates().find((t) => t.name.toLowerCase() === name.toLowerCase());
 }
 
 export function generateHeadlessComponent(
   templateName: string,
-  designContext: IDesignContext,
-  customizations?: Record<string, any>
+  _designContext: IDesignContext,
+  _customizations?: Record<string, unknown>
 ): IGeneratedFile[] {
   const template = getHeadlessTemplate(templateName);
   if (!template) throw new Error(`Headless UI template "${templateName}" not found`);
-  return template.files.map(f => ({ path: f.path, content: f.content }));
+  return template.files.map((f) => ({ path: f.path, content: f.content }));
 }

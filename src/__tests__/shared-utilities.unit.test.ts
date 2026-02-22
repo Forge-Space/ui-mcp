@@ -245,7 +245,7 @@ describe('Shared Utilities', () => {
       const data = [
         { type: 'fruit', name: 'apple' },
         { type: 'fruit', name: 'banana' },
-        { type: 'vegetable', name: 'carrot' }
+        { type: 'vegetable', name: 'carrot' },
       ];
 
       const grouped = groupBy(data, 'type');
@@ -257,7 +257,7 @@ describe('Shared Utilities', () => {
       const data = [
         { name: 'Charlie', age: 30 },
         { name: 'Alice', age: 25 },
-        { name: 'Bob', age: 35 }
+        { name: 'Bob', age: 35 },
       ];
 
       const sorted = sortBy(data, 'name');
@@ -317,7 +317,7 @@ describe('Shared Utilities', () => {
 
     it('should identify function values', () => {
       expect(isFunction(() => {})).toBe(true);
-      expect(isFunction(function() {})).toBe(true);
+      expect(isFunction(function () {})).toBe(true);
       expect(isFunction({})).toBe(false);
       expect(isFunction('string')).toBe(false);
       expect(isFunction(123)).toBe(false);

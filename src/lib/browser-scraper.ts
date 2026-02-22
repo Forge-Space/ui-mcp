@@ -1,3 +1,4 @@
+/// <reference lib="dom" />
 import { chromium, type Browser, type Page } from 'playwright';
 import type { IScrapedPage } from './types.js';
 import { createLogger } from './logger.js';

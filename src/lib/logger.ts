@@ -46,11 +46,17 @@ function createConsoleFallback(name?: string): Logger {
   const prefix = name ? `[${name}]` : '';
 
   const fallback = {
+    // eslint-disable-next-line no-console
     error: (...args: unknown[]) => console.error(prefix, ...args),
+    // eslint-disable-next-line no-console
     warn: (...args: unknown[]) => console.warn(prefix, ...args),
+    // eslint-disable-next-line no-console
     info: (...args: unknown[]) => console.info(prefix, ...args),
+    // eslint-disable-next-line no-console
     debug: (...args: unknown[]) => console.debug(prefix, ...args),
+    // eslint-disable-next-line no-console
     fatal: (...args: unknown[]) => console.error(`${prefix} FATAL:`, ...args),
+    // eslint-disable-next-line no-console
     trace: (...args: unknown[]) => console.debug(`${prefix} TRACE:`, ...args),
     silent: (): void => undefined,
     child: (bindings: Record<string, unknown>) => {
@@ -83,6 +89,7 @@ export function createLogger(name: string): Logger {
     return initLogger().child({ module: name });
   } catch (err) {
     // Fallback: return a console-based logger with the module name
+    // eslint-disable-next-line no-console
     console.debug(`Failed to create logger for module '${name}', using console fallback:`, err);
     return createConsoleFallback(name);
   }

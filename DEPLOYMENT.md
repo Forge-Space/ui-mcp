@@ -2,7 +2,8 @@
 
 ## Overview
 
-UIForge MCP can be deployed and used without cloning the repository using standard Docker or NPX commands.
+UIForge MCP can be deployed and used without cloning the repository using
+standard Docker or NPX commands.
 
 ## 🚀 Quick Deployment Options
 
@@ -30,8 +31,11 @@ Add to your IDE's MCP configuration:
     "uiforge-mcp": {
       "command": "docker",
       "args": [
-        "run", "--rm", "-i",
-        "-e", "FIGMA_ACCESS_TOKEN",
+        "run",
+        "--rm",
+        "-i",
+        "-e",
+        "FIGMA_ACCESS_TOKEN",
         "uiforge-mcp:latest"
       ],
       "env": {
@@ -84,6 +88,7 @@ npm publish
 ```
 
 The package includes:
+
 - `bin.uiforge-mcp` - Executable entry point
 - `files` - Only includes necessary `dist/` folder
 - `prepublishOnly` - Builds automatically before publishing
@@ -92,16 +97,16 @@ The package includes:
 
 ### Required Variables
 
-| Variable | Description | Source |
-|-----------|-------------|---------|
+| Variable             | Description     | Source                                                               |
+| -------------------- | --------------- | -------------------------------------------------------------------- |
 | `FIGMA_ACCESS_TOKEN` | Figma API token | [Figma Settings](https://www.figma.com/developers/api#access-tokens) |
 
 ### Optional Variables
 
-| Variable | Default | Description |
-|-----------|---------|-------------|
-| `NODE_ENV` | `production` | Environment mode |
-| `LOG_LEVEL` | `info` | Logging level |
+| Variable    | Default      | Description      |
+| ----------- | ------------ | ---------------- |
+| `NODE_ENV`  | `production` | Environment mode |
+| `LOG_LEVEL` | `info`       | Logging level    |
 
 ## 🐳 Docker Deployment
 
@@ -164,6 +169,7 @@ docker run -i \
 The Docker image can be deployed to any cloud platform:
 
 #### AWS ECS
+
 ```bash
 # Push to ECR
 aws ecr create-repository --repository-name uiforge-mcp
@@ -172,6 +178,7 @@ docker push <aws-account-id>.dkr.ecr.<region>.amazonaws.com/uiforge-mcp:latest
 ```
 
 #### Google Cloud Run
+
 ```bash
 # Deploy to Cloud Run
 gcloud run deploy uiforge-mcp \
@@ -183,6 +190,7 @@ gcloud run deploy uiforge-mcp \
 ```
 
 #### Azure Container Instances
+
 ```bash
 # Deploy to ACI
 az container create \
@@ -256,18 +264,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Build Docker image
         run: |
           docker build -t uiforge-mcp:${{ github.ref_name }} .
           docker tag uiforge-mcp:${{ github.ref_name }} uiforge-mcp:latest
-      
+
       - name: Push to Docker Hub
         run: |
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
           docker push uiforge-mcp:${{ github.ref_name }}
           docker push uiforge-mcp:latest
-      
+
       - name: Publish to NPM
         run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
@@ -289,6 +297,7 @@ jobs:
 ### Common Issues
 
 **NPX fails to find package:**
+
 ```bash
 # Clear NPX cache
 npx --clear-cache
@@ -298,6 +307,7 @@ npx -y uiforge-mcp@0.4.1
 ```
 
 **Docker permission denied:**
+
 ```bash
 # Fix Docker permissions
 sudo usermod -aG docker $USER
@@ -305,11 +315,13 @@ newgrp docker
 ```
 
 **Figma token not working:**
+
 - Verify token has correct permissions
 - Check token hasn't expired
 - Ensure token is set in environment variables
 
 **MCP server not starting:**
+
 - Check Node.js version (requires >=22)
 - Verify all dependencies are installed
 - Check logs for error messages
@@ -318,5 +330,7 @@ newgrp docker
 
 - **Documentation**: [README.md](./README.md)
 - **MCP Guide**: [MCP_SETUP_GUIDE.md](./MCP_SETUP_GUIDE.md)
-- **Issues**: [GitHub Issues](https://github.com/LucasSantana-Dev/uiforge-mcp/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/LucasSantana-Dev/uiforge-mcp/discussions)
+- **Issues**:
+  [GitHub Issues](https://github.com/LucasSantana-Dev/uiforge-mcp/issues)
+- **Discussions**:
+  [GitHub Discussions](https://github.com/LucasSantana-Dev/uiforge-mcp/discussions)

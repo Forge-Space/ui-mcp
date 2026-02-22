@@ -183,7 +183,7 @@ function buildSummary(result: IDesignAnalysisResult, warnings: string[], context
     const byCategory = new Map<string, typeof result.commonPatterns>();
     for (const p of result.commonPatterns) {
       if (!byCategory.has(p.category)) byCategory.set(p.category, []);
-      byCategory.get(p.category)!.push(p);
+      byCategory.get(p.category)?.push(p);
     }
     for (const [category, patterns] of byCategory) {
       lines.push(

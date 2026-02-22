@@ -4,6 +4,9 @@ import { designContextStore } from '../lib/design-context.js';
 import type { IDesignContext, IGeneratedFile, PageTemplateType } from '../lib/types.js';
 import { initializeRegistry } from '../lib/design-references/component-registry/init.js';
 import { getRegistrySize } from '../lib/design-references/component-registry/index.js';
+import { createLogger } from '../lib/logger.js';
+
+const logger = createLogger('generate-page-template');
 
 const inputSchema = {
   template: z
@@ -151,14 +154,10 @@ export function registerGeneratePageTemplate(server: McpServer): void {
       } catch (error) {
         const _ctx = designContextStore.get();
         const errorMessage = error instanceof Error ? error.message : String(error);
-        console.error('Error in registerGeneratePageTemplate/generateTemplate:', {
-          template,
-          framework,
-          component_library,
-          dark_mode,
-          project_name,
-          error: errorMessage,
-        });
+        logger.error(
+          { template, framework, component_library, dark_mode, project_name, error: errorMessage },
+          'Error in registerGeneratePageTemplate/generateTemplate'
+        );
         return {
           content: [
             {

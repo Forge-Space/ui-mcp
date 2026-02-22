@@ -4,22 +4,22 @@ on:
   workflow_dispatch:
     inputs:
       setup_npm:
-        description: 'Setup npm token'
+        description: "Setup npm token"
         required: false
         default: false
         type: boolean
       setup_docker:
-        description: 'Setup Docker credentials'
+        description: "Setup Docker credentials"
         required: false
         default: false
         type: boolean
       setup_snyk:
-        description: 'Setup Snyk security scanning'
+        description: "Setup Snyk security scanning"
         required: false
         default: false
         type: boolean
       setup_codecov:
-        description: 'Setup Codecov coverage reporting'
+        description: "Setup Codecov coverage reporting"
         required: false
         default: false
         type: boolean

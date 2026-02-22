@@ -1,222 +1,241 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>UIForge MCP - Interactive Documentation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        .tool-card {
-            transition: all 0.3s ease;
+      .tool-card {
+        transition: all 0.3s ease;
+      }
+      .tool-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+      .category-badge {
+        transition: all 0.2s ease;
+      }
+      .category-badge:hover {
+        transform: scale(1.05);
+      }
+      .demo-output {
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+      }
+      .interactive-demo {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
         }
-        .tool-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        50% {
+          opacity: 0.5;
         }
-        .category-badge {
-            transition: all 0.2s ease;
-        }
-        .category-badge:hover {
-            transform: scale(1.05);
-        }
-        .demo-output {
-            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-        }
-        .interactive-demo {
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        .animate-pulse-slow {
-            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
+      }
+      .animate-pulse-slow {
+        animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
     </style>
-</head>
-<body class="bg-gray-50">
+  </head>
+  <body class="bg-gray-50">
     <!-- Header -->
     <header class="bg-white shadow-sm border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                        <i data-lucide="sparkles" class="w-6 h-6 text-white"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-bold text-gray-900">UIForge MCP</h1>
-                        <p class="text-sm text-gray-500">Interactive Documentation</p>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">v0.4.1</span>
-                    <a href="https://github.com/LucasSantana-Dev/uiforge-mcp" class="text-gray-500 hover:text-gray-700">
-                        <i data-lucide="github" class="w-5 h-5"></i>
-                    </a>
-                </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex items-center space-x-3">
+            <div
+              class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center"
+            >
+              <i data-lucide="sparkles" class="w-6 h-6 text-white"></i>
             </div>
+            <div>
+              <h1 class="text-xl font-bold text-gray-900">UIForge MCP</h1>
+              <p class="text-sm text-gray-500">Interactive Documentation</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4">
+            <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">v0.4.1</span>
+            <a href="https://github.com/LucasSantana-Dev/uiforge-mcp" class="text-gray-500 hover:text-gray-700">
+              <i data-lucide="github" class="w-5 h-5"></i>
+            </a>
+          </div>
         </div>
+      </div>
     </header>
 
     <!-- Hero Section -->
     <section class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">
-                    AI-Driven UI Generation via Model Context Protocol
-                </h2>
-                <p class="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
-                    Explore 16 production-ready tools that transform natural language into complete UI applications, 
-                    components, and designs. Zero cost, 100% open source.
-                </p>
-                <div class="flex items-center justify-center space-x-4">
-                    <button onclick="quickStart()" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
-                        <i data-lucide="play" class="w-4 h-4"></i>
-                        <span>Quick Start</span>
-                    </button>
-                    <button onclick="showAllTools()" class="px-6 py-3 bg-white text-gray-700 rounded-lg hover:bg-gray-50 transition-colors border border-gray-300 flex items-center space-x-2">
-                        <i data-lucide="grid" class="w-4 h-4"></i>
-                        <span>All Tools</span>
-                    </button>
-                </div>
-            </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">AI-Driven UI Generation via Model Context Protocol</h2>
+          <p class="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
+            Explore 16 production-ready tools that transform natural language into complete UI applications, components,
+            and designs. Zero cost, 100% open source.
+          </p>
+          <div class="flex items-center justify-center space-x-4">
+            <button
+              onclick="quickStart()"
+              class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+            >
+              <i data-lucide="play" class="w-4 h-4"></i>
+              <span>Quick Start</span>
+            </button>
+            <button
+              onclick="showAllTools()"
+              class="px-6 py-3 bg-white text-gray-700 rounded-lg hover:bg-gray-50 transition-colors border border-gray-300 flex items-center space-x-2"
+            >
+              <i data-lucide="grid" class="w-4 h-4"></i>
+              <span>All Tools</span>
+            </button>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Interactive Demo -->
     <section class="py-12 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">Try It Live</h3>
-                <p class="text-gray-600">Select a tool and see example inputs and outputs</p>
-            </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Tool Selection -->
-                <div class="interactive-demo rounded-xl p-6">
-                    <h4 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                        <i data-lucide="settings" class="w-5 h-5 mr-2"></i>
-                        Select Tool
-                    </h4>
-                    <div id="tool-selector" class="space-y-2">
-                        <!-- Tools will be populated here -->
-                    </div>
-                </div>
-
-                <!-- Demo Output -->
-                <div class="demo-output rounded-xl p-6 text-white">
-                    <h4 class="text-lg font-semibold mb-4 flex items-center">
-                        <i data-lucide="code" class="w-5 h-5 mr-2"></i>
-                        Example Output
-                    </h4>
-                    <div id="demo-output" class="text-sm">
-                        <div class="flex items-center space-x-2 text-gray-400">
-                            <i data-lucide="mouse-pointer-click" class="w-4 h-4 animate-pulse-slow"></i>
-                            <span>Select a tool to see example output</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+          <h3 class="text-2xl font-bold text-gray-900 mb-2">Try It Live</h3>
+          <p class="text-gray-600">Select a tool and see example inputs and outputs</p>
         </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <!-- Tool Selection -->
+          <div class="interactive-demo rounded-xl p-6">
+            <h4 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <i data-lucide="settings" class="w-5 h-5 mr-2"></i>
+              Select Tool
+            </h4>
+            <div id="tool-selector" class="space-y-2">
+              <!-- Tools will be populated here -->
+            </div>
+          </div>
+
+          <!-- Demo Output -->
+          <div class="demo-output rounded-xl p-6 text-white">
+            <h4 class="text-lg font-semibold mb-4 flex items-center">
+              <i data-lucide="code" class="w-5 h-5 mr-2"></i>
+              Example Output
+            </h4>
+            <div id="demo-output" class="text-sm">
+              <div class="flex items-center space-x-2 text-gray-400">
+                <i data-lucide="mouse-pointer-click" class="w-4 h-4 animate-pulse-slow"></i>
+                <span>Select a tool to see example output</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Tools Grid -->
     <section class="py-12 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">All 16 Tools</h3>
-                <p class="text-gray-600">Complete UI generation pipeline at your fingertips</p>
-            </div>
-            
-            <div id="tools-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Tool cards will be populated here -->
-            </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+          <h3 class="text-2xl font-bold text-gray-900 mb-2">All 16 Tools</h3>
+          <p class="text-gray-600">Complete UI generation pipeline at your fingertips</p>
         </div>
+
+        <div id="tools-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Tool cards will be populated here -->
+        </div>
+      </div>
     </section>
 
     <!-- Installation Guide -->
     <section class="py-12 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">Installation</h3>
-                <p class="text-gray-600">Get started in seconds with any of these options</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-blue-50 rounded-lg p-6">
-                    <div class="flex items-center space-x-3 mb-4">
-                        <i data-lucide="zap" class="w-6 h-6 text-blue-600"></i>
-                        <h4 class="font-semibold text-gray-900">NPX (Recommended)</h4>
-                    </div>
-                    <code class="block bg-gray-900 text-green-400 p-3 rounded text-sm">npx -y uiforge-mcp@latest</code>
-                    <p class="text-sm text-gray-600 mt-2">Instant setup, no installation required</p>
-                </div>
-                
-                <div class="bg-green-50 rounded-lg p-6">
-                    <div class="flex items-center space-x-3 mb-4">
-                        <i data-lucide="package" class="w-6 h-6 text-green-600"></i>
-                        <h4 class="font-semibold text-gray-900">Global Install</h4>
-                    </div>
-                    <code class="block bg-gray-900 text-green-400 p-3 rounded text-sm">npm install -g uiforge-mcp</code>
-                    <p class="text-sm text-gray-600 mt-2">Available everywhere on your system</p>
-                </div>
-                
-                <div class="bg-purple-50 rounded-lg p-6">
-                    <div class="flex items-center space-x-3 mb-4">
-                        <i data-lucide="container" class="w-6 h-6 text-purple-600"></i>
-                        <h4 class="font-semibold text-gray-900">Docker</h4>
-                    </div>
-                    <code class="block bg-gray-900 text-green-400 p-3 rounded text-sm">docker run --rm -i uiforge-mcp</code>
-                    <p class="text-sm text-gray-600 mt-2">Production-ready containerized deployment</p>
-                </div>
-            </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+          <h3 class="text-2xl font-bold text-gray-900 mb-2">Installation</h3>
+          <p class="text-gray-600">Get started in seconds with any of these options</p>
         </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-blue-50 rounded-lg p-6">
+            <div class="flex items-center space-x-3 mb-4">
+              <i data-lucide="zap" class="w-6 h-6 text-blue-600"></i>
+              <h4 class="font-semibold text-gray-900">NPX (Recommended)</h4>
+            </div>
+            <code class="block bg-gray-900 text-green-400 p-3 rounded text-sm">npx -y uiforge-mcp@latest</code>
+            <p class="text-sm text-gray-600 mt-2">Instant setup, no installation required</p>
+          </div>
+
+          <div class="bg-green-50 rounded-lg p-6">
+            <div class="flex items-center space-x-3 mb-4">
+              <i data-lucide="package" class="w-6 h-6 text-green-600"></i>
+              <h4 class="font-semibold text-gray-900">Global Install</h4>
+            </div>
+            <code class="block bg-gray-900 text-green-400 p-3 rounded text-sm">npm install -g uiforge-mcp</code>
+            <p class="text-sm text-gray-600 mt-2">Available everywhere on your system</p>
+          </div>
+
+          <div class="bg-purple-50 rounded-lg p-6">
+            <div class="flex items-center space-x-3 mb-4">
+              <i data-lucide="container" class="w-6 h-6 text-purple-600"></i>
+              <h4 class="font-semibold text-gray-900">Docker</h4>
+            </div>
+            <code class="block bg-gray-900 text-green-400 p-3 rounded text-sm">docker run --rm -i uiforge-mcp</code>
+            <p class="text-sm text-gray-600 mt-2">Production-ready containerized deployment</p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="flex items-center space-x-3 mb-4 md:mb-0">
-                    <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                        <i data-lucide="sparkles" class="w-5 h-5 text-white"></i>
-                    </div>
-                    <span class="font-semibold">UIForge MCP</span>
-                </div>
-                <div class="flex items-center space-x-6">
-                    <a href="https://github.com/LucasSantana-Dev/uiforge-mcp" class="text-gray-400 hover:text-white transition-colors">GitHub</a>
-                    <a href="https://www.npmjs.com/package/uiforge-mcp" class="text-gray-400 hover:text-white transition-colors">npm</a>
-                    <span class="text-gray-400">MIT License</span>
-                </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="flex items-center space-x-3 mb-4 md:mb-0">
+            <div
+              class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center"
+            >
+              <i data-lucide="sparkles" class="w-5 h-5 text-white"></i>
             </div>
+            <span class="font-semibold">UIForge MCP</span>
+          </div>
+          <div class="flex items-center space-x-6">
+            <a
+              href="https://github.com/LucasSantana-Dev/uiforge-mcp"
+              class="text-gray-400 hover:text-white transition-colors"
+              >GitHub</a
+            >
+            <a href="https://www.npmjs.com/package/uiforge-mcp" class="text-gray-400 hover:text-white transition-colors"
+              >npm</a
+            >
+            <span class="text-gray-400">MIT License</span>
+          </div>
         </div>
+      </div>
     </footer>
 
     <script>
-        // Tools data
-        const tools = [
-            {
-                name: "scaffold_full_application",
-                category: "Code",
-                description: "Generate full project boilerplate",
-                frameworks: "React/Next.js/Vue/Angular/HTML",
-                example: "Create a React dashboard with user authentication, data tables, and charts",
-                output: `// Complete Next.js application generated
+      // Tools data
+      const tools = [
+        {
+          name: 'scaffold_full_application',
+          category: 'Code',
+          description: 'Generate full project boilerplate',
+          frameworks: 'React/Next.js/Vue/Angular/HTML',
+          example: 'Create a React dashboard with user authentication, data tables, and charts',
+          output: `// Complete Next.js application generated
 ✅ Project structure created
 ✅ Authentication flow implemented  
 ✅ Responsive dashboard with charts
 ✅ Tailwind CSS styling applied
-✅ TypeScript support included`
-            },
-            {
-                name: "generate_ui_component",
-                category: "Code", 
-                description: "Create UI components with style context",
-                frameworks: "React/Vue/Angular/HTML",
-                example: "Generate a responsive card component with image, title, and action buttons",
-                output: `// React component generated
+✅ TypeScript support included`,
+        },
+        {
+          name: 'generate_ui_component',
+          category: 'Code',
+          description: 'Create UI components with style context',
+          frameworks: 'React/Vue/Angular/HTML',
+          example: 'Generate a responsive card component with image, title, and action buttons',
+          output: `// React component generated
 interface CardProps {
   title: string;
   image: string;
@@ -239,15 +258,15 @@ export const Card: React.FC<CardProps> = ({ title, image, actions }) => {
       </div>
     </div>
   );
-};`
-            },
-            {
-                name: "image_to_component",
-                category: "Code",
-                description: "Convert images to framework-specific code", 
-                frameworks: "React/Vue/Angular/HTML",
-                example: "Convert this UI screenshot to a React component with Tailwind CSS",
-                output: `// Component extracted from image
+};`,
+        },
+        {
+          name: 'image_to_component',
+          category: 'Code',
+          description: 'Convert images to framework-specific code',
+          frameworks: 'React/Vue/Angular/HTML',
+          example: 'Convert this UI screenshot to a React component with Tailwind CSS',
+          output: `// Component extracted from image
 export const LoginForm: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -265,43 +284,43 @@ export const LoginForm: React.FC = () => {
       </div>
     </div>
   );
-};`
-            },
-            {
-                name: "generate_prototype",
-                category: "Design",
-                description: "Create interactive HTML prototypes",
-                frameworks: "HTML/CSS/JS",
-                example: "Create an interactive prototype for an e-commerce checkout flow",
-                output: `// Interactive prototype generated
+};`,
+        },
+        {
+          name: 'generate_prototype',
+          category: 'Design',
+          description: 'Create interactive HTML prototypes',
+          frameworks: 'HTML/CSS/JS',
+          example: 'Create an interactive prototype for an e-commerce checkout flow',
+          output: `// Interactive prototype generated
 ✅ HTML structure with semantic elements
 ✅ CSS animations and transitions
 ✅ JavaScript navigation between screens
 ✅ Form validation and user feedback
 ✅ Mobile-responsive design
-✅ Clickable elements with hover states`
-            },
-            {
-                name: "generate_design_image",
-                category: "Design",
-                description: "Generate SVG/PNG UI mockups",
-                frameworks: "SVG/PNG",
-                example: "Create a modern landing page hero section design",
-                output: `// Design mockup generated
+✅ Clickable elements with hover states`,
+        },
+        {
+          name: 'generate_design_image',
+          category: 'Design',
+          description: 'Generate SVG/PNG UI mockups',
+          frameworks: 'SVG/PNG',
+          example: 'Create a modern landing page hero section design',
+          output: `// Design mockup generated
 ✅ High-resolution SVG design
 ✅ Modern color palette and typography
 ✅ Responsive layout guidelines
 ✅ Component specifications
 ✅ Design tokens and spacing system
-✅ Export-ready for development`
-            },
-            {
-                name: "audit_accessibility",
-                category: "Quality",
-                description: "WCAG 2.1 compliance audit",
-                frameworks: "All",
-                example: "Audit this React component for accessibility issues",
-                output: `// Accessibility audit completed
+✅ Export-ready for development`,
+        },
+        {
+          name: 'audit_accessibility',
+          category: 'Quality',
+          description: 'WCAG 2.1 compliance audit',
+          frameworks: 'All',
+          example: 'Audit this React component for accessibility issues',
+          output: `// Accessibility audit completed
 ❌ Missing alt text on image (WCAG 1.1.1)
 ❌ Insufficient color contrast (WCAG 1.4.3)
 ✅ Semantic HTML structure (WCAG 1.3.1)
@@ -310,23 +329,24 @@ export const LoginForm: React.FC = () => {
 Recommended fixes:
 - Add descriptive alt text
 - Increase color contrast to 4.5:1
-- Add ARIA labels for interactive elements`
-            }
-        ];
+- Add ARIA labels for interactive elements`,
+        },
+      ];
 
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', function() {
-            lucide.createIcons();
-            populateToolSelector();
-            populateToolsGrid();
-        });
+      // Initialize page
+      document.addEventListener('DOMContentLoaded', function () {
+        lucide.createIcons();
+        populateToolSelector();
+        populateToolsGrid();
+      });
 
-        function populateToolSelector() {
-            const selector = document.getElementById('tool-selector');
-            tools.forEach((tool, index) => {
-                const button = document.createElement('button');
-                button.className = 'w-full text-left p-3 rounded-lg bg-white hover:bg-blue-50 transition-colors border border-gray-200 hover:border-blue-300';
-                button.innerHTML = `
+      function populateToolSelector() {
+        const selector = document.getElementById('tool-selector');
+        tools.forEach((tool, index) => {
+          const button = document.createElement('button');
+          button.className =
+            'w-full text-left p-3 rounded-lg bg-white hover:bg-blue-50 transition-colors border border-gray-200 hover:border-blue-300';
+          button.innerHTML = `
                     <div class="flex items-center justify-between">
                         <div>
                             <div class="font-medium text-gray-900">${tool.name}</div>
@@ -334,33 +354,35 @@ Recommended fixes:
                             <div class="text-xs text-gray-400 mt-1">${tool.frameworks}</div>
                         </div>
                         <span class="category-badge px-2 py-1 text-xs font-medium rounded-full ${
-                            tool.category === 'Code' ? 'bg-blue-100 text-blue-800' :
-                            tool.category === 'Design' ? 'bg-purple-100 text-purple-800' :
-                            'bg-green-100 text-green-800'
+                          tool.category === 'Code'
+                            ? 'bg-blue-100 text-blue-800'
+                            : tool.category === 'Design'
+                              ? 'bg-purple-100 text-purple-800'
+                              : 'bg-green-100 text-green-800'
                         }">${tool.category}</span>
                     </div>
                 `;
-                button.onclick = () => showDemo(tool);
-                selector.appendChild(button);
-            });
-        }
+          button.onclick = () => showDemo(tool);
+          selector.appendChild(button);
+        });
+      }
 
-        function populateToolsGrid() {
-            const grid = document.getElementById('tools-grid');
-            tools.forEach(tool => {
-                const card = document.createElement('div');
-                card.className = 'tool-card bg-white rounded-lg p-6 shadow-sm border border-gray-200';
-                card.innerHTML = `
+      function populateToolsGrid() {
+        const grid = document.getElementById('tools-grid');
+        tools.forEach((tool) => {
+          const card = document.createElement('div');
+          card.className = 'tool-card bg-white rounded-lg p-6 shadow-sm border border-gray-200';
+          card.innerHTML = `
                     <div class="flex items-center justify-between mb-4">
                         <span class="category-badge px-2 py-1 text-xs font-medium rounded-full ${
-                            tool.category === 'Code' ? 'bg-blue-100 text-blue-800' :
-                            tool.category === 'Design' ? 'bg-purple-100 text-purple-800' :
-                            'bg-green-100 text-green-800'
+                          tool.category === 'Code'
+                            ? 'bg-blue-100 text-blue-800'
+                            : tool.category === 'Design'
+                              ? 'bg-purple-100 text-purple-800'
+                              : 'bg-green-100 text-green-800'
                         }">${tool.category}</span>
                         <i data-lucide="${
-                            tool.category === 'Code' ? 'code' :
-                            tool.category === 'Design' ? 'palette' :
-                            'check-circle'
+                          tool.category === 'Code' ? 'code' : tool.category === 'Design' ? 'palette' : 'check-circle'
                         }" class="w-5 h-5 text-gray-400"></i>
                     </div>
                     <h4 class="font-semibold text-gray-900 mb-2">${tool.name}</h4>
@@ -369,14 +391,14 @@ Recommended fixes:
                         <strong>Frameworks:</strong> ${tool.frameworks}
                     </div>
                 `;
-                grid.appendChild(card);
-            });
-            lucide.createIcons();
-        }
+          grid.appendChild(card);
+        });
+        lucide.createIcons();
+      }
 
-        function showDemo(tool) {
-            const output = document.getElementById('demo-output');
-            output.innerHTML = `
+      function showDemo(tool) {
+        const output = document.getElementById('demo-output');
+        output.innerHTML = `
                 <div class="mb-4">
                     <div class="text-sm text-gray-400 mb-2">Tool: ${tool.name}</div>
                     <div class="text-xs text-gray-500 mb-4">${tool.category} • ${tool.frameworks}</div>
@@ -392,15 +414,15 @@ Recommended fixes:
                     <pre class="bg-gray-800 p-3 rounded border border-gray-700 overflow-x-auto text-xs text-green-400">${tool.output}</pre>
                 </div>
             `;
-        }
+      }
 
-        function quickStart() {
-            alert('To get started, run: npx -y uiforge-mcp@latest');
-        }
+      function quickStart() {
+        alert('To get started, run: npx -y uiforge-mcp@latest');
+      }
 
-        function showAllTools() {
-            document.getElementById('tools-grid').scrollIntoView({ behavior: 'smooth' });
-        }
+      function showAllTools() {
+        document.getElementById('tools-grid').scrollIntoView({ behavior: 'smooth' });
+      }
     </script>
-</body>
+  </body>
 </html>

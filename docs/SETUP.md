@@ -3,16 +3,19 @@
 ## 🚀 Quick Start
 
 ### Option 1: NPX (Recommended for Development)
+
 ```bash
 npx -y uiforge-mcp@latest
 ```
 
 ### Option 2: Docker (Recommended for Production)
+
 ```bash
 docker run --rm -i uiforge-mcp:latest
 ```
 
 ### Option 3: Local Development
+
 ```bash
 git clone https://github.com/LucasSantana-Dev/uiforge-mcp.git
 cd uiforge-mcp
@@ -37,6 +40,7 @@ LOG_LEVEL=info
 ```
 
 #### Getting Figma Token
+
 1. Go to [Figma Settings](https://www.figma.com/developers/api#access-tokens)
 2. Click "Generate new token"
 3. Copy the token and add it to your `.env` file
@@ -46,6 +50,7 @@ LOG_LEVEL=info
 Add to your MCP client configuration (e.g., Windsurf):
 
 #### NPX Configuration
+
 ```json
 {
   "mcpServers": {
@@ -62,15 +67,20 @@ Add to your MCP client configuration (e.g., Windsurf):
 ```
 
 #### Docker Configuration
+
 ```json
 {
   "mcpServers": {
     "uiforge-mcp": {
       "command": "docker",
       "args": [
-        "run", "--rm", "-i",
-        "-e", "FIGMA_ACCESS_TOKEN",
-        "-v", "/path/to/.env:/app/.env:ro",
+        "run",
+        "--rm",
+        "-i",
+        "-e",
+        "FIGMA_ACCESS_TOKEN",
+        "-v",
+        "/path/to/.env:/app/.env:ro",
         "uiforge-mcp:latest"
       ],
       "env": {
@@ -84,7 +94,8 @@ Add to your MCP client configuration (e.g., Windsurf):
 ## 🛠️ Development Setup
 
 ### Prerequisites
-- Node.js 22+ 
+
+- Node.js 22+
 - npm or yarn
 - Git
 - Figma account (for design integration)
@@ -92,33 +103,39 @@ Add to your MCP client configuration (e.g., Windsurf):
 ### Local Development
 
 1. **Clone Repository**
+
 ```bash
 git clone https://github.com/LucasSantana-Dev/uiforge-mcp.git
 cd uiforge-mcp
 ```
 
 2. **Install Dependencies**
+
 ```bash
 npm install
 ```
 
 3. **Set Up Environment**
+
 ```bash
 cp .env.example .env
 # Edit .env with your configuration
 ```
 
 4. **Run Tests**
+
 ```bash
 npm test
 ```
 
 5. **Build Project**
+
 ```bash
 npm run build
 ```
 
 6. **Start Development Server**
+
 ```bash
 npm run dev
 ```
@@ -126,16 +143,19 @@ npm run dev
 ### Docker Development
 
 1. **Build Docker Image**
+
 ```bash
 npm run docker:build
 ```
 
 2. **Run Docker Container**
+
 ```bash
 npm run docker:run
 ```
 
 3. **Development with Docker**
+
 ```bash
 docker run --rm -i \
   -v $(pwd):/app \
@@ -168,6 +188,7 @@ docker run --rm -i \
 ## 📊 Available Tools
 
 ### 🏗️ **Generation Tools**
+
 - `generate_ui_component` - Create UI components
 - `scaffold_full_application` - Generate complete applications
 - `generate_prototype` - Create interactive prototypes
@@ -175,6 +196,7 @@ docker run --rm -i \
 - `generate_page_template` - Create page templates
 
 ### 🎨 **Design Tools**
+
 - `fetch_design_inspiration` - Get design inspiration
 - `analyze_design_references` - Analyze design patterns
 - `figma_context_parser` - Extract Figma tokens
@@ -182,6 +204,7 @@ docker run --rm -i \
 - `image_to_component` - Convert images to components
 
 ### 🔍 **Quality Tools**
+
 - `refine_component` - Refine existing components
 - `audit_accessibility` - Audit accessibility compliance
 - `submit_feedback` - Submit generation feedback
@@ -189,26 +212,31 @@ docker run --rm -i \
 - `manage_training` - Manage ML training data
 
 ### 📚 **Resources**
+
 - `current-styles` - Access current design context
 
 ## 🧪 Testing
 
 ### Run All Tests
+
 ```bash
 npm test
 ```
 
 ### Run Tests with Coverage
+
 ```bash
 npm run test:coverage
 ```
 
 ### Run Specific Test Suite
+
 ```bash
 npm test -- --testNamePattern="generate_ui_component"
 ```
 
 ### Watch Mode
+
 ```bash
 npm run test:watch
 ```
@@ -216,21 +244,25 @@ npm run test:watch
 ## 📦 Build & Deployment
 
 ### Build for Production
+
 ```bash
 npm run build
 ```
 
 ### Build Docker Image
+
 ```bash
 npm run docker:build
 ```
 
 ### Publish to NPM
+
 ```bash
 npm publish
 ```
 
 ### Deploy Docker Image
+
 ```bash
 docker push uiforge-mcp:latest
 ```
@@ -238,6 +270,7 @@ docker push uiforge-mcp:latest
 ## 🔒 Security Setup
 
 ### GitHub Secrets
+
 For CI/CD integration, configure these secrets:
 
 - `SNYK_TOKEN` - Snyk API token for security scanning
@@ -247,6 +280,7 @@ For CI/CD integration, configure these secrets:
 - `DOCKER_PASSWORD` - Docker Hub access token
 
 ### Security Scanning
+
 ```bash
 # Run Snyk locally
 npx snyk test --severity-threshold=high
@@ -258,12 +292,14 @@ npm run test:security
 ## 📈 Monitoring
 
 ### Health Check
+
 ```bash
 # Test server health
 curl -f http://localhost:8026/health || echo "Server not running"
 ```
 
 ### Logs
+
 ```bash
 # View logs
 npm run logs
@@ -273,6 +309,7 @@ npm run logs:follow
 ```
 
 ### Metrics
+
 ```bash
 # Generate performance report
 npm run metrics
@@ -283,22 +320,26 @@ npm run metrics
 ### Common Issues
 
 **Permission Denied (Docker)**
+
 ```bash
 sudo usermod -aG docker $USER
 newgrp docker
 ```
 
 **NPX Cache Issues**
+
 ```bash
 npx --clear-cache
 ```
 
 **Figma Token Not Working**
+
 - Verify token permissions
 - Check token hasn't expired
 - Ensure token is in environment variables
 
 **Build Failures**
+
 ```bash
 # Clean build
 rm -rf dist node_modules
@@ -307,6 +348,7 @@ npm run build
 ```
 
 **Test Failures**
+
 ```bash
 # Clean test environment
 npm run clean
@@ -314,6 +356,7 @@ npm test
 ```
 
 ### Debug Mode
+
 ```bash
 # Enable debug logging
 DEBUG=uiforge:* npm start
@@ -342,7 +385,9 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines.
 
 ---
 
-**Need help?** 
+**Need help?**
+
 - Check [Issues](https://github.com/LucasSantana-Dev/uiforge-mcp/issues)
-- Join [Discussions](https://github.com/LucasSantana-Dev/uiforge-mcp/discussions)
+- Join
+  [Discussions](https://github.com/LucasSantana-Dev/uiforge-mcp/discussions)
 - Review [Troubleshooting Guide](./docs/TROUBLESHOOTING.md)

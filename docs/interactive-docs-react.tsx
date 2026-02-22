@@ -20,8 +20,8 @@ const tools: Tool[] = [
     examples: [
       'Create a React dashboard with authentication',
       'Generate a Next.js e-commerce site',
-      'Build a Vue.js admin panel'
-    ]
+      'Build a Vue.js admin panel',
+    ],
   },
   {
     id: 'generate_ui_component',
@@ -32,8 +32,8 @@ const tools: Tool[] = [
     examples: [
       'Create a responsive navigation component',
       'Generate a form with validation',
-      'Build a card component with hover effects'
-    ]
+      'Build a card component with hover effects',
+    ],
   },
   {
     id: 'generate_prototype',
@@ -41,11 +41,7 @@ const tools: Tool[] = [
     description: 'Create clickable HTML prototypes with screen flows and navigation',
     category: 'Design',
     frameworks: ['HTML'],
-    examples: [
-      'Create a mobile app prototype',
-      'Design a user flow for checkout',
-      'Build an interactive wireframe'
-    ]
+    examples: ['Create a mobile app prototype', 'Design a user flow for checkout', 'Build an interactive wireframe'],
   },
   {
     id: 'generate_design_image',
@@ -53,11 +49,7 @@ const tools: Tool[] = [
     description: 'Generate SVG/PNG mockup images of UI screens and components',
     category: 'Design',
     frameworks: ['SVG', 'PNG'],
-    examples: [
-      'Create a landing page mockup',
-      'Generate a mobile app design',
-      'Design a dashboard layout'
-    ]
+    examples: ['Create a landing page mockup', 'Generate a mobile app design', 'Design a dashboard layout'],
   },
   {
     id: 'fetch_design_inspiration',
@@ -68,8 +60,8 @@ const tools: Tool[] = [
     examples: [
       'Analyze a website for color palette',
       'Extract typography from a design system',
-      'Get layout patterns from a reference site'
-    ]
+      'Get layout patterns from a reference site',
+    ],
   },
   {
     id: 'analyze_design_references',
@@ -77,11 +69,7 @@ const tools: Tool[] = [
     description: 'Analyze design references from URLs and images, detect common patterns',
     category: 'Context',
     frameworks: ['Web', 'Images'],
-    examples: [
-      'Compare multiple design references',
-      'Extract common UI patterns',
-      'Analyze design consistency'
-    ]
+    examples: ['Compare multiple design references', 'Extract common UI patterns', 'Analyze design consistency'],
   },
   {
     id: 'figma_context_parser',
@@ -89,11 +77,7 @@ const tools: Tool[] = [
     description: 'Read Figma file nodes, extract tokens, map to Tailwind CSS',
     category: 'Integration',
     frameworks: ['Figma', 'Tailwind'],
-    examples: [
-      'Extract design tokens from Figma',
-      'Convert Figma styles to Tailwind',
-      'Sync design system with code'
-    ]
+    examples: ['Extract design tokens from Figma', 'Convert Figma styles to Tailwind', 'Sync design system with code'],
   },
   {
     id: 'figma_push_variables',
@@ -101,11 +85,7 @@ const tools: Tool[] = [
     description: 'Write design tokens back to Figma as Variables',
     category: 'Integration',
     frameworks: ['Figma'],
-    examples: [
-      'Push color variables to Figma',
-      'Update typography tokens',
-      'Sync spacing values'
-    ]
+    examples: ['Push color variables to Figma', 'Update typography tokens', 'Sync spacing values'],
   },
   {
     id: 'image_to_component',
@@ -116,8 +96,8 @@ const tools: Tool[] = [
     examples: [
       'Convert a screenshot to React code',
       'Turn a mockup into Vue component',
-      'Generate HTML from wireframe'
-    ]
+      'Generate HTML from wireframe',
+    ],
   },
   {
     id: 'generate_page_template',
@@ -125,11 +105,7 @@ const tools: Tool[] = [
     description: 'Generate pre-built page templates (landing, dashboard, auth, pricing, CRUD, etc.)',
     category: 'Code Generation',
     frameworks: ['React', 'Next.js', 'Vue', 'Angular', 'HTML'],
-    examples: [
-      'Create a landing page template',
-      'Generate a dashboard layout',
-      'Build an authentication flow'
-    ]
+    examples: ['Create a landing page template', 'Generate a dashboard layout', 'Build an authentication flow'],
   },
   {
     id: 'refine_component',
@@ -137,11 +113,7 @@ const tools: Tool[] = [
     description: 'Iteratively improve existing components via natural language feedback',
     category: 'Code Generation',
     frameworks: ['React', 'Vue', 'Angular', 'HTML'],
-    examples: [
-      'Improve component accessibility',
-      'Add responsive design',
-      'Enhance component performance'
-    ]
+    examples: ['Improve component accessibility', 'Add responsive design', 'Enhance component performance'],
   },
   {
     id: 'audit_accessibility',
@@ -149,11 +121,7 @@ const tools: Tool[] = [
     description: 'Audit component code for WCAG 2.1 violations with fix suggestions',
     category: 'Quality',
     frameworks: ['React', 'Vue', 'Angular', 'HTML'],
-    examples: [
-      'Check accessibility compliance',
-      'Generate accessibility fixes',
-      'Audit color contrast ratios'
-    ]
+    examples: ['Check accessibility compliance', 'Generate accessibility fixes', 'Audit color contrast ratios'],
   },
   {
     id: 'analyze_design_image_for_training',
@@ -164,13 +132,13 @@ const tools: Tool[] = [
     examples: [
       'Extract patterns from UI designs',
       'Generate training data from screenshots',
-      'Analyze design for ML models'
-    ]
-  }
+      'Analyze design for ML models',
+    ],
+  },
 ];
 
-const categories = Array.from(new Set(tools.map(tool => tool.category)));
-const allFrameworks = Array.from(new Set(tools.flatMap(tool => tool.frameworks)));
+const categories = Array.from(new Set(tools.map((tool) => tool.category)));
+const allFrameworks = Array.from(new Set(tools.flatMap((tool) => tool.frameworks)));
 
 export default function InteractiveDocs() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -180,21 +148,20 @@ export default function InteractiveDocs() {
   const [copiedExample, setCopiedExample] = useState<string | null>(null);
 
   const filteredTools = useMemo(() => {
-    return tools.filter(tool => {
-      const matchesSearch = tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          tool.description.toLowerCase().includes(searchTerm.toLowerCase());
+    return tools.filter((tool) => {
+      const matchesSearch =
+        tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        tool.description.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesCategory = selectedCategory === 'all' || tool.category === selectedCategory;
-      const matchesFrameworks = selectedFrameworks.length === 0 ||
-                               selectedFrameworks.some(framework => tool.frameworks.includes(framework));
+      const matchesFrameworks =
+        selectedFrameworks.length === 0 || selectedFrameworks.some((framework) => tool.frameworks.includes(framework));
       return matchesSearch && matchesCategory && matchesFrameworks;
     });
   }, [searchTerm, selectedCategory, selectedFrameworks]);
 
   const handleFrameworkToggle = (framework: string) => {
-    setSelectedFrameworks(prev => 
-      prev.includes(framework)
-        ? prev.filter(f => f !== framework)
-        : [...prev, framework]
+    setSelectedFrameworks((prev) =>
+      prev.includes(framework) ? prev.filter((f) => f !== framework) : [...prev, framework]
     );
   };
 
@@ -214,25 +181,15 @@ export default function InteractiveDocs() {
         {/* Header */}
         <header className="mb-12 text-center">
           <div className="mb-6">
-            <h1 className="text-4xl font-bold text-slate-900 mb-4">
-              🎨 UIForge MCP Server
-            </h1>
-            <p className="text-xl text-slate-600 mb-2">
-              Interactive Documentation
-            </p>
+            <h1 className="text-4xl font-bold text-slate-900 mb-4">🎨 UIForge MCP Server</h1>
+            <p className="text-xl text-slate-600 mb-2">Interactive Documentation</p>
             <div className="flex items-center justify-center gap-4 text-sm text-slate-500">
-              <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full">
-                Version 0.4.1
-              </span>
-              <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full">
-                13 Tools Available
-              </span>
-              <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full">
-                Zero-Cost Architecture
-              </span>
+              <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full">Version 0.4.1</span>
+              <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full">13 Tools Available</span>
+              <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full">Zero-Cost Architecture</span>
             </div>
           </div>
-          
+
           <div className="max-w-3xl mx-auto text-left bg-white rounded-xl shadow-sm p-6 mb-8">
             <h2 className="text-lg font-semibold text-slate-900 mb-3">🚀 Quick Installation</h2>
             <div className="space-y-3">
@@ -274,8 +231,10 @@ export default function InteractiveDocs() {
                 className="px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="all">All Categories</option>
-                {categories.map(category => (
-                  <option key={category} value={category}>{category}</option>
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
                 ))}
               </select>
             </div>
@@ -283,7 +242,7 @@ export default function InteractiveDocs() {
             <div className="flex items-center gap-2">
               <span className="text-sm text-slate-600">Frameworks:</span>
               <div className="flex flex-wrap gap-2">
-                {allFrameworks.map(framework => (
+                {allFrameworks.map((framework) => (
                   <button
                     key={framework}
                     onClick={() => handleFrameworkToggle(framework)}
@@ -303,7 +262,7 @@ export default function InteractiveDocs() {
 
         {/* Tools Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {filteredTools.map(tool => (
+          {filteredTools.map((tool) => (
             <div
               key={tool.id}
               onClick={() => setSelectedTool(tool)}
@@ -315,20 +274,17 @@ export default function InteractiveDocs() {
                   {tool.category}
                 </span>
               </div>
-              
+
               <p className="text-slate-600 text-sm mb-4 line-clamp-3">{tool.description}</p>
-              
+
               <div className="flex flex-wrap gap-1 mb-4">
-                {tool.frameworks.map(framework => (
-                  <span
-                    key={framework}
-                    className="px-2 py-1 text-xs bg-slate-100 text-slate-600 rounded"
-                  >
+                {tool.frameworks.map((framework) => (
+                  <span key={framework} className="px-2 py-1 text-xs bg-slate-100 text-slate-600 rounded">
                     {framework}
                   </span>
                 ))}
               </div>
-              
+
               <div className="flex items-center text-blue-600 text-sm font-medium">
                 <span>View Details</span>
                 <ExternalLink className="w-4 h-4 ml-1" />
@@ -368,11 +324,8 @@ export default function InteractiveDocs() {
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-slate-900 mb-3">Supported Frameworks</h3>
                 <div className="flex flex-wrap gap-2">
-                  {selectedTool.frameworks.map(framework => (
-                    <span
-                      key={framework}
-                      className="px-3 py-1 bg-slate-100 text-slate-700 rounded-full"
-                    >
+                  {selectedTool.frameworks.map((framework) => (
+                    <span key={framework} className="px-3 py-1 bg-slate-100 text-slate-700 rounded-full">
                       {framework}
                     </span>
                   ))}

@@ -1,6 +1,7 @@
 # Configuration Guide
 
-Comprehensive guide to UIForge MCP's linting, formatting, bundling, and CI/CD configurations.
+Comprehensive guide to UIForge MCP's linting, formatting, bundling, and CI/CD
+configurations.
 
 ## Table of Contents
 
@@ -20,7 +21,8 @@ Comprehensive guide to UIForge MCP's linting, formatting, bundling, and CI/CD co
 
 ### Overview
 
-UIForge uses ESLint 10 with TypeScript ESLint parser and Prettier integration for code quality enforcement.
+UIForge uses ESLint 10 with TypeScript ESLint parser and Prettier integration
+for code quality enforcement.
 
 ### Key Features
 
@@ -93,7 +95,8 @@ npm run lint:fix      # Auto-fix lint errors
 
 ### Overview
 
-Prettier enforces consistent code formatting across TypeScript, JSON, YAML, and Markdown files.
+Prettier enforces consistent code formatting across TypeScript, JSON, YAML, and
+Markdown files.
 
 ### Base Settings
 
@@ -131,7 +134,8 @@ npm run format:check  # Check formatting without changes
 
 ### Overview
 
-Tsup provides fast bundling with esbuild for production builds (optional alternative to `tsc`).
+Tsup provides fast bundling with esbuild for production builds (optional
+alternative to `tsc`).
 
 ### Configuration
 
@@ -182,13 +186,17 @@ npm run build:bundle  # Fast bundling with tsup
 
 ### Overview
 
-CodeRabbit provides AI-powered code reviews on GitHub PRs with UIForge MCP-specific context.
+CodeRabbit provides AI-powered code reviews on GitHub PRs with UIForge
+MCP-specific context.
 
 ### Key Features
 
-1. **UIForge MCP Context**: Understands MCP server patterns, design systems, framework support
-2. **Framework-Specific Labels**: Automatic labeling for React, Vue, Angular, Next.js, Svelte
-3. **Path-Specific Instructions**: Detailed review rules for tools, templates, design references
+1. **UIForge MCP Context**: Understands MCP server patterns, design systems,
+   framework support
+2. **Framework-Specific Labels**: Automatic labeling for React, Vue, Angular,
+   Next.js, Svelte
+3. **Path-Specific Instructions**: Detailed review rules for tools, templates,
+   design references
 4. **Security Tools**: Gitleaks, TruffleHog, ESLint, Hadolint integration
 5. **Zero-Cost Enforcement**: Validates no paid dependencies are added
 
@@ -202,10 +210,10 @@ CodeRabbit provides AI-powered code reviews on GitHub PRs with UIForge MCP-speci
 
 ### Path-Specific Reviews
 
-- **`src/tools/**/*.ts`**: MCP tool patterns, Zod validation
-- **`src/lib/templates/**/*.ts`**: Framework best practices
-- **`src/lib/design-references/**/*.ts`**: Color extraction, typography
-- **`src/__tests__/**/*.ts`**: Test coverage, AAA pattern
+- **`src/tools/**/\*.ts`\*\*: MCP tool patterns, Zod validation
+- **`src/lib/templates/**/\*.ts`\*\*: Framework best practices
+- **`src/lib/design-references/**/\*.ts`\*\*: Color extraction, typography
+- **`src/**tests**/**/\*.ts`\*\*: Test coverage, AAA pattern
 
 See `docs/CODERABBIT_SETUP.md` for full usage guide.
 
@@ -283,10 +291,7 @@ See `docs/CODERABBIT_SETUP.md` for full usage guide.
 
 ```json
 {
-  "src/**/*.ts": [
-    "eslint --fix",
-    "prettier --write"
-  ]
+  "src/**/*.ts": ["eslint --fix", "prettier --write"]
 }
 ```
 
@@ -340,6 +345,7 @@ npm run deps:update-interactive   # Interactive update with choices
 ### Zero-Cost Mandate
 
 All dependencies must remain:
+
 - ✅ Free and open-source (MIT/ISC/Apache-2.0)
 - ✅ No paid tiers or premium features
 - ✅ No cloud service dependencies
@@ -349,16 +355,16 @@ All dependencies must remain:
 
 ## Configuration Files Summary
 
-| File | Purpose | Key Features |
-|------|---------|--------------|
-| `eslint.config.js` | Code quality | Path-specific rules, async enforcement |
-| `.prettierrc` | Code formatting | File-type overrides, 120 char width |
-| `tsup.config.ts` | Bundling | Fast esbuild, ESM output, Node 22 |
-| `.coderabbit.yaml` | AI code review | UIForge context, framework labels |
-| `.github/workflows/ci.yml` | CI/CD | 6 jobs, dependency checks, caching |
-| `.husky/pre-commit` | Git hooks | Auto-fix, dependency warnings |
-| `.prettierignore` | Format exclusions | Build outputs, dependencies |
-| `.eslintignore` | Lint exclusions | Generated files, configs |
+| File                       | Purpose           | Key Features                           |
+| -------------------------- | ----------------- | -------------------------------------- |
+| `eslint.config.js`         | Code quality      | Path-specific rules, async enforcement |
+| `.prettierrc`              | Code formatting   | File-type overrides, 120 char width    |
+| `tsup.config.ts`           | Bundling          | Fast esbuild, ESM output, Node 22      |
+| `.coderabbit.yaml`         | AI code review    | UIForge context, framework labels      |
+| `.github/workflows/ci.yml` | CI/CD             | 6 jobs, dependency checks, caching     |
+| `.husky/pre-commit`        | Git hooks         | Auto-fix, dependency warnings          |
+| `.prettierignore`          | Format exclusions | Build outputs, dependencies            |
+| `.eslintignore`            | Lint exclusions   | Generated files, configs               |
 
 ---
 

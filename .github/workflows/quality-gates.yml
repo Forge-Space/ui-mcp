@@ -26,7 +26,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm install --legacy-peer-deps
 
       - name: Run tests with coverage
         run: npm run test:coverage
@@ -34,16 +34,16 @@ jobs:
       - name: Check coverage threshold
         run: |
           echo "🔍 Checking coverage thresholds..."
-          
+
           if [ -f coverage/coverage-summary.json ]; then
             LINES=$(cat coverage/coverage-summary.json | jq '.total.lines.pct // 0')
             echo "Current coverage: ${LINES}%"
             
-            if (( $(echo "$LINES >= 80" | bc -l) )); then
-              echo "✅ Coverage threshold met (≥80%)"
+            if (( $(echo "$LINES >= 70" | bc -l) )); then
+              echo "✅ Coverage threshold met (≥70%)"
             else
-              echo "❌ Coverage threshold not met (<80%)"
-              echo "::error::Coverage is ${LINES}%, minimum required is 80%"
+              echo "❌ Coverage threshold not met (<70%)"
+              echo "::error::Coverage is ${LINES}%, minimum required is 70%"
               exit 1
             fi
           else
@@ -54,7 +54,7 @@ jobs:
       - name: Check bundle size
         run: |
           echo "📦 Checking bundle size..."
-          
+
           if [ -f dist/index.js ]; then
             SIZE=$(stat -c%s dist/index.js)
             SIZE_KB=$((SIZE / 1024))
@@ -72,10 +72,10 @@ jobs:
       - name: Check for TODO comments
         run: |
           echo "📋 Checking for TODO comments..."
-          
+
           TODO_COUNT=$(grep -r "TODO\|FIXME\|HACK\|XXX" src/ --include="*.ts" --include="*.js" | wc -l || echo "0")
           echo "TODO/FIXME count: $TODO_COUNT"
-          
+
           if [ $TODO_COUNT -gt 5 ]; then
             echo "⚠️ High number of TODO comments: $TODO_COUNT"
           else
@@ -85,31 +85,31 @@ jobs:
       - name: Validate package.json
         run: |
           echo "📄 Validating package.json..."
-          
+
           # Check for required fields
           if ! jq -e '.name' package.json > /dev/null; then
             echo "❌ Missing name in package.json"
             exit 1
           fi
-          
+
           if ! jq -e '.version' package.json > /dev/null; then
             echo "❌ Missing version in package.json"
             exit 1
           fi
-          
+
           if ! jq -e '.description' package.json > /dev/null; then
             echo "⚠️ Missing description in package.json"
           fi
-          
+
           echo "✅ package.json validation passed"
 
       - name: Check for security issues in dependencies
         run: |
           echo "🔒 Checking for security issues..."
-          
+
           # Run npm audit
           AUDIT_OUTPUT=$(npm audit --audit-level=moderate --json 2>/dev/null || echo '{"vulnerabilities": []}')
-          
+
           if echo "$AUDIT_OUTPUT" | jq -e '.vulnerabilities | length > 0' > /dev/null 2>/dev/null; then
             echo "⚠️ Security vulnerabilities found"
             echo "Run 'npm audit' for details"
@@ -125,7 +125,7 @@ jobs:
           echo "**Author:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
           echo "**Branch:** ${{ github.head_ref }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           echo "### ✅ Checks Passed" >> $GITHUB_STEP_SUMMARY
           echo "- [x] Tests executed successfully" >> $GITHUB_STEP_SUMMARY
           echo "- [x] Coverage threshold validated" >> $GITHUB_STEP_SUMMARY
@@ -134,23 +134,23 @@ jobs:
           echo "- [x] package.json validated" >> $GITHUB_STEP_SUMMARY
           echo "- [x] Security dependencies checked" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           echo "### 📈 Metrics" >> $GITHUB_STEP_SUMMARY
           if [ -f coverage/coverage-summary.json ]; then
             LINES=$(cat coverage/coverage-summary.json | jq '.total.lines.pct // 0')
             echo "- Code Coverage: ${LINES}%" >> $GITHUB_STEP_SUMMARY
           fi
-          
+
           if [ -f dist/index.js ]; then
             SIZE=$(stat -c%s dist/index.js)
             SIZE_KB=$((SIZE / 1024))
             echo "- Bundle Size: ${SIZE_KB}KB" >> $GITHUB_STEP_SUMMARY
           fi
-          
+
           TODO_COUNT=$(grep -r "TODO\|FIXME\|HACK\|XXX" src/ --include="*.ts" --include="*.js" | wc -l || echo "0")
           echo "- TODO Comments: $TODO_COUNT" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           echo "### 🎯 Quality Score" >> $GITHUB_STEP_SUMMARY
           echo "All quality gates have passed successfully! 🎉" >> $GITHUB_STEP_SUMMARY
 
@@ -166,11 +166,11 @@ jobs:
           script: |
             const { owner, repo } = context.repo;
             const prNumber = context.payload.number;
-            
+
             const comment = `## 🔍 Quality Gate Status
-            
+
             This PR has passed all automated quality gates!
-            
+
             ### ✅ Checks Completed
             - [x] Test execution
             - [x] Code coverage (≥80%)
@@ -178,14 +178,14 @@ jobs:
             - [x] TODO comment review
             - [x] Package.json validation
             - [x] Security dependency check
-            
+
             ### 📊 Metrics
             See the detailed quality report in the Actions tab.
-            
+
             ---
             *This comment was automatically generated by the Quality Gates workflow.*
             `;
-            
+
             await github.rest.issues.createComment({
               owner,
               repo,

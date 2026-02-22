@@ -1,6 +1,14 @@
 import type { IFigmaVariable } from '../lib/types.js';
 import { createLogger } from '../lib/logger.js';
-import { getFile, getFileNodes, getVariables, type FigmaFileResponse, type FigmaNode, type FigmaComponent } from '../lib/figma-client.js';
+import {
+  getFile,
+  getFileNodes,
+  getVariables,
+  type FigmaFileResponse,
+  type FigmaVariablesResponse,
+  type FigmaNode,
+  type FigmaComponent,
+} from '../lib/figma-client.js';
 
 const logger = createLogger('figma-service');
 
@@ -33,11 +41,13 @@ export class FigmaService {
    */
   async getFile(fileKey: string): Promise<FigmaFileResponse> {
     this.ensureConfigured();
-    
+
     logger.info(`Fetching Figma file: ${fileKey}`);
     const response = await getFile(fileKey);
-    
-    logger.info(`Successfully fetched file: ${response.name} with ${Object.keys(response.components || {}).length} components`);
+
+    logger.info(
+      `Successfully fetched file: ${response.name} with ${Object.keys(response.components || {}).length} components`
+    );
     return response;
   }
 
@@ -49,15 +59,15 @@ export class FigmaService {
    */
   async getNodes(fileKey: string, nodeIds: string[]): Promise<Record<string, FigmaNode>> {
     this.ensureConfigured();
-    
+
     logger.info(`Fetching ${nodeIds.length} nodes from file: ${fileKey}`);
     const response = await getFileNodes(fileKey, nodeIds);
-    
+
     const nodes: Record<string, FigmaNode> = {};
     Object.entries(response.nodes).forEach(([id, node]) => {
       nodes[id] = node.document;
     });
-    
+
     logger.info(`Successfully fetched ${Object.keys(nodes).length} nodes`);
     return nodes;
   }
@@ -67,12 +77,12 @@ export class FigmaService {
    * @param fileKey Figma file key
    * @returns Variables response
    */
-  async getVariables(fileKey: string): Promise<any> {
+  async getVariables(fileKey: string): Promise<FigmaVariablesResponse> {
     this.ensureConfigured();
-    
+
     logger.info(`Fetching variables from file: ${fileKey}`);
     const response = await getVariables(fileKey);
-    
+
     logger.info(`Successfully fetched variables`);
     return response;
   }
@@ -84,10 +94,10 @@ export class FigmaService {
    */
   async getComponents(fileKey: string): Promise<Record<string, FigmaComponent>> {
     this.ensureConfigured();
-    
+
     logger.info(`Fetching components from file: ${fileKey}`);
     const response = await getFile(fileKey);
-    
+
     logger.info(`Found ${Object.keys(response.components || {}).length} components`);
     return response.components || {};
   }
@@ -99,23 +109,23 @@ export class FigmaService {
    */
   extractDesignTokens(variables: IFigmaVariable[]): {
     colors: Record<string, string>;
-    typography: Record<string, any>;
+    typography: Record<string, unknown>;
     spacing: Record<string, string>;
-    effects: Record<string, any>;
+    effects: Record<string, unknown>;
   } {
     const tokens = {
       colors: {} as Record<string, string>,
-      typography: {} as Record<string, any>,
+      typography: {} as Record<string, unknown>,
       spacing: {} as Record<string, string>,
-      effects: {} as Record<string, any>,
+      effects: {} as Record<string, unknown>,
     };
 
     for (const variable of variables) {
       const { name, type, value } = variable;
-      
+
       if (name) {
-        const tokenName = name.replace(/[\/\s]/g, '_').toLowerCase();
-        
+        const tokenName = name.replace(/[/\s]/g, '_').toLowerCase();
+
         if (type === 'COLOR' && typeof value === 'string') {
           tokens.colors[tokenName] = value;
         } else if (type === 'FLOAT' && typeof value === 'number') {
@@ -124,20 +134,22 @@ export class FigmaService {
             tokens.spacing[tokenName] = `${value}px`;
           } else if (name.toLowerCase().includes('font') || name.toLowerCase().includes('text')) {
             tokens.typography[tokenName] = {
-              value: value,
+              value,
               unit: 'px',
             };
           }
         } else if (type === 'STRING' && typeof value === 'string') {
           tokens.typography[tokenName] = {
-            value: value,
+            value,
             type: 'string',
           };
         }
       }
     }
 
-    logger.info(`Extracted ${Object.keys(tokens.colors).length} colors, ${Object.keys(tokens.typography).length} typography tokens, ${Object.keys(tokens.spacing).length} spacing tokens, ${Object.keys(tokens.effects).length} effect tokens`);
+    logger.info(
+      `Extracted ${Object.keys(tokens.colors).length} colors, ${Object.keys(tokens.typography).length} typography tokens, ${Object.keys(tokens.spacing).length} spacing tokens, ${Object.keys(tokens.effects).length} effect tokens`
+    );
     return tokens;
   }
 

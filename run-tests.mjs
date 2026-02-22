@@ -8,19 +8,24 @@ const proc = spawn('npx', ['jest', '--no-coverage', '--forceExit', '--testTimeou
 });
 
 let out = '';
-proc.stdout.on('data', d => { out += d.toString(); });
-proc.stderr.on('data', d => { out += d.toString(); });
+proc.stdout.on('data', (d) => {
+  out += d.toString();
+});
+proc.stderr.on('data', (d) => {
+  out += d.toString();
+});
 
-proc.on('close', code => {
-  const summary = out.split('\n').filter(l =>
-    /PASS|FAIL|Tests:|Test Suites:|●/.test(l)
-  ).join('\n');
-  writeFileSync('/Users/lucassantana/Desenvolvimento/uiforge-mcp/test-results.txt', summary + '\n\nExit: ' + code);
+proc.on('close', (code) => {
+  const summary = out
+    .split('\n')
+    .filter((l) => /PASS|FAIL|Tests:|Test Suites:|●/.test(l))
+    .join('\n');
+  writeFileSync('/Users/lucassantana/Desenvolvimento/uiforge-mcp/test-results.txt', `${summary}\n\nExit: ${code}`);
   process.exit(0);
 });
 
 setTimeout(() => {
   proc.kill();
-  writeFileSync('/Users/lucassantana/Desenvolvimento/uiforge-mcp/test-results.txt', 'TIMEOUT\n' + out.slice(-3000));
+  writeFileSync('/Users/lucassantana/Desenvolvimento/uiforge-mcp/test-results.txt', `TIMEOUT\n${out.slice(-3000)}`);
   process.exit(1);
 }, 120000);

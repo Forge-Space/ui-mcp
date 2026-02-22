@@ -59,7 +59,7 @@ function detectColorPatterns(pages: IScrapedPage[], images: IImageAnalysis[], to
     for (const color of normalized) {
       const rounded = roundHexColor(color);
       if (!colorFrequency.has(rounded)) colorFrequency.set(rounded, new Set());
-      colorFrequency.get(rounded)!.add(page.url);
+      colorFrequency.get(rounded)?.add(page.url);
     }
   }
 
@@ -67,7 +67,7 @@ function detectColorPatterns(pages: IScrapedPage[], images: IImageAnalysis[], to
     for (const dominantColor of imageAnalysis.dominantColors) {
       const rounded = roundHexColor(dominantColor.hex);
       if (!colorFrequency.has(rounded)) colorFrequency.set(rounded, new Set());
-      colorFrequency.get(rounded)!.add(imageAnalysis.label);
+      colorFrequency.get(rounded)?.add(imageAnalysis.label);
     }
   }
 
@@ -93,7 +93,7 @@ function detectTypographyPatterns(pages: IScrapedPage[], _totalSources: number):
     for (const font of page.fonts) {
       const normalized = font.toLowerCase().trim();
       if (!fontFrequency.has(normalized)) fontFrequency.set(normalized, new Set());
-      fontFrequency.get(normalized)!.add(page.url);
+      fontFrequency.get(normalized)?.add(page.url);
     }
   }
 
@@ -117,7 +117,7 @@ function detectLayoutPatterns(pages: IScrapedPage[], images: IImageAnalysis[], t
   for (const page of pages) {
     for (const layout of page.layoutPatterns) {
       if (!layoutFrequency.has(layout)) layoutFrequency.set(layout, new Set());
-      layoutFrequency.get(layout)!.add(page.url);
+      layoutFrequency.get(layout)?.add(page.url);
     }
   }
 
@@ -125,7 +125,7 @@ function detectLayoutPatterns(pages: IScrapedPage[], images: IImageAnalysis[], t
     for (const region of imageAnalysis.layoutRegions) {
       const layout = region.role;
       if (!layoutFrequency.has(layout)) layoutFrequency.set(layout, new Set());
-      layoutFrequency.get(layout)!.add(imageAnalysis.label);
+      layoutFrequency.get(layout)?.add(imageAnalysis.label);
     }
   }
 
@@ -152,14 +152,14 @@ function detectComponentPatterns(
   for (const page of pages) {
     for (const componentType of page.componentTypes) {
       if (!componentFrequency.has(componentType)) componentFrequency.set(componentType, new Set());
-      componentFrequency.get(componentType)!.add(page.url);
+      componentFrequency.get(componentType)?.add(page.url);
     }
   }
 
   for (const imageAnalysis of images) {
     for (const componentType of imageAnalysis.detectedComponents) {
       if (!componentFrequency.has(componentType)) componentFrequency.set(componentType, new Set());
-      componentFrequency.get(componentType)!.add(imageAnalysis.label);
+      componentFrequency.get(componentType)?.add(imageAnalysis.label);
     }
   }
 
@@ -184,7 +184,7 @@ function detectSpacingPatterns(pages: IScrapedPage[], totalSources: number): IPa
       const normalized = normalizeSpacing(spacing);
       if (!normalized) continue;
       if (!spacingFrequency.has(normalized)) spacingFrequency.set(normalized, new Set());
-      spacingFrequency.get(normalized)!.add(page.url);
+      spacingFrequency.get(normalized)?.add(page.url);
     }
   }
 

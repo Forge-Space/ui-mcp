@@ -7,7 +7,7 @@ import {
   capitalize,
   pluralize,
   sanitizeClassName,
-  generateRandomId
+  generateRandomId,
 } from '../../../lib/utils/string.utils.js';
 
 describe('string.utils', () => {

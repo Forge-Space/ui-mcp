@@ -3,31 +3,31 @@ name: Dependency Health
 on:
   schedule:
     # Run dependency health check weekly on Monday at 9 AM UTC
-    - cron: '0 9 * * 1'
+    - cron: "0 9 * * 1"
   workflow_dispatch:
     inputs:
       check_outdated:
-        description: 'Check for outdated dependencies'
+        description: "Check for outdated dependencies"
         required: false
         default: true
         type: boolean
       check_security:
-        description: 'Check for security vulnerabilities'
+        description: "Check for security vulnerabilities"
         required: false
         default: true
         type: boolean
       generate_report:
-        description: 'Generate dependency health report'
+        description: "Generate dependency health report"
         required: false
         default: true
         type: boolean
       auto_update:
-        description: 'Auto-update patch/minor versions (experimental)'
+        description: "Auto-update patch/minor versions (experimental)"
         required: false
         default: false
         type: boolean
       update_minor:
-        description: 'Include minor versions in auto-update'
+        description: "Include minor versions in auto-update"
         required: false
         default: false
         type: boolean
@@ -79,7 +79,7 @@ jobs:
               cat outdated.json >> $GITHUB_STEP_SUMMARY
             fi
           else
-            echo "✅ No outdated dependencies found" >> $GITHUB_SUMMARY
+            echo "✅ No outdated dependencies found" >> $GITHUB_STEP_SUMMARY
           fi
 
       - name: Check for security vulnerabilities
@@ -96,7 +96,7 @@ jobs:
           if echo "$AUDIT_OUTPUT" | jq -e '.vulnerabilities | length > 0' > /dev/null 2>/dev/null; then
             echo "⚠️ Security vulnerabilities found!" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "| Severity | Count | Package | Title | Patched |" >> $GitHub_STEP_SUMMARY
+            echo "| Severity | Count | Package | Title | Patched |" >> $GITHUB_STEP_SUMMARY
             echo "|----------|-------|---------|-------|--------|" >> $GITHUB_STEP_SUMMARY
 
             # Parse vulnerabilities
@@ -120,7 +120,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- Production Dependencies: $DEP_COUNT" >> $GITHUB_STEP_SUMMARY
           echo "- Development Dependencies: $DEV_DEP_COUNT" >> $GITHUB_STEP_SUMMARY
-          echo "- Total Dependencies: $(($DEP_COUNT + $DEV_DEP_COUNT))" >> $GITHUB_SUMMARY
+          echo "- Total Dependencies: $(($DEP_COUNT + $DEV_DEP_COUNT))" >> $GITHUB_STEP_SUMMARY
 
           # Check for duplicate dependencies
           DUPLICATE_CHECK=$(npm ls --depth=0 --json 2>/dev/null | jq -r '.dependencies | to_entries[] | select(.value | has("deduped")) | length' || echo "0")
@@ -166,10 +166,10 @@ jobs:
           if [ ${#ISSUES[@]} -gt 0 ]; then
             echo "⚠️ Package.json issues found:" >> $GITHUB_STEP_SUMMARY
             for issue in "${ISSUES[@]}"; do
-              echo "- $issue" >> $GITHUB_SUMMARY
+              echo "- $issue" >> $GITHUB_STEP_SUMMARY
             done
           else
-            echo "✅ Package.json is healthy" >> $GITHUB_SUMMARY
+            echo "✅ Package.json is healthy" >> $GITHUB_STEP_SUMMARY
           fi
 
       - name: Generate dependency health score
@@ -223,11 +223,11 @@ jobs:
           fi
 
           if [ $VULN_COUNT -gt 0 ]; then
-            echo "- Address security vulnerabilities promptly" >> $GITHUB_SUMMARY
+            echo "- Address security vulnerabilities promptly" >> $GITHUB_STEP_SUMMARY
           fi
 
           if [ ${#ISSUES[@]} -gt 0 ]; then
-            echo "- Fix package.json configuration issues" >> $GITHUB_SUMMARY
+            echo "- Fix package.json configuration issues" >> $GITHUB_STEP_SUMMARY
           fi
 
   auto-update:
@@ -241,7 +241,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci --legacy-peer-deps

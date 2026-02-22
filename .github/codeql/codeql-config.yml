@@ -2,13 +2,13 @@ name: "CodeQL Config"
 
 # Paths to ignore during analysis
 paths-ignore:
-  - '**/node_modules/**'
-  - '**/dist/**'
-  - '**/coverage/**'
-  - '**/*.test.ts'
-  - '**/*.spec.ts'
-  - '**/jest.config.ts'
-  - '**/vitest.config.ts'
+  - "**/node_modules/**"
+  - "**/dist/**"
+  - "**/coverage/**"
+  - "**/*.test.ts"
+  - "**/*.spec.ts"
+  - "**/jest.config.ts"
+  - "**/vitest.config.ts"
 
 # Additional queries to run
 queries:

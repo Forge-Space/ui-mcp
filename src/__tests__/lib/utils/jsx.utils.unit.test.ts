@@ -8,7 +8,7 @@ import {
   reactEventsToSvelte,
   cleanJsxSyntax,
   jsxToHtml,
-  jsxToSvelte
+  jsxToSvelte,
 } from '../../../lib/utils/jsx.utils.js';
 
 describe('jsx.utils', () => {
@@ -177,7 +177,7 @@ describe('jsx.utils', () => {
       const style = {
         color: 'red',
         fontSize: '16px',
-        backgroundColor: 'blue'
+        backgroundColor: 'blue',
       };
       const css = convertStyleObjectToString(style);
       expect(css).toBe('color: red; font-size: 16px; background-color: blue');
@@ -187,7 +187,7 @@ describe('jsx.utils', () => {
       const style = {
         backgroundColor: 'blue',
         fontSize: '14px',
-        lineHeight: '1.5'
+        lineHeight: '1.5',
       };
       const css = convertStyleObjectToString(style);
       expect(css).toBe('background-color: blue; font-size: 14px; line-height: 1.5');
@@ -197,7 +197,7 @@ describe('jsx.utils', () => {
       const style = {
         fontSize: 16,
         zIndex: 100,
-        opacity: 0.5
+        opacity: 0.5,
       };
       const css = convertStyleObjectToString(style);
       expect(css).toBe('font-size: 16px; z-index: 100; opacity: 0.5');
@@ -213,10 +213,12 @@ describe('jsx.utils', () => {
       const style = {
         backgroundImage: 'url("image.png")',
         boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-        transition: 'all 0.3s ease'
+        transition: 'all 0.3s ease',
       };
       const css = convertStyleObjectToString(style);
-      expect(css).toBe('background-image: url("image.png"); box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: all 0.3s ease');
+      expect(css).toBe(
+        'background-image: url("image.png"); box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: all 0.3s ease'
+      );
     });
   });
 
@@ -228,9 +230,12 @@ describe('jsx.utils', () => {
     });
 
     it('converts all React event handlers', () => {
-      const jsx = '<input onClick={onClick} onChange={onChange} onSubmit={onSubmit} onFocus={onFocus} onBlur={onBlur} onKeyDown={onKeyDown} onKeyUp={onKeyUp} onKeyPress={onKeyPress} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onMouseDown={onMouseDown} onMouseUp={onMouseUp} onInput={onInput} />';
+      const jsx =
+        '<input onClick={onClick} onChange={onChange} onSubmit={onSubmit} onFocus={onFocus} onBlur={onBlur} onKeyDown={onKeyDown} onKeyUp={onKeyUp} onKeyPress={onKeyPress} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onMouseDown={onMouseDown} onMouseUp={onMouseUp} onInput={onInput} />';
       const html = reactEventsToHtml(jsx);
-      expect(html).toBe('<input onclick={onClick} onchange={onChange} onsubmit={onSubmit} onfocus={onFocus} onblur={onBlur} onkeydown={onKeyDown} onkeyup={onKeyUp} onkeypress={onKeyPress} onmouseenter={onMouseEnter} onmouseleave={onMouseLeave} onmousedown={onMouseDown} onmouseup={onMouseUp} oninput={onInput} />');
+      expect(html).toBe(
+        '<input onclick={onClick} onchange={onChange} onsubmit={onSubmit} onfocus={onFocus} onblur={onBlur} onkeydown={onKeyDown} onkeyup={onKeyUp} onkeypress={onKeyPress} onmouseenter={onMouseEnter} onmouseleave={onMouseLeave} onmousedown={onMouseDown} onmouseup={onMouseUp} oninput={onInput} />'
+      );
     });
 
     it('handles empty string', () => {
@@ -248,9 +253,12 @@ describe('jsx.utils', () => {
     });
 
     it('converts all React event handlers to Svelte syntax', () => {
-      const jsx = '<input onClick={onClick} onChange={onChange} onSubmit={onSubmit} onFocus={onFocus} onBlur={onBlur} onKeyDown={onKeyDown} onKeyUp={onKeyUp} onKeyPress={onKeyPress} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onMouseDown={onMouseDown} onMouseUp={onMouseUp} onInput={onInput} />';
+      const jsx =
+        '<input onClick={onClick} onChange={onChange} onSubmit={onSubmit} onFocus={onFocus} onBlur={onBlur} onKeyDown={onKeyDown} onKeyUp={onKeyUp} onKeyPress={onKeyPress} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onMouseDown={onMouseDown} onMouseUp={onMouseUp} onInput={onInput} />';
       const svelte = reactEventsToSvelte(jsx);
-      expect(svelte).toBe('<input on:click={onClick} on:change={onChange} on:submit={onSubmit} on:focus={onFocus} on:blur={onBlur} on:keydown={onKeyDown} on:keyup={onKeyUp} on:keypress={onKeyPress} on:mouseenter={onMouseEnter} on:mouseleave={onMouseLeave} on:mousedown={onMouseDown} on:mouseup={onMouseUp} on:input={onInput} />');
+      expect(svelte).toBe(
+        '<input on:click={onClick} on:change={onChange} on:submit={onSubmit} on:focus={onFocus} on:blur={onBlur} on:keydown={onKeyDown} on:keyup={onKeyUp} on:keypress={onKeyPress} on:mouseenter={onMouseEnter} on:mouseleave={onMouseLeave} on:mousedown={onMouseDown} on:mouseup={onMouseUp} on:input={onInput} />'
+      );
     });
 
     it('handles empty string', () => {
@@ -300,9 +308,12 @@ describe('jsx.utils', () => {
     });
 
     it('handles complex JSX with multiple attributes', () => {
-      const jsx = '<input className="form-input" type="text" placeholder="Enter text" onChange={handleChange} autoFocus={true} />';
+      const jsx =
+        '<input className="form-input" type="text" placeholder="Enter text" onChange={handleChange} autoFocus={true} />';
       const html = jsxToHtml(jsx);
-      expect(html).toBe('<input class="form-input" type="text" placeholder="Enter text" onchange={handleChange} autofocus />');
+      expect(html).toBe(
+        '<input class="form-input" type="text" placeholder="Enter text" onchange={handleChange} autofocus />'
+      );
     });
 
     it('handles empty string', () => {
@@ -320,9 +331,12 @@ describe('jsx.utils', () => {
     });
 
     it('handles complex JSX with multiple attributes', () => {
-      const jsx = '<input className="form-input" type="text" placeholder="Enter text" onChange={handleChange} autoFocus={true} />';
+      const jsx =
+        '<input className="form-input" type="text" placeholder="Enter text" onChange={handleChange} autoFocus={true} />';
       const svelte = jsxToSvelte(jsx);
-      expect(svelte).toBe('<input class="form-input" type="text" placeholder="Enter text" on:change={handleChange} autofocus />');
+      expect(svelte).toBe(
+        '<input class="form-input" type="text" placeholder="Enter text" on:change={handleChange} autofocus />'
+      );
     });
 
     it('handles empty string', () => {

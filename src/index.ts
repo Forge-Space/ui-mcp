@@ -23,18 +23,16 @@ import { registerManageTraining } from './tools/manage-training.js';
 import { registerAnalyzeComponentLibrary } from './tools/analyze-component-library.js';
 import { registerForgeContextTools } from './tools/forge-context.js';
 import { closeDatabase } from './lib/design-references/database/store.js';
+import { logger } from './lib/logger.js';
 
-// Load and validate configuration BEFORE importing logger
+// Load and validate configuration
 let config;
 try {
   config = loadConfig();
 } catch (error) {
-  console.error('Failed to load configuration:', error instanceof Error ? error.message : error);
+  logger.error({ error }, 'Failed to load configuration:');
   process.exit(1);
 }
-
-// Import logger AFTER config is loaded
-import { logger } from './lib/logger.js';
 
 logger.info({ config: { NODE_ENV: config.NODE_ENV, LOG_LEVEL: config.LOG_LEVEL } }, 'Configuration loaded');
 

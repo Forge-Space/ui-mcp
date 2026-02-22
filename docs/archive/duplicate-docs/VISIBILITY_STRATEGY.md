@@ -1,6 +1,7 @@
 # 🚀 UIForge MCP - Visibility & Marketing Strategy
 
 ## 📊 **Current Status**
+
 - ✅ **Live on npm**: `uiforge-mcp@0.4.1`
 - ✅ **16 Production Tools** - Full UI generation pipeline
 - ✅ **Zero-Cost Architecture** - 100% FOSS
@@ -9,18 +10,21 @@
 ## 🎯 **Target Audiences**
 
 ### Primary: **AI/ML Developers & MCP Community**
+
 - MCP server developers
 - AI tool builders
 - Model Context Protocol users
 - Claude/ChatGPT power users
 
 ### Secondary: **Frontend Developers**
+
 - React/Next.js/Vue/Angular developers
 - UI/UX designers
 - Full-stack developers
 - Design system teams
 
 ### Tertiary: **Tech Companies & Startups**
+
 - Development teams
 - Product teams
 - Innovation labs
@@ -31,6 +35,7 @@
 ### 🔥 **Immediate Actions (Week 1)**
 
 #### 1. **GitHub Optimization**
+
 - [ ] Improve README with better demo GIFs/screenshots
 - [ ] Add comprehensive "Quick Start" section
 - [ ] Create "Getting Started" video tutorial
@@ -38,6 +43,7 @@
 - [ ] Set up GitHub Stars/Forks tracking
 
 #### 2. **Community Engagement**
+
 - [ ] Post on r/MachineLearning - "Built an MCP server for UI generation"
 - [ ] Share on r/programming - "Open source AI UI generation tool"
 - [ ] Post on r/reactjs - "React component generation via AI"
@@ -45,6 +51,7 @@
 - [ ] Post on r/webdev - "AI-powered web development tools"
 
 #### 3. **MCP Ecosystem**
+
 - [ ] Submit to MCP tools registry/listing
 - [ ] Post in Model Context Protocol Discord
 - [ ] Share with Claude/ChatGPT plugin communities
@@ -53,18 +60,21 @@
 ### 🚀 **Short-term Actions (Weeks 2-4)**
 
 #### 4. **Content Marketing**
+
 - [ ] Write blog post: "Building an MCP Server for UI Generation"
 - [ ] Create tutorial: "5 Ways to Use AI for Frontend Development"
 - [ ] Record demo videos for each tool category
 - [ ] Create comparison table vs other UI generation tools
 
 #### 5. **Social Media**
+
 - [ ] Twitter thread showcasing all 16 tools
 - [ ] LinkedIn post for enterprise audience
 - [ ] Mastodon/Fediverse posts for FOSS community
 - [ ] Create shareable infographics
 
 #### 6. **Developer Relations**
+
 - [ ] Submit to Hacker News - "Show HN: UIForge MCP"
 - [ ] Post on Dev.to - "AI-driven UI generation with MCP"
 - [ ] Share on Product Hunt
@@ -73,18 +83,21 @@
 ### 🌟 **Medium-term Actions (Month 2-3)**
 
 #### 7. **Partnerships & Integrations**
+
 - [ ] Reach out to Windsurf/Cursor teams
 - [ ] Integrate with popular IDEs
 - [ ] Partner with design tool companies
 - [ ] Create official integrations
 
 #### 8. **Advanced Content**
+
 - [ ] Create comprehensive documentation site
 - [ ] Build interactive demo playground
 - [ ] Write technical deep-dive articles
 - [ ] Create case studies and success stories
 
 #### 9. **Community Building**
+
 - [ ] Create Discord/Slack community
 - [ ] Host office hours/Q&A sessions
 - [ ] Start contributor onboarding program
@@ -93,10 +106,11 @@
 ## 📝 **Content Templates**
 
 ### **Reddit Post Template**
+
 ```
 Title: Built an open-source MCP server that generates entire UI applications from text
 
-Hey r/MachineLearning! 
+Hey r/MachineLearning!
 
 I just launched UIForge MCP - a Model Context Protocol server that can:
 - Generate full React/Next.js/Vue/Angular applications
@@ -115,6 +129,7 @@ Would love feedback from the AI/ML community!
 ```
 
 ### **Twitter Thread Template**
+
 ```
 1/ 🚀 Just launched UIForge MCP - an open-source MCP server for AI-driven UI generation!
 
@@ -136,6 +151,7 @@ GitHub: [link]
 ```
 
 ### **Hacker News Template**
+
 ```
 Title: Show HN: UIForge MCP - AI-driven UI generation via Model Context Protocol
 
@@ -161,12 +177,14 @@ Would love feedback from the HN community!
 ## 🎯 **Success Metrics**
 
 ### **Week 1 Targets**
+
 - 100+ GitHub stars
 - 10+ community discussions
 - 500+ npm downloads
 - 50+ social media engagements
 
 ### **Month 1 Targets**
+
 - 500+ GitHub stars
 - 50+ community contributors
 - 2,000+ npm downloads
@@ -174,6 +192,7 @@ Would love feedback from the HN community!
 - 5+ blog mentions
 
 ### **Month 3 Targets**
+
 - 1,000+ GitHub stars
 - 20+ community contributors
 - 10,000+ npm downloads
@@ -183,6 +202,7 @@ Would love feedback from the HN community!
 ## 🛠️ **Implementation Checklist**
 
 ### **GitHub Optimization**
+
 - [ ] Add README demo GIFs
 - [ ] Improve "Quick Start" section
 - [ ] Add GitHub Topics
@@ -190,18 +210,21 @@ Would love feedback from the HN community!
 - [ ] Set up PR templates
 
 ### **Content Creation**
+
 - [ ] Write blog posts
 - [ ] Create demo videos
 - [ ] Design infographics
 - [ ] Prepare social media assets
 
 ### **Community Engagement**
+
 - [ ] Prepare Reddit posts
 - [ ] Draft Twitter threads
 - [ ] Write HN submission
 - [ ] Create Discord announcements
 
 ### **Technical Improvements**
+
 - [ ] Add analytics tracking
 - [ ] Create demo playground
 - [ ] Improve documentation site

@@ -2,11 +2,14 @@
 
 ## 🎯 Overview
 
-AI provider patterns for MCP (Model Context Protocol) servers, providing unified abstraction for multiple AI providers, intelligent failover, cost optimization, and seamless integration with the Forge MCP ecosystem.
+AI provider patterns for MCP (Model Context Protocol) servers, providing unified
+abstraction for multiple AI providers, intelligent failover, cost optimization,
+and seamless integration with the Forge MCP ecosystem.
 
 ## 📋 Available Patterns
 
 ### Provider Abstraction
+
 - **Unified Interface**: Common interface for all AI providers
 - **Provider Registry**: Dynamic provider registration and discovery
 - **Provider Configuration**: Centralized provider management
@@ -14,6 +17,7 @@ AI provider patterns for MCP (Model Context Protocol) servers, providing unified
 - **Provider Metrics**: Track provider usage and performance
 
 ### Multi-Provider Support
+
 - **OpenAI Provider**: GPT models with full feature support
 - **Anthropic Provider**: Claude models with advanced capabilities
 - **Custom Provider**: Extensible framework for custom AI providers
@@ -21,6 +25,7 @@ AI provider patterns for MCP (Model Context Protocol) servers, providing unified
 - **Hybrid Provider**: Combine multiple providers for optimal results
 
 ### Failover & Load Balancing
+
 - **Automatic Failover**: Switch providers when one fails
 - **Load Balancing**: Distribute requests across providers
 - **Circuit Breaking**: Stop using failing providers temporarily
@@ -28,6 +33,7 @@ AI provider patterns for MCP (Model Context Protocol) servers, providing unified
 - **Performance-Based Routing**: Route to fastest responding providers
 
 ### Cost Optimization
+
 - **Cost Tracking**: Monitor API costs per provider
 - **Budget Management**: Set and enforce spending limits
 - **Provider Selection**: Choose optimal provider based on cost/quality
@@ -37,6 +43,7 @@ AI provider patterns for MCP (Model Context Protocol) servers, providing unified
 ## 🔧 Implementation Examples
 
 ### AI Provider Manager
+
 ```typescript
 // patterns/mcp-servers/ai-providers/ai-provider-manager.ts
 import { EventEmitter } from 'events';
@@ -46,8 +53,14 @@ export interface AIProvider {
   type: ProviderType;
   isAvailable(): boolean;
   supportsModel(model: string): boolean;
-  generate(prompt: string, options?: GenerateOptions): Promise<GenerateResponse>;
-  generateStreaming(prompt: string, options?: GenerateOptions): Promise<AsyncIterable<GenerateChunk>>;
+  generate(
+    prompt: string,
+    options?: GenerateOptions
+  ): Promise<GenerateResponse>;
+  generateStreaming(
+    prompt: string,
+    options?: GenerateOptions
+  ): Promise<AsyncIterable<GenerateChunk>>;
   estimateTokens(text: string): number;
   getCost(usage: TokenUsage): number;
   getMetrics(): ProviderMetrics;
@@ -58,7 +71,7 @@ export enum ProviderType {
   ANTHROPIC = 'anthropic',
   CUSTOM = 'custom',
   LOCAL = 'local',
-  HYBRID = 'hybrid'
+  HYBRID = 'hybrid',
 }
 
 export interface GenerateOptions {
@@ -199,16 +212,19 @@ export class AIProviderManager extends EventEmitter {
   }
 
   async generate(
-    prompt: string, 
+    prompt: string,
     options?: GenerateOptions,
     preferredProvider?: string
   ): Promise<GenerateResponse> {
     const startTime = Date.now();
-    
+
     try {
       // Select provider
-      const provider = await this.selectProvider(options?.model, preferredProvider);
-      
+      const provider = await this.selectProvider(
+        options?.model,
+        preferredProvider
+      );
+
       if (!provider) {
         throw new Error('No available AI providers');
       }
@@ -240,10 +256,9 @@ export class AIProviderManager extends EventEmitter {
       this.emit('generationCompleted', provider.name, response, duration);
 
       return response;
-
     } catch (error) {
       const duration = Date.now() - startTime;
-      
+
       // Update metrics for failure
       if (preferredProvider) {
         this.updateMetrics(preferredProvider, false, duration);
@@ -251,7 +266,7 @@ export class AIProviderManager extends EventEmitter {
       }
 
       this.emit('generationFailed', preferredProvider, error, duration);
-      
+
       throw error;
     }
   }
@@ -262,11 +277,14 @@ export class AIProviderManager extends EventEmitter {
     preferredProvider?: string
   ): Promise<AsyncIterable<GenerateChunk>> {
     const startTime = Date.now();
-    
+
     try {
       // Select provider
-      const provider = await this.selectProvider(options?.model, preferredProvider);
-      
+      const provider = await this.selectProvider(
+        options?.model,
+        preferredProvider
+      );
+
       if (!provider) {
         throw new Error('No available AI providers');
       }
@@ -286,17 +304,16 @@ export class AIProviderManager extends EventEmitter {
 
       // Wrap stream to track metrics
       return this.wrapStream(provider.name, stream, startTime);
-
     } catch (error) {
       const duration = Date.now() - startTime;
-      
+
       if (preferredProvider) {
         this.updateMetrics(preferredProvider, false, duration);
         this.circuitBreaker.recordFailure(preferredProvider);
       }
 
       this.emit('generationFailed', preferredProvider, error, duration);
-      
+
       throw error;
     }
   }
@@ -308,20 +325,24 @@ export class AIProviderManager extends EventEmitter {
     // If preferred provider is specified and available, use it
     if (preferredProvider) {
       const provider = this.providers.get(preferredProvider);
-      if (provider && provider.isAvailable() && (!model || provider.supportsModel(model))) {
+      if (
+        provider &&
+        provider.isAvailable() &&
+        (!model || provider.supportsModel(model))
+      ) {
         return provider;
       }
     }
 
     // Get available providers that support the model
     const availableProviders = Array.from(this.providers.values())
-      .filter(provider => 
-        provider.isAvailable() && 
-        (!model || provider.supportsModel(model))
+      .filter(
+        (provider) =>
+          provider.isAvailable() && (!model || provider.supportsModel(model))
       )
-      .map(provider => ({
+      .map((provider) => ({
         provider,
-        config: this.configs.get(provider.name)!
+        config: this.configs.get(provider.name)!,
       }))
       .filter(({ config }) => config.enabled);
 
@@ -358,11 +379,11 @@ export class AIProviderManager extends EventEmitter {
     if (!hasError && totalUsage) {
       const duration = Date.now() - startTime;
       this.updateMetrics(providerName, true, duration, totalUsage);
-      
+
       const provider = this.providers.get(providerName)!;
       const cost = provider.getCost(totalUsage);
       this.costTracker.trackCost(providerName, cost, totalUsage);
-      
+
       this.circuitBreaker.recordSuccess(providerName);
     }
   }
@@ -374,8 +395,9 @@ export class AIProviderManager extends EventEmitter {
     // Check request rate limit
     if (config.maxRequestsPerMinute) {
       const metrics = this.metricsCollector.getProviderMetrics(providerName);
-      const requestsPerMinute = this.metricsCollector.getRequestsPerMinute(providerName);
-      
+      const requestsPerMinute =
+        this.metricsCollector.getRequestsPerMinute(providerName);
+
       if (requestsPerMinute >= config.maxRequestsPerMinute) {
         return false;
       }
@@ -383,8 +405,9 @@ export class AIProviderManager extends EventEmitter {
 
     // Check token rate limit
     if (config.maxTokensPerMinute) {
-      const tokensPerMinute = this.metricsCollector.getTokensPerMinute(providerName);
-      
+      const tokensPerMinute =
+        this.metricsCollector.getTokensPerMinute(providerName);
+
       if (tokensPerMinute >= config.maxTokensPerMinute) {
         return false;
       }
@@ -393,7 +416,7 @@ export class AIProviderManager extends EventEmitter {
     // Check cost limit
     if (config.costLimit) {
       const currentCost = this.costTracker.getProviderCost(providerName);
-      
+
       if (currentCost >= config.costLimit) {
         return false;
       }
@@ -411,14 +434,17 @@ export class AIProviderManager extends EventEmitter {
     this.metricsCollector.recordRequest(providerName, success, duration, usage);
   }
 
-  private setupHealthCheck(providerName: string, config: HealthCheckConfig): void {
+  private setupHealthCheck(
+    providerName: string,
+    config: HealthCheckConfig
+  ): void {
     const interval = setInterval(async () => {
       const provider = this.providers.get(providerName);
       if (!provider) return;
 
       try {
         const isHealthy = await this.checkProviderHealth(provider);
-        
+
         if (!isHealthy) {
           this.emit('providerUnhealthy', providerName);
         }
@@ -456,17 +482,17 @@ export class AIProviderManager extends EventEmitter {
 
   getAvailableModels(model?: string): ModelConfig[] {
     const models: ModelConfig[] = [];
-    
+
     for (const [name, provider] of this.providers.entries()) {
       if (!provider.isAvailable()) continue;
-      
+
       const config = this.configs.get(name);
       if (!config || !config.enabled) continue;
 
       for (const modelConfig of config.models) {
         if (!modelConfig.supported) continue;
         if (model && modelConfig.name !== model) continue;
-        
+
         models.push({
           ...modelConfig,
           provider: name,
@@ -492,7 +518,7 @@ export class AIProviderManager extends EventEmitter {
   async shutdown(): Promise<void> {
     // Clear health check intervals
     this.metricsCollector.clearAllHealthCheckIntervals();
-    
+
     // Emit shutdown event
     this.emit('shutdown');
   }
@@ -500,6 +526,7 @@ export class AIProviderManager extends EventEmitter {
 ```
 
 ### OpenAI Provider Implementation
+
 ```typescript
 // patterns/mcp-servers/ai-providers/openai-provider.ts
 export class OpenAIProvider implements AIProvider {
@@ -541,14 +568,17 @@ export class OpenAIProvider implements AIProvider {
     return modelConfig?.supported || false;
   }
 
-  async generate(prompt: string, options?: GenerateOptions): Promise<GenerateResponse> {
+  async generate(
+    prompt: string,
+    options?: GenerateOptions
+  ): Promise<GenerateResponse> {
     const startTime = Date.now();
     this.metrics.totalRequests++;
 
     try {
       const model = options?.model || 'gpt-4';
       const modelConfig = this.models.get(model);
-      
+
       if (!modelConfig) {
         throw new Error(`Model ${model} not supported`);
       }
@@ -556,7 +586,7 @@ export class OpenAIProvider implements AIProvider {
       const response = await fetch(`${this.endpoint}/chat/completions`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
+          Authorization: `Bearer ${this.apiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -572,7 +602,9 @@ export class OpenAIProvider implements AIProvider {
       });
 
       if (!response.ok) {
-        throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
+        throw new Error(
+          `OpenAI API error: ${response.status} ${response.statusText}`
+        );
       }
 
       const data = await response.json();
@@ -582,7 +614,9 @@ export class OpenAIProvider implements AIProvider {
       this.metrics.successfulRequests++;
       this.metrics.totalTokens += usage.totalTokens;
       this.metrics.lastUsed = new Date();
-      this.metrics.averageResponseTime = this.updateAverageResponseTime(Date.now() - startTime);
+      this.metrics.averageResponseTime = this.updateAverageResponseTime(
+        Date.now() - startTime
+      );
 
       return {
         content,
@@ -595,17 +629,19 @@ export class OpenAIProvider implements AIProvider {
           completionTokens: usage.completionTokens,
         },
       };
-
     } catch (error) {
       this.metrics.failedRequests++;
       throw error;
     }
   }
 
-  async generateStreaming(prompt: string, options?: GenerateOptions): Promise<AsyncIterable<GenerateChunk>> {
+  async generateStreaming(
+    prompt: string,
+    options?: GenerateOptions
+  ): Promise<AsyncIterable<GenerateChunk>> {
     const model = options?.model || 'gpt-4';
     const modelConfig = this.models.get(model);
-    
+
     if (!modelConfig) {
       throw new Error(`Model ${model} not supported`);
     }
@@ -613,7 +649,7 @@ export class OpenAIProvider implements AIProvider {
     const response = await fetch(`${this.endpoint}/chat/completions`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${this.apiKey}`,
+        Authorization: `Bearer ${this.apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -630,7 +666,9 @@ export class OpenAIProvider implements AIProvider {
     });
 
     if (!response.ok) {
-      throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `OpenAI API error: ${response.status} ${response.statusText}`
+      );
     }
 
     return this.parseStreamingResponse(response, model);
@@ -644,12 +682,12 @@ export class OpenAIProvider implements AIProvider {
   getCost(usage: TokenUsage): number {
     // Calculate cost based on token usage
     let totalCost = 0;
-    
+
     for (const [modelName, modelConfig] of this.models.entries()) {
       // This is simplified - in reality you'd need to know which model was used
       totalCost += usage.totalTokens * modelConfig.costPerToken;
     }
-    
+
     return totalCost;
   }
 
@@ -665,7 +703,10 @@ export class OpenAIProvider implements AIProvider {
     };
   }
 
-  private async *parseStreamingResponse(response: Response, model: string): AsyncIterable<GenerateChunk> {
+  private async *parseStreamingResponse(
+    response: Response,
+    model: string
+  ): AsyncIterable<GenerateChunk> {
     const reader = response.body?.getReader();
     if (!reader) throw new Error('No response body reader available');
 
@@ -684,7 +725,7 @@ export class OpenAIProvider implements AIProvider {
       for (const line of lines) {
         if (line.startsWith('data: ')) {
           const data = line.slice(6);
-          
+
           if (data === '[DONE]') {
             yield {
               content: '',
@@ -699,7 +740,7 @@ export class OpenAIProvider implements AIProvider {
           try {
             const parsed = JSON.parse(data);
             const content = parsed.choices?.[0]?.delta?.content || '';
-            
+
             if (parsed.usage) {
               totalUsage = this.parseUsage(parsed.usage);
             }
@@ -723,16 +764,17 @@ export class OpenAIProvider implements AIProvider {
 
   private updateAverageResponseTime(newTime: number): number {
     if (this.metrics.totalRequests === 0) return newTime;
-    
+
     const totalRequests = this.metrics.totalRequests;
     const currentAverage = this.metrics.averageResponseTime;
-    
+
     return (currentAverage * (totalRequests - 1) + newTime) / totalRequests;
   }
 }
 ```
 
 ### Load Balancer Implementation
+
 ```typescript
 // patterns/mcp-servers/ai-providers/load-balancer.ts
 export interface ProviderInstance {
@@ -756,36 +798,42 @@ export class ProviderLoadBalancer {
       if (b.config.priority !== a.config.priority) {
         return b.config.priority - a.config.priority;
       }
-      
+
       // Then by weight (higher weight first)
       return b.config.weight - a.config.weight;
     });
 
     // Use weighted selection for providers with same priority
     const topPriority = sortedProviders[0].config.priority;
-    const samePriorityProviders = sortedProviders.filter(p => p.config.priority === topPriority);
-    
+    const samePriorityProviders = sortedProviders.filter(
+      (p) => p.config.priority === topPriority
+    );
+
     if (samePriorityProviders.length === 1) {
       return samePriorityProviders[0];
     }
 
     // Weighted random selection
-    const totalWeight = samePriorityProviders.reduce((sum, p) => sum + p.config.weight, 0);
+    const totalWeight = samePriorityProviders.reduce(
+      (sum, p) => sum + p.config.weight,
+      0
+    );
     let random = Math.random() * totalWeight;
-    
+
     for (const provider of samePriorityProviders) {
       random -= provider.config.weight;
       if (random <= 0) {
         return provider;
       }
     }
-    
+
     return samePriorityProviders[samePriorityProviders.length - 1];
   }
 }
 ```
 
 ### Circuit Breaker Implementation
+
 ```typescript
 // patterns/mcp-servers/ai-providers/circuit-breaker.ts
 export interface CircuitBreakerState {
@@ -810,7 +858,7 @@ export class CircuitBreaker {
     switch (state.state) {
       case 'CLOSED':
         return false;
-      
+
       case 'OPEN':
         if (now >= state.nextAttempt) {
           state.state = 'HALF_OPEN';
@@ -818,10 +866,10 @@ export class CircuitBreaker {
           return false;
         }
         return true;
-      
+
       case 'HALF_OPEN':
         return false;
-      
+
       default:
         return false;
     }
@@ -839,7 +887,7 @@ export class CircuitBreaker {
 
   recordFailure(providerName: string): void {
     let state = this.states.get(providerName);
-    
+
     if (!state) {
       state = {
         failures: 0,
@@ -853,7 +901,10 @@ export class CircuitBreaker {
     state.failures++;
     state.lastFailureTime = Date.now();
 
-    if (state.state === 'HALF_OPEN' || state.failures >= this.failureThreshold) {
+    if (
+      state.state === 'HALF_OPEN' ||
+      state.failures >= this.failureThreshold
+    ) {
       state.state = 'OPEN';
       state.nextAttempt = Date.now() + this.recoveryTimeout;
     }
@@ -872,9 +923,13 @@ export class CircuitBreaker {
 ## 🚀 Quick Start
 
 ### Basic AI Provider Setup
+
 ```typescript
 // Setup AI providers for your MCP server
-import { AIProviderManager, ProviderType } from './patterns/mcp-servers/ai-providers/ai-provider-manager';
+import {
+  AIProviderManager,
+  ProviderType,
+} from './patterns/mcp-servers/ai-providers/ai-provider-manager';
 
 const providerManager = new AIProviderManager();
 
@@ -940,6 +995,7 @@ providerManager.registerProvider({
 ```
 
 ### Generate AI Response
+
 ```typescript
 // Generate response with automatic provider selection
 const response = await providerManager.generate(
@@ -958,6 +1014,7 @@ console.log('Cost:', providerManager.getCostByProvider()[response.provider]);
 ```
 
 ### Streaming Generation
+
 ```typescript
 // Generate streaming response
 const stream = await providerManager.generateStreaming(
@@ -971,7 +1028,7 @@ const stream = await providerManager.generateStreaming(
 
 for await (const chunk of stream) {
   process.stdout.write(chunk.content);
-  
+
   if (chunk.done) {
     console.log('\nGeneration completed!');
     console.log('Total tokens:', chunk.usage?.totalTokens);
@@ -982,18 +1039,21 @@ for await (const chunk of stream) {
 ## 📊 Performance Benefits
 
 ### Multi-Provider Reliability
+
 - **Automatic Failover**: Switch providers when one fails
 - **Circuit Breaking**: Stop using failing providers temporarily
 - **Health Monitoring**: Continuous provider health checking
 - **Load Balancing**: Distribute requests across providers
 
 ### Cost Optimization
+
 - **Cost Tracking**: Monitor API costs per provider
 - **Budget Management**: Enforce spending limits
 - **Provider Selection**: Choose optimal provider based on cost/quality
 - **Usage Analytics**: Track and optimize usage patterns
 
 ### Performance Optimization
+
 - **Intelligent Routing**: Route to fastest responding providers
 - **Rate Limiting**: Prevent API rate limit violations
 - **Token Optimization**: Minimize token usage
@@ -1002,6 +1062,7 @@ for await (const chunk of stream) {
 ## 🔧 Integration Examples
 
 ### MCP Server Integration
+
 ```typescript
 // Integrate with MCP UI generation server
 export class MCPUIGenerationServer {
@@ -1033,7 +1094,6 @@ export class MCPUIGenerationServer {
           cost: this.providerManager.getCostByProvider()[response.provider],
         },
       };
-
     } catch (error) {
       return {
         success: false,
@@ -1045,6 +1105,7 @@ export class MCPUIGenerationServer {
 ```
 
 ### Cost Monitoring
+
 ```typescript
 // Monitor AI costs
 setInterval(() => {
@@ -1054,15 +1115,19 @@ setInterval(() => {
 
   console.log('AI Provider Cost Report:');
   console.log(`Total Cost: $${totalCost.toFixed(2)}`);
-  
+
   for (const [provider, cost] of Object.entries(costsByProvider)) {
     console.log(`  ${provider}: $${cost.toFixed(2)}`);
   }
-  
+
   console.log(`Total Requests: ${usageStats.totalRequests}`);
   console.log(`Success Rate: ${(usageStats.successRate * 100).toFixed(1)}%`);
-  console.log(`Average Response Time: ${usageStats.averageResponseTime.toFixed(0)}ms`);
+  console.log(
+    `Average Response Time: ${usageStats.averageResponseTime.toFixed(0)}ms`
+  );
 }, 60000); // Every minute
 ```
 
-This AI provider pattern provides a robust, cost-optimized foundation for AI-powered MCP services with automatic failover, load balancing, and comprehensive cost tracking! 🚀
+This AI provider pattern provides a robust, cost-optimized foundation for
+AI-powered MCP services with automatic failover, load balancing, and
+comprehensive cost tracking! 🚀

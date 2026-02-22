@@ -1,16 +1,19 @@
 # Branching Strategy Guide
 
-This document describes the Trunk Based Development (TBD) branching strategy used for UIForge MCP.
+This document describes the Trunk Based Development (TBD) branching strategy
+used for UIForge MCP.
 
 ## 🌳 Branch Types
 
 ### Main Branch (`main`)
+
 - **Always deployable** and reflects production state
 - Protected from direct pushes
 - Only receives merges from release branches
 - Automatically triggers deployment when updated
 
 ### Release Branches (`release/vX.Y.Z`)
+
 - **Integration and stabilization** branch
 - Created from main when starting a release cycle
 - Receives merges from feature branches
@@ -18,6 +21,7 @@ This document describes the Trunk Based Development (TBD) branching strategy use
 - Merged to main when ready for deployment
 
 ### Feature Branches (`feature/feature-name` or `feature/JIRA-123-description`)
+
 - **Short-lived** branches (1-3 days)
 - Created from main for new features or bug fixes
 - Frequent pushes and small commits
@@ -26,6 +30,7 @@ This document describes the Trunk Based Development (TBD) branching strategy use
 ## 🔄 Workflow
 
 ### 1. Feature Development
+
 ```bash
 # Create feature branch
 git checkout main
@@ -40,6 +45,7 @@ git push origin feature/user-authentication
 ```
 
 ### 2. Feature Integration
+
 ```bash
 # Create PR from feature branch to release branch
 # Target: release/v1.0.0
@@ -57,6 +63,7 @@ git push origin --delete feature/user-authentication
 ```
 
 ### 3. Release Preparation
+
 ```bash
 # Create release branch from main
 git checkout main
@@ -72,6 +79,7 @@ git push origin release/v1.0.0
 ```
 
 ### 4. Release Deployment
+
 ```bash
 # Merge release branch to main
 git checkout main
@@ -91,6 +99,7 @@ git push origin --delete release/v1.0.0
 ## 🛡️ Branch Protection Rules
 
 ### Main Branch
+
 - ✅ Require pull request reviews
 - ✅ Require status checks to pass
 - ✅ Require up-to-date branches before merging
@@ -98,27 +107,32 @@ git push origin --delete release/v1.0.0
 - ✅ Do not allow deletions
 
 ### Release Branches
+
 - ✅ Require pull request reviews (from feature branches)
 - ✅ Allow force pushes (for hotfixes)
 - ✅ Allow deletions (after deployment)
 
 ### Feature Branches
+
 - ❌ No protection rules
 - ✅ Encourage frequent pushes
 
 ## 🚀 Release Cadence
 
 ### Major Releases
+
 - **Frequency**: Every 2-4 weeks
 - **Branch**: `release/vX.0.0`
 - **Content**: Major features, breaking changes
 
 ### Minor Releases
+
 - **Frequency**: Weekly or bi-weekly
 - **Branch**: `release/vX.Y.0`
 - **Content**: New features, enhancements
 
 ### Patch Releases
+
 - **Frequency**: As needed
 - **Branch**: Can be hotfixes directly to main
 - **Content**: Bug fixes, security updates
@@ -126,16 +140,19 @@ git push origin --delete release/v1.0.0
 ## 📋 Naming Conventions
 
 ### Feature Branches
+
 - `feature/user-authentication`
 - `feature/JIRA-123-add-login`
 - `feature/fix-memory-leak`
 
 ### Release Branches
+
 - `release/v1.0.0`
 - `release/v1.1.0`
 - `release/v2.0.0`
 
 ### Tags
+
 - `v1.0.0`
 - `v1.0.1`
 - `v2.0.0`
@@ -143,6 +160,7 @@ git push origin --delete release/v1.0.0
 ## 🎯 Best Practices
 
 ### Feature Branches
+
 - Keep them **short-lived** (1-3 days max)
 - Make **small, focused commits**
 - **Push frequently** to avoid conflicts
@@ -150,12 +168,14 @@ git push origin --delete release/v1.0.0
 - Delete after merge
 
 ### Release Branches
+
 - Use for **integration testing**
 - **Stabilize** before merging to main
 - Can receive **hotfixes**
 - Tag before deletion
 
 ### Main Branch
+
 - Always **deployable**
 - **Never broken**
 - Use **semantic versioning** for tags
@@ -172,6 +192,7 @@ All branches trigger CI/CD pipelines:
 ## 🚨 Emergency Procedures
 
 ### Hotfix to Production
+
 ```bash
 # Create hotfix branch from main
 git checkout main
@@ -198,6 +219,7 @@ git push origin --delete hotfix/critical-bug-fix
 ```
 
 ### Rollback
+
 ```bash
 # Revert problematic merge
 git checkout main

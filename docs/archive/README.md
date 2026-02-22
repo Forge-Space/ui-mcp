@@ -1,13 +1,18 @@
 # Archive Directory
 
-This directory contains archived documentation and scripts that have been moved during the project cleanup and reorganization.
+This directory contains archived documentation and scripts that have been moved
+during the project cleanup and reorganization.
 
 ## 📁 Directory Structure
 
 ### 🚀 launch-content/
-Marketing and launch-related content that was created for the initial project launch. These files are kept for historical reference but are no longer actively maintained.
+
+Marketing and launch-related content that was created for the initial project
+launch. These files are kept for historical reference but are no longer actively
+maintained.
 
 **Files:**
+
 - `LAUNCH_READY_SUMMARY.md` - Complete launch package summary
 - `linkedin-launch-pt.md` - Portuguese LinkedIn launch post
 - `github-seo.md` - GitHub SEO optimization strategy
@@ -20,18 +25,25 @@ Marketing and launch-related content that was created for the initial project la
 - `linkedin-post-pt.txt` - Portuguese LinkedIn post copy
 
 ### 🗃️ legacy-scripts/
-Scripts that have been replaced by GitHub Actions workflows or newer implementations. These are kept for reference but should not be used in new development.
+
+Scripts that have been replaced by GitHub Actions workflows or newer
+implementations. These are kept for reference but should not be used in new
+development.
 
 **Files:**
+
 - `setup-deployment.sh` - Replaced by `.github/workflows/setup-deployment.yml`
 - `lint.js` - Replaced by `.github/workflows/admin-lint.yml`
 - `mcp-wrapper.sh` - Minimal wrapper script (deprecated)
 - `validate-patterns.sh` - Pattern validation script (moved to patterns repo)
 
 ### 📄 duplicate-docs/
-Documentation files that were duplicated, outdated, or consolidated into other documents. The content has been merged into the main documentation structure.
+
+Documentation files that were duplicated, outdated, or consolidated into other
+documents. The content has been merged into the main documentation structure.
 
 **Files:**
+
 - `README-enhanced.md` - Enhanced README (content merged into main README)
 - `SCRIPTS_MIGRATION.md` - Scripts migration documentation (completed)
 - `IMAGE_TO_TRAINING_DATA.md` - ML training data documentation (niche)
@@ -51,6 +63,7 @@ Documentation files that were duplicated, outdated, or consolidated into other d
 ## 🔄 Migration Summary
 
 ### What Was Consolidated:
+
 - **Setup Documentation** → `docs/SETUP.md`
 - **Development Documentation** → `docs/DEVELOPMENT.md`
 - **Project Planning** → `docs/PROJECT_ROADMAP.md`
@@ -58,11 +71,13 @@ Documentation files that were duplicated, outdated, or consolidated into other d
 - **Integration Summary** → `docs/INTEGRATION_SUMMARY.md`
 
 ### What Was Replaced:
+
 - **Shell Scripts** → GitHub Actions workflows
 - **Multiple Setup Guides** → Single comprehensive setup guide
 - **Duplicate Documentation** → Consolidated documentation
 
 ### What Was Archived:
+
 - **Launch Content** → Historical launch materials
 - **Legacy Scripts** → Replaced by workflows
 - **Duplicate Docs** → Consolidated into main docs
@@ -112,4 +127,5 @@ docs/
 
 ---
 
-*This archive was created on 2026-02-18 as part of the documentation cleanup and reorganization effort.*
+_This archive was created on 2026-02-18 as part of the documentation cleanup and
+reorganization effort._

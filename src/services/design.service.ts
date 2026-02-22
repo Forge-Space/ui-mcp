@@ -1,6 +1,6 @@
 import type { IDesignContext } from '../lib/types.js';
 import { designContextStore, DEFAULT_CONTEXT } from '../lib/design-context.js';
-import { getPreset, listPresets } from '../lib/design-references/index.js';
+import { getPreset } from '../lib/design-references/index.js';
 
 /**
  * Design Service - Handles all design context operations
@@ -125,7 +125,7 @@ export class DesignService {
 
     return {
       valid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
@@ -136,13 +136,13 @@ export class DesignService {
    */
   mergeContexts(...contexts: Partial<IDesignContext>[]): IDesignContext {
     let merged = this.getCurrentContext();
-    
+
     for (const context of contexts) {
       if (context) {
         merged = { ...merged, ...context };
       }
     }
-    
+
     // Update store once with merged result
     designContextStore.update(merged);
     return designContextStore.get();
@@ -160,7 +160,7 @@ export class DesignService {
     borderRadius: Record<string, string>;
   } {
     const ctx = context || this.getCurrentContext();
-    
+
     return {
       colors: {
         primary: ctx.colorPalette?.primary ?? '#000000',

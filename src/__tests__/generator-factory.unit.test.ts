@@ -3,9 +3,17 @@ import {
   GeneratorFactory,
   createGenerator,
   generateProject,
-  generateComponent
+  generateComponent,
 } from '../lib/generators/generator-factory.js';
-import type { IGeneratedFile, IDesignContext, Architecture, StateManagement, Framework, ComponentLibraryId, IComponentLibrary } from '../lib/types.js';
+import type {
+  IGeneratedFile,
+  IDesignContext,
+  Architecture,
+  StateManagement,
+  Framework,
+  ComponentLibraryId,
+  IComponentLibrary,
+} from '../lib/types.js';
 
 describe('GeneratorFactory', () => {
   let factory: GeneratorFactory;
@@ -32,7 +40,7 @@ describe('GeneratorFactory', () => {
       const expectedFrameworks: Framework[] = ['react', 'nextjs', 'vue', 'svelte', 'angular', 'html'];
 
       expect(supportedFrameworks).toHaveLength(expectedFrameworks.length);
-      expectedFrameworks.forEach(framework => {
+      expectedFrameworks.forEach((framework) => {
         expect(supportedFrameworks).toContain(framework);
       });
     });
@@ -52,7 +60,7 @@ describe('GeneratorFactory', () => {
     it('should create generators for all supported frameworks', () => {
       const supportedFrameworks = factory.getSupportedFrameworks();
 
-      supportedFrameworks.forEach(framework => {
+      supportedFrameworks.forEach((framework) => {
         const generator = factory.createGenerator(framework);
         expect(generator).toBeDefined();
         expect(generator.getFramework()).toBe(framework);
@@ -77,19 +85,14 @@ describe('GeneratorFactory', () => {
     it('should generate projects for all supported frameworks', () => {
       const supportedFrameworks = factory.getSupportedFrameworks();
 
-      supportedFrameworks.forEach(framework => {
-        const files = factory.generateProject(
-          framework,
-          'test-project',
-          'flat',
-          'none'
-        );
+      supportedFrameworks.forEach((framework) => {
+        const files = factory.generateProject(framework, 'test-project', 'flat', 'none');
 
         expect(Array.isArray(files)).toBe(true);
         expect(files.length).toBeGreaterThan(0);
 
         // Check that files have proper structure
-        files.forEach(file => {
+        files.forEach((file) => {
           expect(file).toHaveProperty('path');
           expect(file).toHaveProperty('content');
           expect(typeof file.path).toBe('string');
@@ -101,13 +104,8 @@ describe('GeneratorFactory', () => {
     it('should generate different architectures', () => {
       const architectures: Architecture[] = ['flat', 'feature-based', 'atomic'];
 
-      architectures.forEach(architecture => {
-        const files = factory.generateProject(
-          'react',
-          `test-${architecture}`,
-          architecture,
-          'none'
-        );
+      architectures.forEach((architecture) => {
+        const files = factory.generateProject('react', `test-${architecture}`, architecture, 'none');
 
         expect(files.length).toBeGreaterThan(0);
       });
@@ -116,13 +114,8 @@ describe('GeneratorFactory', () => {
     it('should generate different state management setups', () => {
       const stateManagements: StateManagement[] = ['useState', 'zustand', 'pinia', 'signals', 'none'];
 
-      stateManagements.forEach(stateManagement => {
-        const files = factory.generateProject(
-          'react',
-          `test-${stateManagement}`,
-          'flat',
-          stateManagement
-        );
+      stateManagements.forEach((stateManagement) => {
+        const files = factory.generateProject('react', `test-${stateManagement}`, 'flat', stateManagement);
 
         expect(files.length).toBeGreaterThan(0);
       });
@@ -186,18 +179,12 @@ describe('GeneratorFactory', () => {
         },
       };
 
-      const files = factory.generateProject(
-        'react',
-        'test-custom-context',
-        'flat',
-        'none',
-        customContext
-      );
+      const files = factory.generateProject('react', 'test-custom-context', 'flat', 'none', customContext);
 
       expect(files.length).toBeGreaterThan(0);
 
       // Check that custom context is reflected in generated files
-      const cssFile = files.find(f => f.path.includes('.css') || f.path.includes('tailwind'));
+      const cssFile = files.find((f) => f.path.includes('.css') || f.path.includes('tailwind'));
       if (cssFile) {
         expect(cssFile.content).toContain('custom-primary');
       }
@@ -208,18 +195,14 @@ describe('GeneratorFactory', () => {
     it('should generate components for all supported frameworks', () => {
       const supportedFrameworks = factory.getSupportedFrameworks();
 
-      supportedFrameworks.forEach(framework => {
-        const files = factory.generateComponent(
-          framework,
-          'button',
-          { variant: 'primary' }
-        );
+      supportedFrameworks.forEach((framework) => {
+        const files = factory.generateComponent(framework, 'button', { variant: 'primary' });
 
         expect(Array.isArray(files)).toBe(true);
         expect(files.length).toBeGreaterThan(0);
 
         // Check that files have proper structure
-        files.forEach(file => {
+        files.forEach((file) => {
           expect(file).toHaveProperty('path');
           expect(file).toHaveProperty('content');
           expect(typeof file.path).toBe('string');
@@ -229,16 +212,17 @@ describe('GeneratorFactory', () => {
     });
 
     it('should generate components with different libraries', () => {
-      const componentLibraries: ComponentLibraryId[] = ['shadcn', 'radix', 'headlessui', 'primevue', 'material', 'none'];
+      const componentLibraries: ComponentLibraryId[] = [
+        'shadcn',
+        'radix',
+        'headlessui',
+        'primevue',
+        'material',
+        'none',
+      ];
 
-      componentLibraries.forEach(library => {
-        const files = factory.generateComponent(
-          'react',
-          'button',
-          { variant: 'primary' },
-          undefined,
-          library
-        );
+      componentLibraries.forEach((library) => {
+        const files = factory.generateComponent('react', 'button', { variant: 'primary' }, undefined, library);
 
         expect(files.length).toBeGreaterThan(0);
       });
@@ -247,12 +231,8 @@ describe('GeneratorFactory', () => {
     it('should generate different component types', () => {
       const componentTypes = ['button', 'card', 'input', 'modal', 'dropdown'];
 
-      componentTypes.forEach(componentType => {
-        const files = factory.generateComponent(
-          'react',
-          componentType,
-          { variant: 'primary' }
-        );
+      componentTypes.forEach((componentType) => {
+        const files = factory.generateComponent('react', componentType, { variant: 'primary' });
 
         expect(files.length).toBeGreaterThan(0);
       });
@@ -263,19 +243,15 @@ describe('GeneratorFactory', () => {
         variant: 'primary',
         size: 'large',
         disabled: true,
-        onClick: 'handleClick'
+        onClick: 'handleClick',
       };
 
-      const files = factory.generateComponent(
-        'react',
-        'button',
-        props
-      );
+      const files = factory.generateComponent('react', 'button', props);
 
       expect(files.length).toBeGreaterThan(0);
 
       // Check that props are reflected in generated component
-      const componentFile = files.find(f => f.path.includes('.tsx') || f.path.includes('.jsx'));
+      const componentFile = files.find((f) => f.path.includes('.tsx') || f.path.includes('.jsx'));
       if (componentFile) {
         expect(componentFile.content).toContain('variant');
         expect(componentFile.content).toContain('size');
@@ -291,7 +267,7 @@ describe('GeneratorFactory', () => {
       expect(Array.isArray(info)).toBe(true);
       expect(info.length).toBeGreaterThan(0);
 
-      info.forEach(generatorInfo => {
+      info.forEach((generatorInfo) => {
         expect(generatorInfo).toHaveProperty('framework');
         expect(generatorInfo).toHaveProperty('className');
         expect(generatorInfo).toHaveProperty('isInstantiated');
@@ -304,7 +280,7 @@ describe('GeneratorFactory', () => {
     it('should track instantiation status', () => {
       // Initially no instances should be created
       let info = factory.getGeneratorInfo();
-      info.forEach(generatorInfo => {
+      info.forEach((generatorInfo) => {
         expect(generatorInfo.isInstantiated).toBe(false);
       });
 
@@ -313,7 +289,7 @@ describe('GeneratorFactory', () => {
 
       // Now React should be instantiated
       info = factory.getGeneratorInfo();
-      const reactInfo = info.find(i => i.framework === 'react');
+      const reactInfo = info.find((i) => i.framework === 'react');
       expect(reactInfo?.isInstantiated).toBe(true);
     });
   });
@@ -327,7 +303,7 @@ describe('GeneratorFactory', () => {
 
       // Verify instances exist
       let info = factory.getGeneratorInfo();
-      const instantiatedCount = info.filter(i => i.isInstantiated).length;
+      const instantiatedCount = info.filter((i) => i.isInstantiated).length;
       expect(instantiatedCount).toBeGreaterThan(0);
 
       // Clear all instances
@@ -335,7 +311,7 @@ describe('GeneratorFactory', () => {
 
       // Verify no instances exist
       info = factory.getGeneratorInfo();
-      info.forEach(generatorInfo => {
+      info.forEach((generatorInfo) => {
         expect(generatorInfo.isInstantiated).toBe(false);
       });
     });
@@ -350,8 +326,8 @@ describe('GeneratorFactory', () => {
 
       // Verify only React instance is cleared
       const info = factory.getGeneratorInfo();
-      const reactInfo = info.find(i => i.framework === 'react');
-      const vueInfo = info.find(i => i.framework === 'vue');
+      const reactInfo = info.find((i) => i.framework === 'react');
+      const vueInfo = info.find((i) => i.framework === 'vue');
 
       expect(reactInfo?.isInstantiated).toBe(false);
       expect(vueInfo?.isInstantiated).toBe(true);
@@ -374,12 +350,7 @@ describe('Convenience Functions', () => {
 
   describe('generateProject', () => {
     it('should generate a project', () => {
-      const files = generateProject(
-        'react',
-        'test-project',
-        'flat',
-        'none'
-      );
+      const files = generateProject('react', 'test-project', 'flat', 'none');
 
       expect(Array.isArray(files)).toBe(true);
       expect(files.length).toBeGreaterThan(0);
@@ -388,24 +359,14 @@ describe('Convenience Functions', () => {
 
   describe('generateComponent', () => {
     it('should generate a component', () => {
-      const files = generateComponent(
-        'react',
-        'button',
-        { variant: 'primary' }
-      );
+      const files = generateComponent('react', 'button', { variant: 'primary' });
 
       expect(Array.isArray(files)).toBe(true);
       expect(files.length).toBeGreaterThan(0);
     });
 
     it('should support component libraries', () => {
-      const files = generateComponent(
-        'react',
-        'button',
-        { variant: 'primary' },
-        undefined,
-        'shadcn'
-      );
+      const files = generateComponent('react', 'button', { variant: 'primary' }, undefined, 'shadcn');
 
       expect(Array.isArray(files)).toBe(true);
       expect(files.length).toBeGreaterThan(0);

@@ -1,12 +1,12 @@
 /**
  * Services Module - Centralized service layer for UIForge MCP
- * 
+ *
  * This module provides a clean, testable interface for all major operations:
  * - Design context management
  * - Figma API integration
  * - Code generation orchestration
  * - Image and pattern analysis
- * 
+ *
  * All services are exported as both classes and singleton instances for flexibility.
  */
 
@@ -38,8 +38,8 @@ export type {
  */
 export class ServiceContainer {
   private static instance: ServiceContainer;
-  
-  private services: Map<string, any> = new Map();
+
+  private services: Map<string, unknown> = new Map();
 
   static getInstance(): ServiceContainer {
     if (!ServiceContainer.instance) {
@@ -109,13 +109,13 @@ export class ServiceContainer {
  */
 export function initializeServices(): ServiceContainer {
   const container = ServiceContainer.getInstance();
-  
+
   // Register default singleton instances
   container.register('design', designService);
   container.register('figma', figmaService);
   container.register('generation', generationService);
   container.register('analysis', analysisService);
-  
+
   return container;
 }
 
@@ -130,7 +130,7 @@ export function getServices(): {
   analysis: AnalysisService;
 } {
   const container = ServiceContainer.getInstance();
-  
+
   return {
     design: container.get<DesignService>('design'),
     figma: container.get<FigmaService>('figma'),

@@ -1,10 +1,13 @@
 # CodeRabbit Setup Guide
 
-This guide explains how to use CodeRabbit for AI-powered code reviews across GitHub, IDE, and CLI.
+This guide explains how to use CodeRabbit for AI-powered code reviews across
+GitHub, IDE, and CLI.
 
 ## Overview
 
-CodeRabbit is configured via `.coderabbit.yaml` in the repository root. This configuration applies to:
+CodeRabbit is configured via `.coderabbit.yaml` in the repository root. This
+configuration applies to:
+
 - **GitHub PR Reviews**: Automatic reviews on pull requests
 - **IDE Extension**: Real-time feedback in your editor
 - **CLI Tool**: Terminal-based code reviews
@@ -36,6 +39,7 @@ CodeRabbit is configured via `.coderabbit.yaml` in the repository root. This con
 - **Get Configuration**: `@coderabbitai configuration`
 
 **Review Features:**
+
 - High-level summary and walkthrough
 - Line-by-line code review comments
 - Security and performance suggestions
@@ -51,6 +55,7 @@ CodeRabbit is configured via `.coderabbit.yaml` in the repository root. This con
 ### Installation
 
 **VS Code:**
+
 ```bash
 # Install from VS Code Marketplace
 code --install-extension coderabbitai.coderabbit
@@ -59,6 +64,7 @@ code --install-extension coderabbitai.coderabbit
 Or search "CodeRabbit" in VS Code Extensions panel.
 
 **JetBrains IDEs** (IntelliJ, WebStorm, PyCharm):
+
 - Go to Settings → Plugins
 - Search for "CodeRabbit"
 - Install and restart IDE
@@ -73,6 +79,7 @@ Or search "CodeRabbit" in VS Code Extensions panel.
 ### Using CodeRabbit in IDE
 
 **Features:**
+
 - Real-time code suggestions as you type
 - Inline code explanations
 - Refactoring suggestions
@@ -80,6 +87,7 @@ Or search "CodeRabbit" in VS Code Extensions panel.
 - Best practices recommendations
 
 **Commands:**
+
 - Right-click on code → "CodeRabbit: Review Selection"
 - Cmd/Ctrl+Shift+P → "CodeRabbit: Review Current File"
 - Hover over code for inline suggestions
@@ -91,17 +99,20 @@ Or search "CodeRabbit" in VS Code Extensions panel.
 ### Installation
 
 **macOS/Linux:**
+
 ```bash
 curl -fsSL https://cli.coderabbit.ai/install.sh | sh
 ```
 
 **Windows (WSL):**
+
 ```bash
 # In WSL terminal
 curl -fsSL https://cli.coderabbit.ai/install.sh | sh
 ```
 
 **Manual Installation:**
+
 ```bash
 # Download binary
 wget https://cli.coderabbit.ai/latest/coderabbit-cli-linux-amd64
@@ -197,6 +208,7 @@ Our `.coderabbit.yaml` is configured with:
 **Review Profile**: `assertive` (thorough feedback)
 
 **Enabled Features:**
+
 - ✅ High-level summaries in walkthrough
 - ✅ Sequence diagrams for complex changes
 - ✅ Code review effort estimation
@@ -208,6 +220,7 @@ Our `.coderabbit.yaml` is configured with:
 - ✅ Commit status updates
 
 **Enabled Tools:**
+
 - ESLint (JavaScript/TypeScript)
 - Markdownlint (Documentation)
 - Hadolint (Dockerfile)
@@ -218,6 +231,7 @@ Our `.coderabbit.yaml` is configured with:
 - LanguageTool (Grammar/spelling)
 
 **Path-Specific Instructions:**
+
 - `src/tools/**/*.ts` - MCP tool implementation guidelines
 - `src/lib/**/*.ts` - Library module best practices
 - `src/__tests__/**/*.test.ts` - Test quality standards
@@ -226,6 +240,7 @@ Our `.coderabbit.yaml` is configured with:
 - `**/*.md` - Documentation quality checks
 
 **Custom Labels:**
+
 - `enhancement`, `bug`, `documentation`, `dependencies`
 - `performance`, `testing`, `docker`, `ci/cd`
 - `breaking-change`
@@ -268,7 +283,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: CodeRabbit Review
         uses: coderabbitai/coderabbit-action@v1
         with:
@@ -302,7 +317,8 @@ git push origin feature-branch
 
 1. **Use Placeholders**: Add `@coderabbitai summary` to PR description template
 2. **Respond to Feedback**: Reply to CodeRabbit comments with questions
-3. **Resolve Discussions**: Mark CodeRabbit suggestions as resolved when addressed
+3. **Resolve Discussions**: Mark CodeRabbit suggestions as resolved when
+   addressed
 4. **Request Re-review**: Use `@coderabbitai review` after making changes
 
 ### For IDE Usage
@@ -326,22 +342,27 @@ git push origin feature-branch
 ### GitHub Integration
 
 **Issue**: CodeRabbit not reviewing PRs
+
 - **Solution**: Check GitHub App installation and permissions
 - Verify `.coderabbit.yaml` is valid: `coderabbit config validate`
 - Check PR is not a draft (if `drafts: false` in config)
 
 **Issue**: Reviews are too verbose
-- **Solution**: Change `profile: "assertive"` to `profile: "chill"` in `.coderabbit.yaml`
+
+- **Solution**: Change `profile: "assertive"` to `profile: "chill"` in
+  `.coderabbit.yaml`
 
 ### IDE Extension
 
 **Issue**: Extension not working
-- **Solution**: 
+
+- **Solution**:
   - Verify authentication: Check IDE settings
   - Restart IDE after installation
   - Check extension logs for errors
 
 **Issue**: Slow performance
+
 - **Solution**:
   - Disable real-time suggestions in settings
   - Use manual review commands instead
@@ -349,18 +370,21 @@ git push origin feature-branch
 ### CLI Tool
 
 **Issue**: `coderabbit: command not found`
-- **Solution**: 
+
+- **Solution**:
   - Verify installation: `which coderabbit`
   - Add to PATH: `export PATH="$HOME/.coderabbit/bin:$PATH"`
   - Reinstall: `curl -fsSL https://cli.coderabbit.ai/install.sh | sh`
 
 **Issue**: Authentication failed
+
 - **Solution**:
   - Re-authenticate: `coderabbit auth login`
   - Check GitHub token permissions
   - Clear auth cache: `rm -rf ~/.coderabbit/auth`
 
 **Issue**: Review taking too long
+
 - **Solution**:
   - Review specific files instead of entire repo
   - Use `--staged` to review only staged changes
@@ -373,7 +397,8 @@ git push origin feature-branch
 - **Documentation**: https://docs.coderabbit.ai
 - **CLI Docs**: https://docs.coderabbit.ai/cli
 - **GitHub App**: https://github.com/apps/coderabbitai
-- **VS Code Extension**: https://marketplace.visualstudio.com/items?itemName=coderabbitai.coderabbit
+- **VS Code Extension**:
+  https://marketplace.visualstudio.com/items?itemName=coderabbitai.coderabbit
 - **Configuration Schema**: https://coderabbit.ai/integrations/schema.v2.json
 - **Support**: support@coderabbit.ai
 - **Discord**: https://discord.gg/coderabbit

@@ -10,7 +10,7 @@ COPY package.json package-lock.json* ./
 
 # Use BuildKit cache mount for npm
 RUN --mount=type=cache,target=/root/.npm,sharing=locked \
-    npm ci --ignore-scripts --legacy-peer-deps
+    npm install --ignore-scripts --legacy-peer-deps
 
 # Copy source files
 COPY tsconfig.json ./
@@ -34,7 +34,7 @@ COPY package.json package-lock.json* ./
 
 # Install production dependencies with cache
 RUN --mount=type=cache,target=/root/.npm,sharing=locked \
-    npm ci --omit=dev --ignore-scripts --legacy-peer-deps && \
+    npm install --omit=dev --ignore-scripts --legacy-peer-deps && \
     npm cache clean --force
 
 # Copy build output and assets

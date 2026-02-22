@@ -1,16 +1,20 @@
 # Automated Release Pipeline - UIForge MCP
 
-This document describes the automated release pipeline for the `@forgespace/ui-mcp` package.
+This document describes the automated release pipeline for the
+`@forgespace/ui-mcp` package.
 
 ## Overview
 
-The release pipeline automatically publishes new versions when release branches are merged into the main branch. This ensures consistent, high-quality releases with proper versioning and documentation.
+The release pipeline automatically publishes new versions when release branches
+are merged into the main branch. This ensures consistent, high-quality releases
+with proper versioning and documentation.
 
 ## Release Process
 
 ### 1. Create a Release Branch
 
-Create a release branch following the pattern `release/X.Y.Z` where X.Y.Z follows semantic versioning:
+Create a release branch following the pattern `release/X.Y.Z` where X.Y.Z
+follows semantic versioning:
 
 ```bash
 # Create a new release branch for version 0.6.0
@@ -42,7 +46,8 @@ The PR will be validated by the branch protection workflow.
 Once the PR is merged to main, the automated release pipeline will:
 
 1. **Detect Release Merge**: Identify that a release branch was merged
-2. **Trigger Deploy Workflow**: Use repository dispatch to trigger the existing deploy workflow
+2. **Trigger Deploy Workflow**: Use repository dispatch to trigger the existing
+   deploy workflow
 3. **Update CHANGELOG**: Add release notes to CHANGELOG.md
 4. **Run Quality Checks**: Execute full test suite, linting, and security scans
 5. **Build Package**: Create npm package and Docker image
@@ -59,6 +64,7 @@ Release branches must follow the pattern: `release/X.Y.Z`
 - **Z**: Patch version (bug fixes)
 
 Examples:
+
 - `release/0.6.0` - Minor release with new features
 - `release/0.5.1` - Patch release with bug fixes
 - `release/1.0.0` - Major release with breaking changes
@@ -68,6 +74,7 @@ Examples:
 The pipeline includes several quality gates:
 
 ### Pre-Merge Validation
+
 - Branch name validation
 - Version format checking
 - Duplicate version prevention
@@ -75,6 +82,7 @@ The pipeline includes several quality gates:
 - Test coverage suggestions
 
 ### Pre-Release Validation
+
 - Full test suite execution
 - Security vulnerability scanning
 - Build verification
@@ -82,6 +90,7 @@ The pipeline includes several quality gates:
 - Breaking change detection
 
 ### Post-Release Actions
+
 - npm package publishing
 - Docker image building and publishing
 - GitHub release creation
@@ -126,15 +135,19 @@ The pipeline uses these secrets:
 
 ### Common Issues
 
-**Release not detected**: Ensure the commit message indicates a release branch merge or the tag follows the pattern `release/X.Y.Z`.
+**Release not detected**: Ensure the commit message indicates a release branch
+merge or the tag follows the pattern `release/X.Y.Z`.
 
-**Version conflicts**: Check that the version doesn't already exist and follows semantic versioning.
+**Version conflicts**: Check that the version doesn't already exist and follows
+semantic versioning.
 
-**Publishing failures**: Verify the NPM_TOKEN has the correct permissions and the package name is available.
+**Publishing failures**: Verify the NPM_TOKEN has the correct permissions and
+the package name is available.
 
 **Docker build failures**: Check Dockerfile and build configuration.
 
-**Security scan failures**: Review and address any security vulnerabilities before proceeding.
+**Security scan failures**: Review and address any security vulnerabilities
+before proceeding.
 
 ### Debugging
 
@@ -178,27 +191,34 @@ When updating CHANGELOG.md, use this format:
 ## [0.6.0] - 2026-02-18
 
 ### Added
+
 - New feature description
 - Another new feature
 
 ### Changed
+
 - Updated existing functionality
 - Modified behavior
 
 ### Fixed
+
 - Bug fix description
 - Another bug fix
 
 ### Deprecated
+
 - Feature being deprecated (with migration path)
 
 ### Removed
+
 - Removed feature (with breaking change notice)
 
 ### Security
+
 - Security vulnerability fix
 
 ### Documentation
+
 - Updated documentation
 - Added new guides
 ```
@@ -212,13 +232,16 @@ This release pipeline integrates with:
 - **Docker Hub**: Automatic image publishing
 - **npm Registry**: Automatic package publishing
 
-The pipeline ensures that all ecosystem components remain compatible with each release.
+The pipeline ensures that all ecosystem components remain compatible with each
+release.
 
 ## Workflow Files
 
-- `release-automation.yml`: Detects release branch merges and triggers deployment
+- `release-automation.yml`: Detects release branch merges and triggers
+  deployment
 - `deploy.yml`: Handles the actual deployment and publishing process
-- `branch-protection.yml`: Validates release branches and enforces PR requirements
+- `branch-protection.yml`: Validates release branches and enforces PR
+  requirements
 
 ## Monitoring and Notifications
 

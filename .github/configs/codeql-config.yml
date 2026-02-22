@@ -14,7 +14,7 @@ queries:
   # Security and quality queries
   - uses: security-and-quality
   - uses: security-extended
-  
+
   # Custom security queries for specific vulnerabilities
   - name: Custom Security Queries
     uses: ./custom-queries
@@ -34,25 +34,25 @@ paths-ignore:
   - "**/__tests__/"
   - "**/*.test.*"
   - "**/*.spec.*"
-  
+
   # Build artifacts
   - "**/dist/"
   - "**/build/"
   - "**/out/"
-  
+
   # Dependencies
   - "**/node_modules/"
   - "**/vendor/"
   - "**/third_party/"
-  
+
   # Generated files
   - "**/*.generated.*"
   - "**/generated/"
-  
+
   # Documentation
   - "**/docs/"
   - "**/*.md"
-  
+
   # Configuration files
   - "**/*.config.*"
   - "**/.*"
@@ -61,10 +61,10 @@ paths-ignore:
 query-execution:
   # Timeout for query execution (in seconds)
   timeout: 1200
-  
+
   # Number of CPU cores to use
   cpu_cores: 2
-  
+
   # Memory limit (in MB)
   memory_limit: 4096
 
@@ -73,7 +73,7 @@ packs:
   # Security pack
   - name: security
     version: latest
-    
+
   # Quality pack
   - name: quality
     version: latest
@@ -90,7 +90,7 @@ extraction:
     ts: true
     # Extract from .tsx files
     tsx: true
-    
+
   # Python extraction
   python:
     # Extract from .py files
@@ -100,10 +100,10 @@ extraction:
 database:
   # Database location
   location: ${{ github.workspace }}/.codeql-databases
-  
+
   # Database cluster
   cluster: default
-  
+
   # Database language
   language: auto
 
@@ -111,10 +111,10 @@ database:
 sarif:
   # Include source code snippets in SARIF results
   include_source_code_snippets: true
-  
+
   # Include rule help text in SARIF results
   include_rule_help_text: true
-  
+
   # Group results by rule
   group_results_by_rule: true
 
@@ -122,10 +122,10 @@ sarif:
 alerts:
   # Minimum severity level for alerts
   minimum_severity: medium
-  
+
   # Maximum number of alerts to report
   maximum_alerts: 1000
-  
+
   # Include alerts from third-party code
   include_third_party_alerts: false
 
@@ -133,7 +133,7 @@ alerts:
 custom_queries:
   # Directory containing custom queries
   directory: .github/codeql-queries
-  
+
   # Custom query packs
   packs:
     - name: uiforge-security
@@ -143,10 +143,10 @@ custom_queries:
 performance:
   # Enable performance optimization
   enable_optimization: true
-  
+
   # Cache results between runs
   cache_results: true
-  
+
   # Parallel execution
   parallel_execution: true
 
@@ -154,13 +154,13 @@ performance:
 reporting:
   # Generate summary report
   summary: true
-  
+
   # Generate detailed report
   detailed: true
-  
+
   # Report format
   format: sarif
-  
+
   # Report output directory
   output_directory: codeql-reports
 
@@ -170,10 +170,10 @@ integrations:
   github:
     # Upload SARIF results to GitHub
     upload_sarif: true
-    
+
     # Create GitHub issues for alerts
     create_issues: false
-    
+
     # Add comments to PRs
     comment_on_pr: true
 
@@ -183,15 +183,15 @@ environments:
   development:
     # Include debug information
     debug: true
-    
+
     # Verbose logging
     verbose: true
-    
+
   # Production environment
   production:
     # Optimize for performance
     optimize: true
-    
+
     # Minimal logging
     verbose: false
 

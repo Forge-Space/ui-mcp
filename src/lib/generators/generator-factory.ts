@@ -56,7 +56,7 @@ export class GeneratorFactory {
   createGenerator(framework: Framework): BaseGenerator {
     // Return cached instance if available
     if (this.instances.has(framework)) {
-      return this.instances.get(framework)!;
+      return this.instances.get(framework) as BaseGenerator;
     }
 
     const GeneratorClass = this.generators.get(framework);
@@ -88,7 +88,12 @@ export class GeneratorFactory {
     designContext?: IDesignContext
   ): IGeneratedFile[] {
     const generator = this.createGenerator(framework);
-    return generator.generateProject(projectName, architecture, stateManagement, designContext || this.getDefaultContext());
+    return generator.generateProject(
+      projectName,
+      architecture,
+      stateManagement,
+      designContext || this.getDefaultContext()
+    );
   }
 
   /**
@@ -103,7 +108,7 @@ export class GeneratorFactory {
   generateComponent(
     framework: Framework,
     componentType: string,
-    props: Record<string, any>,
+    props: Record<string, unknown>,
     designContext?: IDesignContext,
     componentLibrary?: ComponentLibrary
   ): IGeneratedFile[] {
@@ -307,7 +312,7 @@ export function generateProject(
 export function generateComponent(
   framework: Framework,
   componentType: string,
-  props: Record<string, any>,
+  props: Record<string, unknown>,
   designContext?: IDesignContext,
   componentLibrary?: ComponentLibrary
 ): IGeneratedFile[] {

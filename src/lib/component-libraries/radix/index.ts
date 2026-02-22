@@ -14,7 +14,7 @@ export interface RadixSetupOptions {
   projectName: string;
   components?: string[];
   designContext?: IDesignContext;
-  customizations?: Record<string, any>;
+  customizations?: Record<string, unknown>;
 }
 
 export function setupRadixProject(options: RadixSetupOptions): IGeneratedFile[] {
@@ -25,7 +25,9 @@ export function setupRadixProject(options: RadixSetupOptions): IGeneratedFile[] 
   if (options.components) {
     for (const name of options.components) {
       try {
-        files.push(...generateRadixComponent(name, options.designContext ?? ({} as IDesignContext), options.customizations));
+        files.push(
+          ...generateRadixComponent(name, options.designContext ?? ({} as IDesignContext), options.customizations)
+        );
       } catch {
         // skip unknown components
       }
@@ -37,17 +39,30 @@ export function setupRadixProject(options: RadixSetupOptions): IGeneratedFile[] 
 
 export function getAvailableRadixComponents(): string[] {
   return [
-    'Button', 'Dialog', 'DropdownMenu', 'Tooltip',
-    'Popover', 'Tabs', 'Switch', 'Checkbox', 'RadioGroup',
-    'NavigationMenu', 'ContextMenu', 'AlertDialog', 'HoverCard',
-    'Accordion', 'Collapsible', 'Separator', 'ScrollArea',
-    'Select', 'Slider', 'Progress', 'Avatar',
+    'Button',
+    'Dialog',
+    'DropdownMenu',
+    'Tooltip',
+    'Popover',
+    'Tabs',
+    'Switch',
+    'Checkbox',
+    'RadioGroup',
+    'NavigationMenu',
+    'ContextMenu',
+    'AlertDialog',
+    'HoverCard',
+    'Accordion',
+    'Collapsible',
+    'Separator',
+    'ScrollArea',
+    'Select',
+    'Slider',
+    'Progress',
+    'Avatar',
   ];
 }
 
 export function getAvailableRadixPatterns(): string[] {
-  return [
-    'CommandPalette', 'ComboBox', 'DatePicker',
-    'MultiSelect', 'RichTextEditor', 'ColorPicker',
-  ];
+  return ['CommandPalette', 'ComboBox', 'DatePicker', 'MultiSelect', 'RichTextEditor', 'ColorPicker'];
 }

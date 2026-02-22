@@ -21,7 +21,7 @@ export default defineConfig({
     'pino',
     'pino-pretty',
   ],
-  esbuildOptions(options, context) {
+  esbuildOptions(options, _context) {
     options.platform = 'node';
     options.packages = 'external'; // Don't bundle node_modules
   },

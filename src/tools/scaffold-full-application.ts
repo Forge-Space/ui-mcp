@@ -24,9 +24,8 @@ export function registerScaffoldFullApplication(server: McpServer): void {
       const ctx = designContextStore.get();
 
       // Map state management to framework-specific options
-      const mappedStateManagement = framework === 'svelte'
-        ? (state_management === 'useState' ? 'stores' : 'none')
-        : state_management;
+      const mappedStateManagement =
+        framework === 'svelte' ? (state_management === 'useState' ? 'stores' : 'none') : state_management;
 
       // Create generator and generate project
       const generator = GeneratorFactory.getInstance().createGenerator(framework);

@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main, 'release/*']
+    branches: [main, dev, "release/*"]
     types: [opened, synchronize, reopened]
 
 permissions:
@@ -24,13 +24,13 @@ jobs:
       - name: Validate release branch name
         run: |
           BRANCH="${{ github.head_ref }}"
-          if [[ ! "$BRANCH" =~ ^release/[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "❌ Release branch name must follow pattern: release/X.Y.Z"
+          if [[ ! "$BRANCH" =~ ^release/v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "❌ Release branch name must follow pattern: release/X.Y.Z or release/vX.Y.Z"
             echo "Current branch: $BRANCH"
             exit 1
           fi
 
-          VERSION=$(echo "$BRANCH" | sed 's|release/||')
+          VERSION=$(echo "$BRANCH" | sed 's|release/v\?||')
           echo "✅ Valid release version: $VERSION"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
@@ -62,14 +62,14 @@ jobs:
           fetch-depth: 0
 
       - name: Check PR description
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
         run: |
-          DESCRIPTION="${{ github.event.pull_request.body }}"
-          if [[ -z "$DESCRIPTION" || ${#DESCRIPTION} -lt 20 ]]; then
+          if [[ -z "$PR_BODY" || ${#PR_BODY} -lt 20 ]]; then
             echo "❌ PR must have a description (at least 20 characters)"
             exit 1
           fi
-          # Sanitize description to prevent script injection
-          echo "✅ PR description validated (${#DESCRIPTION} characters)"
+          echo "✅ PR description validated (${#PR_BODY} characters)"
 
       - name: Check for tests
         run: |
@@ -118,7 +118,7 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm install --legacy-peer-deps
 
       - name: Run full test suite
         run: npm test
@@ -154,3 +154,40 @@ jobs:
             echo "⚠️ This is a major version bump ($LAST_VERSION -> $VERSION)"
             echo "Ensure breaking changes are documented"
           fi
+
+  enforce-branch-flow:
+    name: Enforce Branch Flow
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Validate feature → release flow
+        if: startsWith(github.base_ref, 'release/')
+        run: |
+          SOURCE="${{ github.head_ref }}"
+          if [[ "$SOURCE" =~ ^(main|dev)$ ]]; then
+            echo "❌ Cannot merge '$SOURCE' into a release branch"
+            exit 1
+          fi
+          echo "✅ Feature/fix branch '$SOURCE' targeting release branch is valid"
+
+      - name: Validate release → dev flow
+        if: github.base_ref == 'dev'
+        run: |
+          SOURCE="${{ github.head_ref }}"
+          if [[ ! "$SOURCE" =~ ^release/ ]]; then
+            echo "❌ PRs to 'dev' must come from a 'release/*' branch (got: '$SOURCE')"
+            echo "Required flow: feature/fix → release/X.Y.Z → dev → main"
+            exit 1
+          fi
+          echo "✅ Release branch '$SOURCE' targeting dev is valid"
+
+      - name: Validate dev → main flow
+        if: github.base_ref == 'main'
+        run: |
+          SOURCE="${{ github.head_ref }}"
+          if [[ "$SOURCE" != "dev" ]]; then
+            echo "❌ PRs to 'main' must come from the 'dev' branch (got: '$SOURCE')"
+            echo "Required flow: feature/fix → release/X.Y.Z → dev → main"
+            exit 1
+          fi
+          echo "✅ Dev branch targeting main is valid"

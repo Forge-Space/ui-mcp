@@ -27,7 +27,7 @@ Project context for forge-patterns will be available once @forgespace/core is fu
 
 ---
 *This content is temporarily served from the UIForge MCP server until the core context server is fully integrated.*`;
-      
+
       return Promise.resolve({
         contents: [
           {
@@ -66,7 +66,7 @@ Project context for uiforge-webapp will be available once @forgespace/core is fu
 
 ---
 *This content is temporarily served from the UIForge MCP server until the core context server is fully integrated.*`;
-      
+
       return Promise.resolve({
         contents: [
           {
@@ -105,7 +105,7 @@ Project context for uiforge-mcp will be available once @forgespace/core is fully
 
 ---
 *This content is temporarily served from the UIForge MCP server until the core context server is fully integrated.*`;
-      
+
       return Promise.resolve({
         contents: [
           {
@@ -144,7 +144,7 @@ Project context for mcp-gateway will be available once @forgespace/core is fully
 
 ---
 *This content is temporarily served from the UIForge MCP server until the core context server is fully integrated.*`;
-      
+
       return Promise.resolve({
         contents: [
           {

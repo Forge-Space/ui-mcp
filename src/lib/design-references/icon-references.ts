@@ -68,5 +68,5 @@ export const ICON_LIBRARIES: readonly IIconLibrary[] = [
 
 export function getDefaultIconLibrary(framework: string): IIconLibrary {
   const match = ICON_LIBRARIES.find((lib) => lib.recommended.includes(framework));
-  return match ?? ICON_LIBRARIES[0]!;
+  return match ?? ICON_LIBRARIES[0];
 }

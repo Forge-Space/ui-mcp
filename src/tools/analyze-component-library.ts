@@ -8,10 +8,7 @@
 import { z } from 'zod';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { createLogger } from '../lib/logger.js';
-import {
-  getAvailableComponentLibraries,
-  type ComponentLibraryId,
-} from '../lib/component-libraries/index.js';
+import { getAvailableComponentLibraries, type ComponentLibraryId } from '../lib/component-libraries/index.js';
 
 const logger = createLogger('analyze-component-library');
 
@@ -36,7 +33,7 @@ export type AnalyzeComponentLibraryInput = {
   targetLibrary?: 'shadcn' | 'radix' | 'headlessui' | 'material' | 'primevue' | 'none';
 };
 
-const outputSchema = z.object({
+const _outputSchema = z.object({
   detectedLibrary: z.string().optional().describe('Detected component library'),
   confidence: z.number().describe('Detection confidence (0-1)'),
   patterns: z.array(
@@ -61,14 +58,14 @@ const outputSchema = z.object({
   summary: z.string().describe('Analysis summary'),
 });
 
-export type AnalyzeComponentLibraryOutput = z.infer<typeof outputSchema>;
+export type AnalyzeComponentLibraryOutput = z.infer<typeof _outputSchema>;
 
 /**
  * Detect which component library is used in the code
  */
 function detectLibrary(code: string): { library: ComponentLibraryId | null; confidence: number; imports: string[] } {
   const importLines = code.match(/^import\s+.*from\s+['"][^'"]+['"]/gm) ?? [];
-  const imports = importLines.map(l => l.trim());
+  const imports = importLines.map((l) => l.trim());
 
   const signatures: Array<{ library: ComponentLibraryId; patterns: RegExp[]; weight: number }> = [
     {
@@ -136,21 +133,20 @@ function analyzePatterns(code: string): Array<{ type: string; description: strin
   ];
 
   return patterns
-    .map(p => {
+    .map((p) => {
       const matches = code.match(p.regex);
       return { type: p.type, description: p.description, occurrences: matches?.length ?? 0 };
     })
-    .filter(p => p.occurrences > 0);
+    .filter((p) => p.occurrences > 0);
 }
 
 /**
  * Extract component names from code
  */
 function extractComponents(code: string): string[] {
-  const componentMatches = code.match(/(?:export\s+(?:default\s+)?(?:function|const|class)\s+)([A-Z][A-Za-z0-9]*)/g) ?? [];
-  return componentMatches
-    .map(m => m.match(/([A-Z][A-Za-z0-9]*)$/)?.[1] ?? '')
-    .filter(Boolean);
+  const componentMatches =
+    code.match(/(?:export\s+(?:default\s+)?(?:function|const|class)\s+)([A-Z][A-Za-z0-9]*)/g) ?? [];
+  return componentMatches.map((m) => m.match(/([A-Z][A-Za-z0-9]*)$/)?.[1] ?? '').filter(Boolean);
 }
 
 /**
@@ -239,7 +235,7 @@ function generateMigrationSuggestions(
   return suggestions;
 }
 
-export async function analyzeComponentLibraryHandler(
+export function analyzeComponentLibraryHandler(
   input: AnalyzeComponentLibraryInput
 ): Promise<AnalyzeComponentLibraryOutput> {
   logger.info(`Analyzing component library usage${input.filePath ? ` in ${input.filePath}` : ''}`);
@@ -254,15 +250,17 @@ export async function analyzeComponentLibraryHandler(
   }
 
   const libraryName = detectedLibrary
-    ? getAvailableComponentLibraries().find(l => l.id === detectedLibrary)?.name ?? detectedLibrary
+    ? (getAvailableComponentLibraries().find((l) => l.id === detectedLibrary)?.name ?? detectedLibrary)
     : 'None detected';
 
   const summary = [
     detectedLibrary
       ? `Detected ${libraryName} (${Math.round(confidence * 100)}% confidence)`
       : 'No specific component library detected',
-    components.length > 0 ? `Found ${components.length} component(s): ${components.slice(0, 3).join(', ')}${components.length > 3 ? '...' : ''}` : '',
-    patterns.length > 0 ? `Patterns: ${patterns.map(p => p.type).join(', ')}` : '',
+    components.length > 0
+      ? `Found ${components.length} component(s): ${components.slice(0, 3).join(', ')}${components.length > 3 ? '...' : ''}`
+      : '',
+    patterns.length > 0 ? `Patterns: ${patterns.map((p) => p.type).join(', ')}` : '',
     migrationSuggestions?.length
       ? `${migrationSuggestions.length} migration suggestion(s) to ${input.targetLibrary}`
       : '',
@@ -272,7 +270,7 @@ export async function analyzeComponentLibraryHandler(
 
   logger.info(`Analysis complete: ${summary}`);
 
-  return {
+  return Promise.resolve({
     detectedLibrary: detectedLibrary ?? undefined,
     confidence,
     patterns,
@@ -280,7 +278,7 @@ export async function analyzeComponentLibraryHandler(
     components,
     migrationSuggestions,
     summary,
-  };
+  });
 }
 
 export function registerAnalyzeComponentLibrary(server: McpServer): void {

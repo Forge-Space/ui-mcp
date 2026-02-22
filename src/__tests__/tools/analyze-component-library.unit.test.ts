@@ -129,7 +129,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         suggestMigration: false,
       });
 
-      const forwardRefPattern = result.patterns.find(p => p.type === 'forwardRef');
+      const forwardRefPattern = result.patterns.find((p) => p.type === 'forwardRef');
       expect(forwardRefPattern).toBeDefined();
       expect(forwardRefPattern?.occurrences).toBeGreaterThan(0);
     });
@@ -151,7 +151,7 @@ export function Modal({ isOpen }: { isOpen: boolean }) {
         suggestMigration: false,
       });
 
-      const a11yPattern = result.patterns.find(p => p.type === 'accessibility');
+      const a11yPattern = result.patterns.find((p) => p.type === 'accessibility');
       expect(a11yPattern).toBeDefined();
       expect(a11yPattern?.occurrences).toBeGreaterThan(0);
     });
@@ -174,7 +174,7 @@ export function Tabs({ children }: TabsProps) {
         suggestMigration: false,
       });
 
-      const compoundPattern = result.patterns.find(p => p.type === 'compound');
+      const compoundPattern = result.patterns.find((p) => p.type === 'compound');
       expect(compoundPattern).toBeDefined();
     });
 

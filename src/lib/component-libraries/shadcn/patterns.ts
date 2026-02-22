@@ -5,7 +5,6 @@
  */
 
 import type { IGeneratedFile, IDesignContext } from '../../types.js';
-import { generateShadcnComponent } from './templates.js';
 
 export interface ShadcnPattern {
   name: string;
@@ -113,7 +112,7 @@ export function LoginForm() {
       </form>
     </Card>
   )
-}`
+}`,
     },
     {
       path: 'components/auth/login-form.test.tsx',
@@ -168,9 +167,9 @@ describe("LoginForm", () => {
     expect(passwordInput).toHaveAttribute("required")
     expect(submitButton).toHaveAttribute("type", "submit")
   })
-})`
-    }
-  ]
+})`,
+    },
+  ],
 };
 
 /**
@@ -347,9 +346,9 @@ const ListItem = React.forwardRef<
     </li>
   )
 })
-ListItem.displayName = "ListItem"`
-    }
-  ]
+ListItem.displayName = "ListItem"`,
+    },
+  ],
 };
 
 /**
@@ -489,7 +488,7 @@ export {
   ToastDescription,
   ToastClose,
   ToastAction,
-}`
+}`,
     },
     {
       path: 'components/ui/use-toast.ts',
@@ -680,9 +679,9 @@ function useToast() {
   }
 }
 
-export { useToast, toast }`
-    }
-  ]
+export { useToast, toast }`,
+    },
+  ],
 };
 
 /**
@@ -702,7 +701,7 @@ export function getShadcnPatterns(): ShadcnPattern[] {
  */
 export function getShadcnPattern(name: string): ShadcnPattern | undefined {
   const patterns = getShadcnPatterns();
-  return patterns.find(pattern => pattern.name.toLowerCase() === name.toLowerCase());
+  return patterns.find((pattern) => pattern.name.toLowerCase() === name.toLowerCase());
 }
 
 /**
@@ -711,7 +710,7 @@ export function getShadcnPattern(name: string): ShadcnPattern | undefined {
 export function generateShadcnPattern(
   patternName: string,
   designContext: IDesignContext,
-  customizations?: Record<string, any>
+  customizations?: Record<string, unknown>
 ): IGeneratedFile[] {
   const pattern = getShadcnPattern(patternName);
 
@@ -719,9 +718,9 @@ export function generateShadcnPattern(
     throw new Error(`Pattern "${patternName}" not found`);
   }
 
-  return pattern.files.map(file => ({
+  return pattern.files.map((file) => ({
     path: file.path,
-    content: applyDesignContextToPattern(file.content, designContext, customizations)
+    content: applyDesignContextToPattern(file.content, designContext, customizations),
   }));
 }
 
@@ -731,13 +730,18 @@ export function generateShadcnPattern(
 function applyDesignContextToPattern(
   content: string,
   designContext: IDesignContext,
-  customizations?: Record<string, any>
+  customizations?: Record<string, unknown>
 ): string {
   let result = content;
 
   // Apply design context customizations similar to templates
   if (designContext.colorPalette) {
-    const { primary, secondary, accent, destructive } = designContext.colorPalette;
+    const {
+      primary: _primary,
+      secondary: _secondary,
+      accent: _accent,
+      destructive: _destructive,
+    } = designContext.colorPalette;
 
     // This would require more sophisticated parsing for Tailwind classes
     // For now, we'll keep the default shadcn styling

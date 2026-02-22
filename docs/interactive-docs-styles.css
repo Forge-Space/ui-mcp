@@ -8,103 +8,104 @@
   --bg-secondary: #f8fafc;
   --bg-tertiary: #f1f5f9;
   --bg-quaternary: #e2e8f0;
-  
+
   --text-primary: #1e293b;
   --text-secondary: #64748b;
   --text-tertiary: #94a3b8;
   --text-quaternary: #cbd5e1;
-  
+
   --border-primary: #e2e8f0;
   --border-secondary: #cbd5e1;
   --border-tertiary: #94a3b8;
-  
+
   --accent-blue: #3b82f6;
   --accent-blue-hover: #2563eb;
   --accent-blue-light: #dbeafe;
   --accent-blue-dark: #1e40af;
-  
+
   --accent-green: #10b981;
   --accent-green-hover: #059669;
   --accent-green-light: #d1fae5;
   --accent-green-dark: #047857;
-  
+
   --accent-purple: #8b5cf6;
   --accent-purple-hover: #7c3aed;
   --accent-purple-light: #ede9fe;
   --accent-purple-dark: #6d28d9;
-  
+
   --accent-red: #ef4444;
   --accent-red-hover: #dc2626;
   --accent-red-light: #fee2e2;
   --accent-red-dark: #b91c1c;
-  
+
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  
+
   --gradient-primary: linear-gradient(to bottom right, #f8fafc, #e2e8f0);
   --gradient-secondary: linear-gradient(to bottom right, #ffffff, #f8fafc);
-  
+
   --logo-filter: none;
   --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-[data-theme="dark"] {
+[data-theme='dark'] {
   /* Dark Theme Colors */
   --bg-primary: #0f172a;
   --bg-secondary: #1e293b;
   --bg-tertiary: #334155;
   --bg-quaternary: #475569;
-  
+
   --text-primary: #f1f5f9;
   --text-secondary: #cbd5e1;
   --text-tertiary: #94a3b8;
   --text-quaternary: #64748b;
-  
+
   --border-primary: #374151;
   --border-secondary: #4b5563;
   --border-tertiary: #6b7280;
-  
+
   --accent-blue: #60a5fa;
   --accent-blue-hover: #3b82f6;
   --accent-blue-light: #1e40af;
   --accent-blue-dark: #1e3a8a;
-  
+
   --accent-green: #34d399;
   --accent-green-hover: #10b981;
   --accent-green-light: #047857;
   --accent-green-dark: #065f46;
-  
+
   --accent-purple: #a78bfa;
   --accent-purple-hover: #8b5cf6;
   --accent-purple-light: #6d28d9;
   --accent-purple-dark: #5b21b6;
-  
+
   --accent-red: #f87171;
   --accent-red-hover: #ef4444;
   --accent-red-light: #b91c1c;
   --accent-red-dark: #991b1b;
-  
+
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.25);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5);
-  
+
   --gradient-primary: linear-gradient(to bottom right, #1e293b, #0f172a);
   --gradient-secondary: linear-gradient(to bottom right, #334155, #1e293b);
-  
+
   --logo-filter: brightness(0) invert(1);
 }
 
 /* Base Styles */
 * {
-  transition: background-color var(--transition-base),
-              border-color var(--transition-base),
-              color var(--transition-base),
-              box-shadow var(--transition-base);
+  transition:
+    background-color var(--transition-base),
+    border-color var(--transition-base),
+    color var(--transition-base),
+    box-shadow var(--transition-base);
 }
 
 html {
@@ -114,7 +115,9 @@ html {
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -173,8 +176,9 @@ body {
 .logo-anvil,
 .logo-text {
   filter: var(--logo-filter);
-  transition: transform var(--transition-fast), 
-              filter var(--transition-base);
+  transition:
+    transform var(--transition-fast),
+    filter var(--transition-base);
   border-radius: 0.375rem;
 }
 
@@ -584,7 +588,7 @@ body {
   animation: fadeIn 0.2s ease-out;
 }
 
-[data-theme="dark"] .modal-overlay {
+[data-theme='dark'] .modal-overlay {
   background-color: rgba(0, 0, 0, 0.7);
 }
 
@@ -754,7 +758,8 @@ body {
 }
 
 @keyframes pulse {
-   0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -785,12 +790,7 @@ body {
 
 /* Loading States */
 .loading-skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--bg-tertiary) 25%,
-    var(--bg-quaternary) 50%,
-    var(--bg-tertiary) 75%
-  );
+  background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--bg-quaternary) 50%, var(--bg-tertiary) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: 0.375rem;
@@ -802,46 +802,46 @@ body {
     padding-left: 1rem;
     padding-right: 1rem;
   }
-  
+
   .header-branding {
     gap: 1rem;
   }
-  
+
   .header-logos {
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .header-title h1 {
     font-size: 2rem;
   }
-  
+
   .header-title p {
     font-size: 1.125rem;
   }
-  
+
   .status-badges {
     justify-content: center;
   }
-  
+
   .filters-container {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .filter-group {
     justify-content: center;
   }
-  
+
   .framework-filters {
     justify-content: center;
   }
-  
+
   .tools-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .modal-content {
     margin: 1rem;
     max-height: 90vh;
@@ -867,12 +867,12 @@ body {
   .modal-content {
     display: none !important;
   }
-  
+
   .tool-card {
     break-inside: avoid;
     page-break-inside: avoid;
   }
-  
+
   body {
     background: white !important;
     color: black !important;
@@ -887,8 +887,8 @@ body {
     --text-tertiary: #000000;
     --text-quaternary: #000000;
   }
-  
-  [data-theme="dark"] {
+
+  [data-theme='dark'] {
     --border-primary: #ffffff;
     --border-secondary: #ffffff;
     --text-tertiary: #ffffff;
@@ -905,7 +905,7 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  
+
   .logo-anvil:hover,
   .logo-text:hover,
   .tool-card:hover,

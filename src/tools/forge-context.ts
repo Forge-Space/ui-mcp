@@ -10,13 +10,11 @@ const getProjectContextSchema = {
 const updateProjectContextSchema = {
   project: z
     .string()
-    .describe('Project slug (e.g. forge-patterns, uiforge-webapp, uiforge-mcp, mcp-gateway). Use a short kebab-case identifier for new projects.'),
-  title: z
-    .string()
-    .describe('Human-readable project title (e.g. "forge-patterns Project Context")'),
-  description: z
-    .string()
-    .describe('One-sentence description of the project for the resource listing'),
+    .describe(
+      'Project slug (e.g. forge-patterns, uiforge-webapp, uiforge-mcp, mcp-gateway). Use a short kebab-case identifier for new projects.'
+    ),
+  title: z.string().describe('Human-readable project title (e.g. "forge-patterns Project Context")'),
+  description: z.string().describe('One-sentence description of the project for the resource listing'),
   content: z
     .string()
     .describe('Full markdown content of the project context document. This is the complete source of truth.'),
@@ -32,7 +30,7 @@ export function registerForgeContextTools(server: McpServer): void {
     'get_project_context',
     'Returns the full context document for a UIForge project from the centralized store. This is the absolute source of truth for project architecture, status, requirements, and roadmap. Pass the project slug (e.g. "forge-patterns"). Use list_projects to discover available projects.',
     getProjectContextSchema,
-    async ({ project }) => {
+    ({ project }) => {
       try {
         if (!project) {
           throw new Error('Missing required argument: project');
@@ -70,19 +68,19 @@ The forge-context system provides:
           content: [
             {
               type: 'text',
-              text: placeholderContent
-            }
-          ]
+              text: placeholderContent,
+            },
+          ],
         };
       } catch (error) {
         return {
           content: [
             {
               type: 'text',
-              text: `Error: ${error instanceof Error ? error.message : String(error)}`
-            }
+              text: `Error: ${error instanceof Error ? error.message : String(error)}`,
+            },
           ],
-          isError: true
+          isError: true,
         };
       }
     }
@@ -93,7 +91,7 @@ The forge-context system provides:
     'update_project_context',
     'Writes or overwrites the context document for a UIForge project in the centralized store. Use this to keep the source of truth up-to-date after architectural decisions, status changes, roadmap updates, or any significant project change. Provide the full markdown content — this completely replaces the existing context.',
     updateProjectContextSchema,
-    async ({ project, title, description, content }) => {
+    ({ project, title, description, content }) => {
       try {
         if (!project || !title || !description || !content) {
           throw new Error('Missing required arguments: project, title, description, content');
@@ -112,19 +110,19 @@ Note: This is a placeholder response. The actual context update will be availabl
           content: [
             {
               type: 'text',
-              text: result
-            }
-          ]
+              text: result,
+            },
+          ],
         };
       } catch (error) {
         return {
           content: [
             {
               type: 'text',
-              text: `Error: ${error instanceof Error ? error.message : String(error)}`
-            }
+              text: `Error: ${error instanceof Error ? error.message : String(error)}`,
+            },
           ],
-          isError: true
+          isError: true,
         };
       }
     }
@@ -135,7 +133,7 @@ Note: This is a placeholder response. The actual context update will be availabl
     'list_projects',
     'Lists all projects registered in the centralized UIForge context store, with their slugs, titles, descriptions, and last-updated timestamps.',
     listProjectsSchema,
-    async () => {
+    () => {
       try {
         // Return placeholder project list
         const projectList = `# UIForge Context Store
@@ -161,19 +159,19 @@ Note: This is a placeholder response. The actual context update will be availabl
           content: [
             {
               type: 'text',
-              text: projectList
-            }
-          ]
+              text: projectList,
+            },
+          ],
         };
       } catch (error) {
         return {
           content: [
             {
               type: 'text',
-              text: `Error: ${error instanceof Error ? error.message : String(error)}`
-            }
+              text: `Error: ${error instanceof Error ? error.message : String(error)}`,
+            },
           ],
-          isError: true
+          isError: true,
         };
       }
     }

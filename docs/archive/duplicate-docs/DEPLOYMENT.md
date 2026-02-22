@@ -1,12 +1,15 @@
 # Deployment Guide
 
-This document describes the deployment process for UIForge MCP, including automated workflows and manual procedures.
+This document describes the deployment process for UIForge MCP, including
+automated workflows and manual procedures.
 
 ## 🌳 Trunk Based Development (TBD)
 
-UIForge MCP follows **Trunk Based Development** with the flow: **feature branch → release branch → main**.
+UIForge MCP follows **Trunk Based Development** with the flow: **feature branch
+→ release branch → main**.
 
-For detailed branching strategy, see [Branching Strategy Guide](./BRANCHING_STRATEGY.md).
+For detailed branching strategy, see
+[Branching Strategy Guide](./BRANCHING_STRATEGY.md).
 
 ### Branch Types
 
@@ -31,30 +34,32 @@ For detailed branching strategy, see [Branching Strategy Guide](./BRANCHING_STRA
    - `SNYK_TOKEN`: Snyk API token for security scanning
    - `CODECOV_TOKEN`: Codecov upload token for coverage reporting
 
-   ⚠️ **Security Note**: Secrets are now configured via the **Setup Deployment** admin workflow in GitHub Actions, not via local scripts.
+   ⚠️ **Security Note**: Secrets are now configured via the **Setup Deployment**
+   admin workflow in GitHub Actions, not via local scripts.
 
 2. **Branch Protection**:
-
    - Deployment can only run from `main` branch
    - Clean working directory required
 
 3. **Version Management**:
-
    - Uses semantic versioning (patch/minor/major)
    - Automatic Git tagging
    - GitHub release creation
 
 ### 🔧 Admin Setup Workflow
 
-**⚠️ Important**: Deployment setup is now handled through admin-only GitHub workflows instead of local scripts.
+**⚠️ Important**: Deployment setup is now handled through admin-only GitHub
+workflows instead of local scripts.
 
 #### Setup Deployment Workflow
 
-1. **Access**: Only administrators (LucasSantana-Dev or users with 'admin' in name) can run this workflow
+1. **Access**: Only administrators (LucasSantana-Dev or users with 'admin' in
+   name) can run this workflow
 2. **Location**: GitHub Actions → Setup Deployment
 3. **Purpose**: Configure deployment secrets and verify repository setup
 
 **Setup Steps**:
+
 ```bash
 # 1. Go to GitHub Actions tab
 # 2. Select "Setup Deployment" workflow
@@ -69,6 +74,7 @@ For detailed branching strategy, see [Branching Strategy Guide](./BRANCHING_STRA
 ```
 
 **What the workflow does**:
+
 - Verifies workflow syntax
 - Tests local validation
 - Guides secret configuration through GitHub UI
@@ -76,6 +82,7 @@ For detailed branching strategy, see [Branching Strategy Guide](./BRANCHING_STRA
 - Generates setup reports
 
 **Security & Coverage Setup**:
+
 - **Snyk Token**: Enables automated security scanning for dependencies and code
 - **Codecov Token**: Enables comprehensive coverage reporting and trend analysis
 
@@ -108,10 +115,12 @@ The deployment workflow is triggered by:
 
 **Deployment Strategy:**
 
-- Release branches (`release/1.0.0`, `release/1.0.1`, etc.) are developed and tested
+- Release branches (`release/1.0.0`, `release/1.0.1`, etc.) are developed and
+  tested
 - When ready, release branches are merged to `main` branch
 - This merge automatically triggers the deployment workflow
-- Production environment is configured to only accept deployments from `main` branch
+- Production environment is configured to only accept deployments from `main`
+  branch
 
 **Manual Parameters:**
 
@@ -357,7 +366,6 @@ If deployment fails:
    ```
 
 3. **GitHub Release**:
-
    - Check release notes
    - Verify attached artifacts
    - Confirm tag creation

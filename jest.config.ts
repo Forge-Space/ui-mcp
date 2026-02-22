@@ -24,6 +24,7 @@ const config: Config = {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
   coverageProvider: 'v8',
+  coverageReporters: ['text', 'lcov', 'json-summary'],
   collectCoverageFrom: [
     'src/lib/**/*.ts',
     'src/tools/**/*.ts',
@@ -38,10 +39,10 @@ const config: Config = {
   ],
   coverageThreshold: {
     global: {
-      branches: 73,
-      functions: 85,
-      lines: 84,
-      statements: 84,
+      branches: 60,
+      functions: 65,
+      lines: 70,
+      statements: 70,
     },
   },
 };

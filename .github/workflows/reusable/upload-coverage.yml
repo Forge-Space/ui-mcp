@@ -4,34 +4,34 @@ on:
   workflow_call:
     inputs:
       coverage-files:
-        description: 'Coverage files to upload'
+        description: "Coverage files to upload"
         required: false
-        default: './coverage.xml,./htmlcov/'
+        default: "./coverage.xml,./htmlcov/"
       flags:
-        description: 'Coverage flags'
+        description: "Coverage flags"
         required: false
-        default: 'unittests'
+        default: "unittests"
       name:
-        description: 'Coverage report name'
+        description: "Coverage report name"
         required: false
-        default: 'codecov-umbrella'
+        default: "codecov-umbrella"
       fail_ci_if_error:
-        description: 'Fail CI if upload fails'
+        description: "Fail CI if upload fails"
         required: false
         default: false
     secrets:
       CODECOV_TOKEN:
-        description: 'Codecov token'
+        description: "Codecov token"
         required: true
 
 jobs:
   upload-coverage:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
@@ -41,12 +41,12 @@ jobs:
           name: ${{ inputs.name }}
           fail_ci_if_error: ${{ inputs.fail_ci_if_error }}
           verbose: true
-          
+
       - name: Generate coverage summary
         run: |
           echo "## 📊 Coverage Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           # Check if coverage.xml exists
           if [ -f "coverage.xml" ]; then
             echo "✅ Coverage XML report found" >> $GITHUB_STEP_SUMMARY
@@ -58,7 +58,7 @@ jobs:
           else
             echo "⚠️ Coverage XML report not found" >> $GITHUB_STEP_SUMMARY
           fi
-          
+
           # Check if HTML report exists
           if [ -d "htmlcov" ]; then
             echo "✅ Coverage HTML report generated" >> $GITHUB_STEP_SUMMARY
@@ -66,10 +66,10 @@ jobs:
           else
             echo "⚠️ Coverage HTML report not found" >> $GITHUB_STEP_SUMMARY
           fi
-          
+
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "🔗 [Codecov Dashboard](https://codecov.io/gh/${{ github.repository }})" >> $GITHUB_STEP_SUMMARY
-          
+
       - name: Coverage badge generation
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |

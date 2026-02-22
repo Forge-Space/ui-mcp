@@ -1,10 +1,14 @@
 # Git Hooks Configuration
 
-This directory contains Git hooks managed by [Husky](https://typicode.github.io/husky/) to ensure code quality and prevent CI/CD pipeline failures.
+This directory contains Git hooks managed by
+[Husky](https://typicode.github.io/husky/) to ensure code quality and prevent
+CI/CD pipeline failures.
 
 ## 🎯 Purpose
 
-All validations that run in the CI/CD pipeline are now enforced **locally before commits and pushes**. This prevents:
+All validations that run in the CI/CD pipeline are now enforced **locally before
+commits and pushes**. This prevents:
+
 - ❌ Failed pipeline builds on remote
 - ❌ Broken code being pushed to main/PR branches
 - ❌ Wasted CI/CD minutes
@@ -13,6 +17,7 @@ All validations that run in the CI/CD pipeline are now enforced **locally before
 ## 🔒 Active Hooks
 
 ### `pre-commit` - Fast Local Validation
+
 Runs on every `git commit` and validates:
 
 1. **Lint & Format** (staged files only via lint-staged)
@@ -34,6 +39,7 @@ Runs on every `git commit` and validates:
 **If any check fails, the commit is blocked.**
 
 ### `pre-push` - Complete CI/CD Simulation
+
 Runs on every `git push` and validates:
 
 - **Full Validation Suite** (`npm run validate`)
@@ -47,6 +53,7 @@ Runs on every `git push` and validates:
 ## 🚀 Usage
 
 ### Normal Workflow
+
 ```bash
 # Make changes
 git add .
@@ -61,6 +68,7 @@ git push
 ```
 
 ### Skipping Hooks (Emergency Only)
+
 ```bash
 # Skip pre-commit (NOT recommended)
 git commit --no-verify -m "emergency fix"
@@ -69,17 +77,18 @@ git commit --no-verify -m "emergency fix"
 git push --no-verify
 ```
 
-⚠️ **Warning:** Skipping hooks may cause CI/CD failures. Only use in emergencies.
+⚠️ **Warning:** Skipping hooks may cause CI/CD failures. Only use in
+emergencies.
 
 ## 📊 What Gets Validated
 
-| Check | Pre-Commit | Pre-Push | CI/CD Pipeline |
-|-------|-----------|----------|----------------|
-| ESLint | ✅ (staged) | ✅ (all) | ✅ |
-| Prettier | ✅ (staged) | ✅ (all) | ✅ |
-| TypeScript | ✅ (full) | ✅ (full) | ✅ |
-| Tests | ✅ (related) | ✅ (all) | ✅ |
-| Build | ✅ | ✅ | ✅ |
+| Check      | Pre-Commit   | Pre-Push  | CI/CD Pipeline |
+| ---------- | ------------ | --------- | -------------- |
+| ESLint     | ✅ (staged)  | ✅ (all)  | ✅             |
+| Prettier   | ✅ (staged)  | ✅ (all)  | ✅             |
+| TypeScript | ✅ (full)    | ✅ (full) | ✅             |
+| Tests      | ✅ (related) | ✅ (all)  | ✅             |
+| Build      | ✅           | ✅        | ✅             |
 
 ## 🔧 Configuration Files
 
@@ -91,24 +100,30 @@ git push --no-verify
 ## 🛠️ Troubleshooting
 
 ### Hook Not Running
+
 ```bash
 # Reinstall Husky hooks
 npm run prepare
 ```
 
 ### Permission Denied
+
 ```bash
 # Make hooks executable
 chmod +x .husky/pre-commit .husky/pre-push
 ```
 
 ### Slow Pre-Commit
+
 The pre-commit hook runs tests only for changed files. If it's still slow:
+
 - Consider using `git commit --no-verify` for WIP commits
 - Use `git push` for full validation before sharing code
 
 ### False Positives
+
 If a check fails incorrectly:
+
 1. Run the failing command manually to debug
 2. Fix the underlying issue
 3. Update the hook if needed
@@ -116,12 +131,14 @@ If a check fails incorrectly:
 ## 📝 Maintenance
 
 ### Adding New Checks
+
 1. Update `.husky/pre-commit` or `.husky/pre-push`
 2. Ensure the check exists in `package.json` scripts
 3. Test with a dummy commit/push
 4. Update this README
 
 ### Removing Checks
+
 1. Remove from hook files
 2. Test to ensure no breakage
 3. Update this README
@@ -129,12 +146,14 @@ If a check fails incorrectly:
 ## 🎓 Best Practices
 
 ✅ **DO:**
+
 - Run `npm run validate` before creating PRs
 - Fix issues locally instead of pushing and waiting for CI
 - Keep hooks fast by using incremental checks
 - Update hooks when CI/CD pipeline changes
 
 ❌ **DON'T:**
+
 - Skip hooks unless absolutely necessary
 - Commit broken code with `--no-verify`
 - Ignore hook failures
