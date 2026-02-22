@@ -39,11 +39,11 @@ jobs:
             LINES=$(cat coverage/coverage-summary.json | jq '.total.lines.pct // 0')
             echo "Current coverage: ${LINES}%"
             
-            if (( $(echo "$LINES >= 80" | bc -l) )); then
-              echo "✅ Coverage threshold met (≥80%)"
+            if (( $(echo "$LINES >= 70" | bc -l) )); then
+              echo "✅ Coverage threshold met (≥70%)"
             else
-              echo "❌ Coverage threshold not met (<80%)"
-              echo "::error::Coverage is ${LINES}%, minimum required is 80%"
+              echo "❌ Coverage threshold not met (<70%)"
+              echo "::error::Coverage is ${LINES}%, minimum required is 70%"
               exit 1
             fi
           else

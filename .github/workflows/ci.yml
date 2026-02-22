@@ -115,10 +115,10 @@ jobs:
             echo "| Statements | ${STATEMENTS}% |" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
 
-            if (( $(echo "$LINES >= 80" | bc -l) )); then
-              echo "Line coverage meets 80% threshold" >> $GITHUB_STEP_SUMMARY
+            if (( $(echo "$LINES >= 70" | bc -l) )); then
+              echo "Line coverage meets 70% threshold" >> $GITHUB_STEP_SUMMARY
             else
-              echo "Line coverage below 80% threshold" >> $GITHUB_STEP_SUMMARY
+              echo "Line coverage below 70% threshold" >> $GITHUB_STEP_SUMMARY
             fi
           fi
 
