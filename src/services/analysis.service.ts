@@ -1,4 +1,11 @@
-import type { IDesignContext, IFigmaDesignToken, ITailwindMapping, IPatternMatch, IScrapedPage, IImageAnalysis } from '../lib/types.js';
+import type {
+  IDesignContext,
+  IFigmaDesignToken,
+  ITailwindMapping,
+  IPatternMatch,
+  IScrapedPage,
+  IImageAnalysis,
+} from '../lib/types.js';
 import { createLogger } from '../lib/logger.js';
 import { analyzeImage } from '../lib/image-analyzer.js';
 import { detectCommonPatterns } from '../lib/pattern-detector.js';
@@ -33,16 +40,18 @@ export class AnalysisService {
       const imageBuffer = Buffer.from(imageData, 'base64');
       const analysis = await analyzeImage(imageBuffer, 'design-analysis');
 
-      logger.info(`Image analysis complete: ${analysis.dominantColors.length} colors, ${analysis.detectedComponents.length} components`);
+      logger.info(
+        `Image analysis complete: ${analysis.dominantColors.length} colors, ${analysis.detectedComponents.length} components`
+      );
 
       return {
-        colors: analysis.dominantColors.map(c => c.hex),
+        colors: analysis.dominantColors.map((c) => c.hex),
         typography: [],
-        layout: analysis.layoutRegions.map(r => ({
+        layout: analysis.layoutRegions.map((r) => ({
           type: r.role,
           position: r.bounds,
         })),
-        components: analysis.detectedComponents.map(c => ({
+        components: analysis.detectedComponents.map((c) => ({
           type: c,
           confidence: 0.8,
         })),
@@ -58,11 +67,13 @@ export class AnalysisService {
   /**
    * Detect patterns from multiple sources
    */
-  async detectPatterns(sources: Array<{
-    type: 'url' | 'image' | 'text';
-    content: string;
-    metadata?: Record<string, unknown>;
-  }>): Promise<{
+  async detectPatterns(
+    sources: Array<{
+      type: 'url' | 'image' | 'text';
+      content: string;
+      metadata?: Record<string, unknown>;
+    }>
+  ): Promise<{
     commonPatterns: Array<{ type: string; confidence: number; sources: string[] }>;
     uniquePatterns: Array<{ type: string; pattern: string; confidence: number }>;
     recommendations: string[];
@@ -71,8 +82,8 @@ export class AnalysisService {
 
     try {
       const scrapedPages: IScrapedPage[] = sources
-        .filter(s => s.type === 'url')
-        .map(s => ({
+        .filter((s) => s.type === 'url')
+        .map((s) => ({
           url: s.content,
           title: String(s.metadata?.title ?? 'Unknown'),
           colors: [] as string[],
@@ -85,8 +96,8 @@ export class AnalysisService {
         }));
 
       const imageAnalyses: IImageAnalysis[] = sources
-        .filter(s => s.type === 'image')
-        .map(s => ({
+        .filter((s) => s.type === 'image')
+        .map((s) => ({
           label: String(s.metadata?.label ?? 'image'),
           dominantColors: [] as { hex: string; percentage: number }[],
           layoutRegions: [] as { role: string; bounds: { x: number; y: number; width: number; height: number } }[],
@@ -212,7 +223,11 @@ export class AnalysisService {
     let score = 100;
 
     if (!context.colorPalette.primary) {
-      issues.push({ type: 'error', message: 'Primary color is missing', suggestion: 'Add a primary color to the color palette' });
+      issues.push({
+        type: 'error',
+        message: 'Primary color is missing',
+        suggestion: 'Add a primary color to the color palette',
+      });
       score -= 20;
     }
     if (!context.colorPalette.background) {
@@ -220,7 +235,11 @@ export class AnalysisService {
       score -= 15;
     }
     if (!context.colorPalette.foreground) {
-      issues.push({ type: 'warning', message: 'Foreground color is missing', suggestion: 'Add a foreground color for text' });
+      issues.push({
+        type: 'warning',
+        message: 'Foreground color is missing',
+        suggestion: 'Add a foreground color for text',
+      });
       score -= 10;
     }
     if (!context.typography.fontFamily) {
@@ -248,13 +267,32 @@ export class AnalysisService {
       score -= 5;
     }
     if (context.colorPalette.primary && context.colorPalette.primary === context.colorPalette.background) {
-      issues.push({ type: 'error', message: 'Primary and background colors are the same', suggestion: 'Use contrasting colors' });
+      issues.push({
+        type: 'error',
+        message: 'Primary and background colors are the same',
+        suggestion: 'Use contrasting colors',
+      });
       score -= 25;
     }
 
     const completeness = {
-      colors: this.calculateCompleteness(context.colorPalette, ['primary', 'secondary', 'background', 'foreground', 'muted', 'accent', 'border', 'destructive']),
-      typography: this.calculateCompleteness(context.typography, ['fontFamily', 'headingFont', 'fontSize', 'fontWeight', 'lineHeight']),
+      colors: this.calculateCompleteness(context.colorPalette, [
+        'primary',
+        'secondary',
+        'background',
+        'foreground',
+        'muted',
+        'accent',
+        'border',
+        'destructive',
+      ]),
+      typography: this.calculateCompleteness(context.typography, [
+        'fontFamily',
+        'headingFont',
+        'fontSize',
+        'fontWeight',
+        'lineHeight',
+      ]),
       spacing: this.calculateCompleteness(context.spacing, ['unit', 'scale']),
       borderRadius: this.calculateCompleteness(context.borderRadius, ['sm', 'md', 'lg', 'full']),
       shadows: this.calculateCompleteness(context.shadows, ['sm', 'md', 'lg']),
@@ -281,10 +319,14 @@ export class AnalysisService {
   private createUtilityClass(token: IFigmaDesignToken, prefix?: string): string {
     const className = `${prefix ?? ''}${token.name.replace(/[/\s]/g, '-').toLowerCase()}`;
     switch (token.category) {
-      case 'color': return `.${className} { color: ${token.value}; }`;
-      case 'spacing': return `.${className} { padding: ${token.value}px; }`;
-      case 'borderRadius': return `.${className} { border-radius: ${token.value}px; }`;
-      default: return `.${className} { /* ${token.category}: ${token.value} */ }`;
+      case 'color':
+        return `.${className} { color: ${token.value}; }`;
+      case 'spacing':
+        return `.${className} { padding: ${token.value}px; }`;
+      case 'borderRadius':
+        return `.${className} { border-radius: ${token.value}px; }`;
+      default:
+        return `.${className} { /* ${token.category}: ${token.value} */ }`;
     }
   }
 
@@ -307,7 +349,7 @@ export class AnalysisService {
   private calculateCompleteness(obj: unknown, requiredKeys: string[]): number {
     if (!obj || typeof obj !== 'object') return 0;
     const record = obj as Record<string, unknown>;
-    const present = requiredKeys.filter(k => record[k] !== undefined && record[k] !== null);
+    const present = requiredKeys.filter((k) => record[k] !== undefined && record[k] !== null);
     return Math.round((present.length / requiredKeys.length) * 100);
   }
 
@@ -317,13 +359,13 @@ export class AnalysisService {
       recommendations.push('Consider adding more design sources for better pattern detection');
       return recommendations;
     }
-    if (patterns.some(p => p.category === 'color')) {
+    if (patterns.some((p) => p.category === 'color')) {
       recommendations.push('Strong color palette detected - consider using these colors consistently');
     }
-    if (patterns.some(p => p.category === 'typography')) {
+    if (patterns.some((p) => p.category === 'typography')) {
       recommendations.push('Typography patterns detected - establish a clear type hierarchy');
     }
-    if (patterns.some(p => p.category === 'layout')) {
+    if (patterns.some((p) => p.category === 'layout')) {
       recommendations.push('Layout patterns detected - maintain consistent spacing and alignment');
     }
     return recommendations;

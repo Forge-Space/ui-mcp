@@ -1,10 +1,4 @@
-import type { 
-  IGeneratedFile, 
-  IDesignContext, 
-  Architecture, 
-  StateManagement,
-  Framework 
-} from '../lib/types.js';
+import type { IGeneratedFile, IDesignContext, Architecture, StateManagement, Framework } from '../lib/types.js';
 import { createLogger } from '../lib/logger.js';
 import { designContextStore } from '../lib/design-context.js';
 
@@ -61,9 +55,9 @@ export class GenerationService {
     designContext?: IDesignContext;
   }): IGeneratedFile[] {
     const { framework, projectName, architecture, stateManagement, designContext } = request;
-    
+
     logger.info(`Generating ${framework} project: ${projectName}`);
-    
+
     const generator = this.frameworkGenerators.get(framework);
     if (!generator) {
       throw new Error(`Unsupported framework: ${framework}`);
@@ -88,16 +82,16 @@ export class GenerationService {
     designContext?: IDesignContext;
   }): Promise<IGeneratedFile[]> {
     const { framework, componentType, props, designContext } = request;
-    
+
     logger.info(`Generating ${framework} component: ${componentType}`);
-    
+
     // This would integrate with the existing generate_ui_component tool
     // For now, we'll create a placeholder implementation
     const context = designContext || designContextStore.get();
-    
+
     // Generate component files based on framework and type
     const files = await this.generateComponentFiles(framework, componentType, props || {}, context);
-    
+
     logger.info(`Generated ${files.length} component files`);
     return files;
   }
@@ -124,11 +118,10 @@ export class GenerationService {
    * @param request Generation request to validate
    * @returns Validation result
    */
-  validateGenerationRequest(request: {
-    framework: Framework;
-    projectName?: string;
-    componentType?: string;
-  }): { valid: boolean; errors: string[] } {
+  validateGenerationRequest(request: { framework: Framework; projectName?: string; componentType?: string }): {
+    valid: boolean;
+    errors: string[];
+  } {
     const errors: string[] = [];
 
     // Check framework support
@@ -152,13 +145,15 @@ export class GenerationService {
         errors.push('Component type cannot be empty');
       }
       if (!/^[a-zA-Z][a-zA-Z0-9-_]*$/.test(request.componentType)) {
-        errors.push('Component type must start with a letter and contain only letters, numbers, hyphens, and underscores');
+        errors.push(
+          'Component type must start with a letter and contain only letters, numbers, hyphens, and underscores'
+        );
       }
     }
 
     return {
       valid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
@@ -195,13 +190,13 @@ export class GenerationService {
     designContext: IDesignContext
   ): Promise<IGeneratedFile[]> {
     const files: IGeneratedFile[] = [];
-    
+
     // This is a simplified implementation
     // In the full implementation, this would use the existing component generation logic
-    
+
     const componentName = this.formatComponentName(componentType);
     const fileName = `${componentName}.${this.getFileExtension(framework)}`;
-    
+
     // Generate component file
     files.push({
       path: fileName,
@@ -234,7 +229,7 @@ export class GenerationService {
     // Convert kebab-case to PascalCase
     return componentType
       .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join('');
   }
 
@@ -277,18 +272,18 @@ export class GenerationService {
   ): string {
     // This is a simplified implementation
     // The full implementation would use the existing template generators
-    
+
     const primaryColor = designContext.colorPalette.primary;
-    
+
     switch (framework) {
       case 'react':
       case 'nextjs':
         return `import React from 'react';
 
 export interface ${componentName}Props {
-  ${Object.entries(props).map(([key, value]) => 
-    `${key}: ${getTypeScriptType(value)};`
-  ).join('\n  ')}
+  ${Object.entries(props)
+    .map(([key, value]) => `${key}: ${getTypeScriptType(value)};`)
+    .join('\n  ')}
 }
 
 export function ${componentName}({ ${Object.keys(props).join(', ')} }: ${componentName}Props) {
@@ -298,7 +293,7 @@ export function ${componentName}({ ${Object.keys(props).join(', ')} }: ${compone
     </div>
   );
 }`;
-      
+
       case 'vue':
         return `<template>
   <div :style="{ color: '${primaryColor}' }">
@@ -308,20 +303,20 @@ export function ${componentName}({ ${Object.keys(props).join(', ')} }: ${compone
 
 <script setup lang="ts">
 interface Props {
-  ${Object.entries(props).map(([key, value]) => 
-    `${key}: ${typeof value};`
-  ).join('\n  ')}
+  ${Object.entries(props)
+    .map(([key, value]) => `${key}: ${typeof value};`)
+    .join('\n  ')}
 }
 
 defineProps<Props>();
 </script>`;
-      
+
       case 'svelte':
         return `<script lang="ts">
   export interface Props {
-    ${Object.entries(props).map(([key, value]) => 
-      `${key}: ${getTypeScriptType(value)};`
-  ).join('\n  ')}
+    ${Object.entries(props)
+      .map(([key, value]) => `${key}: ${getTypeScriptType(value)};`)
+      .join('\n  ')}
   }
 
   let { ${Object.keys(props).join(', ')} }: Props = $props();
@@ -330,7 +325,7 @@ defineProps<Props>();
 <div style:color={primaryColor}>
   <h1>${componentName}</h1>
 </div>`;
-      
+
       default:
         return `// ${componentName} for ${framework}
 // Primary color: ${primaryColor}
@@ -357,7 +352,7 @@ describe('${componentName}', () => {
     expect(screen.getByText('${componentName}')).toBeInTheDocument();
   });
 });`;
-      
+
       default:
         return `// Test for ${componentName} in ${framework}`;
     }
@@ -388,7 +383,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};`;
-      
+
       default:
         return `// Story for ${componentName} in ${framework}`;
     }

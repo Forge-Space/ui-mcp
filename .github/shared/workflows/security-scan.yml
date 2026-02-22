@@ -7,7 +7,7 @@ on:
     branches: [main, master]
   schedule:
     # Run daily at 2 AM UTC
-    - cron: '0 2 * * *'
+    - cron: "0 2 * * *"
 
 jobs:
   snyk-dependency-scan:
@@ -73,7 +73,7 @@ jobs:
       security-events: write
     strategy:
       matrix:
-        language: [ 'python', 'javascript' ]
+        language: ["python", "javascript"]
     steps:
       - uses: actions/checkout@v4
 

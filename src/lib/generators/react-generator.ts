@@ -86,23 +86,23 @@ export class ReactGenerator extends BaseGenerator {
 
   private createPackageJsonFile(projectName: string, stateManagement: StateManagement): IGeneratedFile {
     const dependencies: Record<string, string> = {
-      'react': '^18.2.0',
+      react: '^18.2.0',
       'react-dom': '^18.2.0',
       'react-router-dom': '^6.8.0',
-      'clsx': '^1.2.1',
+      clsx: '^1.2.1',
     };
 
     const devDependencies: Record<string, string> = {
       '@types/react': '^18.0.27',
       '@types/react-dom': '^18.0.10',
       '@vitejs/plugin-react': '^3.1.0',
-      'vite': '^4.1.0',
-      'tailwindcss': '^3.2.7',
-      'autoprefixer': '^10.4.14',
-      'postcss': '^8.4.21',
+      vite: '^4.1.0',
+      tailwindcss: '^3.2.7',
+      autoprefixer: '^10.4.14',
+      postcss: '^8.4.21',
       '@testing-library/react': '^14.0.0',
       '@testing-library/jest-dom': '^5.16.5',
-      'vitest': '^0.29.1',
+      vitest: '^0.29.1',
     };
 
     // Add state management dependencies
@@ -216,7 +216,10 @@ export default {
     };
   }
 
-  private createStateManagementFiles(stateManagement: StateManagement, designContext: IDesignContext): IGeneratedFile[] {
+  private createStateManagementFiles(
+    stateManagement: StateManagement,
+    designContext: IDesignContext
+  ): IGeneratedFile[] {
     const files: IGeneratedFile[] = [];
 
     if (stateManagement === 'zustand') {
@@ -249,11 +252,12 @@ export const useAppStore = create<AppState>((set) => ({
     designContext: IDesignContext,
     componentLibrary?: ComponentLibrary
   ): IGeneratedFile {
-    const propsInterface = Object.keys(props).length > 0
-      ? `interface ${componentName}Props {\n${Object.entries(props)
-          .map(([key, type]) => `  ${key}: ${type};`)
-          .join('\n')}\n}\n\n`
-      : '';
+    const propsInterface =
+      Object.keys(props).length > 0
+        ? `interface ${componentName}Props {\n${Object.entries(props)
+            .map(([key, type]) => `  ${key}: ${type};`)
+            .join('\n')}\n}\n\n`
+        : '';
 
     let content: string;
 
@@ -339,11 +343,7 @@ export const WithCustomProps: Story = {
     };
   }
 
-  private createTestFile(
-    componentName: string,
-    componentType: string,
-    designContext: IDesignContext
-  ): IGeneratedFile {
+  private createTestFile(componentName: string, componentType: string, designContext: IDesignContext): IGeneratedFile {
     const content = `import { render, screen } from '@testing-library/react';
 import { ${componentName} } from './${componentName}';
 
@@ -379,7 +379,7 @@ describe('${componentName}', () => {
       'class-variance-authority',
       'clsx',
       'tailwind-merge',
-      'lucide-react'
+      'lucide-react',
     ];
   }
 
@@ -390,75 +390,66 @@ describe('${componentName}', () => {
       '@radix-ui/react-dropdown-menu',
       '@radix-ui/react-select',
       '@radix-ui/react-tabs',
-      '@radix-ui/react-toast'
+      '@radix-ui/react-toast',
     ];
   }
 
   protected getHeadlessUIDependencies(): string[] {
-    return [
-      '@headlessui/react',
-      '@heroicons/react'
-    ];
+    return ['@headlessui/react', '@heroicons/react'];
   }
 
   protected getPrimeVueDependencies(): string[] {
-    return [
-      'primevue',
-      'primeicons'
-    ];
+    return ['primevue', 'primeicons'];
   }
 
   protected getMaterialDependencies(): string[] {
-    return [
-      '@mui/material',
-      '@mui/icons-material'
-    ];
+    return ['@mui/material', '@mui/icons-material'];
   }
 
   protected getShadcnImports(): string[] {
     return [
-      "import { cn } from \"lib/utils\";",
-      "import { Button } from \"components/ui/button\";",
-      "import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from \"components/ui/card\";",
-      "import { Input } from \"components/ui/input\";",
-      "import { Label } from \"components/ui/label\";"
+      'import { cn } from "lib/utils";',
+      'import { Button } from "components/ui/button";',
+      'import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "components/ui/card";',
+      'import { Input } from "components/ui/input";',
+      'import { Label } from "components/ui/label";',
     ];
   }
 
   protected getRadixImports(): string[] {
     return [
-      "import * as Dialog from \"@radix-ui/react-dialog\";",
-      "import * as DropdownMenu from \"@radix-ui/react-dropdown-menu\";",
-      "import * as Select from \"@radix-ui/react-select\";",
-      "import * as Tabs from \"@radix-ui/react-tabs\";"
+      'import * as Dialog from "@radix-ui/react-dialog";',
+      'import * as DropdownMenu from "@radix-ui/react-dropdown-menu";',
+      'import * as Select from "@radix-ui/react-select";',
+      'import * as Tabs from "@radix-ui/react-tabs";',
     ];
   }
 
   protected getHeadlessUIImports(): string[] {
     return [
-      "import { Button } from \"@headlessui/react\";",
-      "import { Dialog } from \"@headlessui/react\";",
-      "import { Menu } from \"@headlessui/react\";",
-      "import { Transition } from \"@headlessui/react\";"
+      'import { Button } from "@headlessui/react";',
+      'import { Dialog } from "@headlessui/react";',
+      'import { Menu } from "@headlessui/react";',
+      'import { Transition } from "@headlessui/react";',
     ];
   }
 
   protected getPrimeVueImports(): string[] {
     return [
-      "import Button from \"primevue/button\";",
-      "import Dialog from \"primevue/dialog\";",
-      "import InputText from \"primevue/inputtext\";",
-      "import DataTable from \"primevue/datatable\";"
+      'import Button from "primevue/button";',
+      'import Dialog from "primevue/dialog";',
+      'import InputText from "primevue/inputtext";',
+      'import DataTable from "primevue/datatable";',
     ];
   }
 
   protected getMaterialImports(): string[] {
     return [
-      "import Button from \"@mui/material/Button\";",
-      "import Dialog from \"@mui/material/Dialog\";",
-      "import TextField from \"@mui/material/TextField\";",
-      "import Card from \"@mui/material/Card\";",
-      "import CardContent from \"@mui/material/CardContent\";"
+      'import Button from "@mui/material/Button";',
+      'import Dialog from "@mui/material/Dialog";',
+      'import TextField from "@mui/material/TextField";',
+      'import Card from "@mui/material/Card";',
+      'import CardContent from "@mui/material/CardContent";',
     ];
   }
 
@@ -661,16 +652,18 @@ export function ${componentName}(${this.generatePropsInterface(props)}) {
     const propKeys = Object.keys(props);
     if (propKeys.length === 0) return '';
 
-    const propDefinitions = propKeys.map(key => {
-      const value = props[key];
-      let type = 'string';
+    const propDefinitions = propKeys
+      .map((key) => {
+        const value = props[key];
+        let type = 'string';
 
-      if (typeof value === 'boolean') type = 'boolean';
-      else if (typeof value === 'number') type = 'number';
-      else if (typeof value === 'object') type = 'any';
+        if (typeof value === 'boolean') type = 'boolean';
+        else if (typeof value === 'number') type = 'number';
+        else if (typeof value === 'object') type = 'any';
 
-      return `${key}?: ${type}`;
-    }).join(', ');
+        return `${key}?: ${type}`;
+      })
+      .join(', ');
 
     return `{ ${propDefinitions} }`;
   }

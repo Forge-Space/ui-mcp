@@ -3,21 +3,21 @@ name: Security Monitoring
 on:
   schedule:
     # Run security scan daily at 2 AM UTC
-    - cron: '0 2 * * *'
+    - cron: "0 2 * * *"
   workflow_dispatch:
     inputs:
       scan_dependencies:
-        description: 'Scan dependencies for vulnerabilities'
+        description: "Scan dependencies for vulnerabilities"
         required: false
         default: true
         type: boolean
       scan_code:
-        description: 'Run static code security analysis'
+        description: "Run static code security analysis"
         required: false
         default: true
         type: boolean
       create_report:
-        description: 'Create security summary report'
+        description: "Create security summary report"
         required: false
         default: true
         type: boolean
@@ -76,23 +76,23 @@ jobs:
           echo "**Repository:** ${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
           echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           echo "### 📋 Scan Summary" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ Dependency scan completed" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ Code security analysis completed" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ Results uploaded to GitHub Security tab" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           echo "### 🔍 Review Findings" >> $GITHUB_STEP_SUMMARY
           echo "1. Check the **Security** tab in this repository" >> $GITHUB_STEP_SUMMARY
           echo "2. Review high and medium severity issues" >> $GITHUB_STEP_SUMMARY
           echo "3. Address critical vulnerabilities promptly" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           echo "### 📊 Snyk Dashboard" >> $GITHUB_STEP_SUMMARY
           echo "View detailed analysis at: https://app.snyk.io/org/your-org/project" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           echo "### 🚨 Next Steps" >> $GITHUB_STEP_SUMMARY
           echo "- [ ] Review and fix high-severity issues" >> $GITHUB_STEP_SUMMARY
           echo "- [ ] Update dependencies if needed" >> $GITHUB_STEP_SUMMARY
@@ -130,7 +130,7 @@ jobs:
         run: |
           echo "## 📊 Coverage Monitoring Report" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           if [ -f coverage/coverage-summary.json ]; then
             LINES=$(cat coverage/coverage-summary.json | jq '.total.lines.pct // 0')
             FUNCTIONS=$(cat coverage/coverage-summary.json | jq '.total.functions.pct // 0')
@@ -178,7 +178,7 @@ jobs:
           else
             echo "❌ Coverage report not found" >> $GITHUB_STEP_SUMMARY
           fi
-          
+
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 📈 View Details" >> $GITHUB_STEP_SUMMARY
           echo "- [Codecov Dashboard](https://codecov.io/gh/${{ github.repository }})" >> $GITHUB_STEP_SUMMARY
@@ -198,25 +198,25 @@ jobs:
             const title = `Security/Coverage Monitoring Alert - ${new Date().toISOString().split('T')[0]}`;
             const body = `
             ## 🚨 Monitoring Alert
-            
+
             The daily security and coverage monitoring workflow has failed.
-            
+
             ### 🔗 Links
             - [Workflow Run](https://github.com/${owner}/${repo}/actions/runs/${{ github.run_id }})
             - [Security Tab](https://github.com/${owner}/${repo}/security)
             - [Codecov Dashboard](https://codecov.io/gh/${owner}/${repo})
-            
+
             ### 📋 Next Steps
             1. Review the workflow logs
             2. Check for any critical security issues
             3. Verify coverage metrics
             4. Address any failures
             5. Re-run the workflow if needed
-            
+
             ---
             *This issue was automatically created by the monitoring workflow.*
             `;
-            
+
             github.rest.issues.create({
               owner,
               repo,

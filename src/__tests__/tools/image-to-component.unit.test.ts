@@ -31,7 +31,8 @@ describe('image_to_component tool', () => {
   it('should validate required image_data parameter', () => {
     registerImageToComponent(testServer);
 
-    const validBase64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+    const validBase64 =
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
 
     expect(() => {
       expect(typeof validBase64).toBe('string');
@@ -44,7 +45,7 @@ describe('image_to_component tool', () => {
 
     const validFrameworks = ['react', 'nextjs', 'vue', 'angular', 'html', 'svelte'];
 
-    validFrameworks.forEach(framework => {
+    validFrameworks.forEach((framework) => {
       expect(() => {
         expect(['react', 'nextjs', 'vue', 'angular', 'html', 'svelte']).toContain(framework);
       }).not.toThrow();
@@ -54,7 +55,7 @@ describe('image_to_component tool', () => {
   it('should reject invalid framework', () => {
     const invalidInput = {
       image_data: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
-      framework: 'invalid-framework'
+      framework: 'invalid-framework',
     };
 
     expect(() => {
@@ -67,7 +68,7 @@ describe('image_to_component tool', () => {
 
     const validMimeTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
 
-    validMimeTypes.forEach(mimeType => {
+    validMimeTypes.forEach((mimeType) => {
       expect(() => {
         expect(['image/png', 'image/jpeg', 'image/webp', 'image/gif']).toContain(mimeType);
       }).not.toThrow();
@@ -84,7 +85,7 @@ describe('image_to_component tool', () => {
       component_library: 'shadcn',
       dark_mode: true,
       accessibility: true,
-      component_name: 'custom-button'
+      component_name: 'custom-button',
     };
 
     expect(() => {
@@ -98,7 +99,7 @@ describe('image_to_component tool', () => {
   it('should validate component_library parameter', () => {
     const validLibraries = ['shadcn', 'radix', 'headless', 'primevue', 'material', 'none'];
 
-    validLibraries.forEach(library => {
+    validLibraries.forEach((library) => {
       expect(() => {
         expect(['shadcn', 'radix', 'headless', 'primevue', 'material', 'none']).toContain(library);
       }).not.toThrow();
@@ -108,7 +109,7 @@ describe('image_to_component tool', () => {
   it('should reject invalid base64 data', () => {
     const invalidInput = {
       image_data: 'not-valid-base64!@#$',
-      framework: 'react'
+      framework: 'react',
     };
 
     expect(() => {
@@ -118,7 +119,7 @@ describe('image_to_component tool', () => {
 
   it('should require image_data parameter', () => {
     const invalidInput = {
-      framework: 'react'
+      framework: 'react',
     };
 
     expect(() => {
@@ -130,7 +131,7 @@ describe('image_to_component tool', () => {
 
   it('should require framework parameter', () => {
     const invalidInput = {
-      image_data: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='
+      image_data: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
     };
 
     expect(() => {

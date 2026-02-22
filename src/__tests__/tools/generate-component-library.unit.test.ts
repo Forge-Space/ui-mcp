@@ -67,7 +67,7 @@ describe('generate-component-library tool', () => {
         includeTests: false,
       });
 
-      const testFiles = result.component.filter(f => f.path.includes('.test.'));
+      const testFiles = result.component.filter((f) => f.path.includes('.test.'));
       expect(testFiles).toHaveLength(0);
     });
 
@@ -77,7 +77,7 @@ describe('generate-component-library tool', () => {
         includeStories: false,
       });
 
-      const storyFiles = result.component.filter(f => f.path.includes('.stories.'));
+      const storyFiles = result.component.filter((f) => f.path.includes('.stories.'));
       expect(storyFiles).toHaveLength(0);
     });
 
@@ -87,15 +87,13 @@ describe('generate-component-library tool', () => {
         outputPath: 'my-project/src/components',
       });
 
-      result.component.forEach(file => {
+      result.component.forEach((file) => {
         expect(file.path).toMatch(/^my-project\/src\/components\//);
       });
     });
 
     it('handles none library gracefully', async () => {
-      await expect(
-        generateComponentLibraryHandler({ ...baseInput, library: 'none' })
-      ).resolves.toBeDefined();
+      await expect(generateComponentLibraryHandler({ ...baseInput, library: 'none' })).resolves.toBeDefined();
     });
 
     it('throws for unknown library', async () => {
@@ -144,7 +142,7 @@ describe('generate-component-library tool', () => {
     it('each library has required fields', async () => {
       const result = await getAvailableLibrariesHandler();
 
-      result.libraries.forEach(lib => {
+      result.libraries.forEach((lib) => {
         expect(lib).toHaveProperty('id');
         expect(lib).toHaveProperty('name');
         expect(lib).toHaveProperty('description');
@@ -155,7 +153,7 @@ describe('generate-component-library tool', () => {
 
     it('includes shadcn, radix, headlessui, material libraries', async () => {
       const result = await getAvailableLibrariesHandler();
-      const ids = result.libraries.map(l => l.id);
+      const ids = result.libraries.map((l) => l.id);
 
       expect(ids).toContain('shadcn');
       expect(ids).toContain('radix');

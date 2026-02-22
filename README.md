@@ -96,35 +96,38 @@ Built with the
 
 ## Tools
 
-| #   | Tool                        | Category | Description                                                                       |
-| --- | --------------------------- | -------- | --------------------------------------------------------------------------------- |
-| 1   | `scaffold_full_application` | Code     | Generate full project boilerplate (React/Next.js/Vue/Angular/HTML + Tailwind)     |
+| #   | Tool                        | Category | Description                                                                                                                      |
+| --- | --------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | `scaffold_full_application` | Code     | Generate full project boilerplate (React/Next.js/Vue/Angular/HTML + Tailwind)                                                    |
 | 2   | `generate_ui_component`     | Code     | Create/iterate UI components with style audit + design context. Supports shadcn/ui, Radix UI, Headless UI, Material UI, PrimeVue |
-| 3   | `generate_prototype`        | Design   | Create interactive HTML prototype with screen flows and navigation                |
-| 4   | `generate_design_image`     | Design   | Generate SVG/PNG mockup images of UI screens/components                           |
-| 5   | `fetch_design_inspiration`  | Context  | Extract visual metadata (colors, typography, layout) from URLs                    |
-| 6   | `analyze_design_references` | Context  | Analyze design references from URLs and images, detect common patterns            |
-| 7   | `figma_context_parser`      | Context  | Read Figma file nodes, extract tokens, map to Tailwind                            |
-| 8   | `figma_push_variables`      | Design   | Write design tokens back to Figma as Variables                                    |
-| 9   | `image_to_component`        | Code     | Convert screenshot/mockup/wireframe image into framework-specific component code  |
-| 10  | `generate_page_template`    | Code     | Generate pre-built page templates (landing, dashboard, auth, pricing, CRUD, etc.) |
-| 11  | `refine_component`          | Code     | Iteratively improve existing components via natural language feedback             |
-| 12  | `audit_accessibility`       | Quality  | Audit component code for WCAG 2.1 violations with fix suggestions                 |
+| 3   | `generate_prototype`        | Design   | Create interactive HTML prototype with screen flows and navigation                                                               |
+| 4   | `generate_design_image`     | Design   | Generate SVG/PNG mockup images of UI screens/components                                                                          |
+| 5   | `fetch_design_inspiration`  | Context  | Extract visual metadata (colors, typography, layout) from URLs                                                                   |
+| 6   | `analyze_design_references` | Context  | Analyze design references from URLs and images, detect common patterns                                                           |
+| 7   | `figma_context_parser`      | Context  | Read Figma file nodes, extract tokens, map to Tailwind                                                                           |
+| 8   | `figma_push_variables`      | Design   | Write design tokens back to Figma as Variables                                                                                   |
+| 9   | `image_to_component`        | Code     | Convert screenshot/mockup/wireframe image into framework-specific component code                                                 |
+| 10  | `generate_page_template`    | Code     | Generate pre-built page templates (landing, dashboard, auth, pricing, CRUD, etc.)                                                |
+| 11  | `refine_component`          | Code     | Iteratively improve existing components via natural language feedback                                                            |
+| 12  | `audit_accessibility`       | Quality  | Audit component code for WCAG 2.1 violations with fix suggestions                                                                |
 
 ## Component Library Support
 
-The `generate_ui_component` and `image_to_component` tools accept a `component_library` parameter to generate framework-specific code using popular UI libraries:
+The `generate_ui_component` and `image_to_component` tools accept a
+`component_library` parameter to generate framework-specific code using popular
+UI libraries:
 
-| Library | React | Vue | Angular | Svelte | HTML |
-| ------- | ----- | --- | ------- | ------ | ---- |
-| `shadcn` | ✅ shadcn/ui | ✅ shadcn-vue | ✅ (Tailwind) | ✅ bits-ui | ✅ |
-| `radix` | ✅ @radix-ui/react-* | ✅ @radix-ui/vue | ✅ (Tailwind) | ✅ @radix-ui/svelte | ✅ |
-| `headlessui` | ✅ @headlessui/react | ✅ @headlessui/vue | ✅ (Tailwind) | ✅ @headlessui/svelte | ✅ |
-| `material` | ✅ @mui/material | ✅ (Vuetify) | ✅ @angular/material | ✅ @smui/material | ✅ |
-| `primevue` | ✅ (Headless UI) | ✅ primevue | ✅ primeng | ✅ (Tailwind) | ✅ |
-| `none` / omit | ✅ Tailwind CSS | ✅ Tailwind CSS | ✅ Tailwind CSS | ✅ Tailwind CSS | ✅ |
+| Library       | React                 | Vue                | Angular              | Svelte                | HTML |
+| ------------- | --------------------- | ------------------ | -------------------- | --------------------- | ---- |
+| `shadcn`      | ✅ shadcn/ui          | ✅ shadcn-vue      | ✅ (Tailwind)        | ✅ bits-ui            | ✅   |
+| `radix`       | ✅ @radix-ui/react-\* | ✅ @radix-ui/vue   | ✅ (Tailwind)        | ✅ @radix-ui/svelte   | ✅   |
+| `headlessui`  | ✅ @headlessui/react  | ✅ @headlessui/vue | ✅ (Tailwind)        | ✅ @headlessui/svelte | ✅   |
+| `material`    | ✅ @mui/material      | ✅ (Vuetify)       | ✅ @angular/material | ✅ @smui/material     | ✅   |
+| `primevue`    | ✅ (Headless UI)      | ✅ primevue        | ✅ primeng           | ✅ (Tailwind)         | ✅   |
+| `none` / omit | ✅ Tailwind CSS       | ✅ Tailwind CSS    | ✅ Tailwind CSS      | ✅ Tailwind CSS       | ✅   |
 
-Each generator produces a component file **plus** a test file (React also generates a Storybook story).
+Each generator produces a component file **plus** a test file (React also
+generates a Storybook story).
 
 ## Resource
 
@@ -528,7 +531,8 @@ docker run -d \
 
 ### Automated Deployment
 
-UIForge MCP uses GitHub Actions for automated deployment with comprehensive validation:
+UIForge MCP uses GitHub Actions for automated deployment with comprehensive
+validation:
 
 ```bash
 # Trigger deployment via GitHub Actions
@@ -540,6 +544,7 @@ UIForge MCP uses GitHub Actions for automated deployment with comprehensive vali
 ```
 
 **Features:**
+
 - ✅ Full validation (lint, test, build, security audit)
 - ✅ Multi-platform Docker builds (amd64/arm64)
 - ✅ Automatic npm publishing with provenance
@@ -556,6 +561,7 @@ Run the setup script to configure deployment:
 ```
 
 This script helps configure:
+
 - GitHub secrets (NPM_TOKEN, DOCKER_USERNAME, DOCKER_PASSWORD)
 - Branch protection rules
 - Local validation

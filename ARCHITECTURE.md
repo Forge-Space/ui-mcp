@@ -2,7 +2,9 @@
 
 ## Overview
 
-UIForge MCP is a TypeScript-based Model Context Protocol server for AI-driven UI generation. This document outlines the architectural patterns, design decisions, and best practices.
+UIForge MCP is a TypeScript-based Model Context Protocol server for AI-driven UI
+generation. This document outlines the architectural patterns, design decisions,
+and best practices.
 
 ## Directory Structure
 
@@ -96,7 +98,8 @@ export function registerToolName(server: McpServer): void {
 
 ### 2. Singleton Design Context Store
 
-The `designContextStore` is a singleton that maintains design system state across tool calls:
+The `designContextStore` is a singleton that maintains design system state
+across tool calls:
 
 ```typescript
 class DesignContextStore {
@@ -209,7 +212,8 @@ if (!token) {
 
 ### 7. Service Layer Architecture (High Priority)
 
-**Problem**: Tools directly import multiple lib modules, creating tight coupling.
+**Problem**: Tools directly import multiple lib modules, creating tight
+coupling.
 
 **Solution**: Introduce service layer:
 
@@ -293,7 +297,10 @@ class ConfigService {
 }
 
 // Tests
-const config = ConfigService.builder().withNodeEnv('test').withLogLevel('error').build();
+const config = ConfigService.builder()
+  .withNodeEnv('test')
+  .withLogLevel('error')
+  .build();
 ```
 
 ### 10. Template Registry (Low Priority)
@@ -376,6 +383,8 @@ class TemplateRegistry {
 ## Version History
 
 - **v0.1.0**: Initial release (7 tools)
-- **v0.2.0**: Added 5 new tools (image-to-component, page templates, refine, audit, analyze)
+- **v0.2.0**: Added 5 new tools (image-to-component, page templates, refine,
+  audit, analyze)
 - **v0.2.1**: Added Svelte/HTML support, component library param
-- **v0.3.0** (planned): Service layer, generator factory, enhanced error handling
+- **v0.3.0** (planned): Service layer, generator factory, enhanced error
+  handling

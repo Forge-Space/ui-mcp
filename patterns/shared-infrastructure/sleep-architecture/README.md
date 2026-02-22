@@ -2,28 +2,37 @@
 
 ## 🎯 Overview
 
-Sleep architecture patterns implementing serverless-like behavior for MCP services, achieving dramatic resource efficiency through intelligent state management, Docker pause/resume capabilities, and context-aware service lifecycle management. This architecture delivers serverless economics with container benefits, achieving ~100-200ms wake times and 80-95% resource reduction for idle services.
+Sleep architecture patterns implementing serverless-like behavior for MCP
+services, achieving dramatic resource efficiency through intelligent state
+management, Docker pause/resume capabilities, and context-aware service
+lifecycle management. This architecture delivers serverless economics with
+container benefits, achieving ~100-200ms wake times and 80-95% resource
+reduction for idle services.
 
 ## 📋 Available Patterns
 
 ### Three-State Service Model
+
 - **Running State**: Actively serving requests with full resource allocation
 - **Sleep State**: Paused but ready to wake quickly with minimal resource usage
 - **Stopped State**: Completely shut down with no resource usage
 
 ### Sleep Policy Management
+
 - **Idle Timeout Detection**: Automatic sleep after inactivity periods
 - **Priority-Based Sleep**: Different sleep policies for different service types
 - **Wake Triggers**: Event-driven wake mechanisms
 - **Graceful Shutdown**: Clean resource cleanup before sleep
 
 ### Resource Management
+
 - **Memory Optimization**: Memory release during sleep states
 - **CPU Allocation**: Dynamic CPU scaling based on demand
 - **Network Connection Management**: Connection pooling and cleanup
-- **Storage Management: Efficient storage handling during transitions
+- \*\*Storage Management: Efficient storage handling during transitions
 
 ### Performance Optimization
+
 - **Warm Standby**: Keep frequently used services in sleep state
 - **Cold Start Mitigation**: Pre-warming strategies for critical services
 - **Load-Based Scaling**: Automatic scaling based on request patterns
@@ -32,6 +41,7 @@ Sleep architecture patterns implementing serverless-like behavior for MCP servic
 ## 🔧 Implementation Examples
 
 ### Sleep State Manager
+
 ```typescript
 // patterns/shared-infrastructure/sleep-architecture/sleep-state-manager.ts
 import { EventEmitter } from 'events';
@@ -39,7 +49,7 @@ import { EventEmitter } from 'events';
 export enum ServiceState {
   RUNNING = 'running',
   SLEEPING = 'sleeping',
-  STOPPED = 'stopped'
+  STOPPED = 'stopped',
 }
 
 export interface ServiceConfig {
@@ -88,10 +98,10 @@ export class SleepStateManager extends EventEmitter {
 
     this.services.set(config.name, service);
     this.metrics.set(config.name, this.createMetrics(service));
-    
+
     // Start idle timeout monitoring
     this.startIdleTimeout(config.name);
-    
+
     this.emit('serviceRegistered', service);
   }
 
@@ -101,7 +111,10 @@ export class SleepStateManager extends EventEmitter {
       throw new Error(`Service not found: ${serviceName}`);
     }
 
-    if (service.state === ServiceState.SLEEPING || service.state === ServiceState.STOPPED) {
+    if (
+      service.state === ServiceState.SLEEPING ||
+      service.state === ServiceState.STOPPED
+    ) {
       return;
     }
 
@@ -110,7 +123,7 @@ export class SleepStateManager extends EventEmitter {
 
     // Pause the container
     await this.pauseContainer(service.containerId, service.config);
-    
+
     // Update metrics
     const metrics = this.metrics.get(serviceName)!;
     metrics.state = ServiceState.SLEEPING;
@@ -139,7 +152,7 @@ export class SleepStateManager extends EventEmitter {
 
     // Resume the container
     await this.resumeContainer(service.containerId, service.config);
-    
+
     service.state = ServiceState.RUNNING;
     service.wakeCount++;
     service.lastActivity = new Date();
@@ -168,9 +181,9 @@ export class SleepStateManager extends EventEmitter {
 
     // Stop the container
     await this.stopContainer(service.containerId);
-    
+
     service.state = ServiceState.STOPPED;
-    
+
     // Clear idle timeout
     if (this.sleepTimers.has(serviceName)) {
       clearTimeout(this.sleepTimers.get(serviceName)!);
@@ -189,7 +202,11 @@ export class SleepStateManager extends EventEmitter {
     return this.metrics.get(serviceName) || null;
   }
 
-  getAllServices(): Array<{ name: string; state: ServiceState; config: ServiceConfig; }> {
+  getAllServices(): Array<{
+    name: string;
+    state: ServiceState;
+    config: ServiceConfig;
+  }> {
     return Array.from(this.services.entries()).map(([name, service]) => ({
       name,
       state: service.state,
@@ -200,7 +217,7 @@ export class SleepStateManager extends EventEmitter {
   private startIdleTimeout(serviceName: string): void {
     const service = this.services.get(serviceName)!;
     const timeout = setTimeout(() => {
-      this.putToSleep(serviceName).catch(error => {
+      this.putToSleep(serviceName).catch((error) => {
         console.error(`Failed to put service ${serviceName} to sleep:`, error);
       });
     }, service.config.idleTimeout);
@@ -235,14 +252,17 @@ export class SleepStateManager extends EventEmitter {
 
     // Start container using Docker API
     const container = await this.docker.createContainer(containerConfig);
-    
+
     return container.id;
   }
 
-  private async pauseContainer(containerId: string, config: ServiceConfig): Promise<void> {
+  private async pauseContainer(
+    containerId: string,
+    config: ServiceConfig
+  ): Promise<void> {
     // Pause the container using Docker API
     await this.docker.pauseContainer(containerId);
-    
+
     // Set resource limits for sleep state
     await this.docker.updateContainer(containerId, {
       Memory: config.memoryReservation,
@@ -250,7 +270,10 @@ export class SleepStateManager extends EventEmitter {
     });
   }
 
-  private async resumeContainer(containerId: string, config: ServiceConfig): Promise<void> {
+  private async resumeContainer(
+    containerId: string,
+    config: ServiceConfig
+  ): Promise<void> {
     // Restore resource limits
     await this.docker.updateContainer(containerId, {
       Memory: '512M',
@@ -279,7 +302,7 @@ export class SleepStateManager extends EventEmitter {
       if (service.state === ServiceState.RUNNING) {
         // Get container stats
         const stats = await this.docker.getContainerStats(service.containerId);
-        
+
         const metrics = this.metrics.get(serviceName)!;
         metrics.resourceUsage = {
           memory: stats.memory_usage,
@@ -338,6 +361,7 @@ export class SleepStateManager extends EventEmitter {
 ```
 
 ### Sleep Policy Engine
+
 ```typescript
 // patterns/shared-infrastructure/sleep-architecture/sleep-policy-engine.ts
 export interface SleepPolicy {
@@ -372,14 +396,14 @@ export class SleepPolicyEngine {
   evaluateSleepDecision(serviceName: string): 'sleep' | 'wake' | 'none' {
     const service = this.getServiceInstance(serviceName);
     const metrics = this.getServiceMetrics(serviceName);
-    
+
     if (!service || !metrics) {
       return 'none';
     }
 
     // Get applicable policies sorted by priority
     const applicablePolicies = Array.from(this.policies.values())
-      .filter(policy => this.policyApplies(policy, metrics, service.config))
+      .filter((policy) => this.policyApplies(policy, metrics, service.config))
       .sort((a, b) => b.priority - a.priority);
 
     for (const policy of applicablePolicies) {
@@ -393,7 +417,11 @@ export class SleepPolicyEngine {
     return 'none';
   }
 
-  private policyApplies(policy: SleepPolicy, metrics: ServiceMetrics, config: ServiceConfig): boolean {
+  private policyApplies(
+    policy: SleepPolicy,
+    metrics: ServiceMetrics,
+    config: ServiceConfig
+  ): boolean {
     // Check if policy applies to this service
     return true; // Simplified - in reality would check service type, tags, etc.
   }
@@ -435,7 +463,7 @@ export class SleepPolicyEngine {
           condition: (metrics, config) => {
             const idleTime = Date.now() - metrics.lastActivity.getTime();
             const isLowPriority = config.priority === 'low';
-            const isIdle = idleTime > (config.minSleepTime * 1000);
+            const isIdle = idleTime > config.minSleepTime * 1000;
             return isLowPriority && isIdle;
           },
           action: 'sleep',
@@ -445,7 +473,7 @@ export class SleepPolicyEngine {
           condition: (metrics, config) => {
             const idleTime = Date.now() - metrics.lastActivity.getTime();
             const isNormalPriority = config.priority === 'normal';
-            const isIdle = idleTime > (config.minSleepTime * 1000);
+            const isIdle = idleTime > config.minSleepTime * 1000;
             return isNormalPriority && isIdle;
           },
           action: 'sleep',
@@ -475,6 +503,7 @@ export class SleepPolicyEngine {
 ```
 
 ### Service Orchestrator
+
 ```typescript
 // patterns/shared-infrastructure/sleep-architecture/service-orchestrator.ts
 export class ServiceOrchestrator {
@@ -509,7 +538,7 @@ export class ServiceOrchestrator {
 
   private async ensureServiceRunning(serviceName: string): Promise<void> {
     const currentState = this.sleepStateManager.getServiceState(serviceName);
-    
+
     if (currentState === ServiceState.STOPPED) {
       // Service is stopped, need to restart
       console.log(`Starting stopped service: ${serviceName}`);
@@ -529,10 +558,10 @@ export class ServiceOrchestrator {
     }
 
     const request = queue.shift();
-    
+
     // Process the request
     console.log(`Processing request for ${serviceName}:`, request.type);
-    
+
     // Update last activity
     const service = this.sleepStateManager.getService(serviceName);
     if (service) {
@@ -576,9 +605,15 @@ export class ServiceOrchestrator {
     const allServices = this.sleepStateManager.getAllServices();
     const status = {
       totalServices: allServices.length,
-      runningServices: allServices.filter(s => s.state === ServiceState.RUNNING).length,
-      sleepingServices: allServices.filter(s => s.state === ServiceState.SLEEPING).length,
-      stoppedServices: allServices.filter(s => s.state === ServiceState.STOPPED).length,
+      runningServices: allServices.filter(
+        (s) => s.state === ServiceState.RUNNING
+      ).length,
+      sleepingServices: allServices.filter(
+        (s) => s.state === ServiceState.SLEEPING
+      ).length,
+      stoppedServices: allServices.filter(
+        (s) => s.state === ServiceState.STOPPED
+      ).length,
       resourceSavings: this.calculateResourceSavings(),
       averageWakeTime: this.calculateAverageWakeTime(),
     };
@@ -588,20 +623,26 @@ export class ServiceOrchestrator {
 
   private calculateResourceSavings(): number {
     const services = this.sleepStateManager.getAllServices();
-    const sleepingServices = services.filter(s => s.state === ServiceState.SLEEPING);
-    const stoppedServices = services.filter(s => s.state === ServiceState.STOPPED);
-    
+    const sleepingServices = services.filter(
+      (s) => s.state === ServiceState.SLEEPING
+    );
+    const stoppedServices = services.filter(
+      (s) => s.state === ServiceState.STOPPED
+    );
+
     // Estimate resource savings (simplified)
     const sleepingSavings = sleepingServices.length * 0.9; // 90% savings for sleeping
     const stoppedSavings = stoppedServices.length * 1.0; // 100% savings for stopped
-    
+
     return (sleepingSavings + stoppedSavings) / services.length;
   }
 
   private calculateAverageWakeTime(): number {
     const metrics = Array.from(this.sleepStateManager.metrics.values());
-    const wakeTimes = metrics.map(m => m.totalUptime / Math.max(1, m.wakeCount));
-    
+    const wakeTimes = metrics.map(
+      (m) => m.totalUptime / Math.max(1, m.wakeCount)
+    );
+
     return wakeTimes.reduce((sum, time) => sum + time, 0) / wakeTimes.length;
   }
 }
@@ -610,6 +651,7 @@ export class ServiceOrchestrator {
 ## 🚀 Quick Start
 
 ### Basic Sleep Architecture Setup
+
 ```typescript
 // Setup sleep architecture for your MCP services
 import { ServiceOrchestrator } from './patterns/shared-infrastructure/sleep-architecture/service-orchestrator';
@@ -649,6 +691,7 @@ await orchestrator.registerService({
 ```
 
 ### Handle Requests with Automatic Wake/Sleep
+
 ```typescript
 // The orchestrator automatically handles service state
 const response = await orchestrator.handleRequest('ui-generation', {
@@ -661,6 +704,7 @@ console.log('Response:', response);
 ```
 
 ### Monitor System Status
+
 ```typescript
 // Get overall system status
 const status = orchestrator.getSystemStatus();
@@ -673,18 +717,21 @@ console.log(`Average Wake Time: ${status.averageWakeTime.toFixed(0)}ms`);
 ## 📊 Performance Benefits
 
 ### Resource Efficiency
+
 - **Memory Reduction**: 80-95% for sleeping services
 - **CPU Reduction**: 90-99% for sleeping services
 - **Cost Savings**: 50-70% infrastructure cost reduction
 - **Service Density**: 3-4x improvement per resource unit
 
 ### Response Time Optimization
+
 - **Wake Time**: ~100-200ms for sleeping services
 - **Cold Start**: 2-5 seconds for stopped services
 - **Warm Standby**: Immediate response for running services
 - **Queue Processing**: Efficient request queue management
 
 ### Scalability Improvements
+
 - **Dynamic Scaling**: Automatic scaling based on demand
 - **Load Balancing**: Distribute requests across services
 - **Resource Optimization**: Intelligent resource allocation
@@ -693,6 +740,7 @@ console.log(`Average Wake Time: ${status.averageWakeTime.toFixed(0)}ms`);
 ## 🔧 Advanced Features
 
 ### Custom Sleep Policies
+
 ```typescript
 // Add custom sleep policies
 orchestrator.sleepPolicyEngine.addPolicy({
@@ -715,20 +763,23 @@ orchestrator.sleepPolicyEngine.addPolicy({
 ```
 
 ### Health Monitoring
+
 ```typescript
 // Monitor service health and performance
 setInterval(() => {
   const status = orchestrator.getSystemStatus();
-  
+
   // Alert on high resource usage or poor performance
   if (status.resourceSavings < 0.5) {
     console.warn('Low resource savings detected');
   }
-  
+
   if (status.averageWakeTime > 500) {
     console.warn('High wake times detected');
   }
 }, 60000); // Check every minute
 ```
 
-This sleep architecture pattern provides the foundation for serverless-like behavior in containerized MCP services while maintaining the benefits of container orchestration! 🚀
+This sleep architecture pattern provides the foundation for serverless-like
+behavior in containerized MCP services while maintaining the benefits of
+container orchestration! 🚀

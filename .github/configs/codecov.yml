@@ -4,7 +4,7 @@
 codecov:
   # Require CI to pass before processing coverage
   require_ci_to_pass: true
-  
+
   # Notify settings
   notify:
     # Require coverage to be uploaded before processing
@@ -15,13 +15,13 @@ codecov:
 coverage:
   # Precision of coverage percentages
   precision: 2
-  
+
   # Rounding direction for coverage percentages
   round: down
-  
+
   # Coverage range (minimum to maximum)
   range: "70...100"
-  
+
   # Coverage status checks
   status:
     # Project coverage (overall coverage)
@@ -35,7 +35,7 @@ coverage:
         base: auto
         # Only report on changes to coverage
         if_ci_failed: error
-        
+
     # Patch coverage (coverage for new changes)
     patch:
       default:
@@ -47,7 +47,7 @@ coverage:
         base: auto
         # Only report on changes to coverage
         if_ci_failed: error
-        
+
     # Changes coverage (coverage for modified files)
     changes:
       default:
@@ -72,12 +72,12 @@ parsers:
       method: true
       # Else branches
       else: true
-      
+
   # JavaScript/TypeScript parser
   javascript:
     # Enable part coverage
     enable_partials: false
-    
+
   # Python parser
   python:
     # Enable coverage for Python files
@@ -87,16 +87,16 @@ parsers:
 comment:
   # Layout template for PR comments
   layout: "reach,diff,flags,files,footer"
-  
+
   # Behavior settings
   behavior: default
-  
+
   # Require changes to be covered
   require_changes: false
-  
+
   # Require base to be covered
   require_base: no
-  
+
   # Require head to be covered
   require_head: yes
 
@@ -116,7 +116,7 @@ flags:
       - apps/
       - src/
       - lib/
-    
+
   # Integration tests flag
   integration:
     # Carryforward flag
@@ -125,7 +125,7 @@ flags:
     paths:
       - tests/integration/
       - tests/e2e/
-    
+
   # E2E tests flag
   e2e:
     # Carryforward flag
@@ -141,26 +141,26 @@ ignore:
   - "**/tests/"
   - "**/test/"
   - "**/__tests__/"
-  
+
   # Ignore vendor/third-party files
   - "node_modules/"
   - "vendor/"
   - "**/vendor/"
-  
+
   # Ignore build artifacts
   - "dist/"
   - "build/"
   - "**/dist/"
   - "**/build/"
-  
+
   # Ignore generated files
   - "**/*.generated.*"
   - "**/generated/"
-  
+
   # Ignore documentation files
   - "docs/"
   - "**/*.md"
-  
+
   # Ignore configuration files
   - "**/*.config.*"
   - "**/.*"
@@ -178,7 +178,7 @@ plugins:
   sonarqube:
     # SonarQube server URL
     server: https://sonarcloud.io
-    
+
   # Enable jenkins plugin
   jenkins:
     # Jenkins server URL
@@ -188,7 +188,7 @@ plugins:
 api:
   # API version
   version: v2
-  
+
   # API timeout
   timeout: 120
 
@@ -196,14 +196,14 @@ api:
 reporting:
   # Upload reports
   upload: true
-  
+
   # Report formats
   formats:
     - xml
     - html
     - text
     - lcov
-    
+
   # Report directory
   report_dir: coverage
 

@@ -27,7 +27,7 @@ describe('analyze-design-image-for-training', () => {
       image_data: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
       image_mime_type: 'image/png',
       description: 'Test design',
-      component_name: 'test-component'
+      component_name: 'test-component',
     };
 
     expect(() => {
@@ -44,7 +44,7 @@ describe('analyze-design-image-for-training', () => {
       image_data: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
       image_mime_type: 'image/png',
       description: 'Test design',
-      component_name: 'test-component'
+      component_name: 'test-component',
     };
 
     // Get the registered handler - handle the mock properly

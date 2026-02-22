@@ -1,6 +1,7 @@
 # IDE Setup Guide for UIForge MCP
 
-This guide explains how to set up the UIForge MCP server in your IDE with dynamic environment variable support.
+This guide explains how to set up the UIForge MCP server in your IDE with
+dynamic environment variable support.
 
 ## 🚀 Quick Setup
 
@@ -155,6 +156,7 @@ FIGMA_ACCESS_TOKEN=your_token NODE_ENV=development node dist/index.js
 Most IDEs support environment variable injection:
 
 **VS Code:**
+
 ```json
 {
   "environment": {
@@ -164,6 +166,7 @@ Most IDEs support environment variable injection:
 ```
 
 **Cursor:**
+
 ```json
 {
   "env": {
@@ -196,17 +199,18 @@ echo '{"jsonrpc": "2.0", "id": 1, "method": "tools/call", "params": {"name": "fi
 
 ## 📋 Environment Variable Reference
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `FIGMA_ACCESS_TOKEN` | Yes (for Figma tools) | - | Figma API access token |
-| `NODE_ENV` | No | `production` | Node environment mode |
-| `LOG_LEVEL` | No | `info` | Logging level (debug, info, warn, error) |
+| Variable             | Required              | Default      | Description                              |
+| -------------------- | --------------------- | ------------ | ---------------------------------------- |
+| `FIGMA_ACCESS_TOKEN` | Yes (for Figma tools) | -            | Figma API access token                   |
+| `NODE_ENV`           | No                    | `production` | Node environment mode                    |
+| `LOG_LEVEL`          | No                    | `info`       | Logging level (debug, info, warn, error) |
 
 ## 🔍 Troubleshooting
 
 ### Common Issues
 
 1. **FIGMA_ACCESS_TOKEN not found:**
+
    ```bash
    # Check if .env file exists
    ls -la .env
@@ -270,4 +274,5 @@ services:
 
 ---
 
-**💡 Tip**: Always keep your `.env` file out of version control (add it to `.gitignore`) and use `.env.example` as a template for team members.
+**💡 Tip**: Always keep your `.env` file out of version control (add it to
+`.gitignore`) and use `.env.example` as a template for team members.

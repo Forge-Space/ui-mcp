@@ -3,21 +3,21 @@ name: Monitoring Dashboard
 on:
   schedule:
     # Run monitoring dashboard daily at 8 AM UTC
-    - cron: '0 8 * * *'
+    - cron: "0 8 * * *"
   workflow_dispatch:
     inputs:
       generate_report:
-        description: 'Generate comprehensive monitoring report'
+        description: "Generate comprehensive monitoring report"
         required: false
         default: true
         type: boolean
       check_health:
-        description: 'Check overall project health'
+        description: "Check overall project health"
         required: false
         default: true
         type: boolean
       send_alerts:
-        description: 'Send alerts for critical issues'
+        description: "Send alerts for critical issues"
         required: false
         default: false
         type: boolean

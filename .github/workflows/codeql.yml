@@ -7,7 +7,7 @@ on:
     branches: [main]
   schedule:
     # Run at 2:00 AM UTC every Monday
-    - cron: '0 2 * * 1'
+    - cron: "0 2 * * 1"
 
 jobs:
   analyze:
@@ -26,7 +26,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: ['javascript-typescript']
+        language: ["javascript-typescript"]
         # CodeQL supports: 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift'
         # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
 

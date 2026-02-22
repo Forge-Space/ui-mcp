@@ -54,7 +54,7 @@ const Button = React.forwardRef<
 })
 Button.displayName = "Button"
 
-export { Button }`
+export { Button }`,
     },
     {
       path: 'components/ui/button.test.tsx',
@@ -96,9 +96,9 @@ describe("Button", () => {
 
     expect(screen.getByText("Custom button content")).toBeInTheDocument()
   })
-})`
-    }
-  ]
+})`,
+    },
+  ],
 };
 
 /**
@@ -198,9 +198,9 @@ const DialogFooter = React.forwardRef<
     {...props}
   />
 ))
-DialogFooter.displayName = "DialogFooter"`
-    }
-  ]
+DialogFooter.displayName = "DialogFooter"`,
+    },
+  ],
 };
 
 /**
@@ -245,9 +245,9 @@ export {
   DropdownMenuSub,
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
-}`
-    }
-  ]
+}`,
+    },
+  ],
 };
 
 /**
@@ -279,9 +279,9 @@ export {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
-}`
-    }
-  ]
+}`,
+    },
+  ],
 };
 
 /**
@@ -302,7 +302,7 @@ export function getRadixTemplates(): RadixTemplate[] {
  */
 export function getRadixTemplate(name: string): RadixTemplate | undefined {
   const templates = getRadixTemplates();
-  return templates.find(template => template.name.toLowerCase() === name.toLowerCase());
+  return templates.find((template) => template.name.toLowerCase() === name.toLowerCase());
 }
 
 /**
@@ -319,9 +319,9 @@ export function generateRadixComponent(
     throw new Error(`Template "${templateName}" not found`);
   }
 
-  return template.files.map(file => ({
+  return template.files.map((file) => ({
     path: file.path,
-    content: applyDesignContextToRadix(file.content, designContext, customizations)
+    content: applyDesignContextToRadix(file.content, designContext, customizations),
   }));
 }
 

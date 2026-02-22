@@ -1,14 +1,17 @@
 # ML System Setup Guide
 
-UIForge MCP includes an optional ML system for enhanced code generation. This guide covers setup, usage, and troubleshooting.
+UIForge MCP includes an optional ML system for enhanced code generation. This
+guide covers setup, usage, and troubleshooting.
 
 ## Overview
 
 The ML system provides three key features:
 
-1. **Prompt Enhancement** — Automatically improves vague prompts with framework-specific hints
+1. **Prompt Enhancement** — Automatically improves vague prompts with
+   framework-specific hints
 2. **Quality Scoring** — Predicts acceptance likelihood of generated code
-3. **Self-Learning** — Improves from user feedback over time via LoRA fine-tuning
+3. **Self-Learning** — Improves from user feedback over time via LoRA
+   fine-tuning
 
 ## Zero-Cost by Default
 
@@ -75,7 +78,8 @@ Expected output:
 
 ### Step 3: Start Using ML Features
 
-The ML system activates automatically once the model is detected. No configuration needed!
+The ML system activates automatically once the model is detected. No
+configuration needed!
 
 **Generate with ML enhancement:**
 
@@ -100,7 +104,8 @@ await client.callTool('generate_ui_component', {
 
 ## Training Custom Adapters
 
-After accumulating feedback, you can train custom LoRA adapters to improve results.
+After accumulating feedback, you can train custom LoRA adapters to improve
+results.
 
 ### Check Training Readiness
 
@@ -111,6 +116,7 @@ await client.callTool('manage_training', {
 ```
 
 Requirements:
+
 - ✅ Base model downloaded
 - ✅ At least 20 feedback samples
 - ✅ 500MB free disk space
@@ -124,7 +130,8 @@ await client.callTool('manage_training', {
 });
 ```
 
-Training takes 2-8 hours on CPU (Intel Celeron N100). The process runs in the background.
+Training takes 2-8 hours on CPU (Intel Celeron N100). The process runs in the
+background.
 
 ### Monitor Progress
 
@@ -219,6 +226,7 @@ LoRA Training
 **Error:** `Model file not found`
 
 **Solution:**
+
 ```bash
 # Verify file exists
 ls -lh ~/.uiforge/models/qwen2.5-0.5b-instruct-q4_k_m.gguf
@@ -233,6 +241,7 @@ wget -O ~/.uiforge/models/qwen2.5-0.5b-instruct-q4_k_m.gguf \
 **Error:** `Cannot allocate memory`
 
 **Solution:**
+
 - Close other applications
 - Reduce system load
 - Use `skip_ml: true` for large batches
@@ -243,6 +252,7 @@ wget -O ~/.uiforge/models/qwen2.5-0.5b-instruct-q4_k_m.gguf \
 **Error:** `Training process exited with code 1`
 
 **Solution:**
+
 ```bash
 # Check logs
 cat ~/.uiforge/training/logs/latest.log
@@ -259,6 +269,7 @@ npm run validate-model
 **Issue:** ML calls take >2 seconds
 
 **Solution:**
+
 - Verify CPU is not throttled
 - Close background applications
 - Use `skip_ml: true` for time-sensitive calls
@@ -289,31 +300,28 @@ Edit `src/lib/ml/training-pipeline.ts`:
 
 ```typescript
 const TRAINING_CONFIG = {
-  epochs: 3,        // Default: 3
-  batchSize: 4,     // Default: 4
+  epochs: 3, // Default: 3
+  batchSize: 4, // Default: 4
   learningRate: 2e-4, // Default: 2e-4
 };
 ```
 
 ## FAQ
 
-**Q: Do I need a GPU?**
-A: No! All ML operations are CPU-only.
+**Q: Do I need a GPU?** A: No! All ML operations are CPU-only.
 
-**Q: How much does it cost?**
-A: $0. Everything is free and open-source.
+**Q: How much does it cost?** A: $0. Everything is free and open-source.
 
-**Q: Can I use a different model?**
-A: Yes, but you'll need to modify the sidecar model wrapper. Qwen2.5-0.5B is recommended for CPU-only setups.
+**Q: Can I use a different model?** A: Yes, but you'll need to modify the
+sidecar model wrapper. Qwen2.5-0.5B is recommended for CPU-only setups.
 
-**Q: How long does training take?**
-A: 4-8 hours on Intel Celeron N100 for 100 samples. Faster CPUs will be quicker.
+**Q: How long does training take?** A: 4-8 hours on Intel Celeron N100 for 100
+samples. Faster CPUs will be quicker.
 
-**Q: Can I skip ML for specific calls?**
-A: Yes! Use `skip_ml: true` parameter.
+**Q: Can I skip ML for specific calls?** A: Yes! Use `skip_ml: true` parameter.
 
-**Q: Does ML work without the model?**
-A: Yes! It falls back to heuristics automatically.
+**Q: Does ML work without the model?** A: Yes! It falls back to heuristics
+automatically.
 
 ## Support
 
@@ -326,4 +334,5 @@ For issues or questions:
 
 ## License
 
-The ML system is part of UIForge MCP and uses the same MIT license. The Qwen2.5 model is licensed under Apache 2.0.
+The ML system is part of UIForge MCP and uses the same MIT license. The Qwen2.5
+model is licensed under Apache 2.0.

@@ -202,7 +202,9 @@ export abstract class BaseGenerator {
         errors.push('Component type cannot be empty');
       }
       if (!/^[a-zA-Z][a-zA-Z0-9-_]*$/.test(params.componentType)) {
-        errors.push('Component type must start with a letter and contain only letters, numbers, hyphens, and underscores');
+        errors.push(
+          'Component type must start with a letter and contain only letters, numbers, hyphens, and underscores'
+        );
       }
     }
 
@@ -218,13 +220,15 @@ export abstract class BaseGenerator {
     if (params.stateManagement) {
       const validStateManagement: StateManagement[] = ['useState', 'zustand', 'pinia', 'signals', 'none'];
       if (!validStateManagement.includes(params.stateManagement)) {
-        errors.push(`Invalid state management: ${params.stateManagement}. Valid options: ${validStateManagement.join(', ')}`);
+        errors.push(
+          `Invalid state management: ${params.stateManagement}. Valid options: ${validStateManagement.join(', ')}`
+        );
       }
     }
 
     return {
       valid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
@@ -237,7 +241,7 @@ export abstract class BaseGenerator {
     // Convert kebab-case to PascalCase
     return componentType
       .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join('');
   }
 
@@ -275,21 +279,25 @@ export abstract class BaseGenerator {
     dependencies: Record<string, string>,
     devDependencies: Record<string, string>
   ): string {
-    return JSON.stringify({
-      name: projectName,
-      version: '0.1.0',
-      private: true,
-      type: 'module',
-      scripts: this.getDefaultScripts(),
-      dependencies,
-      devDependencies: {
-        'typescript': '^5.0.0',
-        '@types/node': '^20.0.0',
-        'eslint': '^8.0.0',
-        'prettier': '^3.0.0',
-        ...devDependencies,
+    return JSON.stringify(
+      {
+        name: projectName,
+        version: '0.1.0',
+        private: true,
+        type: 'module',
+        scripts: this.getDefaultScripts(),
+        dependencies,
+        devDependencies: {
+          typescript: '^5.0.0',
+          '@types/node': '^20.0.0',
+          eslint: '^8.0.0',
+          prettier: '^3.0.0',
+          ...devDependencies,
+        },
       },
-    }, null, 2);
+      null,
+      2
+    );
   }
 
   /**
@@ -348,27 +356,31 @@ export abstract class BaseGenerator {
    * @returns TypeScript config content
    */
   protected createTsConfig(): string {
-    return JSON.stringify({
-      compilerOptions: {
-        target: 'ES2020',
-        useDefineForClassFields: true,
-        lib: ['ES2020', 'DOM', 'DOM.Iterable'],
-        module: 'ESNext',
-        skipLibCheck: true,
-        moduleResolution: 'bundler',
-        allowImportingTsExtensions: true,
-        resolveJsonModule: true,
-        isolatedModules: true,
-        noEmit: true,
-        jsx: 'react-jsx',
-        strict: true,
-        noUnusedLocals: true,
-        noUnusedParameters: true,
-        noFallthroughCasesInSwitch: true,
+    return JSON.stringify(
+      {
+        compilerOptions: {
+          target: 'ES2020',
+          useDefineForClassFields: true,
+          lib: ['ES2020', 'DOM', 'DOM.Iterable'],
+          module: 'ESNext',
+          skipLibCheck: true,
+          moduleResolution: 'bundler',
+          allowImportingTsExtensions: true,
+          resolveJsonModule: true,
+          isolatedModules: true,
+          noEmit: true,
+          jsx: 'react-jsx',
+          strict: true,
+          noUnusedLocals: true,
+          noUnusedParameters: true,
+          noFallthroughCasesInSwitch: true,
+        },
+        include: ['src'],
+        references: [{ path: './tsconfig.node.json' }],
       },
-      include: ['src'],
-      references: [{ path: './tsconfig.node.json' }],
-    }, null, 2);
+      null,
+      2
+    );
   }
 
   /**

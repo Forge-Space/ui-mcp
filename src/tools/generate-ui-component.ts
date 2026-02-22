@@ -142,13 +142,15 @@ export function generateComponent(
     const componentName = toPascalCase(componentType);
 
     // Simple fallback component
-    return [{
-      path: `src/components/${componentName}.tsx`,
-      content: `// Fallback component for ${framework}
+    return [
+      {
+        path: `src/components/${componentName}.tsx`,
+        content: `// Fallback component for ${framework}
 export function ${componentName}() {
   return <div>${componentName} - ${componentType}</div>;
-}`
-    }];
+}`,
+      },
+    ];
   }
 }
 

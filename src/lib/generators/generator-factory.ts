@@ -88,7 +88,12 @@ export class GeneratorFactory {
     designContext?: IDesignContext
   ): IGeneratedFile[] {
     const generator = this.createGenerator(framework);
-    return generator.generateProject(projectName, architecture, stateManagement, designContext || this.getDefaultContext());
+    return generator.generateProject(
+      projectName,
+      architecture,
+      stateManagement,
+      designContext || this.getDefaultContext()
+    );
   }
 
   /**

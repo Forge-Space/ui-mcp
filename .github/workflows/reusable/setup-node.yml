@@ -4,42 +4,42 @@ on:
   workflow_call:
     inputs:
       node-version:
-        description: 'Node.js version to use'
+        description: "Node.js version to use"
         required: false
-        default: '22'
+        default: "22"
       cache-dependency-path:
-        description: 'Path to dependency files'
+        description: "Path to dependency files"
         required: false
-        default: 'package-lock.json'
+        default: "package-lock.json"
       enable-cache:
-        description: 'Enable dependency caching'
+        description: "Enable dependency caching"
         required: false
         default: true
 
 jobs:
   setup:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js ${{ inputs.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ inputs.node-version }}
           cache: ${{ inputs.enable-cache && 'npm' || '' }}
           cache-dependency-path: ${{ inputs.cache-dependency-path }}
-          
+
       - name: Install dependencies
         run: |
           npm ci
-          
+
       - name: Verify Node.js installation
         run: |
           node --version
           npm --version
-          
+
       - name: List installed packages
         run: |
           npm list --depth=0

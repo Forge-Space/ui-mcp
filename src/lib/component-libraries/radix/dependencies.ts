@@ -60,35 +60,75 @@ export function generatePackageJson(
   const all = defaultDependencies.concat(additionalDependencies || []);
 
   const deps = all
-    .filter(d => d.type === 'dependency')
-    .reduce((acc, d) => { acc[d.name] = d.version || 'latest'; return acc; }, {} as Record<string, string>);
+    .filter((d) => d.type === 'dependency')
+    .reduce(
+      (acc, d) => {
+        acc[d.name] = d.version || 'latest';
+        return acc;
+      },
+      {} as Record<string, string>
+    );
 
   const devDeps = all
-    .filter(d => d.type === 'devDependency')
-    .reduce((acc, d) => { acc[d.name] = d.version || 'latest'; return acc; }, {} as Record<string, string>);
+    .filter((d) => d.type === 'devDependency')
+    .reduce(
+      (acc, d) => {
+        acc[d.name] = d.version || 'latest';
+        return acc;
+      },
+      {} as Record<string, string>
+    );
 
   const peerDeps = all
-    .filter(d => d.type === 'peerDependency')
-    .reduce((acc, d) => { acc[d.name] = d.version || 'latest'; return acc; }, {} as Record<string, string>);
+    .filter((d) => d.type === 'peerDependency')
+    .reduce(
+      (acc, d) => {
+        acc[d.name] = d.version || 'latest';
+        return acc;
+      },
+      {} as Record<string, string>
+    );
 
-  const scripts: Record<string, string> = framework === 'nextjs'
-    ? { dev: 'next dev', build: 'next build', start: 'next start', lint: 'next lint', 'type-check': 'tsc --noEmit' }
-    : { dev: 'vite', build: 'tsc && vite build', preview: 'vite preview', lint: 'eslint . --ext ts,tsx', 'type-check': 'tsc --noEmit' };
+  const scripts: Record<string, string> =
+    framework === 'nextjs'
+      ? { dev: 'next dev', build: 'next build', start: 'next start', lint: 'next lint', 'type-check': 'tsc --noEmit' }
+      : {
+          dev: 'vite',
+          build: 'tsc && vite build',
+          preview: 'vite preview',
+          lint: 'eslint . --ext ts,tsx',
+          'type-check': 'tsc --noEmit',
+        };
 
   return {
     path: 'package.json',
-    content: JSON.stringify({ name: projectName, version: '0.1.0', private: true, scripts, dependencies: deps, devDependencies: devDeps, peerDependencies: peerDeps }, null, 2),
+    content: JSON.stringify(
+      {
+        name: projectName,
+        version: '0.1.0',
+        private: true,
+        scripts,
+        dependencies: deps,
+        devDependencies: devDeps,
+        peerDependencies: peerDeps,
+      },
+      null,
+      2
+    ),
   };
 }
 
 export function generateCssConfig(config: RadixConfig = defaultConfig): IGeneratedFile {
-  const darkBlock = config.theme === 'dark' ? `
+  const darkBlock =
+    config.theme === 'dark'
+      ? `
 .dark {
   --radix-overlay-bg: hsl(0 0% 0% / 0.7);
   --radix-content-bg: hsl(222 84% 5%);
   --radix-border: hsl(217 33% 17%);
   --radix-text: hsl(210 40% 98%);
-}` : '';
+}`
+      : '';
 
   return {
     path: 'styles/radix-variables.css',

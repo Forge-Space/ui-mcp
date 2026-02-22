@@ -2,29 +2,36 @@
 
 ## 🎯 Overview
 
-UI generation patterns for MCP (Model Context Protocol) servers, providing AI-powered UI component generation, template management, and streaming capabilities for the Forge ecosystem.
+UI generation patterns for MCP (Model Context Protocol) servers, providing
+AI-powered UI component generation, template management, and streaming
+capabilities for the Forge ecosystem.
 
 ## 📋 Available Patterns
 
 ### UI Generation Engine
+
 - **Component Generation**: AI-powered React/Next.js component creation
-- **Template-Based Generation**: Structured template system for consistent output
+- **Template-Based Generation**: Structured template system for consistent
+  output
 - **Streaming Generation**: Real-time UI generation with progress updates
 - **Context-Aware Generation**: Context-sensitive UI component creation
 
 ### AI Provider Integration
+
 - **Multi-Provider Support**: OpenAI, Anthropic, and custom AI providers
 - **Provider Abstraction**: Unified interface for different AI models
 - **Fallback Mechanisms**: Graceful degradation when providers fail
 - **Load Balancing**: Distribute requests across multiple providers
 
 ### Template Management
+
 - **Template Versioning**: Version-controlled template management
 - **Template Caching**: Intelligent template caching for performance
 - **Template Validation**: Template syntax and structure validation
 - **Dynamic Templates**: Runtime template modification and customization
 
 ### Streaming & Caching
+
 - **Real-Time Streaming**: Progressive UI generation with updates
 - **Response Caching**: Cache generated components for reuse
 - **Progress Tracking**: Track generation progress and status
@@ -33,6 +40,7 @@ UI generation patterns for MCP (Model Context Protocol) servers, providing AI-po
 ## 🔧 Implementation Examples
 
 ### UI Generation Engine
+
 ```typescript
 // patterns/mcp-servers/ui-generation/ui-generation-engine.ts
 import { EventEmitter } from 'events';
@@ -67,7 +75,9 @@ export class UIGenerationEngine extends EventEmitter {
     this.initializeProviders();
   }
 
-  async generateComponent(request: UIComponentRequest): Promise<UIComponentResponse> {
+  async generateComponent(
+    request: UIComponentRequest
+  ): Promise<UIComponentResponse> {
     const startTime = Date.now();
     const componentId = this.generateComponentId(request);
 
@@ -101,20 +111,26 @@ export class UIGenerationEngine extends EventEmitter {
 
       this.emit('componentGenerated', component);
       return component;
-
     } catch (error) {
       this.emit('generationError', { request, error });
       throw error;
     }
   }
 
-  async generateComponentStreaming(request: UIComponentRequest): Promise<AsyncIterable<UIComponentChunk>> {
+  async generateComponentStreaming(
+    request: UIComponentRequest
+  ): Promise<AsyncIterable<UIComponentChunk>> {
     return this.generateStreamingWithProvider(request);
   }
 
-  private async generateWithProvider(request: UIComponentRequest): Promise<AIProviderResponse> {
+  private async generateWithProvider(
+    request: UIComponentRequest
+  ): Promise<AIProviderResponse> {
     const provider = this.selectProvider(request);
-    const template = await this.templateManager.getTemplate(request.framework, request.template);
+    const template = await this.templateManager.getTemplate(
+      request.framework,
+      request.template
+    );
 
     const prompt = this.buildPrompt(request, template);
     const response = await provider.generate(prompt);
@@ -122,9 +138,14 @@ export class UIGenerationEngine extends EventEmitter {
     return response;
   }
 
-  private async generateStreamingWithProvider(request: UIComponentRequest): Promise<AsyncIterable<UIComponentChunk>> {
+  private async generateStreamingWithProvider(
+    request: UIComponentRequest
+  ): Promise<AsyncIterable<UIComponentChunk>> {
     const provider = this.selectProvider(request);
-    const template = await this.templateManager.getTemplate(request.framework, request.template);
+    const template = await this.templateManager.getTemplate(
+      request.framework,
+      request.template
+    );
     const prompt = this.buildPrompt(request, template);
 
     return provider.generateStreaming(prompt);
@@ -132,8 +153,10 @@ export class UIGenerationEngine extends EventEmitter {
 
   private selectProvider(request: UIComponentRequest): AIProvider {
     // Provider selection logic based on request type and availability
-    const availableProviders = Array.from(this.aiProviders.values())
-      .filter(provider => provider.isAvailable() && provider.supportsFramework(request.framework));
+    const availableProviders = Array.from(this.aiProviders.values()).filter(
+      (provider) =>
+        provider.isAvailable() && provider.supportsFramework(request.framework)
+    );
 
     if (availableProviders.length === 0) {
       throw new Error('No available AI providers for this request');
@@ -160,7 +183,9 @@ Please generate a ${request.framework} ${request.type} that meets these requirem
 
   private generateComponentId(request: UIComponentRequest): string {
     const timestamp = Date.now();
-    const hash = Buffer.from(`${request.type}-${request.framework}-${request.description}`).toString('base64');
+    const hash = Buffer.from(
+      `${request.type}-${request.framework}-${request.description}`
+    ).toString('base64');
     return `${request.type}-${request.framework}-${hash.substring(0, 8)}-${timestamp}`;
   }
 
@@ -174,7 +199,8 @@ Please generate a ${request.framework} ${request.type} that meets these requirem
 ```
 
 ### AI Provider Abstraction
-```typescript
+
+````typescript
 // patterns/mcp-servers/ui-generation/ai-provider.ts
 export interface AIProvider {
   name: string;
@@ -220,7 +246,7 @@ export class OpenAIProvider implements AIProvider {
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${this.apiKey}`,
+        Authorization: `Bearer ${this.apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -244,12 +270,14 @@ export class OpenAIProvider implements AIProvider {
     };
   }
 
-  async generateStreaming(prompt: string): Promise<AsyncIterable<AIProviderChunk>> {
+  async generateStreaming(
+    prompt: string
+  ): Promise<AsyncIterable<AIProviderChunk>> {
     // Implementation for OpenAI streaming API
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${this.apiKey}`,
+        Authorization: `Bearer ${this.apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -266,11 +294,15 @@ export class OpenAIProvider implements AIProvider {
 
   private extractCode(content: string): string {
     // Extract code from AI response
-    const codeBlockMatch = content.match(/```(?:typescript|javascript|jsx|tsx)\n([\s\S]*?)\n```/);
+    const codeBlockMatch = content.match(
+      /```(?:typescript|javascript|jsx|tsx)\n([\s\S]*?)\n```/
+    );
     return codeBlockMatch ? codeBlockMatch[1] : content;
   }
 
-  private async *parseStreamingResponse(response: Response): AsyncIterable<AIProviderChunk> {
+  private async *parseStreamingResponse(
+    response: Response
+  ): AsyncIterable<AIProviderChunk> {
     const reader = response.body?.getReader();
     if (!reader) throw new Error('No response body reader available');
 
@@ -303,9 +335,10 @@ export class OpenAIProvider implements AIProvider {
     }
   }
 }
-```
+````
 
 ### Template Management
+
 ```typescript
 // patterns/mcp-servers/ui-generation/template-manager.ts
 export interface Template {
@@ -346,7 +379,7 @@ export class TemplateManager {
 
   async getTemplate(framework: string, templateId?: string): Promise<Template> {
     const cacheKey = `${framework}-${templateId || 'default'}`;
-    
+
     if (this.templateCache.has(cacheKey)) {
       return this.templateCache.get(cacheKey)!;
     }
@@ -360,7 +393,9 @@ export class TemplateManager {
     return template;
   }
 
-  async createTemplate(template: Omit<Template, 'id' | 'createdAt' | 'updatedAt'>): Promise<Template> {
+  async createTemplate(
+    template: Omit<Template, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<Template> {
     const id = this.generateTemplateId(template.framework, template.type);
     const now = new Date();
 
@@ -377,7 +412,10 @@ export class TemplateManager {
     return newTemplate;
   }
 
-  async updateTemplate(id: string, updates: Partial<Template>): Promise<Template> {
+  async updateTemplate(
+    id: string,
+    updates: Partial<Template>
+  ): Promise<Template> {
     const existing = this.templates.get(id);
     if (!existing) {
       throw new Error(`Template not found: ${id}`);
@@ -404,7 +442,7 @@ export class TemplateManager {
   }
 
   listTemplates(framework?: string, type?: string): Template[] {
-    return Array.from(this.templates.values()).filter(template => {
+    return Array.from(this.templates.values()).filter((template) => {
       if (framework && template.framework !== framework) return false;
       if (type && template.type !== type) return false;
       return true;
@@ -474,7 +512,8 @@ The component should be:
             description: 'A button with primary and secondary variants',
             requirements: 'Should handle click events, show loading state',
           },
-          expectedOutput: 'React button component with variants and loading state',
+          expectedOutput:
+            'React button component with variants and loading state',
         },
       ],
       version: '1.0.0',
@@ -488,6 +527,7 @@ The component should be:
 ```
 
 ### Component Caching
+
 ```typescript
 // patterns/mcp-servers/ui-generation/component-cache.ts
 export interface CacheEntry {
@@ -525,7 +565,10 @@ export class ComponentCache {
     return entry.component;
   }
 
-  async set(component: UIComponentResponse, request: UIComponentRequest): Promise<void> {
+  async set(
+    component: UIComponentResponse,
+    request: UIComponentRequest
+  ): Promise<void> {
     const key = this.generateCacheKey(request);
     const ttl = this.calculateTTL(request);
 
@@ -560,20 +603,24 @@ export class ComponentCache {
   } {
     const entries = Array.from(this.cache.values());
     const now = new Date();
-    const expiredEntries = entries.filter(entry => entry.expiresAt < now);
+    const expiredEntries = entries.filter((entry) => entry.expiresAt < now);
 
     return {
       totalEntries: entries.length,
       expiredEntries: expiredEntries.length,
-      averageAccessCount: entries.length > 0 
-        ? entries.reduce((sum, entry) => sum + entry.accessCount, 0) / entries.length
-        : 0,
-      oldestEntry: entries.length > 0 
-        ? new Date(Math.min(...entries.map(e => e.createdAt.getTime())))
-        : null,
-      newestEntry: entries.length > 0 
-        ? new Date(Math.max(...entries.map(e => e.createdAt.getTime())))
-        : null,
+      averageAccessCount:
+        entries.length > 0
+          ? entries.reduce((sum, entry) => sum + entry.accessCount, 0) /
+            entries.length
+          : 0,
+      oldestEntry:
+        entries.length > 0
+          ? new Date(Math.min(...entries.map((e) => e.createdAt.getTime())))
+          : null,
+      newestEntry:
+        entries.length > 0
+          ? new Date(Math.max(...entries.map((e) => e.createdAt.getTime())))
+          : null,
     };
   }
 
@@ -585,7 +632,7 @@ export class ComponentCache {
       requirements: request.requirements,
       template: request.template,
     };
-    
+
     return Buffer.from(JSON.stringify(keyData)).toString('base64');
   }
 
@@ -612,8 +659,9 @@ export class ComponentCache {
     }
 
     // Remove least recently used entries
-    const entries = Array.from(this.cache.entries())
-      .sort((a, b) => a[1].lastAccessed.getTime() - b[1].lastAccessed.getTime());
+    const entries = Array.from(this.cache.entries()).sort(
+      (a, b) => a[1].lastAccessed.getTime() - b[1].lastAccessed.getTime()
+    );
 
     const toRemove = entries.slice(0, entries.length - this.maxEntries);
     toRemove.forEach(([key]) => this.cache.delete(key));
@@ -624,6 +672,7 @@ export class ComponentCache {
 ## 🚀 Quick Start
 
 ### Basic UI Generation Setup
+
 ```typescript
 // Setup UI generation in your MCP server
 import { UIGenerationEngine } from './patterns/mcp-servers/ui-generation/ui-generation-engine';
@@ -642,6 +691,7 @@ console.log('Generated component:', component.code);
 ```
 
 ### Streaming Generation
+
 ```typescript
 // Generate component with streaming updates
 const stream = uiEngine.generateComponentStreaming({
@@ -661,18 +711,21 @@ for await (const chunk of stream) {
 ## 📊 Performance Optimization
 
 ### Caching Strategy
+
 - **Request Caching**: Cache frequently requested components
 - **Template Caching**: Cache parsed templates for reuse
 - **Provider Caching**: Cache AI provider responses
 - **Memory Management**: Enforce cache size limits
 
 ### Streaming Benefits
+
 - **Progressive Updates**: Real-time generation feedback
 - **Large Component Support**: Handle complex components efficiently
 - **Error Recovery**: Partial generation with error handling
 - **User Experience**: Better perceived performance
 
 ### Load Balancing
+
 - **Provider Distribution**: Distribute requests across AI providers
 - **Failover Support**: Graceful degradation when providers fail
 - **Performance Monitoring**: Track provider performance metrics
@@ -681,6 +734,7 @@ for await (const chunk of stream) {
 ## 🔧 Integration Examples
 
 ### MCP Server Integration
+
 ```typescript
 // Integrate UI generation with MCP server
 export class MCPUIServer {
@@ -693,7 +747,7 @@ export class MCPUIServer {
   async handleGenerateComponent(request: MCPRequest): Promise<MCPResponse> {
     try {
       const component = await this.uiEngine.generateComponent(request.params);
-      
+
       return {
         success: true,
         data: {
@@ -714,18 +768,26 @@ export class MCPUIServer {
 ```
 
 ### Template Customization
+
 ```typescript
 // Create custom templates for specific use cases
 const customTemplate = await templateManager.createTemplate({
   name: 'E-commerce Product Card',
   framework: 'react',
   type: 'component',
-  prompt: 'Generate an e-commerce product card with image, title, price, and add to cart functionality...',
+  prompt:
+    'Generate an e-commerce product card with image, title, price, and add to cart functionality...',
   variables: [
     { name: 'currency', type: 'string', required: false, defaultValue: 'USD' },
-    { name: 'showRating', type: 'boolean', required: false, defaultValue: true },
+    {
+      name: 'showRating',
+      type: 'boolean',
+      required: false,
+      defaultValue: true,
+    },
   ],
 });
 ```
 
-This UI generation pattern provides a powerful, flexible foundation for AI-powered UI component generation in the Forge MCP ecosystem! 🚀
+This UI generation pattern provides a powerful, flexible foundation for
+AI-powered UI component generation in the Forge MCP ecosystem! 🚀

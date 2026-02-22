@@ -18,7 +18,8 @@
 - `capitalize()`, `pluralize()`
 - `jsxToHtmlAttributes()`, `reactEventsToHtml()`, `jsxToHtml()`
 
-**Impact**: Eliminates duplicate utility functions across 12 tools, improves maintainability.
+**Impact**: Eliminates duplicate utility functions across 12 tools, improves
+maintainability.
 
 **Usage Example**:
 
@@ -45,7 +46,8 @@ const html = jsxToHtml('<div className="foo">Hello</div>'); // '<div class="foo"
 - `ValidationError`, `ConfigurationError`, `GenerationError`
 - `FigmaAuthError`, `FigmaNotFoundError`, `FigmaRateLimitError`
 
-**Impact**: Structured error handling, better debugging, consistent error responses.
+**Impact**: Structured error handling, better debugging, consistent error
+responses.
 
 **Usage Example**:
 
@@ -75,7 +77,8 @@ if (!isValid) {
 - Security guidelines
 - Future improvement roadmap
 
-**Impact**: Onboarding new contributors, maintaining consistency, planning future work.
+**Impact**: Onboarding new contributors, maintaining consistency, planning
+future work.
 
 ## 🎯 Recommended Next Steps (Priority Order)
 
@@ -211,7 +214,10 @@ class ConfigService {
 }
 
 // Tests
-const config = ConfigService.builder().withNodeEnv('test').withLogLevel('error').build();
+const config = ConfigService.builder()
+  .withNodeEnv('test')
+  .withLogLevel('error')
+  .build();
 ```
 
 **Benefits**:
@@ -275,7 +281,8 @@ class CacheService {
 
 > **Note**: Metrics below are snapshots and may be stale. Regenerate via:
 >
-> - File count: `find src -name '*.ts' -not -path '*/node_modules/*' -not -path '*/__tests__/*' | wc -l`
+> - File count:
+>   `find src -name '*.ts' -not -path '*/node_modules/*' -not -path '*/__tests__/*' | wc -l`
 > - Test count: `npm test -- --listTests | wc -l` and check test output summary
 > - Coverage: `npm run test:coverage`
 > - Lint: `npm run lint`

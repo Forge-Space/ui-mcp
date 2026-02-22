@@ -2,11 +2,14 @@
 
 ## 🎯 Overview
 
-Template management patterns for MCP (Model Context Protocol) servers, providing versioning, validation, caching, and dynamic rendering capabilities for consistent and efficient UI generation.
+Template management patterns for MCP (Model Context Protocol) servers, providing
+versioning, validation, caching, and dynamic rendering capabilities for
+consistent and efficient UI generation.
 
 ## 📋 Available Patterns
 
 ### Template Versioning
+
 - **Semantic Versioning**: Template version management with semantic versioning
 - **Backward Compatibility**: Template compatibility checking and migration
 - **Template Deprecation**: Graceful deprecation of old templates
@@ -14,6 +17,7 @@ Template management patterns for MCP (Model Context Protocol) servers, providing
 - **Template Registry**: Central template version registry
 
 ### Template Validation
+
 - **Syntax Validation**: Template syntax checking and error reporting
 - **Schema Validation**: Template structure validation against schemas
 - **Security Validation**: Security checks for template content
@@ -21,6 +25,7 @@ Template management patterns for MCP (Model Context Protocol) servers, providing
 - **Integration Validation**: Template integration compatibility checks
 
 ### Template Caching
+
 - **Compiled Template Cache**: Cache compiled templates for faster rendering
 - **Template Fragment Cache**: Cache reusable template fragments
 - **Dependency Cache**: Cache template dependencies and imports
@@ -28,6 +33,7 @@ Template management patterns for MCP (Model Context Protocol) servers, providing
 - **Cache Warming**: Pre-warm cache with frequently used templates
 
 ### Dynamic Rendering
+
 - **Context-Aware Rendering**: Render templates with dynamic context
 - **Conditional Rendering**: Template conditional logic and branching
 - **Loop Rendering**: Template iteration and loop constructs
@@ -37,6 +43,7 @@ Template management patterns for MCP (Model Context Protocol) servers, providing
 ## 🔧 Implementation Examples
 
 ### Template Manager Implementation
+
 ```typescript
 // patterns/mcp-servers/templates/template-manager.ts
 import { EventEmitter } from 'events';
@@ -111,18 +118,22 @@ export class TemplateManager extends EventEmitter {
     // Validate template
     const validation = await this.validator.validate(template);
     if (!validation.valid) {
-      throw new Error(`Template validation failed: ${validation.errors.join(', ')}`);
+      throw new Error(
+        `Template validation failed: ${validation.errors.join(', ')}`
+      );
     }
 
     // Check version conflicts
     const existingVersions = this.versionRegistry.get(template.name) || [];
     if (existingVersions.includes(template.version)) {
-      throw new Error(`Template ${template.name} version ${template.version} already exists`);
+      throw new Error(
+        `Template ${template.name} version ${template.version} already exists`
+      );
     }
 
     // Register template
     this.templates.set(`${template.name}@${template.version}`, template);
-    
+
     // Update version registry
     existingVersions.push(template.version);
     this.versionRegistry.set(template.name, existingVersions);
@@ -151,10 +162,16 @@ export class TemplateManager extends EventEmitter {
     return this.templates.get(`${name}@${latestVersion}`) || null;
   }
 
-  async renderTemplate(name: string, context: any, version?: string): Promise<string> {
+  async renderTemplate(
+    name: string,
+    context: any,
+    version?: string
+  ): Promise<string> {
     const template = await this.getTemplate(name, version);
     if (!template) {
-      throw new Error(`Template ${name}${version ? `@${version}` : ''} not found`);
+      throw new Error(
+        `Template ${name}${version ? `@${version}` : ''} not found`
+      );
     }
 
     if (template.deprecated) {
@@ -171,7 +188,9 @@ export class TemplateManager extends EventEmitter {
     // Validate context
     const contextValidation = this.validateContext(template, context);
     if (!contextValidation.valid) {
-      throw new Error(`Context validation failed: ${contextValidation.errors.join(', ')}`);
+      throw new Error(
+        `Context validation failed: ${contextValidation.errors.join(', ')}`
+      );
     }
 
     // Render template
@@ -187,12 +206,26 @@ export class TemplateManager extends EventEmitter {
     let templates = Array.from(this.templates.values());
 
     if (filter) {
-      templates = templates.filter(template => {
-        if (filter.framework && template.metadata.framework !== filter.framework) return false;
-        if (filter.language && template.metadata.language !== filter.language) return false;
-        if (filter.category && template.metadata.category !== filter.category) return false;
-        if (filter.tags && !filter.tags.some(tag => template.metadata.tags.includes(tag))) return false;
-        if (filter.deprecated !== undefined && template.deprecated !== filter.deprecated) return false;
+      templates = templates.filter((template) => {
+        if (
+          filter.framework &&
+          template.metadata.framework !== filter.framework
+        )
+          return false;
+        if (filter.language && template.metadata.language !== filter.language)
+          return false;
+        if (filter.category && template.metadata.category !== filter.category)
+          return false;
+        if (
+          filter.tags &&
+          !filter.tags.some((tag) => template.metadata.tags.includes(tag))
+        )
+          return false;
+        if (
+          filter.deprecated !== undefined &&
+          template.deprecated !== filter.deprecated
+        )
+          return false;
         return true;
       });
     }
@@ -204,7 +237,11 @@ export class TemplateManager extends EventEmitter {
     return this.versionRegistry.get(name) || [];
   }
 
-  async deprecateTemplate(name: string, version: string, message?: string): Promise<boolean> {
+  async deprecateTemplate(
+    name: string,
+    version: string,
+    message?: string
+  ): Promise<boolean> {
     const template = this.templates.get(`${name}@${version}`);
     if (!template) return false;
 
@@ -243,9 +280,14 @@ export class TemplateManager extends EventEmitter {
     return true;
   }
 
-  private async renderTemplateInternal(template: Template, context: any): Promise<string> {
+  private async renderTemplateInternal(
+    template: Template,
+    context: any
+  ): Promise<string> {
     if (!template.compiled) {
-      throw new Error(`Template ${template.name}@${template.version} is not compiled`);
+      throw new Error(
+        `Template ${template.name}@${template.version} is not compiled`
+      );
     }
 
     return template.compiled.render(context);
@@ -263,7 +305,9 @@ export class TemplateManager extends EventEmitter {
         const value = context[param.name];
         const validation = this.validateParameter(param, value);
         if (!validation.valid) {
-          errors.push(`Parameter '${param.name}': ${validation.errors.join(', ')}`);
+          errors.push(
+            `Parameter '${param.name}': ${validation.errors.join(', ')}`
+          );
         }
       }
     }
@@ -274,7 +318,10 @@ export class TemplateManager extends EventEmitter {
     };
   }
 
-  private validateParameter(param: TemplateParameter, value: any): ValidationResult {
+  private validateParameter(
+    param: TemplateParameter,
+    value: any
+  ): ValidationResult {
     const errors: string[] = [];
 
     // Type validation
@@ -307,7 +354,9 @@ export class TemplateManager extends EventEmitter {
       case 'boolean':
         return typeof value === 'boolean';
       case 'object':
-        return typeof value === 'object' && value !== null && !Array.isArray(value);
+        return (
+          typeof value === 'object' && value !== null && !Array.isArray(value)
+        );
       case 'array':
         return Array.isArray(value);
       default:
@@ -315,7 +364,10 @@ export class TemplateManager extends EventEmitter {
     }
   }
 
-  private applyValidationRule(rule: ValidationRule, value: any): ValidationResult {
+  private applyValidationRule(
+    rule: ValidationRule,
+    value: any
+  ): ValidationResult {
     const errors: string[] = [];
 
     switch (rule.type) {
@@ -351,10 +403,13 @@ export class TemplateManager extends EventEmitter {
   }
 
   private hashObject(obj: any): string {
-    return JSON.stringify(obj).split('').reduce((a, b) => {
-      a = ((a << 5) - a) + b.charCodeAt(0);
-      return a & a;
-    }, 0).toString(36);
+    return JSON.stringify(obj)
+      .split('')
+      .reduce((a, b) => {
+        a = (a << 5) - a + b.charCodeAt(0);
+        return a & a;
+      }, 0)
+      .toString(36);
   }
 }
 
@@ -373,6 +428,7 @@ interface ValidationResult {
 ```
 
 ### Template Validator Implementation
+
 ```typescript
 // patterns/mcp-servers/templates/template-validator.ts
 export class TemplateValidator {
@@ -415,7 +471,9 @@ export class TemplateValidator {
 
     // Dependency validation
     if (template.dependencies) {
-      const dependencyValidation = await this.validateDependencies(template.dependencies);
+      const dependencyValidation = await this.validateDependencies(
+        template.dependencies
+      );
       if (!dependencyValidation.valid) {
         errors.push(...dependencyValidation.errors);
       }
@@ -428,7 +486,8 @@ export class TemplateValidator {
   }
 
   private isValidVersion(version: string): boolean {
-    const semanticVersionRegex = /^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$/;
+    const semanticVersionRegex =
+      /^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$/;
     return semanticVersionRegex.test(version);
   }
 
@@ -450,7 +509,6 @@ export class TemplateValidator {
       // Check for potential security issues
       const securityIssues = this.checkSecurityIssues(content);
       errors.push(...securityIssues);
-
     } catch (error) {
       errors.push(`Template syntax error: ${error.message}`);
     }
@@ -482,7 +540,9 @@ export class TemplateValidator {
     return issues;
   }
 
-  private async validateMetadata(metadata: TemplateMetadata): Promise<ValidationResult> {
+  private async validateMetadata(
+    metadata: TemplateMetadata
+  ): Promise<ValidationResult> {
     const errors: string[] = [];
 
     if (!metadata.author) {
@@ -506,7 +566,9 @@ export class TemplateValidator {
       for (const param of metadata.parameters) {
         const paramValidation = this.validateParameter(param);
         if (!paramValidation.valid) {
-          errors.push(`Parameter '${param.name}': ${paramValidation.errors.join(', ')}`);
+          errors.push(
+            `Parameter '${param.name}': ${paramValidation.errors.join(', ')}`
+          );
         }
       }
     }
@@ -543,7 +605,9 @@ export class TemplateValidator {
     };
   }
 
-  private async validateDependencies(dependencies: string[]): Promise<ValidationResult> {
+  private async validateDependencies(
+    dependencies: string[]
+  ): Promise<ValidationResult> {
     const errors: string[] = [];
 
     // Check dependency format
@@ -568,6 +632,7 @@ export class TemplateValidator {
 ```
 
 ### Template Compiler Implementation
+
 ```typescript
 // patterns/mcp-servers/templates/template-compiler.ts
 export class TemplateCompiler {
@@ -589,7 +654,10 @@ export class TemplateCompiler {
     };
   }
 
-  private compileRenderFunction(content: string, parameters: TemplateParameter[]): (context: any) => string {
+  private compileRenderFunction(
+    content: string,
+    parameters: TemplateParameter[]
+  ): (context: any) => string {
     // Simple template compilation (would be replaced with actual template engine)
     return (context: any) => {
       let rendered = content;
@@ -614,7 +682,7 @@ export class TemplateCompiler {
   private processConditionals(content: string, context: any): string {
     // Process {% if condition %} ... {% endif %} blocks
     const conditionalRegex = /{%\s*if\s+(\w+)\s*%}([\s\S]*?){%\s*endif\s*%}/g;
-    
+
     return content.replace(conditionalRegex, (match, condition, body) => {
       const value = context[condition];
       return value ? body : '';
@@ -623,22 +691,26 @@ export class TemplateCompiler {
 
   private processLoops(content: string, context: any): string {
     // Process {% for item in items %} ... {% endfor %} blocks
-    const loopRegex = /{%\s*for\s+(\w+)\s+in\s+(\w+)\s*%}([\s\S]*?){%\s*endfor\s*%}/g;
-    
+    const loopRegex =
+      /{%\s*for\s+(\w+)\s+in\s+(\w+)\s*%}([\s\S]*?){%\s*endfor\s*%}/g;
+
     return content.replace(loopRegex, (match, itemVar, arrayVar, body) => {
       const array = context[arrayVar] || [];
-      return array.map((item: any) => {
-        let itemBody = body;
-        const itemRegex = new RegExp(`{{\\s*${itemVar}\\s*}}`, 'g');
-        itemBody = itemBody.replace(itemRegex, String(item));
-        return itemBody;
-      }).join('');
+      return array
+        .map((item: any) => {
+          let itemBody = body;
+          const itemRegex = new RegExp(`{{\\s*${itemVar}\\s*}}`, 'g');
+          itemBody = itemBody.replace(itemRegex, String(item));
+          return itemBody;
+        })
+        .join('');
     });
   }
 }
 ```
 
 ### Template Cache Implementation
+
 ```typescript
 // patterns/mcp-servers/templates/template-cache.ts
 import { EventEmitter } from 'events';
@@ -676,7 +748,7 @@ export class TemplateCache extends EventEmitter {
 
   async get(key: string): Promise<string | null> {
     const entry = this.cache.get(key);
-    
+
     if (!entry) {
       this.metrics.misses++;
       this.emit('cacheMiss', key);
@@ -694,13 +766,13 @@ export class TemplateCache extends EventEmitter {
     entry.hits++;
     this.metrics.hits++;
     this.emit('cacheHit', key);
-    
+
     return entry.value;
   }
 
   async set(key: string, value: string, ttl?: number): Promise<void> {
     const size = this.calculateSize(value);
-    
+
     // Check if we need to evict entries
     if (this.cache.size >= this.config.maxSize) {
       await this.evictOldestEntry();
@@ -717,13 +789,13 @@ export class TemplateCache extends EventEmitter {
 
     this.cache.set(key, entry);
     this.metrics.totalSize += size;
-    
+
     this.emit('cacheSet', key, entry);
   }
 
   async clearByTemplate(template: Template): Promise<void> {
     const keysToClear: string[] = [];
-    
+
     for (const [key] of this.cache.entries()) {
       if (key.startsWith(`${template.name}@${template.version}:`)) {
         keysToClear.push(key);
@@ -737,11 +809,11 @@ export class TemplateCache extends EventEmitter {
 
   async delete(key: string): Promise<boolean> {
     const deleted = this.cache.delete(key);
-    
+
     if (deleted) {
       this.emit('cacheDeleted', key);
     }
-    
+
     return deleted;
   }
 
@@ -753,9 +825,10 @@ export class TemplateCache extends EventEmitter {
   }
 
   getMetrics(): CacheMetrics {
-    const hitRate = this.metrics.hits + this.metrics.misses > 0 
-      ? (this.metrics.hits / (this.metrics.hits + this.metrics.misses)) * 100 
-      : 0;
+    const hitRate =
+      this.metrics.hits + this.metrics.misses > 0
+        ? (this.metrics.hits / (this.metrics.hits + this.metrics.misses)) * 100
+        : 0;
 
     return {
       size: this.cache.size,
@@ -765,7 +838,8 @@ export class TemplateCache extends EventEmitter {
       evictions: this.metrics.evictions,
       hitRate: Math.round(hitRate * 100) / 100,
       totalSize: this.metrics.totalSize,
-      averageSize: this.cache.size > 0 ? this.metrics.totalSize / this.cache.size : 0,
+      averageSize:
+        this.cache.size > 0 ? this.metrics.totalSize / this.cache.size : 0,
     };
   }
 
@@ -828,6 +902,7 @@ interface CacheMetrics {
 ## 🚀 Quick Start
 
 ### Basic Template Setup
+
 ```typescript
 // Setup template management for your MCP server
 import { TemplateManager } from './patterns/mcp-servers/templates/template-manager';
@@ -940,6 +1015,7 @@ console.log(rendered);
 ```
 
 ### Template Versioning
+
 ```typescript
 // Register multiple versions of a template
 const templateV1 = { ...buttonTemplate, version: '1.0.0' };
@@ -960,6 +1036,7 @@ console.log('Available versions:', versions);
 ```
 
 ### Template Validation
+
 ```typescript
 // Template with validation rules
 const validatedTemplate = {
@@ -973,7 +1050,11 @@ const validatedTemplate = {
         required: true,
         description: 'Name of the component',
         validation: [
-          { type: 'pattern', value: '^[A-Z][a-zA-Z0-9]*$', message: 'Component name must start with uppercase letter' },
+          {
+            type: 'pattern',
+            value: '^[A-Z][a-zA-Z0-9]*$',
+            message: 'Component name must start with uppercase letter',
+          },
         ],
       },
       {
@@ -983,7 +1064,11 @@ const validatedTemplate = {
         default: 'medium',
         description: 'Button size',
         validation: [
-          { type: 'custom', value: ['small', 'medium', 'large'], message: 'Size must be small, medium, or large' },
+          {
+            type: 'custom',
+            value: ['small', 'medium', 'large'],
+            message: 'Size must be small, medium, or large',
+          },
         ],
       },
     ],
@@ -1006,24 +1091,28 @@ try {
 ## 📊 Template Management Benefits
 
 ### Version Control
+
 - **Semantic Versioning**: Proper version management for templates
 - **Backward Compatibility**: Template compatibility checking
 - **Graceful Deprecation**: Smooth template deprecation process
 - **Version Resolution**: Automatic version selection
 
 ### Quality Assurance
+
 - **Syntax Validation**: Template syntax checking
 - **Security Validation**: Security risk detection
 - **Performance Validation**: Template performance analysis
 - **Integration Validation**: Template compatibility checks
 
 ### Performance Optimization
+
 - **Template Caching**: Cache compiled templates
 - **Fragment Caching**: Cache reusable template parts
 - **Cache Invalidation**: Intelligent cache management
 - **Cache Warming**: Pre-warm frequently used templates
 
 ### Developer Experience
+
 - **Template Registry**: Central template management
 - **Parameter Validation**: Automatic parameter validation
 - **Error Reporting**: Detailed error messages
@@ -1032,6 +1121,7 @@ try {
 ## 🔧 Integration Examples
 
 ### MCP Server Integration
+
 ```typescript
 // Integrate with MCP UI generation server
 export class MCPUIGenerationServer {
@@ -1045,7 +1135,7 @@ export class MCPUIGenerationServer {
   async handleGenerateComponent(request: MCPRequest): Promise<MCPResponse> {
     try {
       const { templateName, parameters, version } = request.params;
-      
+
       const rendered = await this.templateManager.renderTemplate(
         templateName,
         parameters,
@@ -1060,7 +1150,6 @@ export class MCPUIGenerationServer {
           version: version || 'latest',
         },
       };
-
     } catch (error) {
       return {
         success: false,
@@ -1070,12 +1159,14 @@ export class MCPUIGenerationServer {
   }
 
   async handleListTemplates(request: MCPRequest): Promise<MCPResponse> {
-    const templates = await this.templateManager.listTemplates(request.params.filter);
-    
+    const templates = await this.templateManager.listTemplates(
+      request.params.filter
+    );
+
     return {
       success: true,
       data: {
-        templates: templates.map(t => ({
+        templates: templates.map((t) => ({
           name: t.name,
           version: t.version,
           description: t.metadata.description,
@@ -1090,18 +1181,20 @@ export class MCPUIGenerationServer {
 ```
 
 ### Template Hot Reloading
+
 ```typescript
 // Hot reload templates in development
 if (process.env.NODE_ENV === 'development') {
   const templateWatcher = new TemplateWatcher(templateManager);
-  
+
   templateWatcher.on('templateChanged', async (template) => {
     console.log(`Template ${template.name} changed, recompiling...`);
     await templateManager.registerTemplate(template);
   });
-  
+
   templateWatcher.watch('./templates/');
 }
 ```
 
-This template pattern provides comprehensive template management for MCP servers with versioning, validation, caching, and dynamic rendering capabilities! 🚀
+This template pattern provides comprehensive template management for MCP servers
+with versioning, validation, caching, and dynamic rendering capabilities! 🚀

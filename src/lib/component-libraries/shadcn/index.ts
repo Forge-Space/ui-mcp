@@ -36,17 +36,12 @@ export function setupShadcnProject(options: ShadcnSetupOptions): IGeneratedFile[
   const files: IGeneratedFile[] = [];
 
   // 1. Generate setup files (package.json, tailwind, etc.)
-  const setupFiles = generateShadcnSetup(
-    options.framework,
-    options.projectName,
-    undefined,
-    []
-  );
+  const setupFiles = generateShadcnSetup(options.framework, options.projectName, undefined, []);
   files.push(...setupFiles);
 
   // 2. Generate component files
   if (options.components) {
-    options.components.forEach(componentName => {
+    options.components.forEach((componentName) => {
       try {
         const componentFiles = generateShadcnComponent(
           componentName,
@@ -62,7 +57,7 @@ export function setupShadcnProject(options: ShadcnSetupOptions): IGeneratedFile[
 
   // 3. Generate pattern files
   if (options.patterns) {
-    options.patterns.forEach(patternName => {
+    options.patterns.forEach((patternName) => {
       try {
         const patternFiles = generateShadcnPattern(
           patternName,
@@ -113,7 +108,7 @@ export function getAvailableShadcnComponents(): string[] {
     'NavigationMenu',
     'Sidebar',
     'Separator',
-    'ScrollArea'
+    'ScrollArea',
   ];
 }
 
@@ -131,7 +126,7 @@ export function getAvailableShadcnPatterns(): string[] {
     'SettingsForm',
     'DashboardLayout',
     'OnboardingWizard',
-    'ErrorBoundary'
+    'ErrorBoundary',
   ];
 }
 
@@ -147,26 +142,22 @@ export function validateShadcnSetup(files: IGeneratedFile[]): {
   const warnings: string[] = [];
 
   // Check for required files
-  const requiredFiles = [
-    'package.json',
-    'tailwind.config.js',
-    'lib/utils.ts'
-  ];
+  const requiredFiles = ['package.json', 'tailwind.config.js', 'lib/utils.ts'];
 
-  requiredFiles.forEach(file => {
-    if (!files.find(f => f.path === file)) {
+  requiredFiles.forEach((file) => {
+    if (!files.find((f) => f.path === file)) {
       errors.push(`Missing required file: ${file}`);
     }
   });
 
   // Check for component directory structure
-  const componentFiles = files.filter(f => f.path.startsWith('components/ui/'));
+  const componentFiles = files.filter((f) => f.path.startsWith('components/ui/'));
   if (componentFiles.length === 0) {
     warnings.push('No UI components generated');
   }
 
   // Check for CSS file
-  const cssFile = files.find(f => f.path.includes('.css'));
+  const cssFile = files.find((f) => f.path.includes('.css'));
   if (!cssFile) {
     errors.push('Missing CSS file with Tailwind directives');
   }
@@ -174,6 +165,6 @@ export function validateShadcnSetup(files: IGeneratedFile[]): {
   return {
     isValid: errors.length === 0,
     errors,
-    warnings
+    warnings,
   };
 }

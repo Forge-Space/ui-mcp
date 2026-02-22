@@ -46,7 +46,10 @@ function handleData(chunk) {
     if (headerEnd === -1) break;
     const header = buffer.slice(0, headerEnd);
     const match = header.match(/Content-Length:\s*(\d+)/i);
-    if (!match) { buffer = buffer.slice(headerEnd + 4); continue; }
+    if (!match) {
+      buffer = buffer.slice(headerEnd + 4);
+      continue;
+    }
     const len = parseInt(match[1], 10);
     const bodyStart = headerEnd + 4;
     if (buffer.length < bodyStart + len) break;
@@ -60,7 +63,9 @@ function handleData(chunk) {
         if (msg.error) p.reject(new Error(JSON.stringify(msg.error)));
         else p.resolve(msg.result);
       }
-    } catch { /* ignore parse errors */ }
+    } catch {
+      /* ignore parse errors */
+    }
   }
 }
 
@@ -396,7 +401,7 @@ async function main() {
   });
 
   // ── Summary ────────────────────────────────────────────────────
-  console.log(`\n${  '═'.repeat(50)}`);
+  console.log(`\n${'═'.repeat(50)}`);
   console.log(`\n📊 Results: ${passed} passed, ${failed} failed\n`);
 
   if (failures.length > 0) {

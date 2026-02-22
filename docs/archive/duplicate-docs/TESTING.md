@@ -6,12 +6,12 @@ This document describes the testing strategy and practices for UIForge MCP.
 
 Current coverage: **84.38%** (22 test suites, 236 tests)
 
-| Metric | Coverage | Threshold |
-|--------|----------|-----------|
-| Statements | 84.38% | 84% ✅ |
-| Branches | 73.96% | 73% ✅ |
-| Functions | 88.18% | 85% ✅ |
-| Lines | 84.38% | 84% ✅ |
+| Metric     | Coverage | Threshold |
+| ---------- | -------- | --------- |
+| Statements | 84.38%   | 84% ✅    |
+| Branches   | 73.96%   | 73% ✅    |
+| Functions  | 88.18%   | 85% ✅    |
+| Lines      | 84.38%   | 84% ✅    |
 
 ## Running Tests
 
@@ -95,10 +95,10 @@ describe('Module Name', () => {
   it('should do something specific', () => {
     // Arrange
     const input = 'test';
-    
+
     // Act
     const result = functionUnderTest(input);
-    
+
     // Assert
     expect(result).toBe('expected');
   });
@@ -108,9 +108,11 @@ describe('Module Name', () => {
 ### Best Practices
 
 1. **Test Naming**: Use descriptive names that explain what is being tested
-2. **Arrange-Act-Assert**: Structure tests clearly with setup, execution, and verification
+2. **Arrange-Act-Assert**: Structure tests clearly with setup, execution, and
+   verification
 3. **One Assertion Per Test**: Focus each test on a single behavior
-4. **Avoid Test Interdependence**: Tests should be independent and runnable in any order
+4. **Avoid Test Interdependence**: Tests should be independent and runnable in
+   any order
 5. **Mock External Dependencies**: Use mocks for API calls, file system, etc.
 6. **Test Edge Cases**: Include tests for error conditions and boundary values
 
@@ -130,15 +132,15 @@ describe('React Template Generator', () => {
     const files = generateReactProject('test-app', 'flat', 'zustand', ctx);
 
     expect(files.length).toBeGreaterThan(0);
-    expect(files.some(f => f.path.includes('package.json'))).toBe(true);
-    expect(files.some(f => f.path.includes('App.tsx'))).toBe(true);
+    expect(files.some((f) => f.path.includes('package.json'))).toBe(true);
+    expect(files.some((f) => f.path.includes('App.tsx'))).toBe(true);
   });
 
   it('includes design context in CSS', () => {
     const ctx = designContextStore.get();
     const files = generateReactProject('test', 'flat', 'none', ctx);
-    
-    const css = files.find(f => f.path.includes('index.css'));
+
+    const css = files.find((f) => f.path.includes('index.css'));
     expect(css?.content).toContain('--primary');
     expect(css?.content).toContain('--background');
   });
@@ -191,6 +193,7 @@ node scripts/test-mcp-server.mjs
 ```
 
 This script tests:
+
 - Server initialization
 - Tool registration and listing
 - Resource endpoints
@@ -200,10 +203,12 @@ This script tests:
 ## Continuous Integration
 
 Tests run automatically on:
+
 - Push to `main` branch
 - Pull requests to `main`
 
 CI workflow includes:
+
 - Linting (`npm run lint`)
 - Format checking (`npm run format:check`)
 - Type checking (`npx tsc --noEmit`)
@@ -232,17 +237,22 @@ node --inspect-brk node_modules/.bin/jest --runInBand
 ### Common Issues
 
 **Issue**: Tests timeout
-- **Solution**: Increase timeout in test: `it('test', async () => { ... }, 10000);`
+
+- **Solution**: Increase timeout in test:
+  `it('test', async () => { ... }, 10000);`
 
 **Issue**: ESM import errors
+
 - **Solution**: Ensure `NODE_OPTIONS=--experimental-vm-modules` is set
 
 **Issue**: Coverage not updating
+
 - **Solution**: Clear Jest cache: `npx jest --clearCache`
 
 ## Performance
 
 Test suite performance:
+
 - **Total time**: ~3-4 seconds
 - **Parallel execution**: Enabled by default
 - **Watch mode**: Optimized for fast feedback
@@ -250,6 +260,7 @@ Test suite performance:
 ## Future Improvements
 
 Planned testing enhancements:
+
 - [ ] E2E tests for generated applications
 - [ ] Visual regression tests for image generation
 - [ ] Performance benchmarks for code generation

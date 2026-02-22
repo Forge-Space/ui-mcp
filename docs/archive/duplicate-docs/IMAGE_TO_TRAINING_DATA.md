@@ -2,15 +2,21 @@
 
 ## Overview
 
-The **Image-to-Training-Data** feature allows UIForge MCP to analyze UI design reference images and extract structured design patterns for machine learning training. This feature **does not store images** - it only extracts and stores structured design data (colors, typography, components, layout patterns, etc.) to improve AI recommendations over time.
+The **Image-to-Training-Data** feature allows UIForge MCP to analyze UI design
+reference images and extract structured design patterns for machine learning
+training. This feature **does not store images** - it only extracts and stores
+structured design data (colors, typography, components, layout patterns, etc.)
+to improve AI recommendations over time.
 
 ## Key Benefits
 
-- 🎨 **Learn from Real Designs**: Extract patterns from actual UI screenshots and mockups
+- 🎨 **Learn from Real Designs**: Extract patterns from actual UI screenshots
+  and mockups
 - 🔒 **Privacy-Friendly**: No image storage - only structured design data
 - 💰 **Zero-Cost**: Uses existing infrastructure, no external APIs
 - 🤖 **Improves AI**: Feeds into existing ML training pipeline
-- 📊 **Structured Output**: Converts visual designs into IComponentSnippet format
+- 📊 **Structured Output**: Converts visual designs into IComponentSnippet
+  format
 
 ## Architecture
 
@@ -21,7 +27,8 @@ The **Image-to-Training-Data** feature allows UIForge MCP to analyze UI design r
    - Infers mood and industry from design characteristics
    - Calculates quality score for training data prioritization
 
-2. **Design-to-Training-Data Converter** (`src/lib/ml/design-to-training-data.ts`)
+2. **Design-to-Training-Data Converter**
+   (`src/lib/ml/design-to-training-data.ts`)
    - Converts analysis into IComponentSnippet format
    - Generates feedback entries for ML training
    - Detects and stores code patterns
@@ -85,7 +92,8 @@ Return Summary
 - **image_mime_type** (optional): MIME type (default: `image/png`)
   - Supported: `image/png`, `image/jpeg`, `image/webp`, `image/gif`
 - **description** (optional): Text description to guide analysis
-- **component_name** (optional): Name for the design reference (auto-generated if omitted)
+- **component_name** (optional): Name for the design reference (auto-generated
+  if omitted)
 - **framework** (optional): Framework context (default: `react`)
   - Supported: `react`, `nextjs`, `vue`, `angular`, `svelte`, `html`
 
@@ -248,8 +256,10 @@ The extracted data feeds into UIForge's existing ML training pipeline:
 
 ## Privacy & Security
 
-- ✅ **No Image Storage**: Images are analyzed in-memory and immediately discarded
-- ✅ **Structured Data Only**: Only colors, typography, component types, etc. are stored
+- ✅ **No Image Storage**: Images are analyzed in-memory and immediately
+  discarded
+- ✅ **Structured Data Only**: Only colors, typography, component types, etc.
+  are stored
 - ✅ **Zero External APIs**: All processing happens locally
 - ✅ **Privacy-Friendly**: No PII or sensitive data stored
 - ✅ **GDPR Compliant**: No personal data retention
@@ -261,10 +271,10 @@ The extracted data feeds into UIForge's existing ML training pipeline:
 ```typescript
 // User provides a screenshot of a well-designed dashboard
 analyze_design_image_for_training({
-  image_data: "base64_screenshot",
-  description: "Modern SaaS dashboard with clean design",
-  component_name: "InspirationDashboard"
-})
+  image_data: 'base64_screenshot',
+  description: 'Modern SaaS dashboard with clean design',
+  component_name: 'InspirationDashboard',
+});
 // → AI learns color palette, typography, layout patterns
 ```
 
@@ -276,8 +286,8 @@ for (const design of designReferences) {
   analyze_design_image_for_training({
     image_data: design.imageData,
     description: design.description,
-    component_name: design.name
-  })
+    component_name: design.name,
+  });
 }
 // → AI learns from diverse design patterns
 ```
@@ -287,10 +297,10 @@ for (const design of designReferences) {
 ```typescript
 // Extract design system from a screenshot
 analyze_design_image_for_training({
-  image_data: "base64_design_system",
-  description: "Company design system with buttons, cards, forms",
-  component_name: "CompanyDesignSystem"
-})
+  image_data: 'base64_design_system',
+  description: 'Company design system with buttons, cards, forms',
+  component_name: 'CompanyDesignSystem',
+});
 // → AI learns company-specific design patterns
 ```
 
@@ -299,27 +309,33 @@ analyze_design_image_for_training({
 ```typescript
 // After analyzing multiple designs, the AI improves recommendations
 generate_ui_component({
-  component_type: "button",
-  mood: "professional",
-  industry: "saas"
-})
+  component_type: 'button',
+  mood: 'professional',
+  industry: 'saas',
+});
 // → AI uses learned patterns to generate better components
 ```
 
 ## Limitations
 
-1. **Current Implementation**: Uses description-based analysis and sample code generation
-2. **Future Enhancement**: Will integrate with actual vision AI for image-to-code conversion
-3. **Quality Threshold**: Only designs with quality score ≥ 0.6 are added to component registry
-4. **Pattern Extraction**: Simplified skeleton generation (will be enhanced with AST parsing)
+1. **Current Implementation**: Uses description-based analysis and sample code
+   generation
+2. **Future Enhancement**: Will integrate with actual vision AI for
+   image-to-code conversion
+3. **Quality Threshold**: Only designs with quality score ≥ 0.6 are added to
+   component registry
+4. **Pattern Extraction**: Simplified skeleton generation (will be enhanced with
+   AST parsing)
 
 ## Future Enhancements
 
-1. **Vision AI Integration**: Use Claude Vision or GPT-4V for actual image analysis
+1. **Vision AI Integration**: Use Claude Vision or GPT-4V for actual image
+   analysis
 2. **Advanced Pattern Detection**: AST-based code pattern extraction
 3. **Similarity Clustering**: Group similar designs for pattern reinforcement
 4. **Active Learning**: Prioritize analysis of designs that fill knowledge gaps
-5. **Design System Extraction**: Automatically extract complete design systems from screenshots
+5. **Design System Extraction**: Automatically extract complete design systems
+   from screenshots
 
 ## Example Workflow
 
@@ -342,6 +358,11 @@ npm test -- --testPathPattern="image-design-analyzer|design-to-training-data"
 
 ## Summary
 
-The Image-to-Training-Data feature enables UIForge MCP to learn from real UI designs without storing images. It extracts structured design patterns, converts them into ML training data, and feeds them into the existing training pipeline. This improves AI recommendations over time while maintaining privacy and zero-cost operation.
+The Image-to-Training-Data feature enables UIForge MCP to learn from real UI
+designs without storing images. It extracts structured design patterns, converts
+them into ML training data, and feeds them into the existing training pipeline.
+This improves AI recommendations over time while maintaining privacy and
+zero-cost operation.
 
-**Key Takeaway**: Send images → Extract patterns → Store structured data → Discard images → Improve AI
+**Key Takeaway**: Send images → Extract patterns → Store structured data →
+Discard images → Improve AI

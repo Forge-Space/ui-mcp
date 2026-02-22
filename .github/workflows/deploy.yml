@@ -6,21 +6,21 @@ on:
   workflow_dispatch:
     inputs:
       version_type:
-        description: 'Version bump type'
+        description: "Version bump type"
         required: true
-        default: 'patch'
+        default: "patch"
         type: choice
         options:
           - patch
           - minor
           - major
       dry_run:
-        description: 'Dry run (skip actual publish)'
+        description: "Dry run (skip actual publish)"
         required: false
         default: false
         type: boolean
       create_release:
-        description: 'Create GitHub release'
+        description: "Create GitHub release"
         required: false
         default: true
         type: boolean

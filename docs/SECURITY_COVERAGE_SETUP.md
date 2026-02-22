@@ -1,6 +1,7 @@
 # Codecov and Snyk Integration Setup Guide
 
-This guide walks you through setting up Codecov and Snyk integrations for UIForge MCP.
+This guide walks you through setting up Codecov and Snyk integrations for
+UIForge MCP.
 
 ## 🚀 Quick Setup
 
@@ -78,12 +79,14 @@ Go to: https://github.com/YOUR_USERNAME/uiforge-mcp/settings/secrets/actions
 ### Snyk Security Scanning
 
 #### Dependency Scanning (`snyk-security` job)
+
 - Scans `package-lock.json` for known vulnerabilities
 - Monitors dependencies for new security issues
 - Uploads results to GitHub Security tab
 - Severity threshold: High and above
 
 #### Code Security Analysis (`snyk-code-security` job)
+
 - Static code analysis for security issues
 - Detects common security patterns
 - Uploads findings to GitHub Security tab
@@ -103,16 +106,19 @@ git push origin main
 
 1. **GitHub Actions**: Monitor the CI workflow execution
 2. **Codecov Dashboard**: https://codecov.io/gh/YOUR_USERNAME/uiforge-mcp
-3. **GitHub Security Tab**: https://github.com/YOUR_USERNAME/uiforge-mcp/security
+3. **GitHub Security Tab**:
+   https://github.com/YOUR_USERNAME/uiforge-mcp/security
 
 ### 3. Verify Integration
 
 #### Codecov Checks:
+
 - ✅ Coverage report uploaded
 - ✅ Coverage percentage displayed
 - ✅ Trend analysis available
 
 #### Snyk Checks:
+
 - ✅ Dependency scan completed
 - ✅ Code analysis completed
 - ✅ SARIF files uploaded to Security tab
@@ -122,18 +128,21 @@ git push origin main
 ### Common Issues
 
 #### 1. Snyk Token Not Working
+
 ```bash
 # Verify token format
 echo "SNYK_TOKEN should start with 'snk-'"
 ```
 
 #### 2. Codecov Upload Failed
+
 ```bash
 # Check if token is set
 # Verify repository is activated on Codecov
 ```
 
 #### 3. GitHub Security Tab Empty
+
 ```bash
 # Check permissions
 # Ensure SARIF files are generated
@@ -142,6 +151,7 @@ echo "SNYK_TOKEN should start with 'snk-'"
 ### Debug Commands
 
 #### Local Testing
+
 ```bash
 # Test coverage locally
 npm run test:coverage
@@ -154,6 +164,7 @@ npx snyk test --severity-threshold=high
 ```
 
 #### Workflow Debugging
+
 ```bash
 # Check workflow logs
 # Look for SARIF file generation
@@ -163,12 +174,14 @@ npx snyk test --severity-threshold=high
 ## 📈 Benefits
 
 ### Security Benefits
+
 - **Early Detection**: Find vulnerabilities before deployment
 - **Continuous Monitoring**: Automated scanning on every PR
 - **GitHub Integration**: Native security experience
 - **Detailed Reports**: Comprehensive vulnerability information
 
 ### Coverage Benefits
+
 - **Quality Metrics**: Track code coverage trends
 - **PR Insights**: Coverage changes in pull requests
 - **Threshold Enforcement**: Minimum coverage requirements
@@ -177,12 +190,14 @@ npx snyk test --severity-threshold=high
 ## 🔄 Maintenance
 
 ### Regular Tasks
+
 1. **Review Security Findings**: Address high-severity issues
 2. **Monitor Coverage Trends**: Improve test coverage
 3. **Update Dependencies**: Keep dependencies secure
 4. **Review Reports**: Check for false positives
 
 ### Configuration Updates
+
 - Adjust severity thresholds as needed
 - Update coverage thresholds
 - Add new security rules
@@ -198,6 +213,7 @@ npx snyk test --severity-threshold=high
 ## 🆘 Support
 
 For issues with the integrations:
+
 1. Check GitHub Actions logs
 2. Review service documentation
 3. Verify token configuration
@@ -205,4 +221,5 @@ For issues with the integrations:
 
 ---
 
-*This setup provides comprehensive security scanning and coverage reporting for the UIForge MCP project.*
+_This setup provides comprehensive security scanning and coverage reporting for
+the UIForge MCP project._

@@ -19,7 +19,9 @@ import { designService } from '../services/index.js';
 const logger = createLogger('setup-component-library');
 
 const inputSchema = z.object({
-  library: z.enum(['shadcn', 'radix', 'headlessui', 'material', 'primevue', 'none']).describe('Component library to set up'),
+  library: z
+    .enum(['shadcn', 'radix', 'headlessui', 'material', 'primevue', 'none'])
+    .describe('Component library to set up'),
   framework: z.enum(['react', 'nextjs', 'vue', 'svelte', 'angular', 'html']).describe('Target framework'),
   projectName: z.string().describe('Name of the project'),
   projectPath: z.string().optional().describe('Project directory path'),
@@ -69,7 +71,9 @@ export async function setupComponentLibraryHandler(
     const instructions = generateSetupInstructions(input.library, input.framework, input);
     const nextSteps = generateNextSteps(input.library, input.framework, input);
 
-    logger.info(`Setup completed: ${setupFiles.length} files, ${dependencies.length} deps, ${devDependencies.length} devDeps`);
+    logger.info(
+      `Setup completed: ${setupFiles.length} files, ${dependencies.length} deps, ${devDependencies.length} devDeps`
+    );
 
     return { setupFiles, instructions, nextSteps, dependencies, devDependencies };
   } catch (err) {
@@ -108,9 +112,7 @@ export async function validateComponentLibrarySetupHandler(
   }
 }
 
-export async function getComponentLibraryStatusHandler(
-  projectPath: string
-): Promise<{
+export async function getComponentLibraryStatusHandler(projectPath: string): Promise<{
   library: ComponentLibraryId | null;
   isConfigured: boolean;
   components: string[];
@@ -152,10 +154,13 @@ function extractDependenciesFromFiles(files: Array<{ path: string; content: stri
   dependencies: string[];
   devDependencies: string[];
 } {
-  const packageJsonFile = files.find(f => f.path === 'package.json');
+  const packageJsonFile = files.find((f) => f.path === 'package.json');
   if (!packageJsonFile) return { dependencies: [], devDependencies: [] };
   try {
-    const pkg = JSON.parse(packageJsonFile.content) as { dependencies?: Record<string, string>; devDependencies?: Record<string, string> };
+    const pkg = JSON.parse(packageJsonFile.content) as {
+      dependencies?: Record<string, string>;
+      devDependencies?: Record<string, string>;
+    };
     return {
       dependencies: Object.keys(pkg.dependencies ?? {}),
       devDependencies: Object.keys(pkg.devDependencies ?? {}),
@@ -168,11 +173,16 @@ function extractDependenciesFromFiles(files: Array<{ path: string; content: stri
 function getRequiredFiles(library: ComponentLibraryId): string[] {
   const base = ['package.json', 'lib/utils.ts'];
   switch (library) {
-    case 'shadcn': return [...base, 'tailwind.config.js', 'components/ui/button.tsx'];
-    case 'radix': return [...base, 'styles/radix-variables.css'];
-    case 'headlessui': return [...base, 'tailwind.config.js'];
-    case 'material': return [...base, 'lib/theme.ts'];
-    default: return base;
+    case 'shadcn':
+      return [...base, 'tailwind.config.js', 'components/ui/button.tsx'];
+    case 'radix':
+      return [...base, 'styles/radix-variables.css'];
+    case 'headlessui':
+      return [...base, 'tailwind.config.js'];
+    case 'material':
+      return [...base, 'lib/theme.ts'];
+    default:
+      return base;
   }
 }
 
@@ -181,17 +191,21 @@ function generateSetupInstructions(
   framework: string,
   input: SetupComponentLibraryInput
 ): string[] {
-  const instructions: string[] = [
-    `1. Navigate to project: cd ${input.projectPath ?? input.projectName}`,
-  ];
+  const instructions: string[] = [`1. Navigate to project: cd ${input.projectPath ?? input.projectName}`];
   if (!input.skipInstall) instructions.push('2. Install dependencies: npm install');
 
   switch (library) {
     case 'shadcn':
-      instructions.push('3. Configure Tailwind CSS in tailwind.config.js', '4. Set up CSS variables in app/globals.css');
+      instructions.push(
+        '3. Configure Tailwind CSS in tailwind.config.js',
+        '4. Set up CSS variables in app/globals.css'
+      );
       break;
     case 'radix':
-      instructions.push('3. Install individual Radix primitives as needed', '4. Create styled wrappers with CSS or Tailwind');
+      instructions.push(
+        '3. Install individual Radix primitives as needed',
+        '4. Create styled wrappers with CSS or Tailwind'
+      );
       break;
     case 'headlessui':
       instructions.push('3. Configure Tailwind CSS', '4. Create component wrappers with styling');
@@ -218,7 +232,11 @@ function generateNextSteps(
   ];
   if (input.components?.length) steps.push(`3. Explore the ${input.components.length} included components`);
   if (input.patterns?.length) steps.push(`4. Check out the ${input.patterns.length} UI patterns`);
-  steps.push('5. Add your own custom components', '6. Configure your theme and design tokens', '7. Run tests to verify everything works');
+  steps.push(
+    '5. Add your own custom components',
+    '6. Configure your theme and design tokens',
+    '7. Run tests to verify everything works'
+  );
   return steps;
 }
 

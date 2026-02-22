@@ -34,7 +34,7 @@ export function toPascalCase(str: string): string {
 export function toKebabCase(str: string): string {
   return str
     .replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2') // e.g. XMLHttp → XML-Http
-    .replace(/([a-z])([A-Z])/g, '$1-$2')        // e.g. navBar → nav-Bar
+    .replace(/([a-z])([A-Z])/g, '$1-$2') // e.g. navBar → nav-Bar
     .replace(/[\s_]+/g, '-')
     .toLowerCase();
 }
@@ -160,7 +160,7 @@ export function jsxToHtmlAttributes(jsxCode: string): string {
       // Handle boolean attributes
       .replace(
         /\s+(disabled|required|readonly|checked|selected|autofocus|autoplay|controls|loop|muted|hidden|multiple|defer|async|novalidate|open|reversed|inert|itemscope)=\{(true|false)\}/g,
-        (match, attr, value) => value === 'true' ? ` ${attr}` : ''
+        (match, attr, value) => (value === 'true' ? ` ${attr}` : '')
       )
       // Handle boolean JSX expressions
       .replace(/=(\{true\})/g, '="true"')
@@ -259,16 +259,16 @@ export function jsxToSvelte(jsxCode: string): string {
  */
 export function htmlToJsxAttributes(attributes: Record<string, string>): string {
   const attributeMap: Record<string, string> = {
-    'class': 'className',
-    'for': 'htmlFor',
-    'tabindex': 'tabIndex',
-    'readonly': 'readOnly',
-    'maxlength': 'maxLength',
-    'minlength': 'minLength',
-    'autocomplete': 'autoComplete',
-    'autofocus': 'autoFocus',
-    'spellcheck': 'spellCheck',
-    'contenteditable': 'contentEditable',
+    class: 'className',
+    for: 'htmlFor',
+    tabindex: 'tabIndex',
+    readonly: 'readOnly',
+    maxlength: 'maxLength',
+    minlength: 'minLength',
+    autocomplete: 'autoComplete',
+    autofocus: 'autoFocus',
+    spellcheck: 'spellCheck',
+    contenteditable: 'contentEditable',
     'stroke-width': 'strokeWidth',
     'stroke-linecap': 'strokeLinecap',
     'stroke-linejoin': 'strokeLinejoin',
@@ -310,8 +310,8 @@ export function parseStyleString(styleString: string): Record<string, string> {
 
   if (!styleString) return styles;
 
-  styleString.split(';').forEach(rule => {
-    const [property, value] = rule.split(':').map(s => s.trim());
+  styleString.split(';').forEach((rule) => {
+    const [property, value] = rule.split(':').map((s) => s.trim());
     if (property && value) {
       styles[property] = value;
     }
@@ -323,13 +323,18 @@ export function parseStyleString(styleString: string): Record<string, string> {
 /**
  * Merge multiple style objects
  */
-export function mergeStyles(...styles: (Record<string, string | number> | undefined)[]): Record<string, string | number> {
-  return styles.reduce((merged: Record<string, string | number>, style) => {
-    if (style) {
-      return { ...merged, ...style };
-    }
-    return merged;
-  }, {} as Record<string, string | number>);
+export function mergeStyles(
+  ...styles: (Record<string, string | number> | undefined)[]
+): Record<string, string | number> {
+  return styles.reduce(
+    (merged: Record<string, string | number>, style) => {
+      if (style) {
+        return { ...merged, ...style };
+      }
+      return merged;
+    },
+    {} as Record<string, string | number>
+  );
 }
 
 // ============================================================================
@@ -441,12 +446,15 @@ export function unique<T>(array: T[]): T[] {
  * Group array items by key
  */
 export function groupBy<T>(array: T[], key: keyof T): Record<string, T[]> {
-  return array.reduce((groups, item) => {
-    const groupKey = String(item[key]);
-    groups[groupKey] = groups[groupKey] || [];
-    groups[groupKey].push(item);
-    return groups;
-  }, {} as Record<string, T[]>);
+  return array.reduce(
+    (groups, item) => {
+      const groupKey = String(item[key]);
+      groups[groupKey] = groups[groupKey] || [];
+      groups[groupKey].push(item);
+      return groups;
+    },
+    {} as Record<string, T[]>
+  );
 }
 
 /**
@@ -469,9 +477,7 @@ export function sortBy<T>(array: T[], key: keyof T, direction: 'asc' | 'desc' = 
 export function includesCaseInsensitive<T>(array: T[], value: T): boolean {
   if (typeof value !== 'string') return array.includes(value);
 
-  return array.some(item =>
-    typeof item === 'string' && item.toLowerCase() === value.toLowerCase()
-  );
+  return array.some((item) => typeof item === 'string' && item.toLowerCase() === value.toLowerCase());
 }
 
 // ============================================================================
@@ -533,21 +539,16 @@ export function createError(message: string, code?: string, details?: Record<str
  * Check if error is a network error
  */
 export function isNetworkError(error: unknown): boolean {
-  return error instanceof Error && (
-    error.message.includes('network') ||
-    error.message.includes('fetch') ||
-    error.message.includes('ENOTFOUND')
+  return (
+    error instanceof Error &&
+    (error.message.includes('network') || error.message.includes('fetch') || error.message.includes('ENOTFOUND'))
   );
 }
 
 /**
  * Retry function with exponential backoff
  */
-export async function retry<T>(
-  fn: () => Promise<T>,
-  maxAttempts: number = 3,
-  delay: number = 1000
-): Promise<T> {
+export async function retry<T>(fn: () => Promise<T>, maxAttempts: number = 3, delay: number = 1000): Promise<T> {
   let lastError: unknown;
 
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
@@ -562,7 +563,7 @@ export async function retry<T>(
 
       // Exponential backoff
       const waitTime = delay * Math.pow(2, attempt - 1);
-      await new Promise(resolve => setTimeout(resolve, waitTime));
+      await new Promise((resolve) => setTimeout(resolve, waitTime));
     }
   }
 

@@ -3,31 +3,31 @@ name: Dependency Health
 on:
   schedule:
     # Run dependency health check weekly on Monday at 9 AM UTC
-    - cron: '0 9 * * 1'
+    - cron: "0 9 * * 1"
   workflow_dispatch:
     inputs:
       check_outdated:
-        description: 'Check for outdated dependencies'
+        description: "Check for outdated dependencies"
         required: false
         default: true
         type: boolean
       check_security:
-        description: 'Check for security vulnerabilities'
+        description: "Check for security vulnerabilities"
         required: false
         default: true
         type: boolean
       generate_report:
-        description: 'Generate dependency health report'
+        description: "Generate dependency health report"
         required: false
         default: true
         type: boolean
       auto_update:
-        description: 'Auto-update patch/minor versions (experimental)'
+        description: "Auto-update patch/minor versions (experimental)"
         required: false
         default: false
         type: boolean
       update_minor:
-        description: 'Include minor versions in auto-update'
+        description: "Include minor versions in auto-update"
         required: false
         default: false
         type: boolean
@@ -241,7 +241,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci --legacy-peer-deps

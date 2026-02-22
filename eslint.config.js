@@ -49,10 +49,7 @@ export default tseslint.config(
       eqeqeq: ['error', 'always'],
       'no-eval': 'error',
       'no-implied-eval': 'error',
-      '@typescript-eslint/no-unused-vars': [
-        'warn',
-        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
-      ],
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/prefer-nullish-coalescing': 'warn',
@@ -95,5 +92,5 @@ export default tseslint.config(
     rules: {
       'no-console': 'off',
     },
-  },
+  }
 );

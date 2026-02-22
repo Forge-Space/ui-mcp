@@ -23,22 +23,43 @@ describe('manage-training', () => {
   it('should validate action parameter', () => {
     registerManageTraining(testServer);
 
-    const validActions = ['check_readiness', 'start_training', 'get_status', 'cancel_training', 'list_adapters', 'get_summary'];
+    const validActions = [
+      'check_readiness',
+      'start_training',
+      'get_status',
+      'cancel_training',
+      'list_adapters',
+      'get_summary',
+    ];
 
-    validActions.forEach(action => {
+    validActions.forEach((action) => {
       expect(() => {
-        expect(['check_readiness', 'start_training', 'get_status', 'cancel_training', 'list_adapters', 'get_summary']).toContain(action);
+        expect([
+          'check_readiness',
+          'start_training',
+          'get_status',
+          'cancel_training',
+          'list_adapters',
+          'get_summary',
+        ]).toContain(action);
       }).not.toThrow();
     });
   });
 
   it('should reject invalid action parameter', () => {
     const invalidInput = {
-      action: 'invalid_action'
+      action: 'invalid_action',
     };
 
     expect(() => {
-      expect(['check_readiness', 'start_training', 'get_status', 'cancel_training', 'list_adapters', 'get_summary']).toContain(invalidInput.action);
+      expect([
+        'check_readiness',
+        'start_training',
+        'get_status',
+        'cancel_training',
+        'list_adapters',
+        'get_summary',
+      ]).toContain(invalidInput.action);
     }).toThrow();
   });
 
@@ -47,9 +68,9 @@ describe('manage-training', () => {
       action: 'start_training',
       adapter_type: 'quality-scorer',
       epochs: 10,
-      learning_rate: 0.001
+      learning_rate: 0.001,
     };
-    
+
     expect(() => {
       expect(validInput.action).toBe('start_training');
       expect(['quality-scorer', 'prompt-enhancer', 'style-recommender']).toContain(validInput.adapter_type);

@@ -1,6 +1,13 @@
 import type { IFigmaVariable } from '../lib/types.js';
 import { createLogger } from '../lib/logger.js';
-import { getFile, getFileNodes, getVariables, type FigmaFileResponse, type FigmaNode, type FigmaComponent } from '../lib/figma-client.js';
+import {
+  getFile,
+  getFileNodes,
+  getVariables,
+  type FigmaFileResponse,
+  type FigmaNode,
+  type FigmaComponent,
+} from '../lib/figma-client.js';
 
 const logger = createLogger('figma-service');
 
@@ -33,11 +40,13 @@ export class FigmaService {
    */
   async getFile(fileKey: string): Promise<FigmaFileResponse> {
     this.ensureConfigured();
-    
+
     logger.info(`Fetching Figma file: ${fileKey}`);
     const response = await getFile(fileKey);
-    
-    logger.info(`Successfully fetched file: ${response.name} with ${Object.keys(response.components || {}).length} components`);
+
+    logger.info(
+      `Successfully fetched file: ${response.name} with ${Object.keys(response.components || {}).length} components`
+    );
     return response;
   }
 
@@ -49,15 +58,15 @@ export class FigmaService {
    */
   async getNodes(fileKey: string, nodeIds: string[]): Promise<Record<string, FigmaNode>> {
     this.ensureConfigured();
-    
+
     logger.info(`Fetching ${nodeIds.length} nodes from file: ${fileKey}`);
     const response = await getFileNodes(fileKey, nodeIds);
-    
+
     const nodes: Record<string, FigmaNode> = {};
     Object.entries(response.nodes).forEach(([id, node]) => {
       nodes[id] = node.document;
     });
-    
+
     logger.info(`Successfully fetched ${Object.keys(nodes).length} nodes`);
     return nodes;
   }
@@ -69,10 +78,10 @@ export class FigmaService {
    */
   async getVariables(fileKey: string): Promise<any> {
     this.ensureConfigured();
-    
+
     logger.info(`Fetching variables from file: ${fileKey}`);
     const response = await getVariables(fileKey);
-    
+
     logger.info(`Successfully fetched variables`);
     return response;
   }
@@ -84,10 +93,10 @@ export class FigmaService {
    */
   async getComponents(fileKey: string): Promise<Record<string, FigmaComponent>> {
     this.ensureConfigured();
-    
+
     logger.info(`Fetching components from file: ${fileKey}`);
     const response = await getFile(fileKey);
-    
+
     logger.info(`Found ${Object.keys(response.components || {}).length} components`);
     return response.components || {};
   }
@@ -112,10 +121,10 @@ export class FigmaService {
 
     for (const variable of variables) {
       const { name, type, value } = variable;
-      
+
       if (name) {
         const tokenName = name.replace(/[/\s]/g, '_').toLowerCase();
-        
+
         if (type === 'COLOR' && typeof value === 'string') {
           tokens.colors[tokenName] = value;
         } else if (type === 'FLOAT' && typeof value === 'number') {
@@ -137,7 +146,9 @@ export class FigmaService {
       }
     }
 
-    logger.info(`Extracted ${Object.keys(tokens.colors).length} colors, ${Object.keys(tokens.typography).length} typography tokens, ${Object.keys(tokens.spacing).length} spacing tokens, ${Object.keys(tokens.effects).length} effect tokens`);
+    logger.info(
+      `Extracted ${Object.keys(tokens.colors).length} colors, ${Object.keys(tokens.typography).length} typography tokens, ${Object.keys(tokens.spacing).length} spacing tokens, ${Object.keys(tokens.effects).length} effect tokens`
+    );
     return tokens;
   }
 

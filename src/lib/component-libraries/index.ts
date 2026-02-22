@@ -1,6 +1,6 @@
 /**
  * Component Libraries Integration
- * 
+ *
  * Centralized access to all component library integrations including:
  * - shadcn/ui
  * - Radix UI
@@ -31,7 +31,11 @@ export interface ComponentLibraryIntegration {
   id: ComponentLibraryId;
   description: string;
   setupProject(options: ComponentLibrarySetupOptions): IGeneratedFile[];
-  generateComponent(name: string, designContext: IDesignContext, customizations?: Record<string, any>): IGeneratedFile[];
+  generateComponent(
+    name: string,
+    designContext: IDesignContext,
+    customizations?: Record<string, any>
+  ): IGeneratedFile[];
   getAvailableComponents(): string[];
   getAvailablePatterns(): string[];
 }
@@ -59,7 +63,8 @@ export function getComponentLibrary(libraryId: ComponentLibraryId): ComponentLib
         id: 'shadcn',
         description: 'Beautifully designed components built with Radix UI and Tailwind CSS',
         setupProject: (options) => setupShadcnProject(options),
-        generateComponent: (name, designContext, customizations) => generateShadcnComponent(name, designContext, customizations),
+        generateComponent: (name, designContext, customizations) =>
+          generateShadcnComponent(name, designContext, customizations),
         getAvailableComponents: () => getAvailableShadcnComponents(),
         getAvailablePatterns: () => getAvailableShadcnPatterns(),
       };
@@ -69,9 +74,10 @@ export function getComponentLibrary(libraryId: ComponentLibraryId): ComponentLib
         id: 'radix',
         description: 'Unstyled, accessible components for building high-quality design systems and web apps',
         setupProject: (options) => setupRadixProject(options),
-        generateComponent: (name, designContext, customizations) => generateRadixComponent(name, designContext, customizations),
+        generateComponent: (name, designContext, customizations) =>
+          generateRadixComponent(name, designContext, customizations),
         getAvailableComponents: () => getAvailableRadixComponents(),
-        getAvailablePatterns: () => []
+        getAvailablePatterns: () => [],
       };
     case 'headlessui':
       return {
@@ -79,19 +85,21 @@ export function getComponentLibrary(libraryId: ComponentLibraryId): ComponentLib
         id: 'headlessui',
         description: 'Unstyled, fully accessible UI components, designed to integrate beautifully with Tailwind CSS',
         setupProject: (options) => setupHeadlessProject(options),
-        generateComponent: (name, designContext, customizations) => generateHeadlessComponent(name, designContext, customizations),
+        generateComponent: (name, designContext, customizations) =>
+          generateHeadlessComponent(name, designContext, customizations),
         getAvailableComponents: () => getAvailableHeadlessComponents(),
-        getAvailablePatterns: () => []
+        getAvailablePatterns: () => [],
       };
     case 'material':
       return {
         name: 'Material-UI',
         id: 'material',
-        description: 'React components that implement Google\'s Material Design',
+        description: "React components that implement Google's Material Design",
         setupProject: (options) => setupMaterialProject(options),
-        generateComponent: (name, designContext, customizations) => generateMaterialComponent(name, designContext, customizations),
+        generateComponent: (name, designContext, customizations) =>
+          generateMaterialComponent(name, designContext, customizations),
         getAvailableComponents: () => getAvailableMaterialComponents(),
-        getAvailablePatterns: () => []
+        getAvailablePatterns: () => [],
       };
     case 'primevue':
       return {
@@ -113,7 +121,7 @@ export function getComponentLibrary(libraryId: ComponentLibraryId): ComponentLib
         getAvailablePatterns: () => {
           // TODO: Return available PrimeVue patterns
           return [];
-        }
+        },
       };
     case 'none':
       return {
@@ -123,7 +131,7 @@ export function getComponentLibrary(libraryId: ComponentLibraryId): ComponentLib
         setupProject: () => [],
         generateComponent: () => [],
         getAvailableComponents: () => [],
-        getAvailablePatterns: () => []
+        getAvailablePatterns: () => [],
       };
     default:
       return undefined;
@@ -135,9 +143,9 @@ export function getComponentLibrary(libraryId: ComponentLibraryId): ComponentLib
  */
 export function getAvailableComponentLibraries(): ComponentLibraryIntegration[] {
   const libraries: ComponentLibraryId[] = ['shadcn', 'radix', 'headlessui', 'material', 'primevue', 'none'];
-  
+
   return libraries
-    .map(id => getComponentLibrary(id))
+    .map((id) => getComponentLibrary(id))
     .filter((library): library is ComponentLibraryIntegration => library !== undefined);
 }
 
@@ -149,11 +157,11 @@ export function setupComponentLibraryProject(
   options: ComponentLibrarySetupOptions
 ): IGeneratedFile[] {
   const library = getComponentLibrary(libraryId);
-  
+
   if (!library) {
     throw new Error(`Component library "${libraryId}" not found`);
   }
-  
+
   return library.setupProject(options);
 }
 
@@ -167,11 +175,11 @@ export function generateComponentFromLibrary(
   customizations?: Record<string, any>
 ): IGeneratedFile[] {
   const library = getComponentLibrary(libraryId);
-  
+
   if (!library) {
     throw new Error(`Component library "${libraryId}" not found`);
   }
-  
+
   return library.generateComponent(componentName, designContext, customizations);
 }
 
@@ -180,11 +188,11 @@ export function generateComponentFromLibrary(
  */
 export function getAvailableComponentsForLibrary(libraryId: ComponentLibraryId): string[] {
   const library = getComponentLibrary(libraryId);
-  
+
   if (!library) {
     return [];
   }
-  
+
   return library.getAvailableComponents();
 }
 
@@ -193,10 +201,10 @@ export function getAvailableComponentsForLibrary(libraryId: ComponentLibraryId):
  */
 export function getAvailablePatternsForLibrary(libraryId: ComponentLibraryId): string[] {
   const library = getComponentLibrary(libraryId);
-  
+
   if (!library) {
     return [];
   }
-  
+
   return library.getAvailablePatterns();
 }

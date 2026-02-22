@@ -189,7 +189,9 @@ describe('Service Layer', () => {
       const unconfiguredService = new FigmaService();
 
       await expect(unconfiguredService.getFile('test-key')).rejects.toThrow('Figma service is not configured');
-      await expect(unconfiguredService.getNodes('test-key', ['node1'])).rejects.toThrow('Figma service is not configured');
+      await expect(unconfiguredService.getNodes('test-key', ['node1'])).rejects.toThrow(
+        'Figma service is not configured'
+      );
       await expect(unconfiguredService.getVariables('test-key')).rejects.toThrow('Figma service is not configured');
       await expect(unconfiguredService.getComponents('test-key')).rejects.toThrow('Figma service is not configured');
     });
@@ -268,7 +270,7 @@ describe('Service Layer', () => {
       expect(files.length).toBeGreaterThan(0);
 
       // Check that files have proper structure
-      files.forEach(file => {
+      files.forEach((file) => {
         expect(file).toHaveProperty('path');
         expect(file).toHaveProperty('content');
         expect(typeof file.path).toBe('string');
@@ -360,9 +362,7 @@ describe('Service Layer', () => {
     });
 
     it('should handle pattern detection with invalid source types', async () => {
-      const invalidSources = [
-        { type: 'invalid' as any, content: 'test' },
-      ];
+      const invalidSources = [{ type: 'invalid' as any, content: 'test' }];
 
       // detectPatterns gracefully handles unknown source types by filtering them out
       const result = await service.detectPatterns(invalidSources);
@@ -397,7 +397,7 @@ describe('Service Layer', () => {
     });
 
     it('should throw error for non-existent service', () => {
-      expect(() => container.get('non-existent')).toThrow('Service \'non-existent\' not found in container');
+      expect(() => container.get('non-existent')).toThrow("Service 'non-existent' not found in container");
     });
 
     it('should list registered services', () => {

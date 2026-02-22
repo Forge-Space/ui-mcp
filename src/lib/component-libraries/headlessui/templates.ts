@@ -281,7 +281,7 @@ export function getHeadlessTemplates(): HeadlessTemplate[] {
 }
 
 export function getHeadlessTemplate(name: string): HeadlessTemplate | undefined {
-  return getHeadlessTemplates().find(t => t.name.toLowerCase() === name.toLowerCase());
+  return getHeadlessTemplates().find((t) => t.name.toLowerCase() === name.toLowerCase());
 }
 
 export function generateHeadlessComponent(
@@ -291,5 +291,5 @@ export function generateHeadlessComponent(
 ): IGeneratedFile[] {
   const template = getHeadlessTemplate(templateName);
   if (!template) throw new Error(`Headless UI template "${templateName}" not found`);
-  return template.files.map(f => ({ path: f.path, content: f.content }));
+  return template.files.map((f) => ({ path: f.path, content: f.content }));
 }

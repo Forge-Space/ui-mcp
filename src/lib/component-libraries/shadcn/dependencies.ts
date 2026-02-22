@@ -1,6 +1,6 @@
 /**
  * shadcn/ui Dependencies Management
- * 
+ *
  * Handles installation, configuration, and management of shadcn/ui dependencies
  */
 
@@ -16,7 +16,30 @@ export interface ShadcnDependency {
 
 export interface ShadcnConfig {
   style: 'default' | 'new-york' | 'zinc';
-  baseColor: 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'red' | 'rose' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose';
+  baseColor:
+    | 'slate'
+    | 'gray'
+    | 'zinc'
+    | 'neutral'
+    | 'stone'
+    | 'red'
+    | 'rose'
+    | 'orange'
+    | 'amber'
+    | 'yellow'
+    | 'lime'
+    | 'green'
+    | 'emerald'
+    | 'teal'
+    | 'cyan'
+    | 'sky'
+    | 'blue'
+    | 'indigo'
+    | 'violet'
+    | 'purple'
+    | 'fuchsia'
+    | 'pink'
+    | 'rose';
   cssVariables: boolean;
   prefix: string;
   tailwind: {
@@ -27,7 +50,7 @@ export interface ShadcnConfig {
     prefix?: string;
   };
   rsc: boolean;
- tsx: boolean;
+  tsx: boolean;
   aliases: {
     components: string;
     utils: string;
@@ -45,128 +68,128 @@ export const defaultDependencies: ShadcnDependency[] = [
   {
     name: 'react',
     type: 'peerDependency',
-    reason: 'React framework'
+    reason: 'React framework',
   },
   {
     name: 'react-dom',
     type: 'peerDependency',
-    reason: 'React DOM renderer'
+    reason: 'React DOM renderer',
   },
   {
     name: 'typescript',
     type: 'devDependency',
-    reason: 'TypeScript support'
+    reason: 'TypeScript support',
   },
   {
     name: '@types/react',
     type: 'devDependency',
-    reason: 'React TypeScript types'
+    reason: 'React TypeScript types',
   },
   {
     name: '@types/react-dom',
     type: 'devDependency',
-    reason: 'React DOM TypeScript types'
+    reason: 'React DOM TypeScript types',
   },
-  
+
   // Tailwind CSS
   {
     name: 'tailwindcss',
     type: 'devDependency',
     version: '^3.4.0',
-    reason: 'CSS framework'
+    reason: 'CSS framework',
   },
   {
     name: 'postcss',
     type: 'devDependency',
     version: '^8',
-    reason: 'CSS post-processing'
+    reason: 'CSS post-processing',
   },
   {
     name: 'autoprefixer',
     type: 'devDependency',
     version: '^10.0.1',
-    reason: 'CSS autoprefixing'
+    reason: 'CSS autoprefixing',
   },
-  
+
   // Utility libraries
   {
     name: 'class-variance-authority',
     type: 'dependency',
     version: '^0.7.0',
-    reason: 'Component variant management'
+    reason: 'Component variant management',
   },
   {
     name: 'clsx',
     type: 'dependency',
     version: '^2.0.0',
-    reason: 'Conditional class names'
+    reason: 'Conditional class names',
   },
   {
     name: 'tailwind-merge',
     type: 'dependency',
     version: '^2.2.0',
-    reason: 'Tailwind class merging'
+    reason: 'Tailwind class merging',
   },
-  
+
   // Radix UI primitives
   {
     name: '@radix-ui/react-slot',
     type: 'dependency',
     version: '^1.0.2',
-    reason: 'Slot primitive for compound components'
+    reason: 'Slot primitive for compound components',
   },
   {
     name: '@radix-ui/react-dialog',
     type: 'dependency',
     version: '^1.0.5',
-    reason: 'Dialog primitive'
+    reason: 'Dialog primitive',
   },
   {
     name: '@radix-ui/react-dropdown-menu',
     type: 'dependency',
     version: '^2.0.6',
-    reason: 'Dropdown menu primitive'
+    reason: 'Dropdown menu primitive',
   },
   {
     name: '@radix-ui/react-toast',
     type: 'dependency',
     version: '^1.1.5',
-    reason: 'Toast notification primitive'
+    reason: 'Toast notification primitive',
   },
   {
     name: '@radix-ui/react-tooltip',
     type: 'dependency',
     version: '^1.0.7',
-    reason: 'Tooltip primitive'
+    reason: 'Tooltip primitive',
   },
-  
+
   // Icons
   {
     name: 'lucide-react',
     type: 'dependency',
     version: '^0.263.1',
-    reason: 'Icon library'
+    reason: 'Icon library',
   },
-  
+
   // Development tools
   {
     name: '@types/node',
     type: 'devDependency',
     version: '^20',
-    reason: 'Node.js TypeScript types'
+    reason: 'Node.js TypeScript types',
   },
   {
     name: 'eslint',
     type: 'devDependency',
     version: '^8',
-    reason: 'Code linting'
+    reason: 'Code linting',
   },
   {
     name: 'eslint-config-next',
     type: 'devDependency',
     version: '14.2.1',
-    reason: 'Next.js ESLint configuration'
-  }
+    reason: 'Next.js ESLint configuration',
+  },
 ];
 
 /**
@@ -182,7 +205,7 @@ export const defaultConfig: ShadcnConfig = {
     css: 'app/globals.css',
     baseColor: 'slate',
     cssVariables: true,
-    prefix: ''
+    prefix: '',
   },
   rsc: true,
   tsx: true,
@@ -191,8 +214,8 @@ export const defaultConfig: ShadcnConfig = {
     utils: '@/lib/utils',
     ui: '@/components/ui',
     lib: '@/lib',
-    hooks: '@/hooks'
-  }
+    hooks: '@/hooks',
+  },
 };
 
 /**
@@ -205,27 +228,36 @@ export function generatePackageJson(
   additionalDependencies?: ShadcnDependency[]
 ): IGeneratedFile {
   const dependencies = defaultDependencies.concat(additionalDependencies || []);
-  
+
   const deps = dependencies
-    .filter(dep => dep.type === 'dependency')
-    .reduce((acc, dep) => {
-      acc[dep.name] = dep.version || 'latest';
-      return acc;
-    }, {} as Record<string, string>);
+    .filter((dep) => dep.type === 'dependency')
+    .reduce(
+      (acc, dep) => {
+        acc[dep.name] = dep.version || 'latest';
+        return acc;
+      },
+      {} as Record<string, string>
+    );
 
   const devDeps = dependencies
-    .filter(dep => dep.type === 'devDependency')
-    .reduce((acc, dep) => {
-      acc[dep.name] = dep.version || 'latest';
-      return acc;
-    }, {} as Record<string, string>);
+    .filter((dep) => dep.type === 'devDependency')
+    .reduce(
+      (acc, dep) => {
+        acc[dep.name] = dep.version || 'latest';
+        return acc;
+      },
+      {} as Record<string, string>
+    );
 
   const peerDeps = dependencies
-    .filter(dep => dep.type === 'peerDependency')
-    .reduce((acc, dep) => {
-      acc[dep.name] = dep.version || 'latest';
-      return acc;
-    }, {} as Record<string, string>);
+    .filter((dep) => dep.type === 'peerDependency')
+    .reduce(
+      (acc, dep) => {
+        acc[dep.name] = dep.version || 'latest';
+        return acc;
+      },
+      {} as Record<string, string>
+    );
 
   const packageJson = {
     name: projectName,
@@ -237,13 +269,13 @@ export function generatePackageJson(
     peerDependencies: peerDeps,
     engines: {
       node: '>=18.0.0',
-      npm: '>=8.0.0'
-    }
+      npm: '>=8.0.0',
+    },
   };
 
   return {
     path: 'package.json',
-    content: JSON.stringify(packageJson, null, 2)
+    content: JSON.stringify(packageJson, null, 2),
   };
 }
 
@@ -258,7 +290,7 @@ function getScripts(framework: Framework): Record<string, string> {
         build: 'next build',
         start: 'next start',
         lint: 'next lint',
-        'type-check': 'tsc --noEmit'
+        'type-check': 'tsc --noEmit',
       };
     case 'react':
       return {
@@ -266,14 +298,14 @@ function getScripts(framework: Framework): Record<string, string> {
         build: 'tsc && vite build',
         preview: 'vite preview',
         lint: 'eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0',
-        'type-check': 'tsc --noEmit'
+        'type-check': 'tsc --noEmit',
       };
     default:
       return {
         dev: 'vite',
         build: 'tsc && vite build',
         preview: 'vite preview',
-        lint: 'eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0'
+        lint: 'eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0',
       };
   }
 }
@@ -284,20 +316,15 @@ function getScripts(framework: Framework): Record<string, string> {
 export function generateTailwindConfig(config: ShadcnConfig = defaultConfig): IGeneratedFile {
   const tailwindConfig = {
     darkMode: ['class'],
-    content: [
-      './pages/**/*.{ts,tsx}',
-      './components/**/*.{ts,tsx}',
-      './app/**/*.{ts,tsx}',
-      './src/**/*.{ts,tsx}',
-    ],
+    content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
     prefix: config.prefix,
     theme: {
       container: {
         center: true,
         padding: '2rem',
         screens: {
-          '2xl': '1400px'
-        }
+          '2xl': '1400px',
+        },
       },
       extend: {
         colors: {
@@ -308,62 +335,62 @@ export function generateTailwindConfig(config: ShadcnConfig = defaultConfig): IG
           foreground: 'hsl(var(--foreground))',
           primary: {
             DEFAULT: 'hsl(var(--primary))',
-            foreground: 'hsl(var(--primary-foreground))'
+            foreground: 'hsl(var(--primary-foreground))',
           },
           secondary: {
             DEFAULT: 'hsl(var(--secondary))',
-            foreground: 'hsl(var(--secondary-foreground))'
+            foreground: 'hsl(var(--secondary-foreground))',
           },
           destructive: {
             DEFAULT: 'hsl(var(--destructive))',
-            foreground: 'hsl(var(--destructive-foreground))'
+            foreground: 'hsl(var(--destructive-foreground))',
           },
           muted: {
             DEFAULT: 'hsl(var(--muted))',
-            foreground: 'hsl(var(--muted-foreground))'
+            foreground: 'hsl(var(--muted-foreground))',
           },
           accent: {
             DEFAULT: 'hsl(var(--accent))',
-            foreground: 'hsl(var(--accent-foreground))'
+            foreground: 'hsl(var(--accent-foreground))',
           },
           popover: {
             DEFAULT: 'hsl(var(--popover))',
-            foreground: 'hsl(var(--popover-foreground))'
+            foreground: 'hsl(var(--popover-foreground))',
           },
           card: {
             DEFAULT: 'hsl(var(--card))',
-            foreground: 'hsl(var(--card-foreground))'
-          }
+            foreground: 'hsl(var(--card-foreground))',
+          },
         },
         borderRadius: {
           lg: 'var(--radius)',
           md: 'calc(var(--radius) - 2px)',
-          sm: 'calc(var(--radius) - 4px)'
+          sm: 'calc(var(--radius) - 4px)',
         },
         keyframes: {
           'accordion-down': {
             from: { height: '0' },
-            to: { height: 'var(--radix-accordion-content-height)' }
+            to: { height: 'var(--radix-accordion-content-height)' },
           },
           'accordion-up': {
             from: { height: 'var(--radix-accordion-content-height)' },
-            to: { height: '0' }
-          }
+            to: { height: '0' },
+          },
         },
         animation: {
           'accordion-down': 'accordion-down 0.2s ease-out',
-          'accordion-up': 'accordion-up 0.2s ease-out'
-        }
-      }
+          'accordion-up': 'accordion-up 0.2s ease-out',
+        },
+      },
     },
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    plugins: [require('tailwindcss-animate')]
+    plugins: [require('tailwindcss-animate')],
   };
 
   return {
     path: 'tailwind.config.js',
     content: `/** @type {import('tailwindcss').Config} */
-module.exports = ${JSON.stringify(tailwindConfig, null, 2)}`
+module.exports = ${JSON.stringify(tailwindConfig, null, 2)}`,
   };
 }
 
@@ -383,8 +410,8 @@ export function generateCssVariables(config: ShadcnConfig = defaultConfig): IGen
       700: '51 65 85',
       800: '30 41 59',
       900: '15 23 42',
-      950: '2 6 23'
-    }
+      950: '2 6 23',
+    },
   };
 
   const css = `@tailwind base;
@@ -449,7 +476,7 @@ export function generateCssVariables(config: ShadcnConfig = defaultConfig): IGen
 
   return {
     path: config.tailwind.css,
-    content: css
+    content: css,
   };
 }
 
@@ -466,7 +493,7 @@ export function cn(...inputs: ClassValue[]) {
 
   return {
     path: 'lib/utils.ts',
-    content: utils
+    content: utils,
   };
 }
 
@@ -483,6 +510,6 @@ export function generateShadcnSetup(
     generatePackageJson(framework, projectName, config, additionalDependencies),
     generateTailwindConfig(config),
     generateCssVariables(config),
-    generateUtilsFile(config)
+    generateUtilsFile(config),
   ];
 }

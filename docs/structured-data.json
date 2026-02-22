@@ -1,1 +1,63 @@
-{"@context": "https://schema.org", "@type": "WebApplication", "name": "UIForge MCP Server - Interactive Documentation", "description": "Professional interactive documentation for UIForge MCP Server with 13 AI-powered tools for code generation, design, and development. Features dark mode, accessibility, and modern UI/UX.", "url": "https://uiforge-mcp.dev/docs", "applicationCategory": "DeveloperApplication", "operatingSystem": "Web Browser", "browserRequirements": "HTML5, CSS3, JavaScript ES6+", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock"}, "featureList": ["13 AI-Powered Tools", "Dark Mode Support", "WCAG 2.1 AA Accessibility", "SEO Optimization", "Responsive Design", "Real-time Search", "Advanced Filtering", "Interactive Modals", "Copy to Clipboard", "Keyboard Navigation"], "screenshot": [{"@type": "ImageObject", "url": "https://uiforge-mcp.dev/screenshots/interactive-docs-hero.png", "caption": "UIForge MCP Interactive Documentation - Dark Mode", "width": "1920", "height": "1080"}], "softwareVersion": "0.4.1", "dateModified": "2025-01-15", "author": {"@type": "Organization", "name": "UIForge MCP Server", "url": "https://uiforge-mcp.dev", "logo": {"@type": "ImageObject", "url": "https://uiforge-mcp.dev/assets/anvil-logo.svg", "caption": "UIForge MCP Server Logo", "width": "417", "height": "417"}}, "publisher": {"@type": "Organization", "name": "UIForge MCP Server", "url": "https://uiforge-mcp.dev"}, "aggregateRating": {"@type": "AggregateRating", "ratingValue": "4.9", "ratingCount": "127", "bestRating": "5", "worstRating": "1"}}
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "UIForge MCP Server - Interactive Documentation",
+  "description": "Professional interactive documentation for UIForge MCP Server with 13 AI-powered tools for code generation, design, and development. Features dark mode, accessibility, and modern UI/UX.",
+  "url": "https://uiforge-mcp.dev/docs",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web Browser",
+  "browserRequirements": "HTML5, CSS3, JavaScript ES6+",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock"
+  },
+  "featureList": [
+    "13 AI-Powered Tools",
+    "Dark Mode Support",
+    "WCAG 2.1 AA Accessibility",
+    "SEO Optimization",
+    "Responsive Design",
+    "Real-time Search",
+    "Advanced Filtering",
+    "Interactive Modals",
+    "Copy to Clipboard",
+    "Keyboard Navigation"
+  ],
+  "screenshot": [
+    {
+      "@type": "ImageObject",
+      "url": "https://uiforge-mcp.dev/screenshots/interactive-docs-hero.png",
+      "caption": "UIForge MCP Interactive Documentation - Dark Mode",
+      "width": "1920",
+      "height": "1080"
+    }
+  ],
+  "softwareVersion": "0.4.1",
+  "dateModified": "2025-01-15",
+  "author": {
+    "@type": "Organization",
+    "name": "UIForge MCP Server",
+    "url": "https://uiforge-mcp.dev",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://uiforge-mcp.dev/assets/anvil-logo.svg",
+      "caption": "UIForge MCP Server Logo",
+      "width": "417",
+      "height": "417"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "UIForge MCP Server",
+    "url": "https://uiforge-mcp.dev"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "ratingCount": "127",
+    "bestRating": "5",
+    "worstRating": "1"
+  }
+}

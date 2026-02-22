@@ -120,7 +120,8 @@ export function cleanJsxSyntax(jsxCode: string): string {
  * autofocus={true} → autofocus, autofocus={false} → (removed with space preserved)
  */
 function collapseHtmlBooleans(code: string): string {
-  const htmlBooleans = 'autofocus|readonly|checked|spellcheck|contenteditable|disabled|required|selected|multiple|autoplay|controls|loop|muted|hidden|defer|async|novalidate|open|reversed|inert|itemscope';
+  const htmlBooleans =
+    'autofocus|readonly|checked|spellcheck|contenteditable|disabled|required|selected|multiple|autoplay|controls|loop|muted|hidden|defer|async|novalidate|open|reversed|inert|itemscope';
   return code
     .replace(new RegExp(`\\s+(${htmlBooleans})=\\{true\\}`, 'g'), (_, attr) => ` ${attr}`)
     .replace(new RegExp(`\\s+(${htmlBooleans})=\\{false\\}`, 'g'), () => ' ');
@@ -173,9 +174,20 @@ export function htmlToJsxAttributes(attributes: Record<string, string>): string 
   // Boolean HTML attributes that render without a value when present
   // Note: readonly/autofocus excluded — tests expect them to keep their value (readOnly="")
   const booleanAttrs = new Set([
-    'disabled', 'required', 'checked', 'selected', 'multiple',
-    'autoplay', 'controls', 'loop',
-    'muted', 'hidden', 'defer', 'async', 'open', 'reversed',
+    'disabled',
+    'required',
+    'checked',
+    'selected',
+    'multiple',
+    'autoplay',
+    'controls',
+    'loop',
+    'muted',
+    'hidden',
+    'defer',
+    'async',
+    'open',
+    'reversed',
   ]);
 
   return Object.entries(attributes)
@@ -195,10 +207,24 @@ export function htmlToJsxAttributes(attributes: Record<string, string>): string 
 export function convertStyleObjectToString(styleObject: Record<string, string | number>): string {
   // CSS properties that take unitless numeric values
   const unitlessProperties = new Set([
-    'z-index', 'opacity', 'flex', 'flex-grow', 'flex-shrink', 'order',
-    'line-height', 'font-weight', 'column-count', 'fill-opacity',
-    'stroke-opacity', 'stroke-dashoffset', 'stroke-width', 'tab-size',
-    'counter-increment', 'counter-reset', 'zoom', 'animation-iteration-count',
+    'z-index',
+    'opacity',
+    'flex',
+    'flex-grow',
+    'flex-shrink',
+    'order',
+    'line-height',
+    'font-weight',
+    'column-count',
+    'fill-opacity',
+    'stroke-opacity',
+    'stroke-dashoffset',
+    'stroke-width',
+    'tab-size',
+    'counter-increment',
+    'counter-reset',
+    'zoom',
+    'animation-iteration-count',
   ]);
 
   return Object.entries(styleObject)
@@ -222,7 +248,7 @@ export function parseStyleString(styleString: string): Record<string, string> {
 
   if (!styleString) return styles;
 
-  styleString.split(';').forEach(rule => {
+  styleString.split(';').forEach((rule) => {
     const colonIndex = rule.indexOf(':');
     if (colonIndex === -1) return;
     const property = rule.slice(0, colonIndex).trim();

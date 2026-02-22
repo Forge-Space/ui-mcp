@@ -22,12 +22,7 @@ export function registerSubmitFeedback(server: McpServer): void {
     'Submit feedback on a previously generated UI component or page template. This helps UIForge learn your preferences and improve future generations.',
     {
       generation_id: z.string().describe('The ID of the generation to provide feedback for'),
-      rating: z
-        .number()
-        .min(1)
-        .max(10)
-        .int()
-        .describe('Rating from 1 (poor) to 10 (excellent)'),
+      rating: z.number().min(1).max(10).int().describe('Rating from 1 (poor) to 10 (excellent)'),
       feedback_type: z
         .enum(['explicit', 'implicit'])
         .describe('Type of feedback: explicit (user-provided) or implicit (behavior-based)'),
@@ -35,7 +30,7 @@ export function registerSubmitFeedback(server: McpServer): void {
       issues: z.array(z.string()).optional().describe('List of identified issues in the generated component'),
       strengths: z.array(z.string()).optional().describe('List of identified strengths in the generated component'),
       component_type: z.string().optional().describe('Type of component (e.g., button, form, layout)'),
-      framework: z.string().optional().describe('Target framework (e.g., react, vue, svelte)')
+      framework: z.string().optional().describe('Target framework (e.g., react, vue, svelte)'),
     },
     ({ generation_id, rating, feedback_type, comments, issues, strengths, component_type, framework }) => {
       try {

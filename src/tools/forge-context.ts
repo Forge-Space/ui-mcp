@@ -10,13 +10,11 @@ const getProjectContextSchema = {
 const updateProjectContextSchema = {
   project: z
     .string()
-    .describe('Project slug (e.g. forge-patterns, uiforge-webapp, uiforge-mcp, mcp-gateway). Use a short kebab-case identifier for new projects.'),
-  title: z
-    .string()
-    .describe('Human-readable project title (e.g. "forge-patterns Project Context")'),
-  description: z
-    .string()
-    .describe('One-sentence description of the project for the resource listing'),
+    .describe(
+      'Project slug (e.g. forge-patterns, uiforge-webapp, uiforge-mcp, mcp-gateway). Use a short kebab-case identifier for new projects.'
+    ),
+  title: z.string().describe('Human-readable project title (e.g. "forge-patterns Project Context")'),
+  description: z.string().describe('One-sentence description of the project for the resource listing'),
   content: z
     .string()
     .describe('Full markdown content of the project context document. This is the complete source of truth.'),
@@ -70,19 +68,19 @@ The forge-context system provides:
           content: [
             {
               type: 'text',
-              text: placeholderContent
-            }
-          ]
+              text: placeholderContent,
+            },
+          ],
         };
       } catch (error) {
         return {
           content: [
             {
               type: 'text',
-              text: `Error: ${error instanceof Error ? error.message : String(error)}`
-            }
+              text: `Error: ${error instanceof Error ? error.message : String(error)}`,
+            },
           ],
-          isError: true
+          isError: true,
         };
       }
     }
@@ -112,19 +110,19 @@ Note: This is a placeholder response. The actual context update will be availabl
           content: [
             {
               type: 'text',
-              text: result
-            }
-          ]
+              text: result,
+            },
+          ],
         };
       } catch (error) {
         return {
           content: [
             {
               type: 'text',
-              text: `Error: ${error instanceof Error ? error.message : String(error)}`
-            }
+              text: `Error: ${error instanceof Error ? error.message : String(error)}`,
+            },
           ],
-          isError: true
+          isError: true,
         };
       }
     }
@@ -161,19 +159,19 @@ Note: This is a placeholder response. The actual context update will be availabl
           content: [
             {
               type: 'text',
-              text: projectList
-            }
-          ]
+              text: projectList,
+            },
+          ],
         };
       } catch (error) {
         return {
           content: [
             {
               type: 'text',
-              text: `Error: ${error instanceof Error ? error.message : String(error)}`
-            }
+              text: `Error: ${error instanceof Error ? error.message : String(error)}`,
+            },
           ],
-          isError: true
+          isError: true,
         };
       }
     }

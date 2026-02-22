@@ -4,46 +4,46 @@ on:
   workflow_call:
     inputs:
       project-type:
-        description: 'Type of project (gateway, webapp, mcp)'
+        description: "Type of project (gateway, webapp, mcp)"
         required: false
-        default: 'gateway'
+        default: "gateway"
       node-version:
-        description: 'Node.js version to use'
+        description: "Node.js version to use"
         required: false
-        default: '22'
+        default: "22"
       python-version:
-        description: 'Python version to use'
+        description: "Python version to use"
         required: false
-        default: '3.12'
+        default: "3.12"
       enable-docker:
-        description: 'Enable Docker builds'
+        description: "Enable Docker builds"
         required: false
         default: true
       enable-security:
-        description: 'Enable security scanning'
+        description: "Enable security scanning"
         required: false
         default: true
       enable-coverage:
-        description: 'Enable coverage reporting'
+        description: "Enable coverage reporting"
         required: false
         default: true
       coverage-threshold:
-        description: 'Coverage threshold percentage'
+        description: "Coverage threshold percentage"
         required: false
-        default: '80'
+        default: "80"
       test-parallel:
-        description: 'Run tests in parallel'
+        description: "Run tests in parallel"
         required: false
         default: true
     secrets:
       CODECOV_TOKEN:
-        description: 'Codecov token'
+        description: "Codecov token"
         required: false
       SNYK_TOKEN:
-        description: 'Snyk token'
+        description: "Snyk token"
         required: false
       GITHUB_TOKEN:
-        description: 'GitHub token'
+        description: "GitHub token"
         required: false
 
 jobs:
@@ -62,7 +62,7 @@ jobs:
     with:
       python-version: ${{ inputs.python-version }}
       enable-cache: true
-      requirements-files: 'requirements.txt apps/tool-router/requirements.txt'
+      requirements-files: "requirements.txt apps/tool-router/requirements.txt"
     if: inputs.project-type == 'gateway'
 
   # Linting jobs
@@ -80,7 +80,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ inputs.python-version }}
-          cache: 'pip'
+          cache: "pip"
 
       - name: Install dependencies
         run: |
@@ -113,7 +113,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ inputs.node-version }}
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install dependencies
         run: |
@@ -154,7 +154,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ inputs.python-version }}
-          cache: 'pip'
+          cache: "pip"
 
       - name: Install dependencies
         run: |
@@ -175,9 +175,9 @@ jobs:
         if: inputs.enable-coverage
         uses: ./.github/workflows/reusable/upload-coverage.yml
         with:
-          coverage-files: './coverage.xml,./htmlcov/'
-          flags: 'python-tests'
-          name: 'python-coverage'
+          coverage-files: "./coverage.xml,./htmlcov/"
+          flags: "python-tests"
+          name: "python-coverage"
         secrets:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
@@ -195,7 +195,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ inputs.node-version }}
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install dependencies
         run: |
@@ -209,9 +209,9 @@ jobs:
         if: inputs.enable-coverage
         uses: ./.github/workflows/reusable/upload-coverage.yml
         with:
-          coverage-files: './coverage/lcov.info,./coverage/'
-          flags: 'typescript-tests'
-          name: 'typescript-coverage'
+          coverage-files: "./coverage/lcov.info,./coverage/"
+          flags: "typescript-tests"
+          name: "typescript-coverage"
         secrets:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
@@ -254,7 +254,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ inputs.node-version }}
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install dependencies
         run: |

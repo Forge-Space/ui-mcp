@@ -113,7 +113,7 @@ export function LoginForm() {
       </form>
     </Card>
   )
-}`
+}`,
     },
     {
       path: 'components/auth/login-form.test.tsx',
@@ -168,9 +168,9 @@ describe("LoginForm", () => {
     expect(passwordInput).toHaveAttribute("required")
     expect(submitButton).toHaveAttribute("type", "submit")
   })
-})`
-    }
-  ]
+})`,
+    },
+  ],
 };
 
 /**
@@ -347,9 +347,9 @@ const ListItem = React.forwardRef<
     </li>
   )
 })
-ListItem.displayName = "ListItem"`
-    }
-  ]
+ListItem.displayName = "ListItem"`,
+    },
+  ],
 };
 
 /**
@@ -489,7 +489,7 @@ export {
   ToastDescription,
   ToastClose,
   ToastAction,
-}`
+}`,
     },
     {
       path: 'components/ui/use-toast.ts',
@@ -680,9 +680,9 @@ function useToast() {
   }
 }
 
-export { useToast, toast }`
-    }
-  ]
+export { useToast, toast }`,
+    },
+  ],
 };
 
 /**
@@ -702,7 +702,7 @@ export function getShadcnPatterns(): ShadcnPattern[] {
  */
 export function getShadcnPattern(name: string): ShadcnPattern | undefined {
   const patterns = getShadcnPatterns();
-  return patterns.find(pattern => pattern.name.toLowerCase() === name.toLowerCase());
+  return patterns.find((pattern) => pattern.name.toLowerCase() === name.toLowerCase());
 }
 
 /**
@@ -719,9 +719,9 @@ export function generateShadcnPattern(
     throw new Error(`Pattern "${patternName}" not found`);
   }
 
-  return pattern.files.map(file => ({
+  return pattern.files.map((file) => ({
     path: file.path,
-    content: applyDesignContextToPattern(file.content, designContext, customizations)
+    content: applyDesignContextToPattern(file.content, designContext, customizations),
   }));
 }
 

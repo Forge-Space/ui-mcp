@@ -41,7 +41,7 @@ describe('refine_component tool', () => {
     const validInput = {
       code: 'export default function Button() { return <button>Click</button>; }',
       framework: 'react',
-      improvement_request: 'Make this button more accessible'
+      improvement_request: 'Make this button more accessible',
     };
 
     expect(() => {
@@ -62,8 +62,8 @@ describe('refine_component tool', () => {
       component_type: 'button',
       design_context: {
         colors: { primary: '#blue', secondary: '#gray' },
-        typography: { fontFamily: 'Inter' }
-      }
+        typography: { fontFamily: 'Inter' },
+      },
     };
 
     expect(() => {
@@ -77,7 +77,7 @@ describe('refine_component tool', () => {
     const invalidInput = {
       code: 'export default function Button() { return <button>Click</button>; }',
       framework: 'invalid-framework',
-      improvement_request: 'Make this better'
+      improvement_request: 'Make this better',
     };
 
     expect(() => {
@@ -88,7 +88,7 @@ describe('refine_component tool', () => {
   it('should require code parameter', () => {
     const invalidInput = {
       framework: 'react',
-      improvement_request: 'Make this better'
+      improvement_request: 'Make this better',
     };
 
     expect(() => {
@@ -101,7 +101,7 @@ describe('refine_component tool', () => {
   it('should require improvement_request parameter', () => {
     const invalidInput = {
       code: 'export default function Button() { return <button>Click</button>; }',
-      framework: 'react'
+      framework: 'react',
     };
 
     expect(() => {
