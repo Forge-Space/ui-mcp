@@ -126,7 +126,7 @@ jobs:
       
     strategy:
       matrix:
-        language: ['typescript', 'javascript']
+        language: ['javascript-typescript']
         
     steps:
       - name: Checkout repository
