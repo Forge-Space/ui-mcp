@@ -24,6 +24,7 @@ const config: Config = {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
   coverageProvider: 'v8',
+  coverageReporters: ['text', 'lcov', 'json-summary'],
   collectCoverageFrom: [
     'src/lib/**/*.ts',
     'src/tools/**/*.ts',
