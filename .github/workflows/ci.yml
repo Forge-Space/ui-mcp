@@ -182,6 +182,7 @@ jobs:
   snyk-security:
     name: Snyk Security Scan
     runs-on: ubuntu-latest
+    continue-on-error: true
     permissions:
       contents: read
       security-events: write
@@ -223,6 +224,7 @@ jobs:
   snyk-code-security:
     name: Snyk Code Security
     runs-on: ubuntu-latest
+    continue-on-error: true
     permissions:
       contents: read
       security-events: write

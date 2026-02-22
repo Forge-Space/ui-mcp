@@ -62,14 +62,14 @@ jobs:
           fetch-depth: 0
 
       - name: Check PR description
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
         run: |
-          DESCRIPTION="${{ github.event.pull_request.body }}"
-          if [[ -z "$DESCRIPTION" || ${#DESCRIPTION} -lt 20 ]]; then
+          if [[ -z "$PR_BODY" || ${#PR_BODY} -lt 20 ]]; then
             echo "❌ PR must have a description (at least 20 characters)"
             exit 1
           fi
-          # Sanitize description to prevent script injection
-          echo "✅ PR description validated (${#DESCRIPTION} characters)"
+          echo "✅ PR description validated (${#PR_BODY} characters)"
 
       - name: Check for tests
         run: |

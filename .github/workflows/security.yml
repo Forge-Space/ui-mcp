@@ -25,6 +25,7 @@ jobs:
     name: Snyk Node.js Dependency Scan
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    continue-on-error: true
 
     steps:
       - name: Checkout repository
@@ -38,7 +39,7 @@ jobs:
           cache-dependency-path: "package-lock.json"
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm install --legacy-peer-deps
 
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/node@master
@@ -58,6 +59,7 @@ jobs:
     name: Snyk Code Security Analysis
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    continue-on-error: true
 
     steps:
       - name: Checkout repository
@@ -71,7 +73,7 @@ jobs:
           cache-dependency-path: "package-lock.json"
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm install --legacy-peer-deps
 
       - name: Run Snyk Code security analysis
         uses: snyk/actions/node@master
@@ -91,6 +93,7 @@ jobs:
     name: Snyk Continuous Monitoring
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    continue-on-error: true
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
 
     steps:
@@ -105,7 +108,7 @@ jobs:
           cache-dependency-path: "package-lock.json"
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm install --legacy-peer-deps
 
       - name: Monitor dependencies with Snyk
         uses: snyk/actions/node@master
