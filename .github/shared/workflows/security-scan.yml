@@ -73,4 +73,3 @@ jobs:
           base: ${{ github.event_name == 'push' && github.event.before || github.event.repository.default_branch }}
           head: ${{ github.event.name == 'push' && github.sha || 'HEAD' }}
           extra_args: --only-verified
-
