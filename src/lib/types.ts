@@ -142,7 +142,20 @@ export type PageTemplateType =
   | 'ecommerce_plp'
   | 'ecommerce_pdp'
   | 'ecommerce_cart'
-  | 'ecommerce_checkout';
+  | 'ecommerce_checkout'
+  | 'ai_chat'
+  | 'changelog'
+  | 'team_members'
+  | 'settings_billing'
+  | 'api_keys'
+  | 'analytics'
+  | 'profile'
+  | 'file_manager'
+  | 'kanban'
+  | 'calendar'
+  | 'docs'
+  | 'faq'
+  | 'blog_post';
 
 export type ProjectType = 'default' | 'ecommerce';
 

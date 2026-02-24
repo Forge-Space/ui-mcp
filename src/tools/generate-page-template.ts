@@ -5,6 +5,21 @@ import type { IDesignContext, IGeneratedFile, PageTemplateType } from '../lib/ty
 import { initializeRegistry } from '../lib/design-references/component-registry/init.js';
 import { getRegistrySize } from '../lib/design-references/component-registry/index.js';
 import { createLogger } from '../lib/logger.js';
+import {
+  getAiChatBody,
+  getChangelogBody,
+  getTeamMembersBody,
+  getSettingsBillingBody,
+  getApiKeysBody,
+  getAnalyticsBody,
+  getProfileBody,
+  getFileManagerBody,
+  getKanbanBody,
+  getCalendarBody,
+  getDocsBody,
+  getFaqBody,
+  getBlogPostBody,
+} from './page-template-bodies.js';
 
 const logger = createLogger('generate-page-template');
 
@@ -25,6 +40,19 @@ const inputSchema = {
       'ecommerce_pdp',
       'ecommerce_cart',
       'ecommerce_checkout',
+      'ai_chat',
+      'changelog',
+      'team_members',
+      'settings_billing',
+      'api_keys',
+      'analytics',
+      'profile',
+      'file_manager',
+      'kanban',
+      'calendar',
+      'docs',
+      'faq',
+      'blog_post',
     ])
     .describe('Type of page template to generate'),
   framework: z.enum(['react', 'nextjs', 'vue', 'angular', 'svelte', 'html']).describe('Target framework'),
@@ -1156,6 +1184,32 @@ function getTemplateBody(template: PageTemplateType, darkMode: boolean, appName:
       </div>
     </div>`;
 
+    case 'ai_chat':
+      return getAiChatBody(dk, appName);
+    case 'changelog':
+      return getChangelogBody(dk, appName);
+    case 'team_members':
+      return getTeamMembersBody(dk, appName);
+    case 'settings_billing':
+      return getSettingsBillingBody(dk, appName);
+    case 'api_keys':
+      return getApiKeysBody(dk, appName);
+    case 'analytics':
+      return getAnalyticsBody(dk, appName);
+    case 'profile':
+      return getProfileBody(dk);
+    case 'file_manager':
+      return getFileManagerBody(dk, appName);
+    case 'kanban':
+      return getKanbanBody(dk);
+    case 'calendar':
+      return getCalendarBody(dk);
+    case 'docs':
+      return getDocsBody(dk, appName);
+    case 'faq':
+      return getFaqBody(dk, appName);
+    case 'blog_post':
+      return getBlogPostBody(dk, appName);
     default:
       return `    <div className="p-8"><p>Template "${template}" placeholder</p></div>`;
   }
