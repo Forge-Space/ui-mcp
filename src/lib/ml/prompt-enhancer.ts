@@ -170,10 +170,7 @@ export function enhanceWithRules(
   };
 }
 
-function enrichWithRAG(
-  _prompt: string,
-  _context?: IEnhancementContext
-): { text: string; additions: string[] } | null {
+function enrichWithRAG(_prompt: string, _context?: IEnhancementContext): { text: string; additions: string[] } | null {
   const db = getDatabase();
   const patternCount = getEmbeddingCount('pattern', db);
   const ruleCount = getEmbeddingCount('rule', db);
@@ -190,10 +187,7 @@ function enrichWithRAG(
  * Async RAG-enhanced prompt enhancement.
  * Retrieves relevant ARIA patterns and a11y rules to enrich the prompt.
  */
-export async function enhancePromptWithRAG(
-  prompt: string,
-  context?: IEnhancementContext
-): Promise<IEnhancedPrompt> {
+export async function enhancePromptWithRAG(prompt: string, context?: IEnhancementContext): Promise<IEnhancedPrompt> {
   const start = Date.now();
 
   // First, apply rule-based enhancement
@@ -217,13 +211,15 @@ export async function enhancePromptWithRAG(
       const patterns = semanticSearch(queryVector, 'pattern', db, 2, 0.4);
       if (patterns.length > 0) {
         const patternHints = patterns
-          .map(p => {
+          .map((p) => {
             const rolesMatch = p.text.match(/Roles:\s*([^.]+)/);
             const keysMatch = p.text.match(/Keys:\s*(.+)/);
             return [
               rolesMatch ? `Use roles: ${rolesMatch[1].trim()}` : '',
               keysMatch ? `Keyboard: ${keysMatch[1].trim()}` : '',
-            ].filter(Boolean).join('. ');
+            ]
+              .filter(Boolean)
+              .join('. ');
           })
           .filter(Boolean);
 
@@ -238,7 +234,7 @@ export async function enhancePromptWithRAG(
       const rules = semanticSearch(queryVector, 'rule', db, 3, 0.4);
       if (rules.length > 0) {
         const ruleHints = rules
-          .map(r => {
+          .map((r) => {
             const fixMatch = r.text.match(/Fix:\s*(.+)/);
             return fixMatch ? fixMatch[1].trim() : '';
           })

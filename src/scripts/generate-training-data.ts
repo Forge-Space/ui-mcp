@@ -15,7 +15,6 @@ import { join, resolve } from 'node:path';
 import pino from 'pino';
 import { getDatabase } from '../lib/design-references/database/store.js';
 import { loadEmbeddings, getEmbeddingCount } from '../lib/ml/embedding-store.js';
-import type { AdapterType } from '../lib/ml/types.js';
 
 const logger = pino({ name: 'generate-training-data' });
 
@@ -37,7 +36,7 @@ function writeJsonl(rows: TrainingRow[], filename: string): number {
   if (rows.length === 0) return 0;
   ensureOutputDir();
   const filePath = join(OUTPUT_DIR, filename);
-  const lines = rows.map(r => JSON.stringify(r)).join('\n');
+  const lines = rows.map((r) => JSON.stringify(r)).join('\n');
   writeFileSync(filePath, `${lines}\n`, 'utf-8');
   logger.info({ path: filePath, count: rows.length }, 'Training data written');
   return rows.length;
@@ -80,7 +79,8 @@ function generateQualityScorerData(): number {
   }
 
   const rows: TrainingRow[] = [];
-  const instruction = 'Rate the quality of this UI component code on a scale of 0-10. Consider accessibility, responsiveness, semantic HTML, and code structure.';
+  const instruction =
+    'Rate the quality of this UI component code on a scale of 0-10. Consider accessibility, responsiveness, semantic HTML, and code structure.';
 
   const components = loadEmbeddings('component', db);
   const examples = loadEmbeddings('example', db);
@@ -160,7 +160,8 @@ function generatePromptEnhancerData(): number {
   }
 
   const rows: TrainingRow[] = [];
-  const instruction = 'Improve the following UI generation prompt to produce better, more specific results with accessibility, responsiveness, and good design practices.';
+  const instruction =
+    'Improve the following UI generation prompt to produce better, more specific results with accessibility, responsiveness, and good design practices.';
 
   const allPrompts = [
     ...loadEmbeddings('prompt', db),
@@ -182,26 +183,86 @@ function generatePromptEnhancerData(): number {
   }
 
   const templatePairs: Array<[string, string]> = [
-    ['button', 'Create an accessible button component with hover, focus, and active states. Include ARIA labels, keyboard navigation support, and responsive sizing across mobile, tablet, and desktop.'],
-    ['modal', 'Create a modal dialog that traps focus within the dialog, handles Escape key to close, restores focus on close, and uses role=dialog with aria-modal=true. Make it responsive with mobile-first design.'],
-    ['form', 'Create a login form with proper label associations, validation feedback, logical tab order, and aria-required attributes. Include responsive layout and focus-visible styles.'],
-    ['card', 'Create a card component with consistent padding, clear content hierarchy with heading, body, and action areas. Use semantic HTML with article element and responsive spacing.'],
-    ['nav', 'Create a navigation bar with skip navigation link, clear active state indicators, mobile menu toggle, and proper landmark roles. Support keyboard navigation between items.'],
-    ['table', 'Create a data table with proper scope attributes on headers, sortable column indicators, responsive overflow handling, and caption for accessibility.'],
-    ['tabs', 'Create a tab interface with tablist, tab, and tabpanel roles. Support arrow key navigation between tabs, Tab to panel, and Home/End for first/last tab.'],
-    ['dropdown', 'Create a dropdown menu with proper ARIA roles (menu, menuitem), keyboard navigation (arrow keys, Enter to activate, Escape to close), and focus management.'],
-    ['sidebar', 'Create a collapsible sidebar with proper landmark role (aside), keyboard navigation, and responsive breakpoint behavior. Support aria-expanded state.'],
-    ['hero', 'Create a hero section with attention-grabbing layout, clear CTA, balanced whitespace, optimized image loading, and proper heading hierarchy.'],
-    ['toast', 'Create a toast notification with role=status or alert, auto-dismiss timer, Escape to dismiss, and focus management. Ensure it does not disrupt screen reader flow.'],
-    ['accordion', 'Create an accordion with heading/button structure, Enter/Space to toggle, Up/Down to navigate, Home/End for first/last, and aria-expanded state management.'],
-    ['carousel', 'Create an accessible carousel with Tab to controls, arrow keys to navigate slides, Enter to activate, and proper region/group roles with live region announcements.'],
-    ['checkbox', 'Create a checkbox group with proper grouping, Space to toggle, Tab to navigate, and aria-checked state. Support indeterminate state for parent checkboxes.'],
-    ['radio', 'Create a radio group with radiogroup role, arrow keys to select within group, Tab to enter/leave group, and proper labeling.'],
-    ['slider', 'Create a range slider with aria-valuemin, aria-valuemax, aria-valuenow, arrow keys to adjust, Home/End for min/max, and Page Up/Down for larger steps.'],
-    ['switch', 'Create a toggle switch with switch role, Space/Enter to toggle, clear on/off visual indicators, and aria-checked state.'],
-    ['breadcrumb', 'Create a breadcrumb navigation with nav landmark, aria-label="Breadcrumb", ordered list structure, and aria-current="page" on current item.'],
-    ['tooltip', 'Create a tooltip that appears on hover and focus, dismisses on Escape, uses role=tooltip, and is associated via aria-describedby.'],
-    ['combobox', 'Create an autocomplete combobox with listbox popup, Down to open, Up/Down to navigate options, Enter to select, and Escape to close.'],
+    [
+      'button',
+      'Create an accessible button component with hover, focus, and active states. Include ARIA labels, keyboard navigation support, and responsive sizing across mobile, tablet, and desktop.',
+    ],
+    [
+      'modal',
+      'Create a modal dialog that traps focus within the dialog, handles Escape key to close, restores focus on close, and uses role=dialog with aria-modal=true. Make it responsive with mobile-first design.',
+    ],
+    [
+      'form',
+      'Create a login form with proper label associations, validation feedback, logical tab order, and aria-required attributes. Include responsive layout and focus-visible styles.',
+    ],
+    [
+      'card',
+      'Create a card component with consistent padding, clear content hierarchy with heading, body, and action areas. Use semantic HTML with article element and responsive spacing.',
+    ],
+    [
+      'nav',
+      'Create a navigation bar with skip navigation link, clear active state indicators, mobile menu toggle, and proper landmark roles. Support keyboard navigation between items.',
+    ],
+    [
+      'table',
+      'Create a data table with proper scope attributes on headers, sortable column indicators, responsive overflow handling, and caption for accessibility.',
+    ],
+    [
+      'tabs',
+      'Create a tab interface with tablist, tab, and tabpanel roles. Support arrow key navigation between tabs, Tab to panel, and Home/End for first/last tab.',
+    ],
+    [
+      'dropdown',
+      'Create a dropdown menu with proper ARIA roles (menu, menuitem), keyboard navigation (arrow keys, Enter to activate, Escape to close), and focus management.',
+    ],
+    [
+      'sidebar',
+      'Create a collapsible sidebar with proper landmark role (aside), keyboard navigation, and responsive breakpoint behavior. Support aria-expanded state.',
+    ],
+    [
+      'hero',
+      'Create a hero section with attention-grabbing layout, clear CTA, balanced whitespace, optimized image loading, and proper heading hierarchy.',
+    ],
+    [
+      'toast',
+      'Create a toast notification with role=status or alert, auto-dismiss timer, Escape to dismiss, and focus management. Ensure it does not disrupt screen reader flow.',
+    ],
+    [
+      'accordion',
+      'Create an accordion with heading/button structure, Enter/Space to toggle, Up/Down to navigate, Home/End for first/last, and aria-expanded state management.',
+    ],
+    [
+      'carousel',
+      'Create an accessible carousel with Tab to controls, arrow keys to navigate slides, Enter to activate, and proper region/group roles with live region announcements.',
+    ],
+    [
+      'checkbox',
+      'Create a checkbox group with proper grouping, Space to toggle, Tab to navigate, and aria-checked state. Support indeterminate state for parent checkboxes.',
+    ],
+    [
+      'radio',
+      'Create a radio group with radiogroup role, arrow keys to select within group, Tab to enter/leave group, and proper labeling.',
+    ],
+    [
+      'slider',
+      'Create a range slider with aria-valuemin, aria-valuemax, aria-valuenow, arrow keys to adjust, Home/End for min/max, and Page Up/Down for larger steps.',
+    ],
+    [
+      'switch',
+      'Create a toggle switch with switch role, Space/Enter to toggle, clear on/off visual indicators, and aria-checked state.',
+    ],
+    [
+      'breadcrumb',
+      'Create a breadcrumb navigation with nav landmark, aria-label="Breadcrumb", ordered list structure, and aria-current="page" on current item.',
+    ],
+    [
+      'tooltip',
+      'Create a tooltip that appears on hover and focus, dismisses on Escape, uses role=tooltip, and is associated via aria-describedby.',
+    ],
+    [
+      'combobox',
+      'Create an autocomplete combobox with listbox popup, Down to open, Up/Down to navigate options, Enter to select, and Escape to close.',
+    ],
   ];
 
   for (const [degraded, enhanced] of templatePairs) {
@@ -224,29 +285,95 @@ function generateStyleRecommenderData(): number {
   const tokenCount = getEmbeddingCount('token', db);
 
   const rows: TrainingRow[] = [];
-  const instruction = 'Given the following UI generation request, recommend the best visual style including primary color, font family, spacing, and border radius.';
+  const instruction =
+    'Given the following UI generation request, recommend the best visual style including primary color, font family, spacing, and border radius.';
 
   const industryMappings: Array<{ prompt: string; style: string }> = [
-    { prompt: 'enterprise B2B dashboard for financial data', style: 'primaryColor: #0F172A, fontFamily: Inter, spacing: 16px, borderRadius: 8px, designSystem: fintech' },
-    { prompt: 'consumer mobile app for food delivery', style: 'primaryColor: #DC2626, fontFamily: Poppins, spacing: 16px, borderRadius: 12px, designSystem: ecommerce' },
-    { prompt: 'developer documentation site', style: 'primaryColor: #1E293B, fontFamily: JetBrains Mono, spacing: 12px, borderRadius: 6px, designSystem: primer' },
-    { prompt: 'healthcare patient portal', style: 'primaryColor: #0D9488, fontFamily: Source Sans 3, spacing: 20px, borderRadius: 12px, designSystem: healthcare' },
-    { prompt: 'SaaS analytics dashboard', style: 'primaryColor: #6366F1, fontFamily: Inter, spacing: 16px, borderRadius: 8px, designSystem: saas' },
-    { prompt: 'e-learning platform for students', style: 'primaryColor: #7C3AED, fontFamily: Nunito, spacing: 16px, borderRadius: 16px, designSystem: education' },
-    { prompt: 'creative agency portfolio website', style: 'primaryColor: #1E1E1E, fontFamily: Space Grotesk, spacing: 24px, borderRadius: 4px, designSystem: agency' },
-    { prompt: 'news and media publishing platform', style: 'primaryColor: #EF4444, fontFamily: Merriweather, spacing: 16px, borderRadius: 8px, designSystem: media' },
-    { prompt: 'startup landing page with modern aesthetic', style: 'primaryColor: #8B5CF6, fontFamily: Inter, spacing: 16px, borderRadius: 12px, designSystem: startup' },
-    { prompt: 'corporate intranet for enterprise employees', style: 'primaryColor: #1E40AF, fontFamily: Inter, spacing: 16px, borderRadius: 6px, designSystem: corporate' },
-    { prompt: 'minimalist blog with editorial layout', style: 'primaryColor: #1E1E1E, fontFamily: Playfair Display, spacing: 24px, borderRadius: 0px, designSystem: editorial' },
-    { prompt: 'playful kids education game interface', style: 'primaryColor: #F59E0B, fontFamily: Nunito, spacing: 16px, borderRadius: 20px, designSystem: playful' },
-    { prompt: 'premium luxury brand product showcase', style: 'primaryColor: #1E1E1E, fontFamily: Playfair Display, spacing: 24px, borderRadius: 8px, designSystem: premium' },
-    { prompt: 'futuristic tech product landing page', style: 'primaryColor: #8B5CF6, fontFamily: Space Grotesk, spacing: 16px, borderRadius: 16px, designSystem: futuristic' },
-    { prompt: 'calm meditation and wellness app', style: 'primaryColor: #0EA5E9, fontFamily: Inter, spacing: 24px, borderRadius: 16px, designSystem: wellness' },
-    { prompt: 'bold sports and fitness tracking app', style: 'primaryColor: #EF4444, fontFamily: Inter, spacing: 12px, borderRadius: 4px, designSystem: sports' },
-    { prompt: 'warm coffee shop ordering interface', style: 'primaryColor: #D97706, fontFamily: Poppins, spacing: 16px, borderRadius: 12px, designSystem: food' },
-    { prompt: 'energetic music streaming platform', style: 'primaryColor: #22C55E, fontFamily: Inter, spacing: 12px, borderRadius: 12px, designSystem: music' },
-    { prompt: 'professional law firm website', style: 'primaryColor: #1E3A5F, fontFamily: Merriweather, spacing: 20px, borderRadius: 4px, designSystem: legal' },
-    { prompt: 'real estate property listing platform', style: 'primaryColor: #059669, fontFamily: Inter, spacing: 16px, borderRadius: 8px, designSystem: realestate' },
+    {
+      prompt: 'enterprise B2B dashboard for financial data',
+      style: 'primaryColor: #0F172A, fontFamily: Inter, spacing: 16px, borderRadius: 8px, designSystem: fintech',
+    },
+    {
+      prompt: 'consumer mobile app for food delivery',
+      style: 'primaryColor: #DC2626, fontFamily: Poppins, spacing: 16px, borderRadius: 12px, designSystem: ecommerce',
+    },
+    {
+      prompt: 'developer documentation site',
+      style:
+        'primaryColor: #1E293B, fontFamily: JetBrains Mono, spacing: 12px, borderRadius: 6px, designSystem: primer',
+    },
+    {
+      prompt: 'healthcare patient portal',
+      style:
+        'primaryColor: #0D9488, fontFamily: Source Sans 3, spacing: 20px, borderRadius: 12px, designSystem: healthcare',
+    },
+    {
+      prompt: 'SaaS analytics dashboard',
+      style: 'primaryColor: #6366F1, fontFamily: Inter, spacing: 16px, borderRadius: 8px, designSystem: saas',
+    },
+    {
+      prompt: 'e-learning platform for students',
+      style: 'primaryColor: #7C3AED, fontFamily: Nunito, spacing: 16px, borderRadius: 16px, designSystem: education',
+    },
+    {
+      prompt: 'creative agency portfolio website',
+      style: 'primaryColor: #1E1E1E, fontFamily: Space Grotesk, spacing: 24px, borderRadius: 4px, designSystem: agency',
+    },
+    {
+      prompt: 'news and media publishing platform',
+      style: 'primaryColor: #EF4444, fontFamily: Merriweather, spacing: 16px, borderRadius: 8px, designSystem: media',
+    },
+    {
+      prompt: 'startup landing page with modern aesthetic',
+      style: 'primaryColor: #8B5CF6, fontFamily: Inter, spacing: 16px, borderRadius: 12px, designSystem: startup',
+    },
+    {
+      prompt: 'corporate intranet for enterprise employees',
+      style: 'primaryColor: #1E40AF, fontFamily: Inter, spacing: 16px, borderRadius: 6px, designSystem: corporate',
+    },
+    {
+      prompt: 'minimalist blog with editorial layout',
+      style:
+        'primaryColor: #1E1E1E, fontFamily: Playfair Display, spacing: 24px, borderRadius: 0px, designSystem: editorial',
+    },
+    {
+      prompt: 'playful kids education game interface',
+      style: 'primaryColor: #F59E0B, fontFamily: Nunito, spacing: 16px, borderRadius: 20px, designSystem: playful',
+    },
+    {
+      prompt: 'premium luxury brand product showcase',
+      style:
+        'primaryColor: #1E1E1E, fontFamily: Playfair Display, spacing: 24px, borderRadius: 8px, designSystem: premium',
+    },
+    {
+      prompt: 'futuristic tech product landing page',
+      style:
+        'primaryColor: #8B5CF6, fontFamily: Space Grotesk, spacing: 16px, borderRadius: 16px, designSystem: futuristic',
+    },
+    {
+      prompt: 'calm meditation and wellness app',
+      style: 'primaryColor: #0EA5E9, fontFamily: Inter, spacing: 24px, borderRadius: 16px, designSystem: wellness',
+    },
+    {
+      prompt: 'bold sports and fitness tracking app',
+      style: 'primaryColor: #EF4444, fontFamily: Inter, spacing: 12px, borderRadius: 4px, designSystem: sports',
+    },
+    {
+      prompt: 'warm coffee shop ordering interface',
+      style: 'primaryColor: #D97706, fontFamily: Poppins, spacing: 16px, borderRadius: 12px, designSystem: food',
+    },
+    {
+      prompt: 'energetic music streaming platform',
+      style: 'primaryColor: #22C55E, fontFamily: Inter, spacing: 12px, borderRadius: 12px, designSystem: music',
+    },
+    {
+      prompt: 'professional law firm website',
+      style: 'primaryColor: #1E3A5F, fontFamily: Merriweather, spacing: 20px, borderRadius: 4px, designSystem: legal',
+    },
+    {
+      prompt: 'real estate property listing platform',
+      style: 'primaryColor: #059669, fontFamily: Inter, spacing: 16px, borderRadius: 8px, designSystem: realestate',
+    },
   ];
 
   for (const mapping of industryMappings) {
@@ -297,7 +424,7 @@ function showStats(): void {
     const filePath = join(OUTPUT_DIR, file);
     if (existsSync(filePath)) {
       const content = readFileSync(filePath, 'utf-8');
-      const count = content.split('\n').filter(l => l.trim().length > 0).length;
+      const count = content.split('\n').filter((l) => l.trim().length > 0).length;
       totalRows += count;
       const adapter = file.replace('.jsonl', '');
       // eslint-disable-next-line no-console
@@ -321,7 +448,7 @@ function showStats(): void {
 
 // --- CLI ---
 
-async function main(): Promise<void> {
+function main(): void {
   const args = process.argv.slice(2);
 
   if (args.includes('--stats')) {
@@ -329,9 +456,7 @@ async function main(): Promise<void> {
     return;
   }
 
-  const adapterArg = args.includes('--adapter')
-    ? args[args.indexOf('--adapter') + 1]
-    : undefined;
+  const adapterArg = args.includes('--adapter') ? args[args.indexOf('--adapter') + 1] : undefined;
 
   const start = Date.now();
   let totalGenerated = 0;
@@ -366,7 +491,9 @@ async function main(): Promise<void> {
   showStats();
 }
 
-main().catch(err => {
+try {
+  main();
+} catch (err) {
   logger.error({ error: err }, 'Training data generation failed');
   process.exit(1);
-});
+}

@@ -243,9 +243,12 @@ export async function scoreQualityWithRAG(
         violations++;
       }
       if (ruleId === 'heading-order') {
-        const headings = [...generatedCode.matchAll(/<h([1-6])/gi)].map(m => parseInt(m[1], 10));
+        const headings = [...generatedCode.matchAll(/<h([1-6])/gi)].map((m) => parseInt(m[1], 10));
         for (let i = 1; i < headings.length; i++) {
-          if (headings[i] > headings[i - 1] + 1) { violations++; break; }
+          if (headings[i] > headings[i - 1] + 1) {
+            violations++;
+            break;
+          }
         }
       }
       if (ruleId === 'link-name' && /<a[^>]*>\s*<\/a>/i.test(generatedCode)) {

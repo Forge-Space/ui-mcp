@@ -12,7 +12,6 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import pino from 'pino';
 import { getDatabase } from '../lib/design-references/database/store.js';
-import type { IEmbedding } from '../lib/ml/types.js';
 
 const logger = pino({ name: 'sync-knowledge' });
 
@@ -79,7 +78,10 @@ function saveSyncMeta(meta: SyncMeta): void {
   writeFileSync(SYNC_META_FILE, JSON.stringify(meta, null, 2), 'utf-8');
 }
 
-function exportEmbeddings(sinceTimestamp?: number, dryRun: boolean = false): {
+function exportEmbeddings(
+  sinceTimestamp?: number,
+  dryRun: boolean = false
+): {
   items: KnowledgeItem[];
   exportPath: string;
 } {
@@ -99,10 +101,8 @@ function exportEmbeddings(sinceTimestamp?: number, dryRun: boolean = false): {
     created_at: number;
   }>;
 
-  const items: KnowledgeItem[] = rows.map(row => {
-    const vector = Array.from(
-      new Float32Array(row.vector_blob.buffer, row.vector_blob.byteOffset, row.dimensions)
-    );
+  const items: KnowledgeItem[] = rows.map((row) => {
+    const vector = Array.from(new Float32Array(row.vector_blob.buffer, row.vector_blob.byteOffset, row.dimensions));
 
     return {
       id: row.source_id,
@@ -121,7 +121,7 @@ function exportEmbeddings(sinceTimestamp?: number, dryRun: boolean = false): {
       mkdirSync(SYNC_DIR, { recursive: true });
     }
 
-    const lines = items.map(item => JSON.stringify(item)).join('\n');
+    const lines = items.map((item) => JSON.stringify(item)).join('\n');
     writeFileSync(EXPORT_FILE, `${lines}\n`, 'utf-8');
 
     saveSyncMeta({
@@ -175,7 +175,7 @@ function showSummary(items: KnowledgeItem[], dryRun: boolean): void {
   console.log();
 }
 
-async function main(): Promise<void> {
+function main(): void {
   const args = process.argv.slice(2);
   const dryRun = args.includes('--dry-run');
 
@@ -207,7 +207,9 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch(err => {
+try {
+  main();
+} catch (err) {
   logger.error({ error: err }, 'Sync failed');
   process.exit(1);
-});
+}

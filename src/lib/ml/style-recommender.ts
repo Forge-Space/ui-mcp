@@ -32,16 +32,86 @@ export interface IStyleContext {
 }
 
 const INDUSTRY_STYLES: Record<string, Omit<IStyleRecommendation, 'confidence' | 'source' | 'matchedTokens'>> = {
-  fintech: { primaryColor: '#0F172A', secondaryColor: '#0EA5E9', fontFamily: 'Inter, system-ui, sans-serif', spacing: '16px', borderRadius: '8px', designSystem: 'custom-fintech' },
-  saas: { primaryColor: '#6366F1', secondaryColor: '#818CF8', fontFamily: 'Inter, system-ui, sans-serif', spacing: '16px', borderRadius: '8px', designSystem: 'custom-saas' },
-  ecommerce: { primaryColor: '#DC2626', secondaryColor: '#F97316', fontFamily: 'Poppins, system-ui, sans-serif', spacing: '16px', borderRadius: '12px', designSystem: 'custom-ecommerce' },
-  healthcare: { primaryColor: '#0D9488', secondaryColor: '#06B6D4', fontFamily: 'Source Sans 3, system-ui, sans-serif', spacing: '20px', borderRadius: '12px', designSystem: 'custom-healthcare' },
-  education: { primaryColor: '#7C3AED', secondaryColor: '#A78BFA', fontFamily: 'Nunito, system-ui, sans-serif', spacing: '16px', borderRadius: '16px', designSystem: 'custom-education' },
-  startup: { primaryColor: '#8B5CF6', secondaryColor: '#EC4899', fontFamily: 'Inter, system-ui, sans-serif', spacing: '16px', borderRadius: '12px', designSystem: 'custom-startup' },
-  agency: { primaryColor: '#1E1E1E', secondaryColor: '#F5F5F5', fontFamily: 'Space Grotesk, system-ui, sans-serif', spacing: '24px', borderRadius: '4px', designSystem: 'custom-agency' },
-  media: { primaryColor: '#EF4444', secondaryColor: '#F59E0B', fontFamily: 'Merriweather, Georgia, serif', spacing: '16px', borderRadius: '8px', designSystem: 'custom-media' },
-  devtools: { primaryColor: '#1E293B', secondaryColor: '#38BDF8', fontFamily: 'JetBrains Mono, monospace', spacing: '12px', borderRadius: '6px', designSystem: 'primer' },
-  general: { primaryColor: '#3B82F6', secondaryColor: '#6366F1', fontFamily: 'Inter, system-ui, sans-serif', spacing: '16px', borderRadius: '8px', designSystem: 'custom' },
+  fintech: {
+    primaryColor: '#0F172A',
+    secondaryColor: '#0EA5E9',
+    fontFamily: 'Inter, system-ui, sans-serif',
+    spacing: '16px',
+    borderRadius: '8px',
+    designSystem: 'custom-fintech',
+  },
+  saas: {
+    primaryColor: '#6366F1',
+    secondaryColor: '#818CF8',
+    fontFamily: 'Inter, system-ui, sans-serif',
+    spacing: '16px',
+    borderRadius: '8px',
+    designSystem: 'custom-saas',
+  },
+  ecommerce: {
+    primaryColor: '#DC2626',
+    secondaryColor: '#F97316',
+    fontFamily: 'Poppins, system-ui, sans-serif',
+    spacing: '16px',
+    borderRadius: '12px',
+    designSystem: 'custom-ecommerce',
+  },
+  healthcare: {
+    primaryColor: '#0D9488',
+    secondaryColor: '#06B6D4',
+    fontFamily: 'Source Sans 3, system-ui, sans-serif',
+    spacing: '20px',
+    borderRadius: '12px',
+    designSystem: 'custom-healthcare',
+  },
+  education: {
+    primaryColor: '#7C3AED',
+    secondaryColor: '#A78BFA',
+    fontFamily: 'Nunito, system-ui, sans-serif',
+    spacing: '16px',
+    borderRadius: '16px',
+    designSystem: 'custom-education',
+  },
+  startup: {
+    primaryColor: '#8B5CF6',
+    secondaryColor: '#EC4899',
+    fontFamily: 'Inter, system-ui, sans-serif',
+    spacing: '16px',
+    borderRadius: '12px',
+    designSystem: 'custom-startup',
+  },
+  agency: {
+    primaryColor: '#1E1E1E',
+    secondaryColor: '#F5F5F5',
+    fontFamily: 'Space Grotesk, system-ui, sans-serif',
+    spacing: '24px',
+    borderRadius: '4px',
+    designSystem: 'custom-agency',
+  },
+  media: {
+    primaryColor: '#EF4444',
+    secondaryColor: '#F59E0B',
+    fontFamily: 'Merriweather, Georgia, serif',
+    spacing: '16px',
+    borderRadius: '8px',
+    designSystem: 'custom-media',
+  },
+  devtools: {
+    primaryColor: '#1E293B',
+    secondaryColor: '#38BDF8',
+    fontFamily: 'JetBrains Mono, monospace',
+    spacing: '12px',
+    borderRadius: '6px',
+    designSystem: 'primer',
+  },
+  general: {
+    primaryColor: '#3B82F6',
+    secondaryColor: '#6366F1',
+    fontFamily: 'Inter, system-ui, sans-serif',
+    spacing: '16px',
+    borderRadius: '8px',
+    designSystem: 'custom',
+  },
 };
 
 const MOOD_MODIFIERS: Record<string, Partial<IStyleRecommendation>> = {
@@ -59,10 +129,7 @@ const MOOD_MODIFIERS: Record<string, Partial<IStyleRecommendation>> = {
   creative: { borderRadius: '20px', spacing: '16px' },
 };
 
-export async function recommendStyle(
-  prompt: string,
-  context?: IStyleContext
-): Promise<IStyleRecommendation> {
+export async function recommendStyle(prompt: string, context?: IStyleContext): Promise<IStyleRecommendation> {
   const db = getDatabase();
   const tokenCount = getEmbeddingCount('token', db);
 
@@ -86,7 +153,9 @@ async function recommendWithRAG(
     prompt,
     context?.industry ? `${context.industry} industry` : '',
     context?.mood ? `${context.mood} mood` : '',
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const queryVector = await embed(searchText);
   const tokenResults = semanticSearch(queryVector, 'token', db, 10, 0.3);
@@ -110,10 +179,12 @@ async function recommendWithRAG(
     }
   }
 
-  const colorToken = tokenResults.find(r => r.text.includes('color') && r.text.includes('primary'));
-  const fontToken = tokenResults.find(r => r.text.includes('typography') || r.text.includes('font'));
-  const spacingToken = tokenResults.find(r => r.text.includes('spacing') || r.text.includes('space'));
-  const radiusToken = tokenResults.find(r => r.text.includes('radius') || r.text.includes('corner') || r.text.includes('shape'));
+  const colorToken = tokenResults.find((r) => r.text.includes('color') && r.text.includes('primary'));
+  const fontToken = tokenResults.find((r) => r.text.includes('typography') || r.text.includes('font'));
+  const spacingToken = tokenResults.find((r) => r.text.includes('spacing') || r.text.includes('space'));
+  const radiusToken = tokenResults.find(
+    (r) => r.text.includes('radius') || r.text.includes('corner') || r.text.includes('shape')
+  );
 
   const extractValue = (text: string): string => {
     const match = text.match(/:\s*([^.]+)/);
@@ -135,12 +206,9 @@ async function recommendWithRAG(
   };
 }
 
-function recommendWithHeuristic(
-  _prompt: string,
-  context?: IStyleContext
-): IStyleRecommendation {
+function recommendWithHeuristic(_prompt: string, context?: IStyleContext): IStyleRecommendation {
   const base = INDUSTRY_STYLES[context?.industry ?? 'general'] ?? INDUSTRY_STYLES.general;
-  const moodMods = context?.mood ? MOOD_MODIFIERS[context.mood] ?? {} : {};
+  const moodMods = context?.mood ? (MOOD_MODIFIERS[context.mood] ?? {}) : {};
 
   return {
     ...base,

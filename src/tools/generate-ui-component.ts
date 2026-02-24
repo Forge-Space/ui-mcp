@@ -448,7 +448,9 @@ export function registerGenerateUiComponent(server: McpServer): void {
         ragInfo,
         embeddingInfo,
         ...(warnings.length > 0 ? ['Warnings:', ...warnings.map((w) => `  ⚠ ${w}`)] : []),
-      ].filter(Boolean).join('\n');
+      ]
+        .filter(Boolean)
+        .join('\n');
 
       return {
         content: [
