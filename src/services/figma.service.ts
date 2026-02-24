@@ -5,6 +5,7 @@ import {
   getFileNodes,
   getVariables,
   type FigmaFileResponse,
+  type FigmaVariablesResponse,
   type FigmaNode,
   type FigmaComponent,
 } from '../lib/figma-client.js';
@@ -76,7 +77,7 @@ export class FigmaService {
    * @param fileKey Figma file key
    * @returns Variables response
    */
-  async getVariables(fileKey: string): Promise<any> {
+  async getVariables(fileKey: string): Promise<FigmaVariablesResponse> {
     this.ensureConfigured();
 
     logger.info(`Fetching variables from file: ${fileKey}`);
@@ -108,15 +109,15 @@ export class FigmaService {
    */
   extractDesignTokens(variables: IFigmaVariable[]): {
     colors: Record<string, string>;
-    typography: Record<string, any>;
+    typography: Record<string, unknown>;
     spacing: Record<string, string>;
-    effects: Record<string, any>;
+    effects: Record<string, unknown>;
   } {
     const tokens = {
       colors: {} as Record<string, string>,
-      typography: {} as Record<string, any>,
+      typography: {} as Record<string, unknown>,
       spacing: {} as Record<string, string>,
-      effects: {} as Record<string, any>,
+      effects: {} as Record<string, unknown>,
     };
 
     for (const variable of variables) {

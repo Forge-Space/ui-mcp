@@ -5,6 +5,76 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-02-24
+
+### Added
+- **Professional Template & Snippet Library** — 500+ design snippets replacing generic AI output
+  - Anti-Generic Quality System: validation rules enforce semantic tokens, inspiration sources, craft details
+  - Diversity tracker prevents consecutive duplicate variant generation
+- **Page Compositions Engine** — dynamic page assembly from registry queries
+  - 5 composition categories: landing (4 variants), dashboard (3), auth (3), ecommerce (3), content (2)
+  - `composePageFromTemplate()` replaces hardcoded page templates with search-driven assembly
+- **Template Packs** — curated multi-page app starters
+  - SaaS Dashboard (Linear/Vercel-inspired): 6 pages with dark premium theme
+  - Startup Landing (Cal.com/Resend-inspired): 4 pages with minimal editorial theme
+  - AI Chat App (ChatGPT/Claude-inspired): 3 pages with linear-modern theme
+- **New MCP Tool**: `generate_from_template_pack` — generates complete multi-page apps from packs
+  - Supports all 6 frameworks (React, Next.js, Vue, Angular, Svelte, HTML)
+  - Generates routing config, shared layout, and framework-specific boilerplate
+- **Expanded Component Registry** (25 → 100+ snippets):
+  - 8 new organism files: navbars (6), pricing (6), testimonials (5), auth (6), dashboards (8), footers (5), chat (4), content (4)
+  - 6 new molecule files: data-tables (6), modals (5), lists (5), search (4), stats (4), empty-states (3)
+  - 4 new atom files: avatars (5), status (4), dividers (3), skeletons (4)
+  - Expanded existing files: buttons, inputs, badges, cards, forms, navigation
+- **13 New PageTemplateTypes**: ai_chat, changelog, team_members, settings_billing, api_keys, analytics, profile, file_manager, kanban, calendar, docs, faq, blog_post
+- SQLite DB as source of truth for component registry with batch hydration
+
+### Changed
+- `generate-page-template.ts` extended with 13 new template body functions
+- `scaffold-full-application.ts` wired to ML composition pipeline
+- Registry init now loads compositions and template packs at startup
+
+## [0.5.1] - 2026-02-24
+
+### Added
+- **RAG-Powered Specialist Agents**: Semantic search over external datasets for context-aware generation
+  - Component Architect: shadcn/ui component library (50+ production components)
+  - Accessibility Auditor: axe-core rules (50+ WCAG rules) + WAI-ARIA patterns (30 widget patterns)
+  - Style Recommender: Material Design 3 + GitHub Primer design tokens (500+ entries)
+  - Quality Scorer: RAG-based a11y compliance checking with violation detection
+  - Prompt Enhancer: ARIA pattern and a11y rule injection for context-aware prompts
+- **Data Ingestion CLI** (`src/scripts/ingest-training-data.ts`): Download and embed external datasets
+  - Sources: shadcn/ui, axe-core, Material Design 3 tokens, Primer tokens, WAI-ARIA APG patterns
+  - Built-in fallback datasets when external repos unavailable
+  - Stats and test-query modes for verification
+- **Style Recommender Module** (`src/lib/ml/style-recommender.ts`): Design token recommendation engine
+  - RAG retrieval from ingested token embeddings
+  - 10 industry presets (fintech, saas, healthcare, etc.)
+  - 12 mood modifiers (bold, calm, playful, etc.)
+  - Integrated into generation pipeline
+- **Cross-Repo Knowledge Sync** (`src/scripts/sync-knowledge.ts`): Export embeddings as JSONL for mcp-gateway
+  - Incremental sync with timestamp tracking
+  - Agent-specific routing metadata
+- **Synthetic Training Data Generator** (`src/scripts/generate-training-data.ts`): LoRA fine-tuning preparation
+  - Quality-scorer: degraded code pairs (good/medium/bad)
+  - Prompt-enhancer: simplified → enhanced prompt pairs
+  - Style-recommender: industry/mood → design token mappings
+- Extended `IEmbedding.sourceType` union with `rule`, `token`, `pattern`, `example`
+- `enhancePromptWithRAG()`: async RAG-enhanced prompt enhancement
+- `scoreQualityWithRAG()`: async RAG-enhanced quality scoring
+- Lower synthetic data thresholds for `hasEnoughData()`
+
+### Changed
+- `generate_ui_component` tool now performs semantic search before generation
+- `audit_accessibility` tool enriches issues with axe-core rule IDs and WCAG criteria
+- Quality scoring upgraded from heuristic-only to RAG + heuristic hybrid
+
+### Technical Details
+- All RAG features degrade gracefully — zero behavior change when embeddings table is empty
+- No breaking changes to existing interfaces
+- CPU-first, zero-cost design: all-MiniLM-L6-v2 embeddings (~50ms each)
+- Expected ~680 embeddings from Phase 1 sources, ~25K from Phase 5 HuggingFace datasets
+
 ## [0.4.3] - 2026-02-18
 
 ### Fixed

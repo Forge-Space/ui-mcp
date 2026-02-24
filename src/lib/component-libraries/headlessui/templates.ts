@@ -286,8 +286,8 @@ export function getHeadlessTemplate(name: string): HeadlessTemplate | undefined 
 
 export function generateHeadlessComponent(
   templateName: string,
-  designContext: IDesignContext,
-  customizations?: Record<string, any>
+  _designContext: IDesignContext,
+  _customizations?: Record<string, unknown>
 ): IGeneratedFile[] {
   const template = getHeadlessTemplate(templateName);
   if (!template) throw new Error(`Headless UI template "${templateName}" not found`);

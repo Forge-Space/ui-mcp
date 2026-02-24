@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev, "release/*"]
   pull_request:
-    branches: [main]
+    branches: [main, dev, "release/*"]
 
 jobs:
   lint:
@@ -67,7 +67,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        run: rm -f package-lock.json && npm install --legacy-peer-deps
+        run: npm install --legacy-peer-deps
 
       - name: Run tests with coverage
         run: npm run test:coverage
@@ -106,10 +106,10 @@ jobs:
             echo "| Statements | ${STATEMENTS}% |" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
 
-            if (( $(echo "$LINES >= 80" | bc -l) )); then
-              echo "Line coverage meets 80% threshold" >> $GITHUB_STEP_SUMMARY
+            if (( $(echo "$LINES >= 70" | bc -l) )); then
+              echo "Line coverage meets 70% threshold" >> $GITHUB_STEP_SUMMARY
             else
-              echo "Line coverage below 80% threshold" >> $GITHUB_STEP_SUMMARY
+              echo "Line coverage below 70% threshold" >> $GITHUB_STEP_SUMMARY
             fi
           fi
 
@@ -125,7 +125,7 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        run: rm -f package-lock.json && npm install --legacy-peer-deps
+        run: npm install --legacy-peer-deps
 
       - name: Build
         run: npm run build

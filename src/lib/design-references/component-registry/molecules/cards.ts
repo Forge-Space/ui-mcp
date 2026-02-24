@@ -67,7 +67,7 @@ export const cardSnippets: IComponentSnippet[] = [
   </div>
   <div className="mt-3">
     <p className="text-2xl font-bold text-foreground tracking-tight">$45,231.89</p>
-    <p className="mt-1 flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400">
+    <p className="mt-1 flex items-center gap-1 text-xs text-success">
       <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" /></svg>
       +20.1% from last month
     </p>
@@ -79,7 +79,7 @@ export const cardSnippets: IComponentSnippet[] = [
       label: 'text-sm font-medium text-muted-foreground',
       icon: 'h-4 w-4 text-muted-foreground',
       value: 'text-2xl font-bold text-foreground tracking-tight',
-      trend: 'mt-1 flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400',
+      trend: 'mt-1 flex items-center gap-1 text-xs text-success',
     },
     a11y: {
       roles: [],

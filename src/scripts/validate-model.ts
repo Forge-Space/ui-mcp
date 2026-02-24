@@ -28,7 +28,7 @@ async function validateModel(): Promise<void> {
   const results: ValidationResult[] = [];
   let allPassed = true;
 
-  console.log('🔍 UIForge ML System Validation\n');
+  logger.info('UIForge ML System Validation');
 
   // Step 1: Check model file exists
   const modelDir = join(homedir(), '.uiforge', 'models');
@@ -188,30 +188,30 @@ async function validateModel(): Promise<void> {
   }
 
   // Print results
-  console.log('Validation Results:\n');
+  logger.info('Validation Results:');
   for (const result of results) {
-    console.log(`${result.message}`);
+    logger.info(result.message);
     if (result.details) {
-      console.log(`   ${JSON.stringify(result.details, null, 2)}`);
+      logger.info({ details: result.details }, '   details');
     }
   }
 
-  console.log(`\n${'='.repeat(60)}\n`);
+  logger.info('='.repeat(60));
 
   if (allPassed) {
-    console.log('🎉 ML system ready!\n');
-    console.log('The ML system will use the model for:');
-    console.log('  • Prompt enhancement');
-    console.log('  • Quality scoring');
-    console.log('  • LoRA fine-tuning\n');
+    logger.info('ML system ready!');
+    logger.info('The ML system will use the model for:');
+    logger.info('  - Prompt enhancement');
+    logger.info('  - Quality scoring');
+    logger.info('  - LoRA fine-tuning');
     process.exit(0);
   } else {
-    console.log('⚠️  ML system will use heuristics\n');
-    console.log('To enable ML-powered features:');
-    console.log('  1. Download the model (see docs/ML_SETUP.md)');
-    console.log('  2. Install node-llama-cpp: npm install node-llama-cpp');
-    console.log('  3. Re-run this script\n');
-    console.log('Note: Heuristics work fine for most use cases!\n');
+    logger.warn('ML system will use heuristics');
+    logger.info('To enable ML-powered features:');
+    logger.info('  1. Download the model (see docs/ML_SETUP.md)');
+    logger.info('  2. Install node-llama-cpp: npm install node-llama-cpp');
+    logger.info('  3. Re-run this script');
+    logger.info('Note: Heuristics work fine for most use cases!');
     process.exit(1);
   }
 }
@@ -219,6 +219,6 @@ async function validateModel(): Promise<void> {
 // Run validation
 validateModel().catch((err) => {
   logger.error({ error: err }, 'Validation script failed');
-  console.error('❌ Validation failed:', err instanceof Error ? err.message : String(err));
+  logger.error({ err }, 'Validation failed');
   process.exit(1);
 });

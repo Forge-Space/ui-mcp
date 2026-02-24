@@ -67,17 +67,17 @@ export class AnalysisService {
   /**
    * Detect patterns from multiple sources
    */
-  async detectPatterns(
+  detectPatterns(
     sources: Array<{
       type: 'url' | 'image' | 'text';
       content: string;
       metadata?: Record<string, unknown>;
     }>
-  ): Promise<{
+  ): {
     commonPatterns: Array<{ type: string; confidence: number; sources: string[] }>;
     uniquePatterns: Array<{ type: string; pattern: string; confidence: number }>;
     recommendations: string[];
-  }> {
+  } {
     logger.info(`Detecting patterns from ${sources.length} sources`);
 
     try {
@@ -166,18 +166,18 @@ export class AnalysisService {
   /**
    * Map design tokens to Tailwind CSS classes
    */
-  async mapToTailwind(
+  mapToTailwind(
     designTokens: IFigmaDesignToken[],
     options: {
       includeUtilities?: boolean;
       includeComponents?: boolean;
       customPrefix?: string;
     } = {}
-  ): Promise<{
+  ): {
     mappings: ITailwindMapping[];
     customClasses: string[];
     configExtensions: Record<string, unknown>;
-  }> {
+  } {
     logger.info(`Mapping ${designTokens.length} design tokens to Tailwind CSS`);
 
     try {

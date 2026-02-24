@@ -54,7 +54,7 @@ export type GenerateComponentLibraryOutput = z.infer<typeof outputSchema>;
 /**
  * Generate component from specified library
  */
-export async function generateComponentLibraryHandler(
+export function generateComponentLibraryHandler(
   input: GenerateComponentLibraryInput
 ): Promise<GenerateComponentLibraryOutput> {
   logger.info(`Generating ${input.library} component: ${input.componentType} for ${input.framework}`);
@@ -101,45 +101,45 @@ export async function generateComponentLibraryHandler(
 
     logger.info(`Component generation completed: ${filteredFiles.length} files, ${dependencies.length} deps`);
 
-    return {
+    return Promise.resolve({
       component: filteredFiles,
       dependencies,
       examples,
       setupInstructions,
-    };
+    });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     logger.error(`Component generation failed: ${msg}`);
-    throw new Error(`Failed to generate component: ${msg}`);
+    return Promise.reject(new Error(`Failed to generate component: ${msg}`));
   }
 }
 
 /**
  * Get available components for a library
  */
-export async function getAvailableComponentsHandler(
+export function getAvailableComponentsHandler(
   library: ComponentLibraryId
 ): Promise<{ components: string[]; library: string; description: string }> {
   try {
     const components = getAvailableComponentsForLibrary(library);
     const libraryInfo = getAvailableComponentLibraries().find((lib) => lib.id === library);
 
-    return {
+    return Promise.resolve({
       components,
       library: libraryInfo?.name || library,
       description: libraryInfo?.description || '',
-    };
+    });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     logger.error(`Failed to get available components: ${msg}`);
-    throw new Error(`Failed to get components for ${library}: ${msg}`);
+    return Promise.reject(new Error(`Failed to get components for ${library}: ${msg}`));
   }
 }
 
 /**
  * Get all available component libraries
  */
-export async function getAvailableLibrariesHandler(): Promise<{
+export function getAvailableLibrariesHandler(): Promise<{
   libraries: Array<{
     id: string;
     name: string;
@@ -151,7 +151,7 @@ export async function getAvailableLibrariesHandler(): Promise<{
   try {
     const libraries = getAvailableComponentLibraries();
 
-    return {
+    return Promise.resolve({
       libraries: libraries.map((lib) => ({
         id: lib.id,
         name: lib.name,
@@ -159,11 +159,11 @@ export async function getAvailableLibrariesHandler(): Promise<{
         componentCount: lib.getAvailableComponents().length,
         patternCount: lib.getAvailablePatterns().length,
       })),
-    };
+    });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     logger.error(`Failed to get available libraries: ${msg}`);
-    throw new Error(`Failed to get libraries: ${msg}`);
+    return Promise.reject(new Error(`Failed to get libraries: ${msg}`));
   }
 }
 
@@ -188,10 +188,14 @@ function applyThemeConfiguration(context: IDesignContext, theme: string): IDesig
  */
 function parseThemeString(theme: string): {
   colors: Partial<IDesignContext['colorPalette']>;
-  other: Partial<IDesignContext>;
+  other?: Partial<IDesignContext>;
 } {
+  type ThemeConfig = {
+    colors: Partial<IDesignContext['colorPalette']>;
+    other?: Partial<IDesignContext>;
+  };
   // Simple theme parsing - could be expanded
-  const themes: Record<string, any> = {
+  const themes: Record<string, ThemeConfig> = {
     dark: {
       colors: {
         background: '#0a0a0a',
@@ -268,7 +272,7 @@ function extractDependencies(library: ComponentLibraryId, componentType: string)
 /**
  * Generate usage examples
  */
-function generateUsageExamples(componentType: string, library: ComponentLibraryId, framework: string): string[] {
+function generateUsageExamples(componentType: string, library: ComponentLibraryId, _framework: string): string[] {
   const examples: string[] = [];
 
   // Basic usage example
@@ -379,7 +383,7 @@ export const getAvailableComponentsTool = {
     library: z.string(),
     description: z.string(),
   }),
-  handler: async ({ library }: { library: ComponentLibraryId }) => {
+  handler: ({ library }: { library: ComponentLibraryId }) => {
     return getAvailableComponentsHandler(library);
   },
 };

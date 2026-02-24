@@ -30,3 +30,4 @@ uiforge-mcp-*.tgz
 
 # Documentation builds
 docs/build/
+.serena/

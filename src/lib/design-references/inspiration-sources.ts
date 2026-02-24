@@ -205,9 +205,9 @@ export function getInspirationByPriority(maxPriority: number = 3): IInspirationS
 }
 
 export function getPrimaryDesignReference(): IInspirationSource {
-  return INSPIRATION_SOURCES.find((s) => s.category === 'gallery' && s.priority === 1)!;
+  return INSPIRATION_SOURCES.find((s) => s.category === 'gallery' && s.priority === 1) as IInspirationSource;
 }
 
 export function getFallbackDesignReference(): IInspirationSource {
-  return INSPIRATION_SOURCES.find((s) => s.category === 'gallery' && s.priority === 2)!;
+  return INSPIRATION_SOURCES.find((s) => s.category === 'gallery' && s.priority === 2) as IInspirationSource;
 }

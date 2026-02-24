@@ -2,7 +2,7 @@ import { BaseGenerator, ComponentLibrary } from './base-generator.js';
 import type { IGeneratedFile, IDesignContext, Architecture, StateManagement, Framework } from '../types.js';
 import { createLogger } from '../logger.js';
 
-const logger = createLogger('vue-generator');
+const _logger = createLogger('vue-generator');
 
 /**
  * Vue Generator - Generates Vue components and projects
@@ -14,9 +14,9 @@ export class VueGenerator extends BaseGenerator {
 
   generateProject(
     projectName: string,
-    architecture: Architecture,
-    stateManagement: StateManagement,
-    designContext: IDesignContext
+    _architecture: Architecture,
+    _stateManagement: StateManagement,
+    _designContext: IDesignContext
   ): IGeneratedFile[] {
     this.logStart('project', projectName);
 
@@ -34,7 +34,7 @@ export class VueGenerator extends BaseGenerator {
 
   generateComponent(
     componentType: string,
-    props: Record<string, any>,
+    props: Record<string, unknown>,
     designContext: IDesignContext,
     componentLibrary?: ComponentLibrary
   ): IGeneratedFile[] {
@@ -124,7 +124,7 @@ export class VueGenerator extends BaseGenerator {
     ];
   }
 
-  protected generateShadcnComponent(componentType: string, props: Record<string, any>): string {
+  protected generateShadcnComponent(componentType: string, _props: Record<string, unknown>): string {
     const componentName = this.formatComponentName(componentType);
 
     return `<template>
@@ -157,7 +157,7 @@ const props = withDefaults(defineProps<Props>(), {
 </script>`;
   }
 
-  protected generateRadixComponent(componentType: string, props: Record<string, any>): string {
+  protected generateRadixComponent(componentType: string, _props: Record<string, unknown>): string {
     const componentName = this.formatComponentName(componentType);
 
     return `<template>
@@ -194,7 +194,7 @@ import * as DropdownMenu from "@radix-ui/vue-dropdown-menu"
 </script>`;
   }
 
-  protected generateHeadlessUIComponent(componentType: string, props: Record<string, any>): string {
+  protected generateHeadlessUIComponent(componentType: string, _props: Record<string, unknown>): string {
     const componentName = this.formatComponentName(componentType);
 
     return `<template>
@@ -231,7 +231,7 @@ const handleClose = () => {
 </script>`;
   }
 
-  protected generatePrimeVueComponent(componentType: string, props: Record<string, any>): string {
+  protected generatePrimeVueComponent(componentType: string, _props: Record<string, unknown>): string {
     const componentName = this.formatComponentName(componentType);
 
     return `<template>
@@ -257,7 +257,7 @@ const handleClick = () => {
 </script>`;
   }
 
-  protected generateMaterialComponent(componentType: string, props: Record<string, any>): string {
+  protected generateMaterialComponent(componentType: string, _props: Record<string, unknown>): string {
     const componentName = this.formatComponentName(componentType);
 
     return `<template>
@@ -294,7 +294,7 @@ const handleClose = () => {
 </script>`;
   }
 
-  protected generateTailwindComponent(componentType: string, props: Record<string, any>): string {
+  protected generateTailwindComponent(componentType: string, _props: Record<string, unknown>): string {
     const componentName = this.formatComponentName(componentType);
 
     return `<template>
@@ -322,7 +322,7 @@ const handleClick = () => {
   private createComponentFile(
     componentName: string,
     componentType: string,
-    props: Record<string, any>,
+    props: Record<string, unknown>,
     designContext: IDesignContext,
     componentLibrary?: ComponentLibrary
   ): IGeneratedFile {
@@ -345,8 +345,8 @@ const handleClick = () => {
   private createTestFile(
     componentName: string,
     componentType: string,
-    designContext: IDesignContext,
-    componentLibrary?: ComponentLibrary
+    _designContext: IDesignContext,
+    _componentLibrary?: ComponentLibrary
   ): IGeneratedFile {
     const content = `import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'

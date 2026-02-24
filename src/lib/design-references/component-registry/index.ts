@@ -12,6 +12,7 @@ import type {
 import { getVisualStyle, applyVisualStyle as applyStyle } from '../visual-styles/index.js';
 import { getMicroInteraction } from '../micro-interactions/index.js';
 import { feedbackBoostedSearch, runPromotionCycle } from '../../feedback/index.js';
+import { validateSnippet } from '../../quality/anti-generic-rules.js';
 
 const logger = pino({ name: 'component-registry' });
 
@@ -60,7 +61,14 @@ export function registerSnippet(snippet: IComponentSnippet): void {
     return;
   }
 
-  // Normalize fields for case-insensitive searching
+  const validation = validateSnippet(snippet);
+  if (!validation.valid) {
+    logger.warn({ id: snippet.id, errors: validation.errors }, 'Snippet failed quality validation');
+  }
+  if (validation.warnings.length > 0) {
+    logger.debug({ id: snippet.id, warnings: validation.warnings }, 'Snippet quality warnings');
+  }
+
   const normalized: IComponentSnippet = {
     ...snippet,
     type: snippet.type.toLowerCase().trim(),
@@ -324,7 +332,7 @@ export function composeSection(
 
   if (results.length === 0) return undefined;
 
-  let snippet = results[0]!.snippet;
+  let snippet = results[0].snippet;
 
   if (options?.style) {
     snippet = applyVisualStyle(snippet, options.style);
@@ -348,7 +356,7 @@ export function getBestMatch(
 ): IComponentSnippet | undefined {
   // Try exact type + variant first
   if (options?.variant) {
-    const exact = registry.find((s) => s.type === type.toLowerCase() && s.variant === options.variant!.toLowerCase());
+    const exact = registry.find((s) => s.type === type.toLowerCase() && s.variant === options.variant?.toLowerCase());
     if (exact) return exact;
   }
 
@@ -361,7 +369,7 @@ export function getBestMatch(
     style: options?.style,
   });
 
-  if (results.length > 0) return results[0]!.snippet;
+  if (results.length > 0) return results[0].snippet;
 
   // Fallback: just type match
   const typeMatch = registry.find((s) => s.type === type.toLowerCase());

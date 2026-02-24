@@ -97,13 +97,13 @@ jobs:
       - name: ESLint check
         run: |
           echo "🔍 Running ESLint..."
-          if npx eslint src --ext .ts; then
+          if npx eslint src; then
             echo "✅ ESLint passed"
           else
             echo "❌ ESLint failed"
             if [ "${{ github.event.inputs.fix_issues }}" == "true" ]; then
               echo "🔧 Attempting to fix ESLint issues..."
-              npx eslint src --ext .ts --fix
+              npx eslint src --fix
               echo "✅ ESLint issues fixed"
             else
               exit 1

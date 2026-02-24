@@ -10,58 +10,24 @@ on:
     - cron: "0 2 * * *"
 
 jobs:
-  snyk-dependency-scan:
-    name: Snyk Dependency Scan
+  npm-audit:
+    name: npm Audit
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          python-version: "3.12"
+          node-version: "22"
+          cache: "npm"
 
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/python@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --severity-threshold=high --org=LucasSantana-Dev
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
 
-  snyk-code-scan:
-    name: Snyk Code Analysis
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Run Snyk Code
-        uses: snyk/actions/python@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --severity-threshold=high --org=LucasSantana-Dev
-
-  snyk-monitor:
-    name: Snyk Monitor
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Monitor dependencies with Snyk
-        uses: snyk/actions/python@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --org=LucasSantana-Dev
+      - name: Audit production dependencies
+        run: npm audit --audit-level=high --omit=dev
 
   codeql-analysis:
     name: CodeQL Analysis
@@ -107,22 +73,3 @@ jobs:
           base: ${{ github.event_name == 'push' && github.event.before || github.event.repository.default_branch }}
           head: ${{ github.event.name == 'push' && github.sha || 'HEAD' }}
           extra_args: --only-verified
-
-  npm-audit:
-    name: npm Audit
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run npm audit
-        run: npm audit --audit-level=high

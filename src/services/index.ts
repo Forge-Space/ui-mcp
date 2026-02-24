@@ -39,7 +39,7 @@ export type {
 export class ServiceContainer {
   private static instance: ServiceContainer;
 
-  private services: Map<string, any> = new Map();
+  private services: Map<string, unknown> = new Map();
 
   static getInstance(): ServiceContainer {
     if (!ServiceContainer.instance) {

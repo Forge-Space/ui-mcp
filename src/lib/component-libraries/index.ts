@@ -34,7 +34,7 @@ export interface ComponentLibraryIntegration {
   generateComponent(
     name: string,
     designContext: IDesignContext,
-    customizations?: Record<string, any>
+    customizations?: Record<string, unknown>
   ): IGeneratedFile[];
   getAvailableComponents(): string[];
   getAvailablePatterns(): string[];
@@ -49,7 +49,7 @@ export interface ComponentLibrarySetupOptions {
   components?: string[];
   patterns?: string[];
   designContext?: IDesignContext;
-  customizations?: Record<string, any>;
+  customizations?: Record<string, unknown>;
 }
 
 /**
@@ -172,7 +172,7 @@ export function generateComponentFromLibrary(
   libraryId: ComponentLibraryId,
   componentName: string,
   designContext: IDesignContext,
-  customizations?: Record<string, any>
+  customizations?: Record<string, unknown>
 ): IGeneratedFile[] {
   const library = getComponentLibrary(libraryId);
 

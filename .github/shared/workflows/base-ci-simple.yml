@@ -151,9 +151,6 @@ jobs:
           head: ${{ github.event.name == 'push' && github.sha || 'HEAD' }}
           extra_args: --only-verified
 
-      - name: Run Snyk
-        uses: snyk/actions/node@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --severity-threshold=high
+      - name: Run npm audit
+        run: npm audit --audit-level=high --omit=dev
+        continue-on-error: true

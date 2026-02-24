@@ -9,6 +9,9 @@
 
 import pino from 'pino';
 import { isSidecarReady, infer } from './sidecar-model.js';
+import { embed } from './embeddings.js';
+import { semanticSearch, getEmbeddingCount } from './embedding-store.js';
+import { getDatabase } from '../design-references/database/store.js';
 
 const logger = pino({ name: 'quality-scorer' });
 
@@ -185,11 +188,99 @@ function scoreWithHeuristics(
 
   return {
     score: Math.round(normalizedScore * 10) / 10,
-    confidence: 0.5, // Heuristics have lower confidence than model
+    confidence: 0.5,
     source: 'heuristic',
     factors,
     latencyMs: Date.now() - start,
   };
+}
+
+/**
+ * Enhanced quality scoring with RAG-based a11y compliance checks.
+ * Retrieves relevant axe-core rules and checks violations against them.
+ */
+export async function scoreQualityWithRAG(
+  prompt: string,
+  generatedCode: string,
+  params?: { componentType?: string; framework?: string; style?: string }
+): Promise<IQualityScore> {
+  const start = Date.now();
+
+  const baseScore = await scoreQuality(prompt, generatedCode, params);
+
+  try {
+    const db = getDatabase();
+    const ruleCount = getEmbeddingCount('rule', db);
+
+    if (ruleCount === 0) return baseScore;
+
+    const codeSnippet = generatedCode.slice(0, 500);
+    const queryVector = await embed(codeSnippet);
+    const relevantRules = semanticSearch(queryVector, 'rule', db, 10, 0.3);
+
+    if (relevantRules.length === 0) return baseScore;
+
+    let violations = 0;
+    const checkedRules: string[] = [];
+
+    for (const rule of relevantRules) {
+      const ruleId = rule.text.match(/a11y rule ([^:]+)/)?.[1] ?? '';
+      checkedRules.push(ruleId);
+
+      if (ruleId === 'image-alt' && /<img/i.test(generatedCode) && !/alt=/i.test(generatedCode)) {
+        violations++;
+      }
+      if (ruleId === 'button-name' && /<button[^>]*>\s*<\/button>/i.test(generatedCode)) {
+        violations++;
+      }
+      if (ruleId === 'label' && /<input/i.test(generatedCode) && !/aria-label|<label/i.test(generatedCode)) {
+        violations++;
+      }
+      if (ruleId === 'color-contrast' && /text-gray-[23]00/i.test(generatedCode)) {
+        violations++;
+      }
+      if (ruleId === 'html-has-lang' && /<html/i.test(generatedCode) && !/lang=/i.test(generatedCode)) {
+        violations++;
+      }
+      if (ruleId === 'heading-order') {
+        const headings = [...generatedCode.matchAll(/<h([1-6])/gi)].map((m) => parseInt(m[1], 10));
+        for (let i = 1; i < headings.length; i++) {
+          if (headings[i] > headings[i - 1] + 1) {
+            violations++;
+            break;
+          }
+        }
+      }
+      if (ruleId === 'link-name' && /<a[^>]*>\s*<\/a>/i.test(generatedCode)) {
+        violations++;
+      }
+      if (ruleId === 'tabindex' && /tabindex=["'][1-9]/i.test(generatedCode)) {
+        violations++;
+      }
+    }
+
+    const ragDeduction = Math.min(3, violations * 0.5);
+    const ragScore = Math.max(0, baseScore.score - ragDeduction);
+    const ragConfidence = Math.min(0.85, baseScore.confidence + 0.2);
+
+    const ragFactors = {
+      ...baseScore.factors,
+      ragA11yCompliance: Math.max(0, 1 - violations / Math.max(1, relevantRules.length)),
+      ragRulesChecked: relevantRules.length,
+      ragViolations: violations,
+    };
+
+    return {
+      score: Math.round(ragScore * 10) / 10,
+      confidence: ragConfidence,
+      source: 'heuristic',
+      factors: ragFactors,
+      latencyMs: Date.now() - start,
+    };
+  } catch (err) {
+    logger.warn({ error: (err as Error).message }, 'RAG quality scoring failed');
+    return baseScore;
+  }
 }
 
 /**

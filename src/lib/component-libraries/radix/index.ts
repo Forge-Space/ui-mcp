@@ -14,7 +14,7 @@ export interface RadixSetupOptions {
   projectName: string;
   components?: string[];
   designContext?: IDesignContext;
-  customizations?: Record<string, any>;
+  customizations?: Record<string, unknown>;
 }
 
 export function setupRadixProject(options: RadixSetupOptions): IGeneratedFile[] {

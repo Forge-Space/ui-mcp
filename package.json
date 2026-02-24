@@ -18,7 +18,7 @@
     "validate:all": "npm run lint; npm run format:check; npx tsc --noEmit; npm test; npm run build",
     "docker:build": "docker build -t forgespace-ui-mcp:latest .",
     "docker:run": "docker run -i forgespace-ui-mcp:latest",
-    "lint": "eslint . --ext .js,.ts --fix",
+    "lint": "eslint . --fix",
     "lint:fix": "eslint src/ --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -31,7 +31,7 @@
     "deps:update-interactive": "ncu -i",
     "prepare": "husky install || true",
     "prepublishOnly": "npm run build",
-    "lint:check": "eslint . --ext .js,.ts",
+    "lint:check": "eslint .",
     "pre-commit": "npm run lint && npm run format && npm run test",
     "prepack": "npm run build",
     "publish": "npm publish --access public"
@@ -46,31 +46,32 @@
     "playwright": "^1.58.2",
     "satori": "^0.19.2",
     "sharp": "^0.34.5",
+    "sqlite-vss": "^0.1.2",
     "zod": "^4.0.0"
   },
   "devDependencies": {
-    "@forgespace/core": "^1.1.4",
-    "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.17.0",
+    "@forgespace/core": "^1.1.4",
     "@types/better-sqlite3": "^7.6.13",
+    "@types/fs-extra": "^11.0.1",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.0.0",
     "@types/react": "^19.2.14",
+    "@types/semver": "^7.5.0",
     "@types/sharp": "^0.32.0",
-    "eslint": "^8.45.0",
-    "eslint-config-prettier": "^8.8.0",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "globals": "^14.0.0",
     "husky": "^8.0.3",
     "jest": "^29.7.0",
-    "lint-staged": "^13.2.3",
+    "lint-staged": "^16.2.7",
     "npm-check-updates": "^17.1.11",
     "prettier": "^3.0.0",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
     "tsup": "^8.5.1",
     "typescript": "^5.1.6",
-    "typescript-eslint": "^8.55.0",
-    "@types/fs-extra": "^11.0.1",
-    "@types/semver": "^7.5.0"
+    "typescript-eslint": "^8.55.0"
   },
   "engines": {
     "node": ">=22"
@@ -105,5 +106,6 @@
       "eslint --fix",
       "prettier --write"
     ]
-  }
+  },
+  "overrides": {}
 }

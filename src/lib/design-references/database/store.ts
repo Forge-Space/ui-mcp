@@ -12,6 +12,7 @@ import fs from 'node:fs';
 import pino from 'pino';
 import { CREATE_TABLES, SCHEMA_VERSION } from './schema.js';
 import { safeJSONParse } from '../../config.js';
+import { initVectorIndex } from '../../ml/vector-index.js';
 
 const logger = pino({ name: 'design-references-db' });
 import type {
@@ -49,6 +50,8 @@ export function getDatabase(customPath?: string): Database.Database {
   db.exec(CREATE_TABLES);
   db.pragma('synchronous = NORMAL');
   db.prepare('INSERT OR REPLACE INTO meta (key, value) VALUES (?, ?)').run('schema_version', String(SCHEMA_VERSION));
+
+  initVectorIndex(db);
 
   logger.info({ dbPath: resolvedPath }, 'Database opened/created');
   _dbPath = resolvedPath;
@@ -371,7 +374,7 @@ function hydrateSnippetsBatch(ids: string[], d: Database.Database): IComponentSn
       .all(...chunk) as Array<{ component_id: string; tag_name: string }>;
     for (const row of tagsRows) {
       if (!tagsMap.has(row.component_id)) tagsMap.set(row.component_id, []);
-      tagsMap.get(row.component_id)!.push(row.tag_name);
+      tagsMap.get(row.component_id)?.push(row.tag_name);
     }
   }
 
@@ -384,7 +387,7 @@ function hydrateSnippetsBatch(ids: string[], d: Database.Database): IComponentSn
       .all(...chunk) as Array<{ component_id: string; mood_name: MoodTag }>;
     for (const row of moodsRows) {
       if (!moodsMap.has(row.component_id)) moodsMap.set(row.component_id, []);
-      moodsMap.get(row.component_id)!.push(row.mood_name);
+      moodsMap.get(row.component_id)?.push(row.mood_name);
     }
   }
 
@@ -397,7 +400,7 @@ function hydrateSnippetsBatch(ids: string[], d: Database.Database): IComponentSn
       .all(...chunk) as Array<{ component_id: string; industry_name: IndustryTag }>;
     for (const row of industriesRows) {
       if (!industriesMap.has(row.component_id)) industriesMap.set(row.component_id, []);
-      industriesMap.get(row.component_id)!.push(row.industry_name);
+      industriesMap.get(row.component_id)?.push(row.industry_name);
     }
   }
 
@@ -410,7 +413,7 @@ function hydrateSnippetsBatch(ids: string[], d: Database.Database): IComponentSn
       .all(...chunk) as Array<{ component_id: string; style_name: VisualStyleId }>;
     for (const row of stylesRows) {
       if (!stylesMap.has(row.component_id)) stylesMap.set(row.component_id, []);
-      stylesMap.get(row.component_id)!.push(row.style_name);
+      stylesMap.get(row.component_id)?.push(row.style_name);
     }
   }
 
@@ -423,7 +426,8 @@ function hydrateSnippetsBatch(ids: string[], d: Database.Database): IComponentSn
       .all(...chunk) as Array<{ component_id: string; role: string; classes: string }>;
     for (const row of tailwindRows) {
       if (!tailwindMap.has(row.component_id)) tailwindMap.set(row.component_id, {});
-      tailwindMap.get(row.component_id)![row.role] = row.classes;
+      const tailwindEntry = tailwindMap.get(row.component_id);
+      if (tailwindEntry) tailwindEntry[row.role] = row.classes;
     }
   }
 
@@ -462,7 +466,28 @@ function hydrateSnippet(id: string, d: Database.Database): IComponentSnippet {
   if (results.length === 0) {
     throw new Error(`Component with id ${id} not found`);
   }
-  return results[0]!;
+  return results[0];
+}
+
+// --- Bulk Load ---
+
+export function getAllComponents(database?: Database.Database): IComponentSnippet[] {
+  const d = database ?? getDatabase();
+  const rows = d.prepare('SELECT id FROM components').all() as Array<{ id: string }>;
+  return hydrateSnippetsBatch(
+    rows.map((r) => r.id),
+    d
+  );
+}
+
+export function upsertComponent(snippet: IComponentSnippet, database?: Database.Database): void {
+  seedComponents([snippet], database);
+}
+
+export function deleteComponent(id: string, database?: Database.Database): boolean {
+  const d = database ?? getDatabase();
+  const result = d.prepare('DELETE FROM components WHERE id = ?').run(id);
+  return result.changes > 0;
 }
 
 // --- Utility ---

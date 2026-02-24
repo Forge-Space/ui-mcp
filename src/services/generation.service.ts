@@ -13,7 +13,7 @@ import { generateSvelteProject } from '../lib/templates/svelte.js';
 const logger = createLogger('generation-service');
 
 // Helper function to infer TypeScript types from JavaScript values
-function getTypeScriptType(value: any): string {
+function getTypeScriptType(value: unknown): string {
   if (value === null) return 'null';
   if (Array.isArray(value)) {
     if (value.length === 0) return 'any[]';
@@ -78,7 +78,7 @@ export class GenerationService {
   async generateComponent(request: {
     framework: Framework;
     componentType: string;
-    props?: Record<string, any>;
+    props?: Record<string, unknown>;
     designContext?: IDesignContext;
   }): Promise<IGeneratedFile[]> {
     const { framework, componentType, props, designContext } = request;
@@ -183,12 +183,12 @@ export class GenerationService {
    * @param designContext Design context
    * @returns Array of generated files
    */
-  private async generateComponentFiles(
+  private generateComponentFiles(
     framework: Framework,
     componentType: string,
-    props: Record<string, any>,
+    props: Record<string, unknown>,
     designContext: IDesignContext
-  ): Promise<IGeneratedFile[]> {
+  ): IGeneratedFile[] {
     const files: IGeneratedFile[] = [];
 
     // This is a simplified implementation
@@ -267,7 +267,7 @@ export class GenerationService {
   private generateComponentCode(
     framework: Framework,
     componentName: string,
-    props: Record<string, any>,
+    props: Record<string, unknown>,
     designContext: IDesignContext
   ): string {
     // This is a simplified implementation

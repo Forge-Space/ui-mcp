@@ -62,7 +62,10 @@ export const typographySnippets: IComponentSnippet[] = [
     quality: {
       antiGeneric: ['font-semibold not bold — hierarchy differentiation from h1', 'first:mt-0 prevents double spacing'],
       inspirationSource: 'shadcn/ui Typography',
-      craftDetails: ['weight hierarchy: h1=bold, h2=semibold, h3=semibold smaller'],
+      craftDetails: [
+        'weight hierarchy: h1=bold, h2=semibold, h3=semibold smaller',
+        'scroll-m-20 consistent with h1 for anchor links',
+      ],
     },
   },
   {
@@ -90,9 +93,9 @@ export const typographySnippets: IComponentSnippet[] = [
     seo: { semanticElement: 'h3', headingLevel: 'h3' },
     responsive: { strategy: 'mobile-first', breakpoints: [] },
     quality: {
-      antiGeneric: ['consistent tracking-tight across heading levels'],
+      antiGeneric: ['consistent tracking-tight across heading levels', 'text-2xl differentiates from h2 at 3xl'],
       inspirationSource: 'shadcn/ui Typography',
-      craftDetails: ['clear size hierarchy: 5xl→3xl→2xl'],
+      craftDetails: ['clear size hierarchy: 5xl→3xl→2xl', 'no responsive scaling — subsections stay compact'],
     },
   },
   {

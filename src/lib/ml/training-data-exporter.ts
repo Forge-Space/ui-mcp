@@ -201,18 +201,25 @@ export function exportForAdapter(
  */
 export function hasEnoughData(
   adapter: AdapterType,
-  db: Database.Database
+  db: Database.Database,
+  includeSynthetic: boolean = false
 ): { ready: boolean; count: number; required: number } {
-  const thresholds: Record<AdapterType, number> = {
+  const feedbackThresholds: Record<AdapterType, number> = {
     'quality-scorer': 100,
     'prompt-enhancer': 200,
     'style-recommender': 300,
   };
 
+  const syntheticThresholds: Record<AdapterType, number> = {
+    'quality-scorer': 50,
+    'prompt-enhancer': 100,
+    'style-recommender': 80,
+  };
+
   const count = (db.prepare('SELECT COUNT(*) as cnt FROM feedback WHERE ABS(score) >= 0.3').get() as { cnt: number })
     .cnt;
 
-  const required = thresholds[adapter];
+  const required = includeSynthetic ? syntheticThresholds[adapter] : feedbackThresholds[adapter];
 
   return { ready: count >= required, count, required };
 }

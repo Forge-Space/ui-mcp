@@ -15,4 +15,7 @@ export {
   getComponentsByCategory,
   getRelatedComponents,
   getComponentCount,
+  getAllComponents,
+  upsertComponent,
+  deleteComponent,
 } from './store.js';

@@ -7,7 +7,7 @@ main:
     contexts:
       - "CI (Shared Patterns)"
       - "CodeQL Analysis"
-      - "Snyk Security Scan"
+      - "npm Audit"
       - "codecov/codecov"
   enforce_admins: false
   required_pull_request_reviews:
@@ -39,7 +39,7 @@ release:
     contexts:
       - "CI (Shared Patterns)"
       - "CodeQL Analysis"
-      - "Snyk Security Scan"
+      - "npm Audit"
       - "codecov/codecov"
   enforce_admins: false
   required_pull_request_reviews:

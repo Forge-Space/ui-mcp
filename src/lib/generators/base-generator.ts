@@ -1,7 +1,7 @@
 import type { IGeneratedFile, IDesignContext, Architecture, StateManagement, Framework } from '../types.js';
 import { createLogger } from '../logger.js';
 
-const logger = createLogger('base-generator');
+const _logger = createLogger('base-generator');
 
 /**
  * Component library types supported by UIForge
@@ -45,7 +45,7 @@ export abstract class BaseGenerator {
    */
   abstract generateComponent(
     componentType: string,
-    props: Record<string, any>,
+    props: Record<string, unknown>,
     designContext: IDesignContext,
     componentLibrary?: ComponentLibrary
   ): IGeneratedFile[];
@@ -133,7 +133,7 @@ export abstract class BaseGenerator {
    */
   protected generateComponentLibraryCode(
     componentType: string,
-    props: Record<string, any>,
+    props: Record<string, unknown>,
     componentLibrary: ComponentLibrary
   ): string {
     switch (componentLibrary) {
@@ -166,12 +166,12 @@ export abstract class BaseGenerator {
   protected abstract getPrimeVueImports(): string[];
   protected abstract getMaterialImports(): string[];
 
-  protected abstract generateShadcnComponent(componentType: string, props: Record<string, any>): string;
-  protected abstract generateRadixComponent(componentType: string, props: Record<string, any>): string;
-  protected abstract generateHeadlessUIComponent(componentType: string, props: Record<string, any>): string;
-  protected abstract generatePrimeVueComponent(componentType: string, props: Record<string, any>): string;
-  protected abstract generateMaterialComponent(componentType: string, props: Record<string, any>): string;
-  protected abstract generateTailwindComponent(componentType: string, props: Record<string, any>): string;
+  protected abstract generateShadcnComponent(componentType: string, props: Record<string, unknown>): string;
+  protected abstract generateRadixComponent(componentType: string, props: Record<string, unknown>): string;
+  protected abstract generateHeadlessUIComponent(componentType: string, props: Record<string, unknown>): string;
+  protected abstract generatePrimeVueComponent(componentType: string, props: Record<string, unknown>): string;
+  protected abstract generateMaterialComponent(componentType: string, props: Record<string, unknown>): string;
+  protected abstract generateTailwindComponent(componentType: string, props: Record<string, unknown>): string;
 
   /**
    * Validate generation parameters

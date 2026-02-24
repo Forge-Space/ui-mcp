@@ -412,7 +412,7 @@ export function getFileName(path: string): string {
  */
 export function convertPathForFramework(path: string, framework: string): string {
   const fileName = getFileName(path);
-  const extension = getFileExtension(path);
+  const _extension = getFileExtension(path);
 
   switch (framework) {
     case 'react':

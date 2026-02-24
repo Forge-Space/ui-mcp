@@ -2,7 +2,7 @@ import { BaseGenerator, ComponentLibrary } from './base-generator.js';
 import type { IGeneratedFile, IDesignContext, Architecture, StateManagement, Framework } from '../types.js';
 import { createLogger } from '../logger.js';
 
-const logger = createLogger('svelte-generator');
+const _logger = createLogger('svelte-generator');
 
 /**
  * Svelte Generator - Generates Svelte components and projects
@@ -14,9 +14,9 @@ export class SvelteGenerator extends BaseGenerator {
 
   generateProject(
     projectName: string,
-    architecture: Architecture,
-    stateManagement: StateManagement,
-    designContext: IDesignContext
+    _architecture: Architecture,
+    _stateManagement: StateManagement,
+    _designContext: IDesignContext
   ): IGeneratedFile[] {
     this.logStart('project', projectName);
 
@@ -34,7 +34,7 @@ export class SvelteGenerator extends BaseGenerator {
 
   generateComponent(
     componentType: string,
-    props: Record<string, any>,
+    props: Record<string, unknown>,
     designContext: IDesignContext,
     componentLibrary?: ComponentLibrary
   ): IGeneratedFile[] {
@@ -95,7 +95,7 @@ export class SvelteGenerator extends BaseGenerator {
     return [];
   }
 
-  protected generateShadcnComponent(componentType: string, props: Record<string, any>): string {
+  protected generateShadcnComponent(componentType: string, _props: Record<string, unknown>): string {
     const componentName = this.formatComponentName(componentType);
 
     return `<script lang="ts">
@@ -120,7 +120,7 @@ export class SvelteGenerator extends BaseGenerator {
 </Card>`;
   }
 
-  protected generateRadixComponent(componentType: string, props: Record<string, any>): string {
+  protected generateRadixComponent(componentType: string, _props: Record<string, unknown>): string {
     const componentName = this.formatComponentName(componentType);
 
     return `<script lang="ts">
@@ -157,7 +157,7 @@ export class SvelteGenerator extends BaseGenerator {
 </Dialog.Root>`;
   }
 
-  protected generateHeadlessUIComponent(componentType: string, props: Record<string, any>): string {
+  protected generateHeadlessUIComponent(componentType: string, _props: Record<string, unknown>): string {
     const componentName = this.formatComponentName(componentType);
 
     return `<script lang="ts">
@@ -191,7 +191,7 @@ export class SvelteGenerator extends BaseGenerator {
 </div>`;
   }
 
-  protected generatePrimeVueComponent(componentType: string, props: Record<string, any>): string {
+  protected generatePrimeVueComponent(componentType: string, _props: Record<string, unknown>): string {
     const componentName = this.formatComponentName(componentType);
 
     return `<script lang="ts">
@@ -224,7 +224,7 @@ export class SvelteGenerator extends BaseGenerator {
 </div>`;
   }
 
-  protected generateMaterialComponent(componentType: string, props: Record<string, any>): string {
+  protected generateMaterialComponent(componentType: string, _props: Record<string, unknown>): string {
     const componentName = this.formatComponentName(componentType);
 
     return `<script lang="ts">
@@ -258,7 +258,7 @@ export class SvelteGenerator extends BaseGenerator {
 </div>`;
   }
 
-  protected generateTailwindComponent(componentType: string, props: Record<string, any>): string {
+  protected generateTailwindComponent(componentType: string, _props: Record<string, unknown>): string {
     const componentName = this.formatComponentName(componentType);
 
     return `<script lang="ts">
@@ -284,7 +284,7 @@ export class SvelteGenerator extends BaseGenerator {
   private createComponentFile(
     componentName: string,
     componentType: string,
-    props: Record<string, any>,
+    props: Record<string, unknown>,
     designContext: IDesignContext,
     componentLibrary?: ComponentLibrary
   ): IGeneratedFile {
@@ -305,8 +305,8 @@ export class SvelteGenerator extends BaseGenerator {
   private createTestFile(
     componentName: string,
     componentType: string,
-    designContext: IDesignContext,
-    componentLibrary?: ComponentLibrary
+    _designContext: IDesignContext,
+    _componentLibrary?: ComponentLibrary
   ): IGeneratedFile {
     const content = `import { render, screen } from '@testing-library/svelte';
 import { describe, it, expect } from 'vitest';

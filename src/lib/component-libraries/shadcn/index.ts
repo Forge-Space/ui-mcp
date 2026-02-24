@@ -16,6 +16,9 @@ import type { IGeneratedFile, IDesignContext, Framework } from '../../types.js';
 import { generateShadcnSetup } from './dependencies.js';
 import { generateShadcnComponent } from './templates.js';
 import { generateShadcnPattern } from './patterns.js';
+import { createLogger } from '../../logger.js';
+
+const logger = createLogger('shadcn');
 
 /**
  * Complete shadcn/ui setup
@@ -26,7 +29,7 @@ export interface ShadcnSetupOptions {
   components?: string[];
   patterns?: string[];
   designContext?: IDesignContext;
-  customizations?: Record<string, any>;
+  customizations?: Record<string, unknown>;
 }
 
 /**
@@ -50,7 +53,7 @@ export function setupShadcnProject(options: ShadcnSetupOptions): IGeneratedFile[
         );
         files.push(...componentFiles);
       } catch (error) {
-        console.warn(`Failed to generate component ${componentName}:`, error);
+        logger.warn({ error }, `Failed to generate component ${componentName}:`);
       }
     });
   }
@@ -66,7 +69,7 @@ export function setupShadcnProject(options: ShadcnSetupOptions): IGeneratedFile[
         );
         files.push(...patternFiles);
       } catch (error) {
-        console.warn(`Failed to generate pattern ${patternName}:`, error);
+        logger.warn({ error }, `Failed to generate pattern ${patternName}:`);
       }
     });
   }

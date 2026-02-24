@@ -5,7 +5,6 @@
  */
 
 import type { IGeneratedFile, IDesignContext } from '../../types.js';
-import { generateShadcnComponent } from './templates.js';
 
 export interface ShadcnPattern {
   name: string;
@@ -711,7 +710,7 @@ export function getShadcnPattern(name: string): ShadcnPattern | undefined {
 export function generateShadcnPattern(
   patternName: string,
   designContext: IDesignContext,
-  customizations?: Record<string, any>
+  customizations?: Record<string, unknown>
 ): IGeneratedFile[] {
   const pattern = getShadcnPattern(patternName);
 
@@ -731,13 +730,18 @@ export function generateShadcnPattern(
 function applyDesignContextToPattern(
   content: string,
   designContext: IDesignContext,
-  customizations?: Record<string, any>
+  customizations?: Record<string, unknown>
 ): string {
   let result = content;
 
   // Apply design context customizations similar to templates
   if (designContext.colorPalette) {
-    const { primary, secondary, accent, destructive } = designContext.colorPalette;
+    const {
+      primary: _primary,
+      secondary: _secondary,
+      accent: _accent,
+      destructive: _destructive,
+    } = designContext.colorPalette;
 
     // This would require more sophisticated parsing for Tailwind classes
     // For now, we'll keep the default shadcn styling

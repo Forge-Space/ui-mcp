@@ -76,7 +76,7 @@ UIForge ecosystem.
 #### Security Scanning (`workflows/security-scan.yml`)
 
 - **Purpose**: Multi-tool security vulnerability scanning
-- **Tools**: Snyk, CodeQL, Trufflehog, npm audit
+- **Tools**: npm audit, CodeQL, Trufflehog, GitGuardian
 - **Schedule**: Daily scans + event-driven
 - **Usage**: Standalone or integrated into CI pipeline
 

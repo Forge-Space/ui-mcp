@@ -2,7 +2,7 @@ import { BaseGenerator, ComponentLibrary } from './base-generator.js';
 import type { IGeneratedFile, IDesignContext, Architecture, StateManagement, Framework } from '../types.js';
 import { createLogger } from '../logger.js';
 
-const logger = createLogger('html-generator');
+const _logger = createLogger('html-generator');
 
 /**
  * HTML Generator - Generates HTML components and projects
@@ -14,9 +14,9 @@ export class HtmlGenerator extends BaseGenerator {
 
   generateProject(
     projectName: string,
-    architecture: Architecture,
-    stateManagement: StateManagement,
-    designContext: IDesignContext
+    _architecture: Architecture,
+    _stateManagement: StateManagement,
+    _designContext: IDesignContext
   ): IGeneratedFile[] {
     this.logStart('project', projectName);
 
@@ -34,7 +34,7 @@ export class HtmlGenerator extends BaseGenerator {
 
   generateComponent(
     componentType: string,
-    props: Record<string, any>,
+    props: Record<string, unknown>,
     designContext: IDesignContext,
     componentLibrary?: ComponentLibrary
   ): IGeneratedFile[] {
@@ -92,7 +92,7 @@ export class HtmlGenerator extends BaseGenerator {
     return [];
   }
 
-  protected generateShadcnComponent(componentType: string, props: Record<string, any>): string {
+  protected generateShadcnComponent(componentType: string, _props: Record<string, unknown>): string {
     const componentName = this.formatComponentName(componentType);
 
     return `<!DOCTYPE html>
@@ -118,7 +118,7 @@ export class HtmlGenerator extends BaseGenerator {
 </html>`;
   }
 
-  protected generateRadixComponent(componentType: string, props: Record<string, any>): string {
+  protected generateRadixComponent(componentType: string, _props: Record<string, unknown>): string {
     const componentName = this.formatComponentName(componentType);
 
     return `<!DOCTYPE html>
@@ -152,7 +152,7 @@ export class HtmlGenerator extends BaseGenerator {
 </html>`;
   }
 
-  protected generateHeadlessUIComponent(componentType: string, props: Record<string, any>): string {
+  protected generateHeadlessUIComponent(componentType: string, _props: Record<string, unknown>): string {
     const componentName = this.formatComponentName(componentType);
 
     return `<!DOCTYPE html>
@@ -184,7 +184,7 @@ export class HtmlGenerator extends BaseGenerator {
 </html>`;
   }
 
-  protected generatePrimeVueComponent(componentType: string, props: Record<string, any>): string {
+  protected generatePrimeVueComponent(componentType: string, _props: Record<string, unknown>): string {
     const componentName = this.formatComponentName(componentType);
 
     return `<!DOCTYPE html>
@@ -223,7 +223,7 @@ export class HtmlGenerator extends BaseGenerator {
 </html>`;
   }
 
-  protected generateMaterialComponent(componentType: string, props: Record<string, any>): string {
+  protected generateMaterialComponent(componentType: string, _props: Record<string, unknown>): string {
     const componentName = this.formatComponentName(componentType);
 
     return `<!DOCTYPE html>
@@ -261,7 +261,7 @@ export class HtmlGenerator extends BaseGenerator {
 </html>`;
   }
 
-  protected generateTailwindComponent(componentType: string, props: Record<string, any>): string {
+  protected generateTailwindComponent(componentType: string, _props: Record<string, unknown>): string {
     const componentName = this.formatComponentName(componentType);
 
     return `<!DOCTYPE html>
@@ -290,7 +290,7 @@ export class HtmlGenerator extends BaseGenerator {
   private createComponentFile(
     componentName: string,
     componentType: string,
-    props: Record<string, any>,
+    props: Record<string, unknown>,
     designContext: IDesignContext,
     componentLibrary?: ComponentLibrary
   ): IGeneratedFile {

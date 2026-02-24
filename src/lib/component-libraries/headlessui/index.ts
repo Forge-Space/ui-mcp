@@ -12,7 +12,7 @@ export interface HeadlessSetupOptions {
   projectName: string;
   components?: string[];
   designContext?: IDesignContext;
-  customizations?: Record<string, any>;
+  customizations?: Record<string, unknown>;
 }
 
 export function setupHeadlessProject(options: HeadlessSetupOptions): IGeneratedFile[] {

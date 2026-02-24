@@ -10,7 +10,7 @@ COPY package.json package-lock.json* ./
 
 # Fresh install without lockfile for cross-platform native deps
 RUN --mount=type=cache,target=/root/.npm,sharing=locked \
-    rm -f package-lock.json && npm install --legacy-peer-deps
+    npm install --ignore-scripts --legacy-peer-deps
 
 # Copy tsup config for bundled build
 COPY tsconfig.json tsup.config.ts ./
@@ -34,7 +34,7 @@ COPY package.json package-lock.json* ./
 
 # Install production dependencies with cache
 RUN --mount=type=cache,target=/root/.npm,sharing=locked \
-    npm install --omit=dev --legacy-peer-deps && \
+    npm install --omit=dev --ignore-scripts --legacy-peer-deps && \
     npm cache clean --force
 
 # Copy build output and assets

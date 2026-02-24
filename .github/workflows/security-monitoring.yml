@@ -2,30 +2,14 @@ name: Security Monitoring
 
 on:
   schedule:
-    # Run security scan daily at 2 AM UTC
     - cron: "0 2 * * *"
   workflow_dispatch:
-    inputs:
-      scan_dependencies:
-        description: "Scan dependencies for vulnerabilities"
-        required: false
-        default: true
-        type: boolean
-      scan_code:
-        description: "Run static code security analysis"
-        required: false
-        default: true
-        type: boolean
-      create_report:
-        description: "Create security summary report"
-        required: false
-        default: true
-        type: boolean
 
 permissions:
   contents: read
   security-events: write
   actions: read
+  issues: write
 
 jobs:
   security-scan:
@@ -43,36 +27,22 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Run npm audit
-        if: github.event.inputs.scan_dependencies == 'true'
-        run: npm audit --audit-level=medium --omit=dev
-        continue-on-error: true
+      - name: Audit production dependencies
+        run: npm audit --audit-level=high --omit=dev
 
       - name: Generate security report
-        if: github.event.inputs.create_report == 'true'
+        if: always()
         run: |
-          echo "## 🔒 Security Scan Report" >> $GITHUB_STEP_SUMMARY
+          echo "## Security Scan Report" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Date:** $(date -u)" >> $GITHUB_STEP_SUMMARY
           echo "**Repository:** ${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-
-          echo "### 📋 Scan Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- ✅ Dependency scan completed" >> $GITHUB_STEP_SUMMARY
-          echo "- ✅ Security audit completed" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-
-          echo "### 🔍 Review Findings" >> $GITHUB_STEP_SUMMARY
-          echo "1. Check the **Security** tab in this repository" >> $GITHUB_STEP_SUMMARY
-          echo "2. Review high and medium severity issues" >> $GITHUB_STEP_SUMMARY
-          echo "3. Address critical vulnerabilities promptly" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-
-          echo "### 🚨 Next Steps" >> $GITHUB_STEP_SUMMARY
-          echo "- [ ] Review and fix high-severity issues" >> $GITHUB_STEP_SUMMARY
-          echo "- [ ] Update dependencies if needed" >> $GITHUB_STEP_SUMMARY
-          echo "- [ ] Review security audit recommendations" >> $GITHUB_STEP_SUMMARY
+          echo "### Scan Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- npm audit (production deps, high severity)" >> $GITHUB_STEP_SUMMARY
+          echo "- CodeQL (via security.yml)" >> $GITHUB_STEP_SUMMARY
+          echo "- Trufflehog (via security.yml)" >> $GITHUB_STEP_SUMMARY
+          echo "- GitGuardian (automatic)" >> $GITHUB_STEP_SUMMARY
 
   coverage-monitoring:
     name: Coverage Monitoring
@@ -104,7 +74,7 @@ jobs:
 
       - name: Generate coverage report
         run: |
-          echo "## 📊 Coverage Monitoring Report" >> $GITHUB_STEP_SUMMARY
+          echo "## Coverage Monitoring Report" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
           if [ -f coverage/coverage-summary.json ]; then
@@ -112,53 +82,16 @@ jobs:
             FUNCTIONS=$(cat coverage/coverage-summary.json | jq '.total.functions.pct // 0')
             BRANCHES=$(cat coverage/coverage-summary.json | jq '.total.branches.pct // 0')
             STATEMENTS=$(cat coverage/coverage-summary.json | jq '.total.statements.pct // 0')
-            
-            echo "### Coverage Metrics" >> $GITHUB_STEP_SUMMARY
-            echo "| Metric | Coverage | Status |" >> $GITHUB_STEP_SUMMARY
-            echo "|--------|----------|--------|" >> $GITHUB_STEP_SUMMARY
-            
-            # Determine status for each metric
-            LINE_STATUS="✅"
-            if (( $(echo "$LINES < 80" | bc -l) )); then
-              LINE_STATUS="❌"
-            fi
-            
-            FUNC_STATUS="✅"
-            if (( $(echo "$FUNCTIONS < 80" | bc -l) )); then
-              FUNC_STATUS="❌"
-            fi
-            
-            BRANCH_STATUS="✅"
-            if (( $(echo "$BRANCHES < 80" | bc -l) )); then
-              BRANCH_STATUS="❌"
-            fi
-            
-            STMT_STATUS="✅"
-            if (( $(echo "$STATEMENTS < 80" | bc -l) )); then
-              STMT_STATUS="❌"
-            fi
-            
-            echo "| Lines | ${LINES}% | $LINE_STATUS |" >> $GITHUB_STEP_SUMMARY
-            echo "| Functions | ${FUNCTIONS}% | $FUNC_STATUS |" >> $GITHUB_STEP_SUMMARY
-            echo "| Branches | ${BRANCHES}% | $BRANCH_STATUS |" >> $GITHUB_STEP_SUMMARY
-            echo "| Statements | ${STATEMENTS}% | $STMT_STATUS |" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            
-            # Overall status
-            if (( $(echo "$LINES >= 80 && $FUNCTIONS >= 80 && $BRANCHES >= 80 && $STATEMENTS >= 80" | bc -l) )); then
-              echo "### 🎉 Overall Status: HEALTHY" >> $GITHUB_STEP_SUMMARY
-            else
-              echo "### ⚠️ Overall Status: NEEDS ATTENTION" >> $GITHUB_STEP_SUMMARY
-              echo "Some coverage metrics are below the 80% threshold." >> $GITHUB_STEP_SUMMARY
-            fi
-          else
-            echo "❌ Coverage report not found" >> $GITHUB_STEP_SUMMARY
-          fi
 
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 📈 View Details" >> $GITHUB_STEP_SUMMARY
-          echo "- [Codecov Dashboard](https://codecov.io/gh/${{ github.repository }})" >> $GITHUB_STEP_SUMMARY
-          echo "- [Coverage Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+            echo "| Metric | Coverage |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|----------|" >> $GITHUB_STEP_SUMMARY
+            echo "| Lines | ${LINES}% |" >> $GITHUB_STEP_SUMMARY
+            echo "| Functions | ${FUNCTIONS}% |" >> $GITHUB_STEP_SUMMARY
+            echo "| Branches | ${BRANCHES}% |" >> $GITHUB_STEP_SUMMARY
+            echo "| Statements | ${STATEMENTS}% |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Coverage report not found" >> $GITHUB_STEP_SUMMARY
+          fi
 
   notify-team:
     name: Notify Team
@@ -171,32 +104,23 @@ jobs:
         with:
           script: |
             const { owner, repo } = context.repo;
-            const title = `Security/Coverage Monitoring Alert - ${new Date().toISOString().split('T')[0]}`;
-            const body = `
-            ## 🚨 Monitoring Alert
-
-            The daily security and coverage monitoring workflow has failed.
-
-            ### 🔗 Links
-            - [Workflow Run](https://github.com/${owner}/${repo}/actions/runs/${{ github.run_id }})
-            - [Security Tab](https://github.com/${owner}/${repo}/security)
-            - [Codecov Dashboard](https://codecov.io/gh/${owner}/${repo})
-
-            ### 📋 Next Steps
-            1. Review the workflow logs
-            2. Check for any critical security issues
-            3. Verify coverage metrics
-            4. Address any failures
-            5. Re-run the workflow if needed
-
-            ---
-            *This issue was automatically created by the monitoring workflow.*
-            `;
+            const date = new Date().toISOString().split('T')[0];
+            const title = `Security/Coverage Monitoring Alert - ${date}`;
+            const body = [
+              '## Monitoring Alert',
+              '',
+              'The daily security and coverage monitoring workflow has failed.',
+              '',
+              `- [Workflow Run](https://github.com/${owner}/${repo}/actions/runs/${{ github.run_id }})`,
+              `- [Security Tab](https://github.com/${owner}/${repo}/security)`,
+              '',
+              '*Auto-created by monitoring workflow.*'
+            ].join('\n');
 
             github.rest.issues.create({
               owner,
               repo,
               title,
               body,
-              labels: ['security', 'coverage', 'monitoring', 'alert']
+              labels: ['security', 'monitoring']
             });

@@ -311,7 +311,7 @@ export function getRadixTemplate(name: string): RadixTemplate | undefined {
 export function generateRadixComponent(
   templateName: string,
   designContext: IDesignContext,
-  customizations?: Record<string, any>
+  customizations?: Record<string, unknown>
 ): IGeneratedFile[] {
   const template = getRadixTemplate(templateName);
 
@@ -331,7 +331,7 @@ export function generateRadixComponent(
 function applyDesignContextToRadix(
   content: string,
   designContext: IDesignContext,
-  customizations?: Record<string, any>
+  customizations?: Record<string, unknown>
 ): string {
   let result = content;
 

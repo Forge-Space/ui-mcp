@@ -33,7 +33,7 @@ export type AnalyzeComponentLibraryInput = {
   targetLibrary?: 'shadcn' | 'radix' | 'headlessui' | 'material' | 'primevue' | 'none';
 };
 
-const outputSchema = z.object({
+const _outputSchema = z.object({
   detectedLibrary: z.string().optional().describe('Detected component library'),
   confidence: z.number().describe('Detection confidence (0-1)'),
   patterns: z.array(
@@ -58,7 +58,7 @@ const outputSchema = z.object({
   summary: z.string().describe('Analysis summary'),
 });
 
-export type AnalyzeComponentLibraryOutput = z.infer<typeof outputSchema>;
+export type AnalyzeComponentLibraryOutput = z.infer<typeof _outputSchema>;
 
 /**
  * Detect which component library is used in the code
@@ -235,7 +235,7 @@ function generateMigrationSuggestions(
   return suggestions;
 }
 
-export async function analyzeComponentLibraryHandler(
+export function analyzeComponentLibraryHandler(
   input: AnalyzeComponentLibraryInput
 ): Promise<AnalyzeComponentLibraryOutput> {
   logger.info(`Analyzing component library usage${input.filePath ? ` in ${input.filePath}` : ''}`);
@@ -270,7 +270,7 @@ export async function analyzeComponentLibraryHandler(
 
   logger.info(`Analysis complete: ${summary}`);
 
-  return {
+  return Promise.resolve({
     detectedLibrary: detectedLibrary ?? undefined,
     confidence,
     patterns,
@@ -278,7 +278,7 @@ export async function analyzeComponentLibraryHandler(
     components,
     migrationSuggestions,
     summary,
-  };
+  });
 }
 
 export function registerAnalyzeComponentLibrary(server: McpServer): void {

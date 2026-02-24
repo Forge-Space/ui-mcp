@@ -39,9 +39,6 @@ on:
       CODECOV_TOKEN:
         description: "Codecov token"
         required: false
-      SNYK_TOKEN:
-        description: "Snyk token"
-        required: false
       GITHUB_TOKEN:
         description: "GitHub token"
         required: false
@@ -298,11 +295,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run Snyk security scan
-        if: secrets.SNYK_TOKEN
-        uses: snyk/actions/node@master
-        continue-on-error: true
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          args: --severity-threshold=high
+          node-version: ${{ inputs.node-version }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Run npm audit
+        run: npm audit --audit-level=high --omit=dev
+        continue-on-error: true

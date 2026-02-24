@@ -317,7 +317,7 @@ describe('Shared Utilities', () => {
 
     it('should identify function values', () => {
       expect(isFunction(() => {})).toBe(true);
-      expect(isFunction(() => {})).toBe(true);
+      expect(isFunction(function () {})).toBe(true);
       expect(isFunction({})).toBe(false);
       expect(isFunction('string')).toBe(false);
       expect(isFunction(123)).toBe(false);

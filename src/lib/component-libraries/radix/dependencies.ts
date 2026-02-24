@@ -54,7 +54,7 @@ export const defaultConfig: RadixConfig = {
 export function generatePackageJson(
   framework: Framework,
   projectName: string,
-  config: RadixConfig = defaultConfig,
+  _config: RadixConfig = defaultConfig,
   additionalDependencies?: RadixDependency[]
 ): IGeneratedFile {
   const all = defaultDependencies.concat(additionalDependencies || []);

@@ -49,9 +49,9 @@ export const PRESETS: Record<string, IPresetConfig> = {
 function hslStringToHex(hsl: string): string {
   const parts = hsl.split(/\s+/);
   if (parts.length < 3) return '#000000';
-  const h = parseFloat(parts[0]!);
-  const s = parseFloat(parts[1]!) / 100;
-  const l = parseFloat(parts[2]!) / 100;
+  const h = parseFloat(parts[0]);
+  const s = parseFloat(parts[1]) / 100;
+  const l = parseFloat(parts[2]) / 100;
 
   const a = s * Math.min(l, 1 - l);
   const f = (n: number) => {
@@ -65,22 +65,22 @@ function hslStringToHex(hsl: string): string {
 }
 
 export function getPreset(name: string = DEFAULT_PRESET): IDesignContext {
-  const config = PRESETS[name] ?? PRESETS[DEFAULT_PRESET]!;
-  const colorSystem = getColorSystem(config.colorSystem) ?? COLOR_SYSTEMS[0]!;
-  const fontPairing = getFontPairing(config.fontPairing) ?? FONT_PAIRINGS[0]!;
+  const config = PRESETS[name] ?? PRESETS[DEFAULT_PRESET];
+  const colorSystem = getColorSystem(config.colorSystem) ?? COLOR_SYSTEMS[0];
+  const fontPairing = getFontPairing(config.fontPairing) ?? FONT_PAIRINGS[0];
 
   return {
     typography: {
       fontFamily: fontPairing.body.family,
       headingFont: fontPairing.heading.family,
       fontSize: {
-        xs: TYPE_SCALE.xs!,
-        sm: TYPE_SCALE.sm!,
-        base: TYPE_SCALE.base!,
-        lg: TYPE_SCALE.lg!,
-        xl: TYPE_SCALE.xl!,
-        '2xl': TYPE_SCALE['2xl']!,
-        '3xl': TYPE_SCALE['3xl']!,
+        xs: TYPE_SCALE.xs,
+        sm: TYPE_SCALE.sm,
+        base: TYPE_SCALE.base,
+        lg: TYPE_SCALE.lg,
+        xl: TYPE_SCALE.xl,
+        '2xl': TYPE_SCALE['2xl'],
+        '3xl': TYPE_SCALE['3xl'],
       },
       fontWeight: {
         normal: '400',
@@ -114,15 +114,15 @@ export function getPreset(name: string = DEFAULT_PRESET): IDesignContext {
       scale: [0, 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96],
     },
     borderRadius: {
-      sm: SPACING_SYSTEM.borderRadius.sm!,
-      md: SPACING_SYSTEM.borderRadius.md!,
-      lg: SPACING_SYSTEM.borderRadius.lg!,
-      full: SPACING_SYSTEM.borderRadius.full!,
+      sm: SPACING_SYSTEM.borderRadius.sm,
+      md: SPACING_SYSTEM.borderRadius.md,
+      lg: SPACING_SYSTEM.borderRadius.lg,
+      full: SPACING_SYSTEM.borderRadius.full,
     },
     shadows: {
-      sm: SPACING_SYSTEM.shadows.sm!,
-      md: SPACING_SYSTEM.shadows.md!,
-      lg: SPACING_SYSTEM.shadows.lg!,
+      sm: SPACING_SYSTEM.shadows.sm,
+      md: SPACING_SYSTEM.shadows.md,
+      lg: SPACING_SYSTEM.shadows.lg,
     },
     iconSet: 'phosphor',
   };

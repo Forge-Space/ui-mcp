@@ -1,6 +1,6 @@
 import type { IDesignContext } from '../lib/types.js';
 import { designContextStore, DEFAULT_CONTEXT } from '../lib/design-context.js';
-import { getPreset, listPresets } from '../lib/design-references/index.js';
+import { getPreset } from '../lib/design-references/index.js';
 
 /**
  * Design Service - Handles all design context operations

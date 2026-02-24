@@ -59,7 +59,10 @@ export const badgeSnippets: IComponentSnippet[] = [
     quality: {
       antiGeneric: ['border-border uses theme token', 'no background for reduced visual weight'],
       inspirationSource: 'shadcn/ui Badge outline',
-      craftDetails: ['same dimensions as default for consistency'],
+      craftDetails: [
+        'same dimensions as default for consistency',
+        'border-only approach reduces visual weight in dense UIs',
+      ],
     },
   },
   {
@@ -72,14 +75,14 @@ export const badgeSnippets: IComponentSnippet[] = [
     mood: ['professional'],
     industry: ['general', 'saas', 'fintech'],
     visualStyles: ['soft-depth', 'corporate-trust', 'linear-modern'],
-    jsx: `<span className="inline-flex items-center gap-1.5 rounded-md bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20">
-  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
+    jsx: `<span className="inline-flex items-center gap-1.5 rounded-md bg-success/10 px-2.5 py-0.5 text-xs font-medium text-success ring-1 ring-inset ring-success/20 dark:bg-success/10 dark:text-success dark:ring-success/20">
+  <span className="h-1.5 w-1.5 rounded-full bg-success" aria-hidden="true" />
   Active
 </span>`,
     tailwindClasses: {
       badge:
-        'inline-flex items-center gap-1.5 rounded-md bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20',
-      dot: 'h-1.5 w-1.5 rounded-full bg-emerald-500',
+        'inline-flex items-center gap-1.5 rounded-md bg-success/10 px-2.5 py-0.5 text-xs font-medium text-success ring-1 ring-inset ring-success/20 dark:bg-success/10 dark:text-success dark:ring-success/20',
+      dot: 'h-1.5 w-1.5 rounded-full bg-success',
     },
     a11y: {
       roles: ['status'],
@@ -96,7 +99,7 @@ export const badgeSnippets: IComponentSnippet[] = [
         'dot indicator — not color-only',
         'ring-inset for subtle border',
         'dark mode variants included',
-        'emerald-700/50 not just "green"',
+        'semantic success token not just "green"',
       ],
       inspirationSource: 'Tailwind UI status badges',
       craftDetails: [
@@ -116,13 +119,13 @@ export const badgeSnippets: IComponentSnippet[] = [
     mood: ['professional'],
     industry: ['general', 'saas', 'fintech'],
     visualStyles: ['soft-depth', 'corporate-trust'],
-    jsx: `<span className="inline-flex items-center gap-1.5 rounded-md bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 ring-1 ring-inset ring-amber-600/20 dark:bg-amber-500/10 dark:text-amber-400 dark:ring-amber-500/20">
-  <span className="h-1.5 w-1.5 rounded-full bg-amber-500" aria-hidden="true" />
+    jsx: `<span className="inline-flex items-center gap-1.5 rounded-md bg-warning/10 px-2.5 py-0.5 text-xs font-medium text-warning ring-1 ring-inset ring-warning/20 dark:bg-warning/10 dark:text-warning dark:ring-warning/20">
+  <span className="h-1.5 w-1.5 rounded-full bg-warning" aria-hidden="true" />
   Pending
 </span>`,
     tailwindClasses: {
       badge:
-        'inline-flex items-center gap-1.5 rounded-md bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 ring-1 ring-inset ring-amber-600/20 dark:bg-amber-500/10 dark:text-amber-400 dark:ring-amber-500/20',
+        'inline-flex items-center gap-1.5 rounded-md bg-warning/10 px-2.5 py-0.5 text-xs font-medium text-warning ring-1 ring-inset ring-warning/20 dark:bg-warning/10 dark:text-warning dark:ring-warning/20',
       dot: 'h-1.5 w-1.5 rounded-full bg-amber-500',
     },
     a11y: {
@@ -151,13 +154,13 @@ export const badgeSnippets: IComponentSnippet[] = [
     mood: ['professional'],
     industry: ['general', 'saas', 'fintech'],
     visualStyles: ['soft-depth', 'corporate-trust'],
-    jsx: `<span className="inline-flex items-center gap-1.5 rounded-md bg-red-50 px-2.5 py-0.5 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20 dark:bg-red-500/10 dark:text-red-400 dark:ring-red-500/20">
-  <span className="h-1.5 w-1.5 rounded-full bg-red-500" aria-hidden="true" />
+    jsx: `<span className="inline-flex items-center gap-1.5 rounded-md bg-destructive/10 px-2.5 py-0.5 text-xs font-medium text-destructive ring-1 ring-inset ring-destructive/20 dark:bg-destructive/10 dark:text-destructive dark:ring-destructive/20">
+  <span className="h-1.5 w-1.5 rounded-full bg-destructive" aria-hidden="true" />
   Failed
 </span>`,
     tailwindClasses: {
       badge:
-        'inline-flex items-center gap-1.5 rounded-md bg-red-50 px-2.5 py-0.5 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20 dark:bg-red-500/10 dark:text-red-400 dark:ring-red-500/20',
+        'inline-flex items-center gap-1.5 rounded-md bg-destructive/10 px-2.5 py-0.5 text-xs font-medium text-destructive ring-1 ring-inset ring-destructive/20 dark:bg-destructive/10 dark:text-destructive dark:ring-destructive/20',
       dot: 'h-1.5 w-1.5 rounded-full bg-red-500',
     },
     a11y: {
@@ -173,7 +176,7 @@ export const badgeSnippets: IComponentSnippet[] = [
     quality: {
       antiGeneric: ['dot indicator — not color-only', 'consistent with success/warning family'],
       inspirationSource: 'Tailwind UI status badges',
-      craftDetails: ['red-700 not destructive — these are informational not actionable', 'ring-inset border'],
+      craftDetails: ['destructive token for error states — consistent with design system', 'ring-inset border'],
     },
   },
   {
@@ -208,6 +211,180 @@ export const badgeSnippets: IComponentSnippet[] = [
       ],
       inspirationSource: 'Vercel dashboard tags',
       craftDetails: ['primary/10 opacity for accessible tinted bg', 'px-3 py-1 for pill proportions'],
+    },
+  },
+  {
+    id: 'badge-dot',
+    name: 'Dot Badge',
+    category: 'atom',
+    type: 'badge',
+    variant: 'dot',
+    tags: ['status', 'indicator', 'subtle', 'inline'],
+    mood: ['minimal', 'professional', 'calm'],
+    industry: ['general', 'saas', 'devtools'],
+    visualStyles: ['minimal-editorial', 'linear-modern', 'soft-depth'],
+    jsx: `<span className="inline-flex items-center gap-1.5 text-xs font-medium text-foreground">
+  <span className="h-1.5 w-1.5 rounded-full bg-success" aria-hidden="true" />
+  Published
+</span>`,
+    tailwindClasses: {
+      badge: 'inline-flex items-center gap-1.5 text-xs font-medium text-foreground',
+      dot: 'h-1.5 w-1.5 rounded-full bg-success',
+    },
+    a11y: {
+      roles: ['status'],
+      ariaAttributes: ['aria-hidden'],
+      keyboardNav: 'N/A — decorative',
+      contrastRatio: '4.5:1',
+      focusVisible: false,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'span' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'minimal design — no background, just dot + text',
+        'h-1.5 w-1.5 (6px) for subtle indicator',
+        'gap-1.5 for comfortable spacing',
+      ],
+      inspirationSource: 'Linear status indicators',
+      craftDetails: [
+        'no px/py padding — inline text style',
+        'aria-hidden on dot since text conveys meaning',
+        'bg-success for published/active state',
+      ],
+    },
+  },
+  {
+    id: 'badge-outline-neutral',
+    name: 'Outline Badge Neutral',
+    category: 'atom',
+    type: 'badge',
+    variant: 'outline-neutral',
+    tags: ['label', 'tag', 'subtle', 'neutral'],
+    mood: ['minimal', 'calm', 'professional'],
+    industry: ['general', 'saas', 'devtools'],
+    visualStyles: ['minimal-editorial', 'linear-modern', 'soft-depth'],
+    jsx: `<span className="inline-flex items-center rounded-md border border-border bg-background px-2.5 py-0.5 text-xs font-medium text-muted-foreground">Draft</span>`,
+    tailwindClasses: {
+      badge:
+        'inline-flex items-center rounded-md border border-border bg-background px-2.5 py-0.5 text-xs font-medium text-muted-foreground',
+    },
+    a11y: {
+      roles: ['status'],
+      ariaAttributes: [],
+      keyboardNav: 'N/A — decorative',
+      contrastRatio: '4.5:1',
+      focusVisible: false,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'span' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'bg-background for explicit background control',
+        'text-muted-foreground for reduced emphasis',
+        'border-border uses theme token',
+      ],
+      inspirationSource: 'GitHub PR draft labels',
+      craftDetails: [
+        'bg-background + border creates subtle outline effect',
+        'text-muted-foreground de-emphasizes compared to primary badges',
+        'same dimensions as other badge variants',
+      ],
+    },
+  },
+  {
+    id: 'badge-with-icon',
+    name: 'Badge with Icon',
+    category: 'atom',
+    type: 'badge',
+    variant: 'with-icon',
+    tags: ['label', 'icon', 'status', 'indicator'],
+    mood: ['professional', 'minimal'],
+    industry: ['saas', 'devtools', 'general'],
+    visualStyles: ['soft-depth', 'linear-modern', 'corporate-trust'],
+    jsx: `<span className="inline-flex items-center gap-1 rounded-md bg-primary px-2.5 py-0.5 text-xs font-medium text-primary-foreground">
+  <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
+  Verified
+</span>`,
+    tailwindClasses: {
+      badge:
+        'inline-flex items-center gap-1 rounded-md bg-primary px-2.5 py-0.5 text-xs font-medium text-primary-foreground',
+      icon: 'h-3 w-3',
+    },
+    a11y: {
+      roles: ['status'],
+      ariaAttributes: ['aria-hidden'],
+      keyboardNav: 'N/A — decorative',
+      contrastRatio: '4.5:1',
+      focusVisible: false,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'span' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'gap-1 for tight icon + text spacing',
+        'h-3 w-3 icon scales with text-xs',
+        'aria-hidden on icon since text conveys meaning',
+      ],
+      inspirationSource: 'Vercel deployment status',
+      craftDetails: [
+        'h-3 w-3 (12px) icon matches text-xs hierarchy',
+        'gap-1 tighter than gap-1.5 for compact badge',
+        'leading icon pattern (icon before text)',
+      ],
+    },
+  },
+  {
+    id: 'badge-removable',
+    name: 'Removable Badge',
+    category: 'atom',
+    type: 'badge',
+    variant: 'removable',
+    tags: ['chip', 'tag', 'filter', 'interactive', 'removable'],
+    mood: ['professional', 'minimal'],
+    industry: ['general', 'saas', 'devtools'],
+    visualStyles: ['soft-depth', 'linear-modern', 'corporate-trust'],
+    jsx: `<span className="inline-flex items-center gap-1 rounded-md bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+  JavaScript
+  <button
+    type="button"
+    className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-sm text-primary hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    aria-label="Remove JavaScript"
+  >
+    <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+  </button>
+</span>`,
+    tailwindClasses: {
+      badge: 'inline-flex items-center gap-1 rounded-md bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary',
+      removeButton:
+        'inline-flex h-3.5 w-3.5 items-center justify-center rounded-sm text-primary hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+      icon: 'h-3 w-3',
+    },
+    a11y: {
+      roles: ['button'],
+      ariaAttributes: ['aria-label'],
+      keyboardNav: 'Tab to focus remove button, Enter/Space to remove',
+      contrastRatio: '4.5:1',
+      focusVisible: true,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'span' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'separate focusable remove button',
+        'aria-label includes full context (not just "remove")',
+        'hover:bg-primary/20 provides interaction feedback',
+      ],
+      inspirationSource: 'Gmail label chips',
+      craftDetails: [
+        'h-3.5 w-3.5 button fits within badge height',
+        'gap-1 for tight spacing',
+        'focus-visible:ring-2 for keyboard navigation',
+      ],
     },
   },
 ];

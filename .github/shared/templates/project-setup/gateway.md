@@ -131,7 +131,7 @@ docker-compose -f docker/docker-compose.dev.yml ps
 ### Code Scanning
 
 - CodeQL analysis on every PR
-- Snyk vulnerability scanning
+- npm audit vulnerability scanning
 - Dependency security updates
 
 ### Best Practices

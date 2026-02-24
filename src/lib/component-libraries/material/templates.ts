@@ -240,8 +240,8 @@ export function getMaterialTemplate(name: string): MaterialTemplate | undefined 
 
 export function generateMaterialComponent(
   templateName: string,
-  designContext: IDesignContext,
-  customizations?: Record<string, any>
+  _designContext: IDesignContext,
+  _customizations?: Record<string, unknown>
 ): IGeneratedFile[] {
   const template = getMaterialTemplate(templateName);
   if (!template) throw new Error(`Material-UI template "${templateName}" not found`);
