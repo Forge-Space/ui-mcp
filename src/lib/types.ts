@@ -138,7 +138,13 @@ export type PageTemplateType =
   | 'crud_table'
   | 'blog_list'
   | 'onboarding'
-  | 'error_404';
+  | 'error_404'
+  | 'ecommerce_plp'
+  | 'ecommerce_pdp'
+  | 'ecommerce_cart'
+  | 'ecommerce_checkout';
+
+export type ProjectType = 'default' | 'ecommerce';
 
 // --- Accessibility Audit ---
 export type AccessibilitySeverity = 'error' | 'warning' | 'info';
