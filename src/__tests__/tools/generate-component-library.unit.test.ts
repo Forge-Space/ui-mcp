@@ -3,8 +3,8 @@ import {
   generateComponentLibraryHandler,
   getAvailableComponentsHandler,
   getAvailableLibrariesHandler,
+  type GenerateComponentLibraryInput,
 } from '../../tools/generate-component-library.js';
-import type { GenerateComponentLibraryInput } from '../../tools/generate-component-library.js';
 
 describe('generate-component-library tool', () => {
   beforeAll(() => {

@@ -1,26 +1,26 @@
 # syntax=docker/dockerfile:1
 
 # ── Build stage ──────────────────────────────────────────────
-FROM node:24-alpine@sha256:4f696fbf39f383c1e486030ba6b289a5d9af541642fc78ab197e584a113b9c03 AS builder
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
 # Copy package files first for better caching
 COPY package.json package-lock.json* ./
 
-# Use BuildKit cache mount for npm
+# Fresh install without lockfile for cross-platform native deps
 RUN --mount=type=cache,target=/root/.npm,sharing=locked \
     npm install --ignore-scripts --legacy-peer-deps
 
-# Copy source files
-COPY tsconfig.json ./
+# Copy tsup config for bundled build
+COPY tsconfig.json tsup.config.ts ./
 COPY src/ ./src/
 
 # Build application
 RUN npm run build
 
 # ── Runtime stage ────────────────────────────────────────────
-FROM node:24-alpine@sha256:4f696fbf39f383c1e486030ba6b289a5d9af541642fc78ab197e584a113b9c03
+FROM node:22-alpine
 
 # Install tini for proper signal handling
 RUN apk add --no-cache tini
