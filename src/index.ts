@@ -22,6 +22,7 @@ import { registerAnalyzeDesignImageForTraining } from './tools/analyze-design-im
 import { registerManageTraining } from './tools/manage-training.js';
 import { registerAnalyzeComponentLibrary } from './tools/analyze-component-library.js';
 import { registerForgeContextTools } from './tools/forge-context.js';
+import { registerGenerateFromPack } from './tools/generate-from-pack.js';
 import { closeDatabase } from './lib/design-references/database/store.js';
 import { logger } from './lib/logger.js';
 
@@ -62,6 +63,7 @@ registerSubmitFeedback(server);
 registerAnalyzeDesignImageForTraining(server);
 registerManageTraining(server);
 registerAnalyzeComponentLibrary(server);
+registerGenerateFromPack(server);
 try {
   registerForgeContextTools(server);
   logger.info('Forge context tools registered successfully');
