@@ -1,79 +1,25 @@
-# 🎨 UIForge MCP Server
+# 🎨 Siza MCP Server
 
-> **AI-driven UI generation via Model Context Protocol** Generate complete
-> applications, components, and designs from natural language
+> **AI-driven UI generation via Model Context Protocol** — Part of the Forge
+> Space open-source developer workspace. Generate complete applications,
+> components, and designs from natural language.
 
 ## 🏆 **Badges**
 
-[![npm version](https://img.shields.io/npm/v/uiforge-mcp.svg)](https://www.npmjs.com/package/uiforge-mcp)
-[![npm downloads](https://img.shields.io/npm/dm/uiforge-mcp.svg)](https://www.npmjs.com/package/uiforge-mcp)
-[![GitHub stars](https://img.shields.io/github/stars/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp)
-[![GitHub forks](https://img.shields.io/github/forks/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp)
-[![GitHub issues](https://img.shields.io/github/issues/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp/issues)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp/pulls)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub release](https://img.shields.io/github/release/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp/releases)
-[![GitHub commits since latest release](https://img.shields.io/github/commits-since/LucasSantana-Dev/uiforge-mcp/latest.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp/commits)
-[![GitHub last commit](https://img.shields.io/github/last-commit/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp/commits)
-[![GitHub contributors](https://img.shields.io/github/contributors/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp/graphs/contributors)
-[![GitHub repo size](https://img.shields.io/github/repo-size/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp)
-[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp)
-
-### 🧪 **Quality & Testing**
-
-[![Tests](https://img.shields.io/github/actions/workflow/status/LucasSantana-Dev/uiforge-mcp/ci.yml?label=tests)](https://github.com/LucasSantana-Dev/uiforge-mcp/actions/workflows/ci.yml)
-[![Test Coverage](https://img.shields.io/badge/coverage-84%25-brightgreen)](https://github.com/LucasSantana-Dev/uiforge-mcp)
-[![Tests Passing](https://img.shields.io/badge/tests-550%2B-brightgreen)](https://github.com/LucasSantana-Dev/uiforge-mcp)
-[![Test Suites](https://img.shields.io/badge/suites-39%2B-brightgreen)](https://github.com/LucasSantana-Dev/uiforge-mcp)
-
-### 🔧 **Build & Deployment**
-
-[![Build Status](https://img.shields.io/github/actions/workflow/status/LucasSantana-Dev/uiforge-mcp/ci.yml?label=build)](https://github.com/LucasSantana-Dev/uiforge-mcp/actions/workflows/ci.yml)
-[![Deploy Status](https://img.shields.io/github/actions/workflow/status/LucasSantana-Dev/uiforge-mcp/deploy.yml?label=deploy)](https://github.com/LucasSantana-Dev/uiforge-mcp/actions/workflows/deploy.yml)
-[![Docker Pulls](https://img.shields.io/docker/pulls/lucassantana/uiforge-mcp.svg)](https://hub.docker.com/r/lucassantana/uiforge-mcp)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](https://www.typescriptlang.org/)
+[![npm version](https://img.shields.io/npm/v/siza-mcp.svg)](https://www.npmjs.com/package/siza-mcp)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D22-green)](https://nodejs.org/)
-
-### 🛡️ **Security & Standards**
-
-[![CodeQL](https://img.shields.io/github/actions/workflow/status/LucasSantana-Dev/uiforge-mcp/codeql.yml?label=CodeQL)](https://github.com/LucasSantana-Dev/uiforge-mcp/security)
-[![Security](https://img.shields.io/github/actions/workflow/status/LucasSantana-Dev/uiforge-mcp/security.yml?label=security)](https://github.com/LucasSantana-Dev/uiforge-mcp/actions/workflows/security.yml)
-[![Prettier](https://img.shields.io/badge/code%20style-prettier-ff69b4.svg)](https://prettier.io/)
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow)](https://conventionalcommits.org)
-
-### 🌟 **Platform & Integration**
-
-[![Model Context Protocol](https://img.shields.io/badge/MCP-1.26.0-blue)](https://modelcontextprotocol.io)
-[![Figma API](https://img.shields.io/badge/Figma%20API-Integrated-purple)](https://www.figma.com/developers/api)
-[![React](https://img.shields.io/badge/React-18-blue)](https://reactjs.org/)
-[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
-[![Vue.js](https://img.shields.io/badge/Vue.js-3-green)](https://vuejs.org/)
-[![Angular](https://img.shields.io/badge/Angular-18-red)](https://angular.io/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2FF)](https://tailwindcss.com/)
-[![Playwright](https://img.shields.io/badge/Playwright-1.58-2EAD33)](https://playwright.dev/)
-
-### 📊 **Activity & Community**
-
-[![GitHub Activity](https://img.shields.io/github/last-commit/LucasSantana-Dev/uiforge-mcp)](https://github.com/LucasSantana-Dev/uiforge-mcp/graphs/commit-activity)
-[![GitHub Watchers](https://img.shields.io/github/watchers/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp/watchers)
-[![GitHub Tag](https://img.shields.io/github/tag/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp/tags)
-[![GitHub License](https://img.shields.io/github/license/LucasSantana-Dev/uiforge-mcp.svg)](https://github.com/LucasSantana-Dev/uiforge-mcp/blob/main/LICENSE)
-
-### 💎 **Zero-Cost & Open Source**
-
-[![100% Free](https://img.shields.io/badge/Price-Free-green)](https://github.com/LucasSantana-Dev/uiforge-mcp)
-[![No API Keys](https://img.shields.io/badge/API-None-brightgreen)](https://github.com/LucasSantana-Dev/uiforge-mcp)
-[![Self-Hosted](https://img.shields.io/badge/Deployment-Self--Hosted-blue)](https://github.com/LucasSantana-Dev/uiforge-mcp)
-[![Zero Dependencies](https://img.shields.io/badge/Dependencies-0%20Cloud-orange)](https://github.com/LucasSantana-Dev/uiforge-mcp)
-[![MIT License](https://img.shields.io/badge/License-MIT-yellow)](https://opensource.org/licenses/MIT)
-[![Open Source](https://img.shields.io/badge/Open%20Source-%E2%9C%9F%8D-blue)](https://github.com/LucasSantana-Dev/uiforge-mcp)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](https://www.typescriptlang.org/)
+[![Tests](https://img.shields.io/github/actions/workflow/status/Forge-Space/ui-mcp/ci.yml?label=tests)](https://github.com/Forge-Space/ui-mcp/actions/workflows/ci.yml)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/Forge-Space/ui-mcp/ci.yml?label=build)](https://github.com/Forge-Space/ui-mcp/actions/workflows/ci.yml)
 
 ## ✨ **What It Does**
 
-UIForge MCP is a powerful **Model Context Protocol server** that transforms
-natural language into production-ready UI. From full-stack applications to
-individual components, interactive prototypes to design mockups — all generated
-with AI precision.
+Siza MCP is the **AI tool layer of Forge Space** — an open full-stack AI
+workspace. This powerful Model Context Protocol server transforms natural
+language into production-ready UI. From full-stack applications to individual
+components, interactive prototypes to design mockups — all generated with AI
+precision.
 
 ### 🚀 **Key Capabilities**
 
@@ -140,21 +86,21 @@ generates a Storybook story).
 ### **Option 1: NPX (Instant Setup)** ⚡
 
 ```bash
-npx -y uiforge-mcp@latest
+npx -y siza-mcp@latest
 ```
 
 ### **Option 2: Global Install** 📦
 
 ```bash
-npm install -g uiforge-mcp
-uiforge-mcp
+npm install -g siza-mcp
+siza-mcp
 ```
 
 ### **Option 3: Docker** 🐳
 
 ```bash
-docker build -t uiforge-mcp .
-docker run --rm -i uiforge-mcp
+docker build -t siza-mcp .
+docker run --rm -i siza-mcp
 ```
 
 ---
@@ -166,9 +112,9 @@ Add to your IDE's MCP configuration (Windsurf, Cursor, etc.):
 ```json
 {
   "mcpServers": {
-    "uiforge-mcp": {
+    "siza": {
       "command": "npx",
-      "args": ["-y", "uiforge-mcp@latest"],
+      "args": ["-y", "siza-mcp@latest"],
       "env": {
         "FIGMA_ACCESS_TOKEN": "your_token_here",
         "NODE_ENV": "production"
@@ -187,7 +133,7 @@ Add to your IDE's MCP configuration:
 ```json
 {
   "mcpServers": {
-    "uiforge-mcp": {
+    "siza": {
       "command": "docker",
       "args": [
         "run",
@@ -195,7 +141,7 @@ Add to your IDE's MCP configuration:
         "-i",
         "-e",
         "FIGMA_ACCESS_TOKEN",
-        "uiforge-mcp:latest"
+        "siza-mcp:latest"
       ],
       "env": {
         "NODE_ENV": "production"
@@ -210,9 +156,9 @@ Add to your IDE's MCP configuration:
 ```json
 {
   "mcpServers": {
-    "uiforge-mcp": {
+    "siza": {
       "command": "npx",
-      "args": ["-y", "uiforge-mcp@latest"],
+      "args": ["-y", "siza-mcp@latest"],
       "env": {
         "FIGMA_ACCESS_TOKEN": "your_figma_token_here",
         "NODE_ENV": "production"
@@ -282,7 +228,7 @@ npm run docker:run
 
 ## MCP Integration
 
-UIForge MCP server can be integrated with any MCP-compatible IDE using standard
+Siza MCP server can be integrated with any MCP-compatible IDE using standard
 Docker or NPX commands.
 
 ### 🎯 Quick Setup (No Clone Required)
@@ -292,15 +238,15 @@ Docker or NPX commands.
 1. **Build Docker image once:**
 
    ```bash
-   docker pull uiforge-mcp:latest
-   # Or build from source: docker build -t uiforge-mcp:latest .
+   docker pull siza-mcp:latest
+   # Or build from source: docker build -t siza-mcp:latest .
    ```
 
 2. **Add to your IDE's MCP configuration:**
    ```json
    {
      "mcpServers": {
-       "uiforge-mcp": {
+       "siza": {
          "command": "docker",
          "args": [
            "run",
@@ -308,7 +254,7 @@ Docker or NPX commands.
            "-i",
            "-e",
            "FIGMA_ACCESS_TOKEN",
-           "uiforge-mcp:latest"
+           "siza-mcp:latest"
          ],
          "env": {
            "NODE_ENV": "production"
@@ -325,9 +271,9 @@ Add to your IDE's MCP configuration:
 ```json
 {
   "mcpServers": {
-    "uiforge-mcp": {
+    "siza": {
       "command": "npx",
-      "args": ["-y", "uiforge-mcp@latest"],
+      "args": ["-y", "siza-mcp@latest"],
       "env": {
         "FIGMA_ACCESS_TOKEN": "your_figma_token_here",
         "NODE_ENV": "production"
@@ -411,7 +357,7 @@ This script:
 
 #### Cursor IDE
 
-- **Environment**: `.cursorrules` configured for UIForge MCP
+- **Environment**: `.cursorrules` configured for Siza MCP
 - **Auto-loading**: `.env` file automatically detected
 - **Development**: Optimized for MCP server development
 
@@ -460,8 +406,8 @@ maintain coverage levels before merging.
 ## Docker
 
 ```bash
-docker build -t uiforge-mcp .
-docker run -i uiforge-mcp
+docker build -t siza-mcp .
+docker run -i siza-mcp
 ```
 
 ## Environment Variables
@@ -477,7 +423,7 @@ docker run -i uiforge-mcp
 - **`figma_context_parser`**: Read Figma files, extract design tokens, map to
   Tailwind CSS
 - **`figma_push_variables`**: Write design tokens back to Figma as Variables
-- **Bidirectional token flow**: UIForge ↔ Figma
+- **Bidirectional token flow**: Siza ↔ Figma
 
 ### 🔧 **Setup Requirements**
 
@@ -511,14 +457,14 @@ echo '{"jsonrpc": "2.0", "id": 2, "method": "tools/call", "params": {"name": "fi
 
 ```bash
 # Build production image
-docker build -t uiforge-mcp:latest .
+docker build -t siza-mcp:latest .
 
 # Run production server
 docker run -d \
-  --name uiforge-mcp \
+  --name siza-mcp \
   -p 8026:8026 \
   -e FIGMA_ACCESS_TOKEN=your_token_here \
-  uiforge-mcp:latest
+  siza-mcp:latest
 ```
 
 ### 🔗 **Integration Examples**
@@ -531,12 +477,12 @@ docker run -d \
 
 ### Automated Deployment
 
-UIForge MCP uses GitHub Actions for automated deployment with comprehensive
+Siza MCP uses GitHub Actions for automated deployment with comprehensive
 validation:
 
 ```bash
 # Trigger deployment via GitHub Actions
-1. Go to: https://github.com/LucasSantana-Dev/uiforge-mcp/actions
+1. Go to: https://github.com/Forge-Space/ui-mcp/actions
 2. Click "Deploy" workflow
 3. Choose version type (patch/minor/major)
 4. Set dry_run to false for production deployment
@@ -590,21 +536,31 @@ git push origin main --follow-tags
 ```bash
 # Build and push multi-platform image
 docker buildx build --platform linux/amd64,linux/arm64 \
-  --push -t lucassantana/uiforge-mcp:latest .
+  --push -t lucassantana/siza-mcp:latest .
 
 # Pull and run
-docker pull lucassantana/uiforge-mcp:latest
-docker run -d --name uiforge-mcp \
+docker pull lucassantana/siza-mcp:latest
+docker run -d --name siza-mcp \
   -e FIGMA_ACCESS_TOKEN=your_token \
-  lucassantana/uiforge-mcp:latest
+  lucassantana/siza-mcp:latest
 ```
 
 📖 **Full deployment guide**: See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
 
+## Forge Space Ecosystem
+
+Siza MCP is part of the Forge Space ecosystem:
+
+- **siza** - Next.js web application for AI-powered UI generation
+- **mcp-gateway** - Python gateway for MCP protocol translation
+- **forge-patterns** - Core TypeScript library for design patterns and utilities
+- **siza-mcp** - This MCP server (AI tool layer)
+- **branding-mcp** - Brand identity and design system MCP tools
+
 ## Project Structure
 
 ```text
-uiforge-mcp/
+siza-mcp/
 ├── package.json
 ├── tsconfig.json
 ├── Dockerfile
@@ -661,11 +617,11 @@ uiforge-mcp/
 
 ## mcp-gateway Integration
 
-To add UIForge to your mcp-gateway Docker Compose setup:
+To add Siza MCP to your mcp-gateway Docker Compose setup:
 
-1. **`docker-compose.yml`**: Add a `uiforge` service on port `8026`.
-2. **`scripts/gateways.txt`**: Add `uiforge|http://uiforge:8026/sse|SSE`.
-3. **`.env.example`**: Add `UIFORGE_PORT=8026` and `FIGMA_ACCESS_TOKEN=`.
+1. **`docker-compose.yml`**: Add a `siza` service on port `8026`.
+2. **`scripts/gateways.txt`**: Add `siza|http://siza:8026/sse|SSE`.
+3. **`.env.example`**: Add `SIZA_PORT=8026` and `FIGMA_ACCESS_TOKEN=`.
 
 ## Architecture
 
