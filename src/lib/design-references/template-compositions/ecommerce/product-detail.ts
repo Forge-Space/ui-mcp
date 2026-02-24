@@ -57,10 +57,7 @@ export const productDetail: IPageComposition = {
   industry: ['ecommerce', 'general'],
   visualStyles: ['minimal-editorial'],
   quality: {
-    antiGeneric: [
-      'Gallery-first layout for visual products',
-      'Related products drive additional sales',
-    ],
+    antiGeneric: ['Gallery-first layout for visual products', 'Related products drive additional sales'],
     inspirationSource: 'Apple Store, premium e-commerce PDPs',
     designPhilosophy: 'Product as hero. Clear CTAs, trust signals, related discovery.',
   },

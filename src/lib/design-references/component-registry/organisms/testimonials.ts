@@ -335,7 +335,8 @@ export const testimonialSnippets: IComponentSnippet[] = [
   </div>
 </section>`,
     tailwindClasses: {
-      container: 'relative overflow-hidden rounded-3xl border bg-gradient-to-br from-muted/50 to-muted px-8 py-16 sm:px-12 sm:py-20 lg:px-16',
+      container:
+        'relative overflow-hidden rounded-3xl border bg-gradient-to-br from-muted/50 to-muted px-8 py-16 sm:px-12 sm:py-20 lg:px-16',
       quoteIcon: 'absolute right-0 top-0 -mr-16 -mt-16 h-64 w-64 text-primary/5',
       quote: 'text-2xl font-medium text-foreground leading-relaxed sm:text-3xl lg:text-4xl',
       author: 'mt-10 flex items-center gap-6',

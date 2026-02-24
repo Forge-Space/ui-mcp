@@ -55,10 +55,7 @@ export const agencyPortfolio: IPageComposition = {
   industry: ['agency', 'general'],
   visualStyles: ['linear-modern', 'neubrutalism'],
   quality: {
-    antiGeneric: [
-      'Split hero for immediate visual impact',
-      'Bento grid showcases work variety',
-    ],
+    antiGeneric: ['Split hero for immediate visual impact', 'Bento grid showcases work variety'],
     inspirationSource: 'Design agency sites, creative studios',
     designPhilosophy: 'Portfolio as proof. Visual hierarchy guides exploration.',
   },

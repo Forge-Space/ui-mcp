@@ -24,10 +24,7 @@ export const login: IPageComposition = {
   industry: ['saas', 'general'],
   visualStyles: ['minimal-editorial'],
   quality: {
-    antiGeneric: [
-      'Centered card reduces cognitive load',
-      'Social auth first for faster onboarding',
-    ],
+    antiGeneric: ['Centered card reduces cognitive load', 'Social auth first for faster onboarding'],
     inspirationSource: 'Clerk, Auth0 login flows',
     designPhilosophy: 'Minimal friction. Get users in fast.',
   },

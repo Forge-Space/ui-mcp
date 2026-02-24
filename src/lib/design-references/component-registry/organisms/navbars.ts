@@ -189,7 +189,8 @@ export const navbarSnippets: IComponentSnippet[] = [
     tailwindClasses: {
       nav: 'border-b bg-background',
       megaMenuTrigger: 'inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground',
-      megaMenuPanel: 'invisible absolute left-0 top-full w-screen max-w-md pt-3 opacity-0 group-hover:visible group-hover:opacity-100',
+      megaMenuPanel:
+        'invisible absolute left-0 top-full w-screen max-w-md pt-3 opacity-0 group-hover:visible group-hover:opacity-100',
       megaMenuItem: 'group/item flex gap-3 rounded-lg p-3 transition-colors hover:bg-accent',
       iconWrapper: 'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary',
     },
@@ -355,7 +356,8 @@ export const navbarSnippets: IComponentSnippet[] = [
       navItem: 'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium',
       navItemActive: 'bg-accent text-foreground',
       navItemInactive: 'text-muted-foreground hover:bg-accent hover:text-foreground',
-      badge: 'ml-auto inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-medium text-primary-foreground',
+      badge:
+        'ml-auto inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-medium text-primary-foreground',
       footer: 'border-t p-3',
     },
     a11y: {
@@ -420,7 +422,8 @@ export const navbarSnippets: IComponentSnippet[] = [
 </nav>`,
     tailwindClasses: {
       nav: 'border-b bg-background',
-      searchButton: 'flex h-9 flex-1 max-w-md items-center gap-2 rounded-lg border bg-muted/50 px-3 text-sm text-muted-foreground',
+      searchButton:
+        'flex h-9 flex-1 max-w-md items-center gap-2 rounded-lg border bg-muted/50 px-3 text-sm text-muted-foreground',
       kbd: 'hidden sm:inline-flex h-5 items-center gap-0.5 rounded border bg-background px-1.5 text-[10px] font-medium text-muted-foreground',
       navLink: 'rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground',
     },

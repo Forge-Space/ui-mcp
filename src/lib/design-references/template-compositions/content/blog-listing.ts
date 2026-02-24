@@ -57,10 +57,7 @@ export const blogListing: IPageComposition = {
   industry: ['media', 'general'],
   visualStyles: ['minimal-editorial'],
   quality: {
-    antiGeneric: [
-      'Featured post drives engagement with hero treatment',
-      'Grid layout supports scanning and discovery',
-    ],
+    antiGeneric: ['Featured post drives engagement with hero treatment', 'Grid layout supports scanning and discovery'],
     inspirationSource: 'Vercel blog, Linear changelog',
     designPhilosophy: 'Content-first. Typography and whitespace create reading flow.',
   },

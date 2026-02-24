@@ -57,10 +57,7 @@ export const analytics: IPageComposition = {
   industry: ['saas', 'devtools'],
   visualStyles: ['minimal-editorial', 'linear-modern'],
   quality: {
-    antiGeneric: [
-      'Fixed sidebar for persistent navigation',
-      'Stats cards above charts for quick insights',
-    ],
+    antiGeneric: ['Fixed sidebar for persistent navigation', 'Stats cards above charts for quick insights'],
     inspirationSource: 'Linear dashboard, Vercel Analytics',
     designPhilosophy: 'Data density balanced with whitespace. Information hierarchy.',
   },

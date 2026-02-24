@@ -1,9 +1,4 @@
-import type {
-  MoodTag,
-  IndustryTag,
-  VisualStyleId,
-  IComponentQuery,
-} from '../component-registry/types.js';
+import type { MoodTag, IndustryTag, VisualStyleId, IComponentQuery } from '../component-registry/types.js';
 import type { PageTemplateType } from '../../types.js';
 
 export interface IPageSection {

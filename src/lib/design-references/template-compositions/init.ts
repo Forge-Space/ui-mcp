@@ -1,10 +1,5 @@
 import { registerComposition } from './index.js';
-import {
-  saasCentered,
-  productLaunch,
-  waitlistMinimal,
-  agencyPortfolio,
-} from './landing/index.js';
+import { saasCentered, productLaunch, waitlistMinimal, agencyPortfolio } from './landing/index.js';
 import { analytics, crmPipeline, projectBoard } from './dashboard/index.js';
 import { login, signup, onboarding } from './auth/index.js';
 import { storefront, productDetail, cart } from './ecommerce/index.js';

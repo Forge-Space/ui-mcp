@@ -46,10 +46,7 @@ export const projectBoard: IPageComposition = {
   industry: ['saas', 'devtools'],
   visualStyles: ['minimal-editorial', 'linear-modern'],
   quality: {
-    antiGeneric: [
-      'Kanban board for task visualization',
-      'Team activity shows collaboration in real-time',
-    ],
+    antiGeneric: ['Kanban board for task visualization', 'Team activity shows collaboration in real-time'],
     inspirationSource: 'Notion, Linear project boards',
     designPhilosophy: 'Transparency and flow. Every task visible, every update shared.',
   },

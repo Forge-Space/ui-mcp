@@ -55,10 +55,7 @@ export const productLaunch: IPageComposition = {
   industry: ['saas', 'startup'],
   visualStyles: ['gradient-mesh', 'linear-modern'],
   quality: {
-    antiGeneric: [
-      'Gradient hero for visual impact',
-      'Alternating layout prevents monotony',
-    ],
+    antiGeneric: ['Gradient hero for visual impact', 'Alternating layout prevents monotony'],
     inspirationSource: 'Apple product pages, Notion marketing site',
     designPhilosophy: 'Story-driven design. Features build momentum toward conversion.',
   },

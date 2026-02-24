@@ -46,10 +46,7 @@ export const cart: IPageComposition = {
   industry: ['ecommerce', 'general'],
   visualStyles: ['minimal-editorial'],
   quality: {
-    antiGeneric: [
-      'Split layout keeps summary always visible',
-      'Editable quantities without page reload',
-    ],
+    antiGeneric: ['Split layout keeps summary always visible', 'Editable quantities without page reload'],
     inspirationSource: 'Modern e-commerce carts, Stripe Checkout inspiration',
     designPhilosophy: 'Reduce friction. Clear totals, easy edits, prominent checkout.',
   },

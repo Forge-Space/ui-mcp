@@ -35,10 +35,7 @@ export const signup: IPageComposition = {
   industry: ['saas', 'general'],
   visualStyles: ['gradient-mesh', 'minimal-editorial'],
   quality: {
-    antiGeneric: [
-      'Split layout reinforces brand while collecting info',
-      'Visual panel reduces perceived form length',
-    ],
+    antiGeneric: ['Split layout reinforces brand while collecting info', 'Visual panel reduces perceived form length'],
     inspirationSource: 'Stripe signup, Linear onboarding',
     designPhilosophy: 'Balance utility and brand. Form on right, inspiration on left.',
   },

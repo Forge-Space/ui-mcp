@@ -264,7 +264,8 @@ export const badgeSnippets: IComponentSnippet[] = [
     visualStyles: ['minimal-editorial', 'linear-modern', 'soft-depth'],
     jsx: `<span className="inline-flex items-center rounded-md border border-border bg-background px-2.5 py-0.5 text-xs font-medium text-muted-foreground">Draft</span>`,
     tailwindClasses: {
-      badge: 'inline-flex items-center rounded-md border border-border bg-background px-2.5 py-0.5 text-xs font-medium text-muted-foreground',
+      badge:
+        'inline-flex items-center rounded-md border border-border bg-background px-2.5 py-0.5 text-xs font-medium text-muted-foreground',
     },
     a11y: {
       roles: ['status'],
@@ -305,7 +306,8 @@ export const badgeSnippets: IComponentSnippet[] = [
   Verified
 </span>`,
     tailwindClasses: {
-      badge: 'inline-flex items-center gap-1 rounded-md bg-primary px-2.5 py-0.5 text-xs font-medium text-primary-foreground',
+      badge:
+        'inline-flex items-center gap-1 rounded-md bg-primary px-2.5 py-0.5 text-xs font-medium text-primary-foreground',
       icon: 'h-3 w-3',
     },
     a11y: {

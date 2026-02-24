@@ -63,16 +63,10 @@ export function registerSnippet(snippet: IComponentSnippet): void {
 
   const validation = validateSnippet(snippet);
   if (!validation.valid) {
-    logger.warn(
-      { id: snippet.id, errors: validation.errors },
-      'Snippet failed quality validation'
-    );
+    logger.warn({ id: snippet.id, errors: validation.errors }, 'Snippet failed quality validation');
   }
   if (validation.warnings.length > 0) {
-    logger.debug(
-      { id: snippet.id, warnings: validation.warnings },
-      'Snippet quality warnings'
-    );
+    logger.debug({ id: snippet.id, warnings: validation.warnings }, 'Snippet quality warnings');
   }
 
   const normalized: IComponentSnippet = {

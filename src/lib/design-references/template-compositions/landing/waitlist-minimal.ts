@@ -45,10 +45,7 @@ export const waitlistMinimal: IPageComposition = {
   industry: ['saas', 'startup'],
   visualStyles: ['minimal-editorial'],
   quality: {
-    antiGeneric: [
-      'No clutter. Just value prop and email capture.',
-      'Single feature highlight maintains focus',
-    ],
+    antiGeneric: ['No clutter. Just value prop and email capture.', 'Single feature highlight maintains focus'],
     inspirationSource: 'Resend, Cal.com, early-stage SaaS waitlists',
     designPhilosophy: 'Less is more. Perfect for pre-launch validation.',
   },

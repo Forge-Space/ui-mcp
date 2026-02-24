@@ -15,7 +15,8 @@ export const avatarSnippets: IComponentSnippet[] = [
   <img src="/avatars/01.jpg" alt="User Name" className="h-full w-full object-cover" />
 </span>`,
     tailwindClasses: {
-      avatar: 'inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-muted ring-2 ring-background',
+      avatar:
+        'inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-muted ring-2 ring-background',
       image: 'h-full w-full object-cover',
     },
     a11y: {
@@ -68,7 +69,8 @@ export const avatarSnippets: IComponentSnippet[] = [
 </div>`,
     tailwindClasses: {
       group: 'flex -space-x-2',
-      avatar: 'inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-muted ring-2 ring-background',
+      avatar:
+        'inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-muted ring-2 ring-background',
       image: 'h-full w-full object-cover',
       count: 'text-xs font-medium text-muted-foreground',
     },
@@ -111,7 +113,8 @@ export const avatarSnippets: IComponentSnippet[] = [
   <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-emerald-500 ring-2 ring-background" aria-label="Online" />
 </span>`,
     tailwindClasses: {
-      avatar: 'relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-muted ring-2 ring-background',
+      avatar:
+        'relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-muted ring-2 ring-background',
       image: 'h-full w-full object-cover',
       status: 'absolute bottom-0 right-0 h-3 w-3 rounded-full bg-emerald-500 ring-2 ring-background',
     },
@@ -153,7 +156,8 @@ export const avatarSnippets: IComponentSnippet[] = [
   JD
 </span>`,
     tailwindClasses: {
-      avatar: 'inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-primary text-sm font-medium text-primary-foreground ring-2 ring-background',
+      avatar:
+        'inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-primary text-sm font-medium text-primary-foreground ring-2 ring-background',
     },
     a11y: {
       roles: ['img'],
@@ -193,7 +197,8 @@ export const avatarSnippets: IComponentSnippet[] = [
   <img src="/avatars/server.jpg" alt="Server Name" className="h-full w-full object-cover" />
 </span>`,
     tailwindClasses: {
-      avatar: 'inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-muted ring-2 ring-background',
+      avatar:
+        'inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-muted ring-2 ring-background',
       image: 'h-full w-full object-cover',
     },
     a11y: {

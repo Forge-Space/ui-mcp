@@ -55,10 +55,7 @@ export const saasCentered: IPageComposition = {
   industry: ['saas', 'devtools'],
   visualStyles: ['minimal-editorial', 'gradient-mesh'],
   quality: {
-    antiGeneric: [
-      'Centered hero with clear value proposition',
-      'Grid-based feature layout for scanability',
-    ],
+    antiGeneric: ['Centered hero with clear value proposition', 'Grid-based feature layout for scanability'],
     inspirationSource: 'Vercel, Linear, Stripe landing pages',
     designPhilosophy: 'Clarity over creativity. Every element earns its space.',
   },

@@ -101,7 +101,8 @@ export const statusSnippets: IComponentSnippet[] = [
   3
 </span>`,
     tailwindClasses: {
-      badge: 'inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1.5 text-xs font-semibold text-white',
+      badge:
+        'inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1.5 text-xs font-semibold text-white',
     },
     a11y: {
       roles: ['status'],

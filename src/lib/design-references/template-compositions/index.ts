@@ -21,26 +21,20 @@ interface IFindOptions {
 
 export function findBestComposition(
   templateType: PageTemplateType,
-  options?: IFindOptions,
+  options?: IFindOptions
 ): IPageComposition | undefined {
   let candidates = compositions.filter((c) => c.templateType === templateType);
 
   if (options?.mood && options.mood.length > 0) {
-    candidates = candidates.filter((c) =>
-      options.mood.some((m) => c.mood.includes(m)),
-    );
+    candidates = candidates.filter((c) => options.mood.some((m) => c.mood.includes(m)));
   }
 
   if (options?.industry && options.industry.length > 0) {
-    candidates = candidates.filter((c) =>
-      options.industry.some((i) => c.industry.includes(i)),
-    );
+    candidates = candidates.filter((c) => options.industry.some((i) => c.industry.includes(i)));
   }
 
   if (options?.visualStyle) {
-    candidates = candidates.filter((c) =>
-      c.visualStyles.includes(options.visualStyle),
-    );
+    candidates = candidates.filter((c) => c.visualStyles.includes(options.visualStyle));
   }
 
   return candidates[0];
@@ -72,10 +66,7 @@ interface IComposedPage {
   };
 }
 
-export function composePageFromTemplate(
-  compositionId: string,
-  options?: IComposeOptions,
-): IComposedPage | null {
+export function composePageFromTemplate(compositionId: string, options?: IComposeOptions): IComposedPage | null {
   const composition = getComposition(compositionId);
   if (!composition) {
     return null;
@@ -107,11 +98,7 @@ export function composePageFromTemplate(
       jsx = `<!-- Section: ${section.name} - No snippet found -->`;
     }
 
-    const wrappedJsx = wrapSection(
-      jsx,
-      section.containerClasses,
-      section.darkModeClasses,
-    );
+    const wrappedJsx = wrapSection(jsx, section.containerClasses, section.darkModeClasses);
 
     composedSections.push({
       id: section.id,
@@ -121,10 +108,7 @@ export function composePageFromTemplate(
     });
   }
 
-  const pageJsx = wrapLayout(
-    composedSections.map((s) => s.jsx).join('\n'),
-    composition.layoutClasses,
-  );
+  const pageJsx = wrapLayout(composedSections.map((s) => s.jsx).join('\n'), composition.layoutClasses);
 
   return {
     jsx: pageJsx,
@@ -140,14 +124,8 @@ export function composePageFromTemplate(
   };
 }
 
-function wrapSection(
-  jsx: string,
-  containerClasses: string,
-  darkModeClasses?: string,
-): string {
-  const classes = darkModeClasses
-    ? `${containerClasses} ${darkModeClasses}`
-    : containerClasses;
+function wrapSection(jsx: string, containerClasses: string, darkModeClasses?: string): string {
+  const classes = darkModeClasses ? `${containerClasses} ${darkModeClasses}` : containerClasses;
   return `<section className="${classes}">\n${jsx}\n</section>`;
 }
 

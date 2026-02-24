@@ -46,10 +46,7 @@ export const crmPipeline: IPageComposition = {
   industry: ['saas', 'general'],
   visualStyles: ['minimal-editorial'],
   quality: {
-    antiGeneric: [
-      'Kanban-style pipeline for visual deal tracking',
-      'Activity feed provides context and updates',
-    ],
+    antiGeneric: ['Kanban-style pipeline for visual deal tracking', 'Activity feed provides context and updates'],
     inspirationSource: 'HubSpot, Pipedrive CRM dashboards',
     designPhilosophy: 'Visual workflow. Drag-and-drop for fast updates.',
   },

@@ -56,10 +56,7 @@ export const storefront: IPageComposition = {
   industry: ['ecommerce', 'general'],
   visualStyles: ['minimal-editorial', 'gradient-mesh'],
   quality: {
-    antiGeneric: [
-      'Sticky nav for persistent cart access',
-      'Hero banner highlights current promotion',
-    ],
+    antiGeneric: ['Sticky nav for persistent cart access', 'Hero banner highlights current promotion'],
     inspirationSource: 'Shopify themes, modern e-commerce sites',
     designPhilosophy: 'Browse-friendly. Clear product hierarchy, fast access to cart.',
   },

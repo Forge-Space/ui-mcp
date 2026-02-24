@@ -105,7 +105,8 @@ export const pricingSnippets: IComponentSnippet[] = [
       grid: 'mx-auto mt-16 grid max-w-5xl gap-8 lg:grid-cols-3',
       card: 'rounded-2xl border bg-card p-8',
       cardFeatured: 'relative rounded-2xl border-2 border-primary bg-card p-8 shadow-lg',
-      badge: 'absolute -top-4 left-1/2 -translate-x-1/2 inline-flex rounded-full bg-primary px-4 py-1 text-xs font-semibold text-primary-foreground',
+      badge:
+        'absolute -top-4 left-1/2 -translate-x-1/2 inline-flex rounded-full bg-primary px-4 py-1 text-xs font-semibold text-primary-foreground',
       price: 'mt-6 flex items-baseline gap-1 text-4xl font-bold text-foreground',
       featureList: 'mt-8 space-y-3',
       featureItem: 'flex items-start gap-3',
@@ -349,8 +350,10 @@ export const pricingSnippets: IComponentSnippet[] = [
   </div>
 </section>`,
     tailwindClasses: {
-      toggle: 'group relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-muted',
-      toggleThumb: 'pointer-events-none inline-block h-5 w-5 translate-x-0 rounded-full bg-background shadow ring-0 group-aria-checked:translate-x-5',
+      toggle:
+        'group relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-muted',
+      toggleThumb:
+        'pointer-events-none inline-block h-5 w-5 translate-x-0 rounded-full bg-background shadow ring-0 group-aria-checked:translate-x-5',
       saveBadge: 'inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700',
       billingNote: 'mt-1 text-xs text-muted-foreground',
     },
@@ -744,7 +747,8 @@ export const pricingSnippets: IComponentSnippet[] = [
     tailwindClasses: {
       grid: 'mx-auto mt-16 grid max-w-5xl gap-8 lg:grid-cols-3',
       freeTierCard: 'rounded-2xl border-2 border-primary bg-card p-8',
-      popularBadge: 'inline-flex items-center rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground',
+      popularBadge:
+        'inline-flex items-center rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground',
       pricePeriod: 'text-sm text-muted-foreground',
     },
     a11y: {

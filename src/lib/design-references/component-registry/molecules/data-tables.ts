@@ -688,11 +688,7 @@ export const dataTableSnippets: IComponentSnippet[] = [
         'truncate on filename for overflow handling',
       ],
       inspirationSource: 'VS Code file explorer',
-      craftDetails: [
-        'py-1.5 compact row padding',
-        'px-2 reduced horizontal padding',
-        'icon + text layout with gap-2',
-      ],
+      craftDetails: ['py-1.5 compact row padding', 'px-2 reduced horizontal padding', 'icon + text layout with gap-2'],
     },
   },
 ];

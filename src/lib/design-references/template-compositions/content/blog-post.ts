@@ -57,10 +57,7 @@ export const blogPost: IPageComposition = {
   industry: ['media', 'general'],
   visualStyles: ['minimal-editorial'],
   quality: {
-    antiGeneric: [
-      'Centered column maintains optimal reading width',
-      'Related posts keep users engaged after reading',
-    ],
+    antiGeneric: ['Centered column maintains optimal reading width', 'Related posts keep users engaged after reading'],
     inspirationSource: 'Medium, thoughtful blog designs',
     designPhilosophy: 'Reading experience first. Typography, spacing, zero distractions.',
   },

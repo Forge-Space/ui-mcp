@@ -35,10 +35,7 @@ export const onboarding: IPageComposition = {
   industry: ['saas', 'general'],
   visualStyles: ['minimal-editorial'],
   quality: {
-    antiGeneric: [
-      'Progress indicator reduces abandonment',
-      'Centered wizard keeps focus on current step',
-    ],
+    antiGeneric: ['Progress indicator reduces abandonment', 'Centered wizard keeps focus on current step'],
     inspirationSource: 'Notion onboarding, Stripe Connect setup',
     designPhilosophy: 'Progressive disclosure. One question at a time.',
   },

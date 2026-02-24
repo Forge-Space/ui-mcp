@@ -1,8 +1,6 @@
 type DkFn = (cls: string) => string;
 
-export function getAiChatBody(
-  dk: DkFn, appName: string
-): string {
+export function getAiChatBody(dk: DkFn, appName: string): string {
   return `    <div className="flex h-screen${dk('dark:bg-gray-950 dark:text-gray-100')}">
       <aside className="hidden md:flex w-72 flex-col border-r bg-muted/30${dk('dark:border-gray-800 dark:bg-gray-900')}">
         <div className="flex items-center justify-between p-4 border-b${dk('dark:border-gray-800')}">
@@ -45,9 +43,7 @@ export function getAiChatBody(
     </div>`;
 }
 
-export function getChangelogBody(
-  dk: DkFn, appName: string
-): string {
+export function getChangelogBody(dk: DkFn, appName: string): string {
   return `    <div className="min-h-screen bg-background text-foreground${dk('dark:bg-gray-950 dark:text-gray-100')}">
       <header className="border-b px-4 sm:px-6 lg:px-8 py-4${dk('dark:border-gray-800')}">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
@@ -96,9 +92,7 @@ export function getChangelogBody(
     </div>`;
 }
 
-export function getTeamMembersBody(
-  dk: DkFn, appName: string
-): string {
+export function getTeamMembersBody(dk: DkFn, appName: string): string {
   return `    <div className="flex min-h-screen${dk('dark:bg-gray-950 dark:text-gray-100')}">
       <aside className="hidden lg:flex w-64 flex-col border-r bg-background${dk('dark:border-gray-800 dark:bg-gray-900')}">
         <div className="p-6 border-b${dk('dark:border-gray-800')}"><span className="text-lg font-bold">${appName}</span></div>
@@ -146,9 +140,7 @@ export function getTeamMembersBody(
     </div>`;
 }
 
-export function getSettingsBillingBody(
-  dk: DkFn, appName: string
-): string {
+export function getSettingsBillingBody(dk: DkFn, appName: string): string {
   return `    <div className="flex min-h-screen${dk('dark:bg-gray-950 dark:text-gray-100')}">
       <aside className="hidden lg:flex w-64 flex-col border-r bg-background${dk('dark:border-gray-800 dark:bg-gray-900')}">
         <div className="p-6 border-b${dk('dark:border-gray-800')}"><span className="text-lg font-bold">${appName}</span></div>
@@ -201,9 +193,7 @@ export function getSettingsBillingBody(
     </div>`;
 }
 
-export function getApiKeysBody(
-  dk: DkFn, appName: string
-): string {
+export function getApiKeysBody(dk: DkFn, appName: string): string {
   return `    <div className="flex min-h-screen${dk('dark:bg-gray-950 dark:text-gray-100')}">
       <aside className="hidden lg:flex w-64 flex-col border-r bg-background${dk('dark:border-gray-800 dark:bg-gray-900')}">
         <div className="p-6 border-b${dk('dark:border-gray-800')}"><span className="text-lg font-bold">${appName}</span></div>
@@ -253,9 +243,7 @@ export function getApiKeysBody(
     </div>`;
 }
 
-export function getAnalyticsBody(
-  dk: DkFn, appName: string
-): string {
+export function getAnalyticsBody(dk: DkFn, appName: string): string {
   return `    <div className="flex min-h-screen${dk('dark:bg-gray-950 dark:text-gray-100')}">
       <aside className="hidden lg:flex w-64 flex-col border-r bg-background${dk('dark:border-gray-800 dark:bg-gray-900')}">
         <div className="p-6 border-b${dk('dark:border-gray-800')}"><span className="text-lg font-bold">${appName}</span></div>
@@ -334,9 +322,7 @@ export function getProfileBody(dk: DkFn): string {
     </div>`;
 }
 
-export function getFileManagerBody(
-  dk: DkFn, appName: string
-): string {
+export function getFileManagerBody(dk: DkFn, appName: string): string {
   return `    <div className="flex min-h-screen${dk('dark:bg-gray-950 dark:text-gray-100')}">
       <aside className="hidden lg:flex w-64 flex-col border-r bg-background${dk('dark:border-gray-800 dark:bg-gray-900')}">
         <div className="p-6 border-b${dk('dark:border-gray-800')}"><span className="text-lg font-bold">${appName}</span></div>
@@ -460,9 +446,7 @@ export function getCalendarBody(dk: DkFn): string {
     </div>`;
 }
 
-export function getDocsBody(
-  dk: DkFn, appName: string
-): string {
+export function getDocsBody(dk: DkFn, appName: string): string {
   return `    <div className="min-h-screen bg-background${dk('dark:bg-gray-950 dark:text-gray-100')}">
       <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur${dk('dark:border-gray-800')}">
         <div className="mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 py-3">
@@ -511,9 +495,7 @@ export function getDocsBody(
     </div>`;
 }
 
-export function getFaqBody(
-  dk: DkFn, appName: string
-): string {
+export function getFaqBody(dk: DkFn, appName: string): string {
   return `    <div className="min-h-screen bg-background text-foreground${dk('dark:bg-gray-950 dark:text-gray-100')}">
       <header className="border-b px-4 sm:px-6 lg:px-8 py-4${dk('dark:border-gray-800')}">
         <div className="max-w-3xl mx-auto"><a href="/" className="text-lg font-bold">${appName}</a></div>
@@ -544,9 +526,7 @@ export function getFaqBody(
     </div>`;
 }
 
-export function getBlogPostBody(
-  dk: DkFn, appName: string
-): string {
+export function getBlogPostBody(dk: DkFn, appName: string): string {
   return `    <div className="min-h-screen bg-background text-foreground${dk('dark:bg-gray-950 dark:text-gray-100')}">
       <header className="border-b px-4 sm:px-6 lg:px-8 py-4${dk('dark:border-gray-800')}">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
