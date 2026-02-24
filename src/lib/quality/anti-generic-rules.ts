@@ -7,14 +7,15 @@ export interface IValidationResult {
 }
 
 const RAW_COLOR_PATTERN =
-  /\b(?:bg|text|border|ring|shadow|from|via|to)-(?:red|blue|green|yellow|purple|pink|indigo|violet|cyan|teal|orange|amber|lime|emerald|fuchsia|rose|sky)-\d{2,3}\b/;
+  /\b(?:bg|text|border|ring|shadow)-(?:red|blue|green|yellow|purple|pink|indigo|violet|cyan|teal|orange|amber|lime|emerald|fuchsia|rose|sky)-\d{2,3}\b/;
 
 const PLACEHOLDER_PATTERNS = [
   /lorem ipsum/i,
   /your amazing feature/i,
   /click here/i,
   /sample text/i,
-  /placeholder/i,
+  />\s*placeholder text/i,
+  />\s*type here/i,
   /todo:/i,
   /xxx/i,
   /example\.com/i,

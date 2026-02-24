@@ -222,29 +222,29 @@ export const ecommerceAtomSnippets: IComponentSnippet[] = [
     industry: ['ecommerce'],
     visualStyles: ['soft-depth', 'linear-modern'],
     jsx: `<!-- In Stock -->
-<span role="status" className="inline-flex items-center gap-1.5 rounded-md bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20">
-  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
+<span role="status" className="inline-flex items-center gap-1.5 rounded-md bg-success/10 px-2.5 py-0.5 text-xs font-medium text-success ring-1 ring-inset ring-success/20 dark:bg-success/10 dark:text-success dark:ring-success/20">
+  <span className="h-1.5 w-1.5 rounded-full bg-success" aria-hidden="true" />
   In Stock
 </span>
 
 <!-- Low Stock -->
-<span role="status" className="inline-flex items-center gap-1.5 rounded-md bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 ring-1 ring-inset ring-amber-600/20 dark:bg-amber-500/10 dark:text-amber-400 dark:ring-amber-500/20">
-  <span className="h-1.5 w-1.5 rounded-full bg-amber-500" aria-hidden="true" />
+<span role="status" className="inline-flex items-center gap-1.5 rounded-md bg-warning/10 px-2.5 py-0.5 text-xs font-medium text-warning ring-1 ring-inset ring-warning/20 dark:bg-warning/10 dark:text-warning dark:ring-warning/20">
+  <span className="h-1.5 w-1.5 rounded-full bg-warning" aria-hidden="true" />
   Low Stock
 </span>
 
 <!-- Out of Stock -->
-<span role="status" className="inline-flex items-center gap-1.5 rounded-md bg-red-50 px-2.5 py-0.5 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20 dark:bg-red-500/10 dark:text-red-400 dark:ring-red-500/20">
-  <span className="h-1.5 w-1.5 rounded-full bg-red-500" aria-hidden="true" />
+<span role="status" className="inline-flex items-center gap-1.5 rounded-md bg-destructive/10 px-2.5 py-0.5 text-xs font-medium text-destructive ring-1 ring-inset ring-destructive/20 dark:bg-destructive/10 dark:text-destructive dark:ring-destructive/20">
+  <span className="h-1.5 w-1.5 rounded-full bg-destructive" aria-hidden="true" />
   Out of Stock
 </span>`,
     tailwindClasses: {
       inStock:
-        'inline-flex items-center gap-1.5 rounded-md bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20',
+        'inline-flex items-center gap-1.5 rounded-md bg-success/10 px-2.5 py-0.5 text-xs font-medium text-success ring-1 ring-inset ring-success/20 dark:bg-success/10 dark:text-success dark:ring-success/20',
       lowStock:
-        'inline-flex items-center gap-1.5 rounded-md bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 ring-1 ring-inset ring-amber-600/20 dark:bg-amber-500/10 dark:text-amber-400 dark:ring-amber-500/20',
+        'inline-flex items-center gap-1.5 rounded-md bg-warning/10 px-2.5 py-0.5 text-xs font-medium text-warning ring-1 ring-inset ring-warning/20 dark:bg-warning/10 dark:text-warning dark:ring-warning/20',
       outOfStock:
-        'inline-flex items-center gap-1.5 rounded-md bg-red-50 px-2.5 py-0.5 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20 dark:bg-red-500/10 dark:text-red-400 dark:ring-red-500/20',
+        'inline-flex items-center gap-1.5 rounded-md bg-destructive/10 px-2.5 py-0.5 text-xs font-medium text-destructive ring-1 ring-inset ring-destructive/20 dark:bg-destructive/10 dark:text-destructive dark:ring-destructive/20',
       dot: 'h-1.5 w-1.5 rounded-full',
     },
     a11y: {
@@ -260,13 +260,13 @@ export const ecommerceAtomSnippets: IComponentSnippet[] = [
     quality: {
       antiGeneric: [
         'dot indicator — not color-only',
-        'semantic color coding (emerald/amber/red)',
+        'semantic color coding (success/warning/destructive)',
         'ring-inset for subtle border',
         'dark mode variants included',
       ],
       inspirationSource: 'Tailwind UI status badges',
       craftDetails: [
-        'emerald for in-stock, amber for low-stock, red for out-of-stock',
+        'success for in-stock, warning for low-stock, destructive for out-of-stock',
         'consistent structure across all variants',
         'role="status" for semantic meaning',
       ],

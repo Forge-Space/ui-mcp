@@ -11,7 +11,7 @@ export const feedbackSnippets: IComponentSnippet[] = [
     mood: ['professional', 'calm'],
     industry: ['general', 'saas'],
     visualStyles: ['soft-depth', 'corporate-trust', 'linear-modern'],
-    jsx: `<div role="alert" className="relative rounded-lg border border-blue-200 bg-blue-50 p-4 text-blue-800 dark:border-blue-800 dark:bg-blue-950/50 dark:text-blue-300 [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg+div]:translate-y-[-3px] [&:has(svg)]:pl-11">
+    jsx: `<div role="alert" className="relative rounded-lg border border-info/20 bg-info/10 p-4 text-info dark:border-info/20 dark:bg-info/10 dark:text-info [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg+div]:translate-y-[-3px] [&:has(svg)]:pl-11">
   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" /></svg>
   <div>
     <h5 className="mb-1 font-medium leading-none">Heads up</h5>
@@ -20,7 +20,7 @@ export const feedbackSnippets: IComponentSnippet[] = [
 </div>`,
     tailwindClasses: {
       alert:
-        'relative rounded-lg border border-blue-200 bg-blue-50 p-4 text-blue-800 dark:border-blue-800 dark:bg-blue-950/50 dark:text-blue-300',
+        'relative rounded-lg border border-info/20 bg-info/10 p-4 text-info dark:border-info/20 dark:bg-info/10 dark:text-info',
       icon: 'h-4 w-4',
       title: 'mb-1 font-medium leading-none',
       description: 'text-sm opacity-90',
@@ -56,7 +56,7 @@ export const feedbackSnippets: IComponentSnippet[] = [
     mood: ['professional'],
     industry: ['general', 'saas'],
     visualStyles: ['soft-depth', 'corporate-trust'],
-    jsx: `<div role="alert" className="relative rounded-lg border border-red-200 bg-red-50 p-4 text-red-800 dark:border-red-800 dark:bg-red-950/50 dark:text-red-300 [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg+div]:translate-y-[-3px] [&:has(svg)]:pl-11">
+    jsx: `<div role="alert" className="relative rounded-lg border border-destructive/20 bg-destructive/10 p-4 text-destructive dark:border-destructive/20 dark:bg-destructive/10 dark:text-destructive [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg+div]:translate-y-[-3px] [&:has(svg)]:pl-11">
   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" /></svg>
   <div>
     <h5 className="mb-1 font-medium leading-none">Error</h5>
@@ -65,7 +65,7 @@ export const feedbackSnippets: IComponentSnippet[] = [
 </div>`,
     tailwindClasses: {
       alert:
-        'relative rounded-lg border border-red-200 bg-red-50 p-4 text-red-800 dark:border-red-800 dark:bg-red-950/50 dark:text-red-300',
+        'relative rounded-lg border border-destructive/20 bg-destructive/10 p-4 text-destructive dark:border-destructive/20 dark:bg-destructive/10 dark:text-destructive',
       icon: 'h-4 w-4',
       title: 'mb-1 font-medium leading-none',
       description: 'text-sm opacity-90',

@@ -12,12 +12,12 @@ export const statusSnippets: IComponentSnippet[] = [
     industry: ['general', 'saas', 'devtools'],
     visualStyles: ['soft-depth', 'linear-modern', 'minimal-editorial'],
     jsx: `<span className="inline-flex items-center gap-2">
-  <span className="h-2 w-2 rounded-full bg-emerald-500" aria-hidden="true" />
+  <span className="h-2 w-2 rounded-full bg-success" aria-hidden="true" />
   <span className="text-sm text-foreground">In Progress</span>
 </span>`,
     tailwindClasses: {
       wrapper: 'inline-flex items-center gap-2',
-      dot: 'h-2 w-2 rounded-full bg-emerald-500',
+      dot: 'h-2 w-2 rounded-full bg-success',
       label: 'text-sm text-foreground',
     },
     a11y: {
@@ -39,7 +39,7 @@ export const statusSnippets: IComponentSnippet[] = [
       inspirationSource: 'Linear issue status',
       craftDetails: [
         'gap-2 for comfortable spacing',
-        'emerald-500 for semantic success/active state',
+        'bg-success for semantic success/active state',
         'text-sm matches typical UI hierarchy',
       ],
     },
@@ -54,13 +54,13 @@ export const statusSnippets: IComponentSnippet[] = [
     mood: ['professional', 'minimal'],
     industry: ['general', 'saas', 'devtools'],
     visualStyles: ['soft-depth', 'linear-modern', 'corporate-trust'],
-    jsx: `<span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20">
-  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
+    jsx: `<span className="inline-flex items-center gap-1.5 rounded-full bg-success/10 px-2.5 py-1 text-xs font-medium text-success ring-1 ring-inset ring-success/20 dark:bg-success/10 dark:text-success dark:ring-success/20">
+  <span className="h-1.5 w-1.5 rounded-full bg-success" aria-hidden="true" />
   Open
 </span>`,
     tailwindClasses: {
-      pill: 'inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20',
-      dot: 'h-1.5 w-1.5 rounded-full bg-emerald-500',
+      pill: 'inline-flex items-center gap-1.5 rounded-full bg-success/10 px-2.5 py-1 text-xs font-medium text-success ring-1 ring-inset ring-success/20 dark:bg-success/10 dark:text-success dark:ring-success/20',
+      dot: 'h-1.5 w-1.5 rounded-full bg-success',
     },
     a11y: {
       roles: ['status'],
@@ -81,7 +81,7 @@ export const statusSnippets: IComponentSnippet[] = [
       ],
       inspirationSource: 'GitHub PR labels',
       craftDetails: [
-        'emerald-50 bg with emerald-700 text for sufficient contrast',
+        'success/10 bg with text-success for sufficient contrast',
         'ring-1 ring-inset creates contained border',
         'gap-1.5 for comfortable dot spacing',
       ],
@@ -97,12 +97,12 @@ export const statusSnippets: IComponentSnippet[] = [
     mood: ['professional', 'minimal'],
     industry: ['general', 'saas', 'devtools'],
     visualStyles: ['soft-depth', 'linear-modern', 'corporate-trust'],
-    jsx: `<span className="inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1.5 text-xs font-semibold text-white" aria-label="3 unread notifications">
+    jsx: `<span className="inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-destructive px-1.5 text-xs font-semibold text-destructive-foreground" aria-label="3 unread notifications">
   3
 </span>`,
     tailwindClasses: {
       badge:
-        'inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1.5 text-xs font-semibold text-white',
+        'inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-destructive px-1.5 text-xs font-semibold text-destructive-foreground',
     },
     a11y: {
       roles: ['status'],
@@ -124,7 +124,7 @@ export const statusSnippets: IComponentSnippet[] = [
       craftDetails: [
         'h-5 min-w-[20px] creates circular badge for 1-digit, pill for 2+',
         'px-1.5 provides horizontal padding for multi-digit counts',
-        'red-500 is universally recognized notification color',
+        'bg-destructive is universally recognized notification color',
       ],
     },
   },
@@ -140,16 +140,16 @@ export const statusSnippets: IComponentSnippet[] = [
     visualStyles: ['soft-depth', 'linear-modern', 'corporate-trust'],
     jsx: `<span className="inline-flex items-center gap-2">
   <span className="relative flex h-2.5 w-2.5">
-    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-    <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
+    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success/75 opacity-75" />
+    <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-success" />
   </span>
   <span className="text-sm text-foreground">Online</span>
 </span>`,
     tailwindClasses: {
       wrapper: 'inline-flex items-center gap-2',
       dotWrapper: 'relative flex h-2.5 w-2.5',
-      ping: 'absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75',
-      dot: 'relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500',
+      ping: 'absolute inline-flex h-full w-full animate-ping rounded-full bg-success/75 opacity-75',
+      dot: 'relative inline-flex h-2.5 w-2.5 rounded-full bg-success',
       label: 'text-sm text-foreground',
     },
     animations: ['animate-ping'],
@@ -171,7 +171,7 @@ export const statusSnippets: IComponentSnippet[] = [
       ],
       inspirationSource: 'Discord user status',
       craftDetails: [
-        'ping uses emerald-400, solid uses emerald-500 for color depth',
+        'ping uses success/75, solid uses success for depth',
         'opacity-75 on ping prevents overwhelming animation',
         'motion-reduce: animate-ping → animate-none',
       ],
