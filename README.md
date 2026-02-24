@@ -677,6 +677,36 @@ To add UIForge to your mcp-gateway Docker Compose setup:
 - **Figma write-back**: Variables REST API for design tokens (only supported
   write path)
 
+## ML & Specialist Agents
+
+Five specialist agents powered by RAG (Retrieval-Augmented Generation) over
+external datasets. All features degrade gracefully when no training data exists.
+
+### Data Ingestion
+
+```bash
+npx tsx src/scripts/ingest-training-data.ts --source all   # Ingest all sources
+npx tsx src/scripts/ingest-training-data.ts --stats         # Show embedding counts
+npx tsx src/scripts/ingest-training-data.ts --test-query "accessible modal"
+```
+
+Sources: shadcn/ui (MIT), axe-core (MPL 2.0), Material Design 3 (Apache 2.0),
+GitHub Primer (MIT), WAI-ARIA APG (W3C).
+
+### Training Data Generation
+
+```bash
+npx tsx src/scripts/generate-training-data.ts              # Generate all adapters
+npx tsx src/scripts/generate-training-data.ts --stats      # Show training data counts
+```
+
+### Cross-Repo Knowledge Sync
+
+```bash
+npx tsx src/scripts/sync-knowledge.ts                      # Export to mcp-gateway JSONL
+npx tsx src/scripts/sync-knowledge.ts --dry-run            # Preview without writing
+```
+
 ## License
 
 MIT
