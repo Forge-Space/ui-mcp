@@ -17,6 +17,11 @@ import {
 } from '../lib/design-references/component-registry/index.js';
 import type { MoodTag, IndustryTag, VisualStyleId } from '../lib/design-references/component-registry/types.js';
 import { enhancePrompt, scoreQuality } from '../lib/ml/index.js';
+import { enhancePromptWithRAG } from '../lib/ml/prompt-enhancer.js';
+import { scoreQualityWithRAG } from '../lib/ml/quality-scorer.js';
+import { recommendStyle } from '../lib/ml/style-recommender.js';
+import { embed } from '../lib/ml/embeddings.js';
+import { semanticSearch, getEmbeddingCount } from '../lib/ml/embedding-store.js';
 import { recordGeneration } from '../lib/feedback/index.js';
 import { getDatabase } from '../lib/design-references/database/store.js';
 
@@ -179,13 +184,13 @@ export function registerGenerateUiComponent(server: McpServer): void {
       const warnings: string[] = [];
       const skipML = skip_ml ?? false;
 
-      // ML: Prompt enhancement (always-on unless skip_ml)
+      // ML: Prompt enhancement with RAG (always-on unless skip_ml)
       let enhancedPromptText = component_type;
       let promptEnhancement = null;
 
       if (!skipML) {
         try {
-          promptEnhancement = await enhancePrompt(component_type, {
+          promptEnhancement = await enhancePromptWithRAG(component_type, {
             componentType: component_type,
             framework,
             style: visual_style || undefined,
@@ -194,7 +199,65 @@ export function registerGenerateUiComponent(server: McpServer): void {
           });
           enhancedPromptText = promptEnhancement.enhanced;
         } catch (err) {
-          logger.warn({ error: err }, 'Prompt enhancement failed, using original');
+          logger.warn({ error: err }, 'RAG prompt enhancement failed, trying basic');
+          try {
+            promptEnhancement = await enhancePrompt(component_type, {
+              componentType: component_type,
+              framework,
+              style: visual_style || undefined,
+              mood: mood || undefined,
+              industry: industry || undefined,
+            });
+            enhancedPromptText = promptEnhancement.enhanced;
+          } catch (err2) {
+            logger.warn({ error: err2 }, 'Prompt enhancement failed, using original');
+          }
+        }
+      }
+
+      // RAG: Semantic search for similar components and relevant rules
+      let ragContext: {
+        similarComponents: Array<{ id: string; similarity: number; text: string }>;
+        a11yRules: Array<{ id: string; similarity: number; text: string }>;
+        designTokens: Array<{ id: string; similarity: number; text: string }>;
+      } | null = null;
+
+      if (!skipML) {
+        try {
+          const db = getDatabase();
+          const hasEmbeddings =
+            getEmbeddingCount('component', db) > 0 ||
+            getEmbeddingCount('rule', db) > 0 ||
+            getEmbeddingCount('token', db) > 0;
+
+          if (hasEmbeddings) {
+            const queryVector = await embed(enhancedPromptText);
+            ragContext = {
+              similarComponents: semanticSearch(queryVector, 'component', db, 3, 0.5),
+              a11yRules: semanticSearch(queryVector, 'rule', db, 5, 0.4),
+              designTokens: semanticSearch(queryVector, 'token', db, 3, 0.4),
+            };
+          }
+        } catch (err) {
+          logger.warn({ error: err }, 'RAG retrieval failed');
+        }
+      }
+
+      // Style recommendation from RAG tokens
+      if (!skipML && !visual_style) {
+        try {
+          const styleRec = await recommendStyle(enhancedPromptText, {
+            industry: industry || undefined,
+            mood: mood || undefined,
+          });
+          if (styleRec.confidence > 0.5) {
+            const context = designContextStore.get();
+            context.colorPalette.primary = styleRec.primaryColor;
+            context.typography.fontFamily = styleRec.fontFamily;
+            designContextStore.set(context);
+          }
+        } catch (err) {
+          logger.debug({ error: err }, 'Style recommendation skipped');
         }
       }
 
@@ -262,20 +325,32 @@ export function registerGenerateUiComponent(server: McpServer): void {
         component_library
       );
 
-      // ML: Quality scoring (unless skip_ml)
+      // ML: Quality scoring with RAG enhancement (unless skip_ml)
       let qualityScore = null;
       if (!skipML && files.length > 0) {
         try {
           const mainFile = files[0];
           if (mainFile?.content) {
-            qualityScore = await scoreQuality(enhancedPromptText, mainFile.content, {
+            qualityScore = await scoreQualityWithRAG(enhancedPromptText, mainFile.content, {
               componentType: component_type,
               framework,
               style: visual_style || undefined,
             });
           }
         } catch (err) {
-          logger.warn({ error: err }, 'Quality scoring failed');
+          logger.warn({ error: err }, 'RAG quality scoring failed, trying basic');
+          try {
+            const mainFile = files[0];
+            if (mainFile?.content) {
+              qualityScore = await scoreQuality(enhancedPromptText, mainFile.content, {
+                componentType: component_type,
+                framework,
+                style: visual_style || undefined,
+              });
+            }
+          } catch (err2) {
+            logger.warn({ error: err2 }, 'Quality scoring failed');
+          }
         }
       }
 
@@ -352,7 +427,7 @@ export function registerGenerateUiComponent(server: McpServer): void {
         }
       }
 
-      // Build metadata about registry match
+      // Build metadata about registry match + RAG context
       const ragInfo = registryMatch
         ? `\n📚 RAG Match: "${registryMatch.name}" (${registryMatch.id})` +
           `\n   Quality: ${registryMatch.quality.inspirationSource}` +
@@ -363,12 +438,19 @@ export function registerGenerateUiComponent(server: McpServer): void {
           }`
         : '\n📚 RAG: No registry match — using fallback template';
 
+      const embeddingInfo = ragContext
+        ? `\n🧠 Embedding RAG: ${ragContext.similarComponents.length} components, ${ragContext.a11yRules.length} rules, ${ragContext.designTokens.length} tokens matched`
+        : '';
+
       const summary = [
         `Generated ${component_type} component for ${framework}`,
         `Files: ${files.length}`,
         ragInfo,
+        embeddingInfo,
         ...(warnings.length > 0 ? ['Warnings:', ...warnings.map((w) => `  ⚠ ${w}`)] : []),
-      ].join('\n');
+      ]
+        .filter(Boolean)
+        .join('\n');
 
       return {
         content: [
