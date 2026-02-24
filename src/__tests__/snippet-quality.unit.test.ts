@@ -49,10 +49,8 @@ describe('all registered snippets pass quality validation', () => {
     }
 
     if (failures.length > 0) {
-      const report = failures.map((f) => `  ${f.id}: ${f.errors.join('; ')}`).join('
-');
-      throw new Error(`${failures.length} snippet(s) failed quality validation:
-${report}`);
+      const report = failures.map((f) => `  ${f.id}: ${f.errors.join('; ')}`).join('\n');
+      throw new Error(`${failures.length} snippet(s) failed quality validation:\n${report}`);
     }
 
     expect(failures).toHaveLength(0);
@@ -91,10 +89,8 @@ ${report}`);
     }
 
     if (failures.length > 0) {
-      const report = failures.map((f) => `  ${f.id}: ${f.errors.join('; ')}`).join('
-');
-      throw new Error(`${failures.length} fixed snippet(s) regressed:
-${report}`);
+      const report = failures.map((f) => `  ${f.id}: ${f.errors.join('; ')}`).join('\n');
+      throw new Error(`${failures.length} fixed snippet(s) regressed:\n${report}`);
     }
 
     expect(failures).toHaveLength(0);

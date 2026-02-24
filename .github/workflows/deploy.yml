@@ -48,7 +48,7 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: rm -f package-lock.json && npm install --legacy-peer-deps
 
       - name: Run tests
         run: npm test
@@ -125,7 +125,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm ci --legacy-peer-deps
 
       - name: Check if main branch
         run: |
@@ -229,7 +229,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: rm -f package-lock.json && npm install --legacy-peer-deps
 
       - name: Run full validation
         run: npm run validate:all
@@ -296,7 +296,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: rm -f package-lock.json && npm install --legacy-peer-deps
 
       - name: Build
         run: npm run build
