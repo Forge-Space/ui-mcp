@@ -150,7 +150,6 @@ jobs:
           context: .
           load: true
           push: false
-          load: true
           tags: uiforge-mcp:ci
 
       - name: Test container startup
