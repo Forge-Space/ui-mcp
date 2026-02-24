@@ -12,6 +12,7 @@ import fs from 'node:fs';
 import pino from 'pino';
 import { CREATE_TABLES, SCHEMA_VERSION } from './schema.js';
 import { safeJSONParse } from '../../config.js';
+import { initVectorIndex } from '../../ml/vector-index.js';
 
 const logger = pino({ name: 'design-references-db' });
 import type {
@@ -49,6 +50,8 @@ export function getDatabase(customPath?: string): Database.Database {
   db.exec(CREATE_TABLES);
   db.pragma('synchronous = NORMAL');
   db.prepare('INSERT OR REPLACE INTO meta (key, value) VALUES (?, ?)').run('schema_version', String(SCHEMA_VERSION));
+
+  initVectorIndex(db);
 
   logger.info({ dbPath: resolvedPath }, 'Database opened/created');
   _dbPath = resolvedPath;

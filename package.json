@@ -46,6 +46,7 @@
     "playwright": "^1.58.2",
     "satori": "^0.19.2",
     "sharp": "^0.34.5",
+    "sqlite-vss": "^0.1.2",
     "zod": "^4.0.0"
   },
   "devDependencies": {

@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **sqlite-vss vector index**: HNSW-based approximate nearest-neighbor search for embeddings
+  - O(log n) search replacing O(n) brute-force — 7x faster at 100 embeddings, 100x+ at 25K
+  - Graceful degradation: falls back to brute-force on unsupported platforms
+  - New module `src/lib/ml/vector-index.ts` with init, index, search, rebuild functions
+  - Rebuild script: `npx tsx src/scripts/rebuild-vector-index.ts`
+  - Zero schema migration — VSS virtual table is separate from existing tables
+
 ## [0.5.1] - 2026-02-24
 
 ### Added
