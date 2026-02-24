@@ -117,7 +117,7 @@ jobs:
           
       - name: Install dependencies
         run: |
-          npm ci
+          npm install --legacy-peer-deps
           
       - name: Run ESLint
         run: |
@@ -199,7 +199,7 @@ jobs:
           
       - name: Install dependencies
         run: |
-          npm ci
+          npm install --legacy-peer-deps
           
       - name: Run tests
         run: |
@@ -258,7 +258,7 @@ jobs:
           
       - name: Install dependencies
         run: |
-          npm ci
+          npm install --legacy-peer-deps
           
       - name: Build application
         run: |
