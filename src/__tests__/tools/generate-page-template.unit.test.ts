@@ -31,8 +31,8 @@ describe('generate_page_template tool', () => {
       ctx = designContextStore.get();
     });
 
-    it('generates landing page for React', () => {
-      const files = generateTemplate('landing', 'react', 'none', false, 'TestApp', ctx);
+    it('generates landing page for React', async () => {
+      const files = await generateTemplate('landing', 'react', 'none', false, 'TestApp', ctx);
 
       expect(files).toBeDefined();
       expect(files.length).toBeGreaterThan(0);
@@ -40,32 +40,32 @@ describe('generate_page_template tool', () => {
       expect(files[0].content).toContain('export');
     });
 
-    it('generates dashboard for Vue', () => {
-      const files = generateTemplate('dashboard', 'vue', 'none', false, 'MyApp', ctx);
+    it('generates dashboard for Vue', async () => {
+      const files = await generateTemplate('dashboard', 'vue', 'none', false, 'MyApp', ctx);
 
       expect(files).toBeDefined();
       expect(files.length).toBeGreaterThan(0);
       expect(files[0].content).toContain('Dashboard');
     });
 
-    it('generates auth login for Angular', () => {
-      const files = generateTemplate('auth_login', 'angular', 'none', false, 'MyApp', ctx);
+    it('generates auth login for Angular', async () => {
+      const files = await generateTemplate('auth_login', 'angular', 'none', false, 'MyApp', ctx);
 
       expect(files).toBeDefined();
       expect(files.length).toBeGreaterThan(0);
       expect(files[0].path).toContain('login');
     });
 
-    it('generates HTML template', () => {
-      const files = generateTemplate('landing', 'html', 'none', false, 'MyApp', ctx);
+    it('generates HTML template', async () => {
+      const files = await generateTemplate('landing', 'html', 'none', false, 'MyApp', ctx);
 
       expect(files).toBeDefined();
       expect(files.length).toBeGreaterThan(0);
       expect(files[0].content).toContain('<!DOCTYPE html>');
     });
 
-    it('includes dark mode classes when enabled', () => {
-      const files = generateTemplate('landing', 'react', 'none', true, 'MyApp', ctx);
+    it('includes dark mode classes when enabled', async () => {
+      const files = await generateTemplate('landing', 'react', 'none', true, 'MyApp', ctx);
 
       expect(files).toBeDefined();
       expect(files[0].content).toContain('dark:');
@@ -82,19 +82,18 @@ describe('generate_page_template tool', () => {
       'blog_list',
       'onboarding',
       'error_404',
-    ])('%s generates valid output', (template) => {
-      const files = generateTemplate(template, 'react', 'none', false, 'MyApp', ctx);
+    ])('%s generates valid output', async (template) => {
+      const files = await generateTemplate(template, 'react', 'none', false, 'MyApp', ctx);
       expect(files).toBeDefined();
       expect(files.length).toBeGreaterThan(0);
     });
 
-    it('generates framework-specific syntax', () => {
-      const files = generateTemplate('landing', 'angular', 'none', false, 'MyApp', ctx);
+    it('generates framework-specific syntax', async () => {
+      const files = await generateTemplate('landing', 'angular', 'none', false, 'MyApp', ctx);
 
       expect(files).toBeDefined();
       expect(files.length).toBeGreaterThan(0);
 
-      // Verify Angular-specific patterns
       const angularFile = files[0];
       expect(angularFile.content).toContain('@Component');
       expect(angularFile.content).toContain('standalone: true');
@@ -102,16 +101,16 @@ describe('generate_page_template tool', () => {
       expect(angularFile.content).toContain('import { Component }');
     });
 
-    it('includes "use client" directive for Next.js', () => {
-      const files = generateTemplate('landing', 'nextjs', 'none', false, 'MyApp', ctx);
+    it('includes "use client" directive for Next.js', async () => {
+      const files = await generateTemplate('landing', 'nextjs', 'none', false, 'MyApp', ctx);
 
       expect(files).toBeDefined();
       expect(files.length).toBeGreaterThan(0);
       expect(files[0].content).toContain("'use client'");
     });
 
-    it('generates Svelte-specific syntax', () => {
-      const files = generateTemplate('landing', 'svelte', 'none', false, 'MyApp', ctx);
+    it('generates Svelte-specific syntax', async () => {
+      const files = await generateTemplate('landing', 'svelte', 'none', false, 'MyApp', ctx);
 
       expect(files).toBeDefined();
       expect(files.length).toBeGreaterThan(0);
@@ -119,15 +118,21 @@ describe('generate_page_template tool', () => {
       expect(files[0].content).toContain('<script lang="ts">');
     });
 
-    it('should return placeholder for invalid template type', () => {
-      const files = generateTemplate('invalid_template' as PageTemplateType, 'react', 'none', false, 'MyApp', ctx);
+    it('should return placeholder for invalid template type', async () => {
+      const files = await generateTemplate(
+        'invalid_template' as PageTemplateType,
+        'react',
+        'none',
+        false,
+        'MyApp',
+        ctx
+      );
       expect(Array.isArray(files)).toBe(true);
       expect(files.length).toBeGreaterThan(0);
       expect(files[0].content).toContain('Template "invalid_template" placeholder');
     });
 
-    it('handles empty context gracefully', () => {
-      // Create a minimal properly-typed empty context instead of using 'as any'
+    it('handles empty context gracefully', async () => {
       const emptyCtx = {
         colorPalette: {
           primary: '',
@@ -159,25 +164,19 @@ describe('generate_page_template tool', () => {
         iconSet: 'lucide' as const,
       } as typeof ctx;
 
-      const files = generateTemplate('landing', 'react', 'none', false, 'MyApp', emptyCtx);
+      const files = await generateTemplate('landing', 'react', 'none', false, 'MyApp', emptyCtx);
 
-      // Strengthen assertions
       expect(files).toBeDefined();
       expect(files.length).toBeGreaterThan(0);
 
-      // Check each file is defined and doesn't contain literal "undefined" or "null"
       for (const file of files) {
         expect(file).toBeDefined();
         expect(file.content).toBeDefined();
         expect(file.content).not.toContain('undefined');
         expect(file.content).not.toContain('null');
-
-        // Assert that expected fallback values or defaults are present
-        // Templates should use fallback colors/fonts when context is empty
         expect(file.content.length).toBeGreaterThan(0);
       }
 
-      // Verify the app name is present
       expect(files[0].content).toContain('MyApp');
     });
   });

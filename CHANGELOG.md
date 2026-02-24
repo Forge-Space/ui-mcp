@@ -5,15 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.6.0] - 2026-02-24
 
 ### Added
-- **sqlite-vss vector index**: HNSW-based approximate nearest-neighbor search for embeddings
-  - O(log n) search replacing O(n) brute-force — 7x faster at 100 embeddings, 100x+ at 25K
-  - Graceful degradation: falls back to brute-force on unsupported platforms
-  - New module `src/lib/ml/vector-index.ts` with init, index, search, rebuild functions
-  - Rebuild script: `npx tsx src/scripts/rebuild-vector-index.ts`
-  - Zero schema migration — VSS virtual table is separate from existing tables
+- **Professional Template & Snippet Library** — 500+ design snippets replacing generic AI output
+  - Anti-Generic Quality System: validation rules enforce semantic tokens, inspiration sources, craft details
+  - Diversity tracker prevents consecutive duplicate variant generation
+- **Page Compositions Engine** — dynamic page assembly from registry queries
+  - 5 composition categories: landing (4 variants), dashboard (3), auth (3), ecommerce (3), content (2)
+  - `composePageFromTemplate()` replaces hardcoded page templates with search-driven assembly
+- **Template Packs** — curated multi-page app starters
+  - SaaS Dashboard (Linear/Vercel-inspired): 6 pages with dark premium theme
+  - Startup Landing (Cal.com/Resend-inspired): 4 pages with minimal editorial theme
+  - AI Chat App (ChatGPT/Claude-inspired): 3 pages with linear-modern theme
+- **New MCP Tool**: `generate_from_template_pack` — generates complete multi-page apps from packs
+  - Supports all 6 frameworks (React, Next.js, Vue, Angular, Svelte, HTML)
+  - Generates routing config, shared layout, and framework-specific boilerplate
+- **Expanded Component Registry** (25 → 100+ snippets):
+  - 8 new organism files: navbars (6), pricing (6), testimonials (5), auth (6), dashboards (8), footers (5), chat (4), content (4)
+  - 6 new molecule files: data-tables (6), modals (5), lists (5), search (4), stats (4), empty-states (3)
+  - 4 new atom files: avatars (5), status (4), dividers (3), skeletons (4)
+  - Expanded existing files: buttons, inputs, badges, cards, forms, navigation
+- **13 New PageTemplateTypes**: ai_chat, changelog, team_members, settings_billing, api_keys, analytics, profile, file_manager, kanban, calendar, docs, faq, blog_post
+- SQLite DB as source of truth for component registry with batch hydration
+
+### Changed
+- `generate-page-template.ts` extended with 13 new template body functions
+- `scaffold-full-application.ts` wired to ML composition pipeline
+- Registry init now loads compositions and template packs at startup
 
 ## [0.5.1] - 2026-02-24
 

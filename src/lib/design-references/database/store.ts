@@ -469,6 +469,27 @@ function hydrateSnippet(id: string, d: Database.Database): IComponentSnippet {
   return results[0];
 }
 
+// --- Bulk Load ---
+
+export function getAllComponents(database?: Database.Database): IComponentSnippet[] {
+  const d = database ?? getDatabase();
+  const rows = d.prepare('SELECT id FROM components').all() as Array<{ id: string }>;
+  return hydrateSnippetsBatch(
+    rows.map((r) => r.id),
+    d
+  );
+}
+
+export function upsertComponent(snippet: IComponentSnippet, database?: Database.Database): void {
+  seedComponents([snippet], database);
+}
+
+export function deleteComponent(id: string, database?: Database.Database): boolean {
+  const d = database ?? getDatabase();
+  const result = d.prepare('DELETE FROM components WHERE id = ?').run(id);
+  return result.changes > 0;
+}
+
 // --- Utility ---
 
 function getDefaultDbPath(): string {

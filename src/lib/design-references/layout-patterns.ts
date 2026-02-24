@@ -36,6 +36,24 @@ export const LAYOUT_PATTERNS: readonly ILayoutPattern[] = [
     },
   },
   {
+    name: 'ecommerce-plp',
+    description: 'Product listing page with sidebar filters and responsive product grid',
+    components: ['filter-sidebar', 'sort-dropdown', 'product-grid', 'pagination', 'breadcrumb'],
+    useCase: ['product listings', 'e-commerce', 'catalog browsing'],
+    responsiveBehavior:
+      'Filter sidebar collapses to slide-over on mobile. Product grid scales from 2 to 3 to 4 columns. Sort dropdown full-width on mobile.',
+    tailwindClasses: {
+      wrapper: 'max-w-7xl mx-auto px-4 py-8',
+      breadcrumb: 'flex items-center gap-2 text-sm text-muted-foreground mb-6',
+      layout: 'flex flex-col lg:flex-row gap-8',
+      sidebar: 'w-full lg:w-64 shrink-0 space-y-6',
+      main: 'flex-1',
+      toolbar: 'flex items-center justify-between mb-6',
+      grid: 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4',
+      pagination: 'flex items-center justify-center gap-2 mt-8',
+    },
+  },
+  {
     name: 'ecommerce-pdp',
     description: 'E-commerce product detail page with image gallery, product info, reviews, and related items',
     components: ['image-gallery', 'product-info', 'add-to-cart', 'reviews', 'related-products'],
@@ -50,6 +68,38 @@ export const LAYOUT_PATTERNS: readonly ILayoutPattern[] = [
       reviews: 'mt-16 space-y-6',
       related: 'mt-16',
       relatedGrid: 'grid grid-cols-2 md:grid-cols-4 gap-4',
+    },
+  },
+  {
+    name: 'ecommerce-cart',
+    description: 'Shopping cart page with items list and sticky order summary sidebar',
+    components: ['cart-items', 'quantity-selector', 'order-summary', 'continue-shopping', 'checkout-button'],
+    useCase: ['shopping cart', 'e-commerce', 'order review'],
+    responsiveBehavior:
+      'Order summary moves below cart items on mobile. Item thumbnails shrink on small screens. Sticky summary on desktop.',
+    tailwindClasses: {
+      wrapper: 'max-w-7xl mx-auto px-4 py-8',
+      layout: 'flex flex-col lg:flex-row gap-8',
+      itemsList: 'flex-1 space-y-4',
+      item: 'flex gap-4 rounded-lg border p-4',
+      summary: 'w-full lg:w-80 shrink-0 lg:sticky lg:top-8 self-start rounded-lg border p-6 space-y-4',
+    },
+  },
+  {
+    name: 'ecommerce-checkout',
+    description: 'Multi-step checkout flow with progress stepper, form sections, and order summary sidebar',
+    components: ['progress-stepper', 'shipping-form', 'payment-form', 'order-summary', 'trust-badges'],
+    useCase: ['checkout', 'e-commerce', 'payment flow'],
+    responsiveBehavior:
+      'Order summary moves below form on mobile. Progress stepper becomes compact on small screens. Form inputs stack vertically on mobile.',
+    tailwindClasses: {
+      wrapper: 'max-w-7xl mx-auto px-4 py-8',
+      stepper: 'flex items-center justify-center gap-2 mb-8',
+      layout: 'flex flex-col lg:flex-row gap-8',
+      form: 'flex-1 space-y-8',
+      section: 'rounded-lg border p-6 space-y-4',
+      summary: 'w-full lg:w-80 shrink-0 lg:sticky lg:top-8 self-start rounded-lg border p-6 space-y-4',
+      trustBadges: 'flex items-center justify-center gap-6 mt-6 text-sm text-muted-foreground',
     },
   },
   {

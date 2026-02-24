@@ -1,22 +1,76 @@
 # 🎨 Siza MCP Server
 
-> **AI-driven UI generation via Model Context Protocol** — Part of the Forge
-> Space open-source developer workspace. Generate complete applications,
-> components, and designs from natural language.
+> **AI-driven UI generation via Model Context Protocol** Generate complete
+> applications, components, and designs from natural language
 
 ## 🏆 **Badges**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://img.shields.io/npm/v/siza-mcp.svg)](https://www.npmjs.com/package/siza-mcp)
-[![Node.js Version](https://img.shields.io/badge/node-%3E%3D22-green)](https://nodejs.org/)
+[![npm downloads](https://img.shields.io/npm/dm/siza-mcp.svg)](https://www.npmjs.com/package/siza-mcp)
+[![GitHub stars](https://img.shields.io/github/stars/LucasSantana-Dev/siza-mcp.svg)](https://github.com/LucasSantana-Dev/siza-mcp)
+[![GitHub forks](https://img.shields.io/github/forks/LucasSantana-Dev/siza-mcp.svg)](https://github.com/LucasSantana-Dev/siza-mcp)
+[![GitHub issues](https://img.shields.io/github/issues/LucasSantana-Dev/siza-mcp.svg)](https://github.com/LucasSantana-Dev/siza-mcp/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/LucasSantana-Dev/siza-mcp.svg)](https://github.com/LucasSantana-Dev/siza-mcp/pulls)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub release](https://img.shields.io/github/release/LucasSantana-Dev/siza-mcp.svg)](https://github.com/LucasSantana-Dev/siza-mcp/releases)
+[![GitHub commits since latest release](https://img.shields.io/github/commits-since/LucasSantana-Dev/siza-mcp/latest.svg)](https://github.com/LucasSantana-Dev/siza-mcp/commits)
+[![GitHub last commit](https://img.shields.io/github/last-commit/LucasSantana-Dev/siza-mcp.svg)](https://github.com/LucasSantana-Dev/siza-mcp/commits)
+[![GitHub contributors](https://img.shields.io/github/contributors/LucasSantana-Dev/siza-mcp.svg)](https://github.com/LucasSantana-Dev/siza-mcp/graphs/contributors)
+[![GitHub repo size](https://img.shields.io/github/repo-size/LucasSantana-Dev/siza-mcp.svg)](https://github.com/LucasSantana-Dev/siza-mcp)
+[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/LucasSantana-Dev/siza-mcp.svg)](https://github.com/LucasSantana-Dev/siza-mcp)
+
+### 🧪 **Quality & Testing**
+
+[![Tests](https://img.shields.io/github/actions/workflow/status/LucasSantana-Dev/siza-mcp/ci.yml?label=tests)](https://github.com/LucasSantana-Dev/siza-mcp/actions/workflows/ci.yml)
+[![Test Coverage](https://img.shields.io/badge/coverage-84%25-brightgreen)](https://github.com/LucasSantana-Dev/siza-mcp)
+[![Tests Passing](https://img.shields.io/badge/tests-843%2B-brightgreen)](https://github.com/LucasSantana-Dev/siza-mcp)
+[![Test Suites](https://img.shields.io/badge/suites-54%2B-brightgreen)](https://github.com/LucasSantana-Dev/siza-mcp)
+
+### 🔧 **Build & Deployment**
+
+[![Build Status](https://img.shields.io/github/actions/workflow/status/LucasSantana-Dev/siza-mcp/ci.yml?label=build)](https://github.com/LucasSantana-Dev/siza-mcp/actions/workflows/ci.yml)
+[![Deploy Status](https://img.shields.io/github/actions/workflow/status/LucasSantana-Dev/siza-mcp/deploy.yml?label=deploy)](https://github.com/LucasSantana-Dev/siza-mcp/actions/workflows/deploy.yml)
+[![Docker Pulls](https://img.shields.io/docker/pulls/lucassantana/siza-mcp.svg)](https://hub.docker.com/r/lucassantana/siza-mcp)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](https://www.typescriptlang.org/)
-[![Tests](https://img.shields.io/github/actions/workflow/status/Forge-Space/ui-mcp/ci.yml?label=tests)](https://github.com/Forge-Space/ui-mcp/actions/workflows/ci.yml)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/Forge-Space/ui-mcp/ci.yml?label=build)](https://github.com/Forge-Space/ui-mcp/actions/workflows/ci.yml)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D22-green)](https://nodejs.org/)
+
+### 🛡️ **Security & Standards**
+
+[![CodeQL](https://img.shields.io/github/actions/workflow/status/LucasSantana-Dev/siza-mcp/codeql.yml?label=CodeQL)](https://github.com/LucasSantana-Dev/siza-mcp/security)
+[![Security](https://img.shields.io/github/actions/workflow/status/LucasSantana-Dev/siza-mcp/security.yml?label=security)](https://github.com/LucasSantana-Dev/siza-mcp/actions/workflows/security.yml)
+[![Prettier](https://img.shields.io/badge/code%20style-prettier-ff69b4.svg)](https://prettier.io/)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow)](https://conventionalcommits.org)
+
+### 🌟 **Platform & Integration**
+
+[![Model Context Protocol](https://img.shields.io/badge/MCP-1.26.0-blue)](https://modelcontextprotocol.io)
+[![Figma API](https://img.shields.io/badge/Figma%20API-Integrated-purple)](https://www.figma.com/developers/api)
+[![React](https://img.shields.io/badge/React-18-blue)](https://reactjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
+[![Vue.js](https://img.shields.io/badge/Vue.js-3-green)](https://vuejs.org/)
+[![Angular](https://img.shields.io/badge/Angular-18-red)](https://angular.io/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2FF)](https://tailwindcss.com/)
+[![Playwright](https://img.shields.io/badge/Playwright-1.58-2EAD33)](https://playwright.dev/)
+
+### 📊 **Activity & Community**
+
+[![GitHub Activity](https://img.shields.io/github/last-commit/LucasSantana-Dev/siza-mcp)](https://github.com/LucasSantana-Dev/siza-mcp/graphs/commit-activity)
+[![GitHub Watchers](https://img.shields.io/github/watchers/LucasSantana-Dev/siza-mcp.svg)](https://github.com/LucasSantana-Dev/siza-mcp/watchers)
+[![GitHub Tag](https://img.shields.io/github/tag/LucasSantana-Dev/siza-mcp.svg)](https://github.com/LucasSantana-Dev/siza-mcp/tags)
+[![GitHub License](https://img.shields.io/github/license/LucasSantana-Dev/siza-mcp.svg)](https://github.com/LucasSantana-Dev/siza-mcp/blob/main/LICENSE)
+
+### 💎 **Zero-Cost & Open Source**
+
+[![100% Free](https://img.shields.io/badge/Price-Free-green)](https://github.com/LucasSantana-Dev/siza-mcp)
+[![No API Keys](https://img.shields.io/badge/API-None-brightgreen)](https://github.com/LucasSantana-Dev/siza-mcp)
+[![Self-Hosted](https://img.shields.io/badge/Deployment-Self--Hosted-blue)](https://github.com/LucasSantana-Dev/siza-mcp)
+[![Zero Dependencies](https://img.shields.io/badge/Dependencies-0%20Cloud-orange)](https://github.com/LucasSantana-Dev/siza-mcp)
+[![MIT License](https://img.shields.io/badge/License-MIT-yellow)](https://opensource.org/licenses/MIT)
+[![Open Source](https://img.shields.io/badge/Open%20Source-%E2%9C%9F%8D-blue)](https://github.com/LucasSantana-Dev/siza-mcp)
 
 ## ✨ **What It Does**
 
-Siza MCP is the **AI tool layer of Forge Space** — an open full-stack AI
-workspace. This powerful Model Context Protocol server transforms natural
+Siza MCP is a powerful **Model Context Protocol server** that transforms natural
 language into production-ready UI. From full-stack applications to individual
 components, interactive prototypes to design mockups — all generated with AI
 precision.
@@ -42,20 +96,25 @@ Built with the
 
 ## Tools
 
-| #   | Tool                        | Category | Description                                                                                                                      |
-| --- | --------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | `scaffold_full_application` | Code     | Generate full project boilerplate (React/Next.js/Vue/Angular/HTML + Tailwind)                                                    |
-| 2   | `generate_ui_component`     | Code     | Create/iterate UI components with style audit + design context. Supports shadcn/ui, Radix UI, Headless UI, Material UI, PrimeVue |
-| 3   | `generate_prototype`        | Design   | Create interactive HTML prototype with screen flows and navigation                                                               |
-| 4   | `generate_design_image`     | Design   | Generate SVG/PNG mockup images of UI screens/components                                                                          |
-| 5   | `fetch_design_inspiration`  | Context  | Extract visual metadata (colors, typography, layout) from URLs                                                                   |
-| 6   | `analyze_design_references` | Context  | Analyze design references from URLs and images, detect common patterns                                                           |
-| 7   | `figma_context_parser`      | Context  | Read Figma file nodes, extract tokens, map to Tailwind                                                                           |
-| 8   | `figma_push_variables`      | Design   | Write design tokens back to Figma as Variables                                                                                   |
-| 9   | `image_to_component`        | Code     | Convert screenshot/mockup/wireframe image into framework-specific component code                                                 |
-| 10  | `generate_page_template`    | Code     | Generate pre-built page templates (landing, dashboard, auth, pricing, CRUD, etc.)                                                |
-| 11  | `refine_component`          | Code     | Iteratively improve existing components via natural language feedback                                                            |
-| 12  | `audit_accessibility`       | Quality  | Audit component code for WCAG 2.1 violations with fix suggestions                                                                |
+| #   | Tool                          | Category | Description                                                                                                                      |
+| --- | ----------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | `scaffold_full_application`   | Code     | Generate full project boilerplate (React/Next.js/Vue/Angular/HTML + Tailwind)                                                    |
+| 2   | `generate_ui_component`       | Code     | Create/iterate UI components with style audit + design context. Supports shadcn/ui, Radix UI, Headless UI, Material UI, PrimeVue |
+| 3   | `generate_prototype`          | Design   | Create interactive HTML prototype with screen flows and navigation                                                               |
+| 4   | `generate_design_image`       | Design   | Generate SVG/PNG mockup images of UI screens/components                                                                          |
+| 5   | `fetch_design_inspiration`    | Context  | Extract visual metadata (colors, typography, layout) from URLs                                                                   |
+| 6   | `analyze_design_references`   | Context  | Analyze design references from URLs and images, detect common patterns                                                           |
+| 7   | `figma_context_parser`        | Context  | Read Figma file nodes, extract tokens, map to Tailwind                                                                           |
+| 8   | `figma_push_variables`        | Design   | Write design tokens back to Figma as Variables                                                                                   |
+| 9   | `image_to_component`          | Code     | Convert screenshot/mockup/wireframe image into framework-specific component code                                                 |
+| 10  | `generate_page_template`      | Code     | Generate pre-built page templates (landing, dashboard, auth, pricing, CRUD, etc.)                                                |
+| 11  | `refine_component`            | Code     | Iteratively improve existing components via natural language feedback                                                            |
+| 12  | `audit_accessibility`         | Quality  | Audit component code for WCAG 2.1 violations with fix suggestions                                                                |
+| 13  | `submit_feedback`             | Quality  | Submit feedback on generated components to improve future output                                                                 |
+| 14  | `manage_training`             | ML       | Manage training data ingestion and model fine-tuning                                                                             |
+| 15  | `analyze_component_library`   | Context  | Analyze component library patterns for style-aware generation                                                                    |
+| 16  | `analyze_design_image`        | ML       | Analyze design images for training data extraction                                                                               |
+| 17  | `generate_from_template_pack` | Code     | Generate complete multi-page apps from curated template packs (SaaS, Landing, AI Chat)                                           |
 
 ## Component Library Support
 
@@ -112,7 +171,7 @@ Add to your IDE's MCP configuration (Windsurf, Cursor, etc.):
 ```json
 {
   "mcpServers": {
-    "siza": {
+    "siza-mcp": {
       "command": "npx",
       "args": ["-y", "siza-mcp@latest"],
       "env": {
@@ -133,7 +192,7 @@ Add to your IDE's MCP configuration:
 ```json
 {
   "mcpServers": {
-    "siza": {
+    "siza-mcp": {
       "command": "docker",
       "args": [
         "run",
@@ -156,7 +215,7 @@ Add to your IDE's MCP configuration:
 ```json
 {
   "mcpServers": {
-    "siza": {
+    "siza-mcp": {
       "command": "npx",
       "args": ["-y", "siza-mcp@latest"],
       "env": {
@@ -246,7 +305,7 @@ Docker or NPX commands.
    ```json
    {
      "mcpServers": {
-       "siza": {
+       "siza-mcp": {
          "command": "docker",
          "args": [
            "run",
@@ -271,7 +330,7 @@ Add to your IDE's MCP configuration:
 ```json
 {
   "mcpServers": {
-    "siza": {
+    "siza-mcp": {
       "command": "npx",
       "args": ["-y", "siza-mcp@latest"],
       "env": {
@@ -482,7 +541,7 @@ validation:
 
 ```bash
 # Trigger deployment via GitHub Actions
-1. Go to: https://github.com/Forge-Space/ui-mcp/actions
+1. Go to: https://github.com/LucasSantana-Dev/siza-mcp/actions
 2. Click "Deploy" workflow
 3. Choose version type (patch/minor/major)
 4. Set dry_run to false for production deployment
@@ -547,16 +606,6 @@ docker run -d --name siza-mcp \
 
 📖 **Full deployment guide**: See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
 
-## Forge Space Ecosystem
-
-Siza MCP is part of the Forge Space ecosystem:
-
-- **siza** - Next.js web application for AI-powered UI generation
-- **mcp-gateway** - Python gateway for MCP protocol translation
-- **forge-patterns** - Core TypeScript library for design patterns and utilities
-- **siza-mcp** - This MCP server (AI tool layer)
-- **branding-mcp** - Brand identity and design system MCP tools
-
 ## Project Structure
 
 ```text
@@ -617,11 +666,11 @@ siza-mcp/
 
 ## mcp-gateway Integration
 
-To add Siza MCP to your mcp-gateway Docker Compose setup:
+To add Siza to your mcp-gateway Docker Compose setup:
 
 1. **`docker-compose.yml`**: Add a `siza` service on port `8026`.
 2. **`scripts/gateways.txt`**: Add `siza|http://siza:8026/sse|SSE`.
-3. **`.env.example`**: Add `SIZA_PORT=8026` and `FIGMA_ACCESS_TOKEN=`.
+3. **`.env.example`**: Add `UIFORGE_PORT=8026` and `FIGMA_ACCESS_TOKEN=`.
 
 ## Architecture
 

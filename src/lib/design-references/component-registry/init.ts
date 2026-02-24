@@ -5,13 +5,15 @@
  * Call this once at startup before using any registry search/retrieval functions.
  */
 
-import { clearRegistry, getAllSnippets } from './index.js';
+import { clearRegistry, registerSnippets, getAllSnippets } from './index.js';
 import { registerAtoms } from './atoms/index.js';
 import { registerMolecules } from './molecules/index.js';
 import { registerOrganisms } from './organisms/index.js';
 import { initializeInteractions } from '../micro-interactions/index.js';
 import { initializeStyles } from '../visual-styles/index.js';
-import { getDatabase, isSeeded, seedComponents } from '../database/store.js';
+import { getDatabase, isSeeded, seedComponents, getAllComponents } from '../database/store.js';
+import { initializeCompositions } from '../template-compositions/init.js';
+import { initializePacks } from '../template-packs/init.js';
 import pino from 'pino';
 
 const logger = pino({ name: 'registry-init' });
@@ -21,32 +23,59 @@ let initialized = false;
 export function initializeRegistry(): void {
   if (initialized) return;
 
-  // Clear registry first for clean state
   clearRegistry();
-
-  // Initialize dependencies
   initializeInteractions();
   initializeStyles();
 
-  // Then register component snippets
-  registerAtoms();
-  registerMolecules();
-  registerOrganisms();
-
-  // Seed the SQLite database from the in-memory registry
   try {
     const db = getDatabase();
+
     if (!isSeeded(db)) {
-      const snippets = getAllSnippets();
-      seedComponents(snippets, db);
-      logger.info({ count: snippets.length }, 'Seeded SQLite database from registry');
+      registerAtoms();
+      registerMolecules();
+      registerOrganisms();
+      const staticSnippets = getAllSnippets();
+      seedComponents(staticSnippets, db);
+      logger.info({ count: staticSnippets.length }, 'Seeded DB from static files');
     }
+
+    clearRegistry();
+    const dbSnippets = getAllComponents(db);
+    registerSnippets(dbSnippets);
+    logger.info({ count: dbSnippets.length }, 'Loaded in-memory registry from DB');
   } catch (err) {
-    // DB is an optimization layer — registry still works without it
-    logger.warn({ err }, 'Failed to seed SQLite database; falling back to in-memory only');
+    logger.warn({ err }, 'DB unavailable, falling back to static files');
+    clearRegistry();
+    registerAtoms();
+    registerMolecules();
+    registerOrganisms();
+  }
+
+  try {
+    initializeCompositions();
+  } catch (err) {
+    logger.warn({ err }, 'Compositions init failed; page templates still work');
+  }
+
+  try {
+    initializePacks();
+  } catch (err) {
+    logger.warn({ err }, 'Packs init failed; template packs still available');
   }
 
   initialized = true;
+}
+
+export function refreshRegistryFromDb(): void {
+  try {
+    const db = getDatabase();
+    clearRegistry();
+    const dbSnippets = getAllComponents(db);
+    registerSnippets(dbSnippets);
+    logger.info({ count: dbSnippets.length }, 'Refreshed in-memory registry from DB');
+  } catch (err) {
+    logger.warn({ err }, 'Failed to refresh from DB');
+  }
 }
 
 export function isRegistryInitialized(): boolean {

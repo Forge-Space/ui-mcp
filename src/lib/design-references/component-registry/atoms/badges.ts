@@ -210,4 +210,178 @@ export const badgeSnippets: IComponentSnippet[] = [
       craftDetails: ['primary/10 opacity for accessible tinted bg', 'px-3 py-1 for pill proportions'],
     },
   },
+  {
+    id: 'badge-dot',
+    name: 'Dot Badge',
+    category: 'atom',
+    type: 'badge',
+    variant: 'dot',
+    tags: ['status', 'indicator', 'subtle', 'inline'],
+    mood: ['minimal', 'professional', 'calm'],
+    industry: ['general', 'saas', 'devtools'],
+    visualStyles: ['minimal-editorial', 'linear-modern', 'soft-depth'],
+    jsx: `<span className="inline-flex items-center gap-1.5 text-xs font-medium text-foreground">
+  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
+  Published
+</span>`,
+    tailwindClasses: {
+      badge: 'inline-flex items-center gap-1.5 text-xs font-medium text-foreground',
+      dot: 'h-1.5 w-1.5 rounded-full bg-emerald-500',
+    },
+    a11y: {
+      roles: ['status'],
+      ariaAttributes: ['aria-hidden'],
+      keyboardNav: 'N/A — decorative',
+      contrastRatio: '4.5:1',
+      focusVisible: false,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'span' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'minimal design — no background, just dot + text',
+        'h-1.5 w-1.5 (6px) for subtle indicator',
+        'gap-1.5 for comfortable spacing',
+      ],
+      inspirationSource: 'Linear status indicators',
+      craftDetails: [
+        'no px/py padding — inline text style',
+        'aria-hidden on dot since text conveys meaning',
+        'emerald-500 semantic color for published/active',
+      ],
+    },
+  },
+  {
+    id: 'badge-outline-neutral',
+    name: 'Outline Badge Neutral',
+    category: 'atom',
+    type: 'badge',
+    variant: 'outline-neutral',
+    tags: ['label', 'tag', 'subtle', 'neutral'],
+    mood: ['minimal', 'calm', 'professional'],
+    industry: ['general', 'saas', 'devtools'],
+    visualStyles: ['minimal-editorial', 'linear-modern', 'soft-depth'],
+    jsx: `<span className="inline-flex items-center rounded-md border border-border bg-background px-2.5 py-0.5 text-xs font-medium text-muted-foreground">Draft</span>`,
+    tailwindClasses: {
+      badge:
+        'inline-flex items-center rounded-md border border-border bg-background px-2.5 py-0.5 text-xs font-medium text-muted-foreground',
+    },
+    a11y: {
+      roles: ['status'],
+      ariaAttributes: [],
+      keyboardNav: 'N/A — decorative',
+      contrastRatio: '4.5:1',
+      focusVisible: false,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'span' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'bg-background for explicit background control',
+        'text-muted-foreground for reduced emphasis',
+        'border-border uses theme token',
+      ],
+      inspirationSource: 'GitHub PR draft labels',
+      craftDetails: [
+        'bg-background + border creates subtle outline effect',
+        'text-muted-foreground de-emphasizes compared to primary badges',
+        'same dimensions as other badge variants',
+      ],
+    },
+  },
+  {
+    id: 'badge-with-icon',
+    name: 'Badge with Icon',
+    category: 'atom',
+    type: 'badge',
+    variant: 'with-icon',
+    tags: ['label', 'icon', 'status', 'indicator'],
+    mood: ['professional', 'minimal'],
+    industry: ['saas', 'devtools', 'general'],
+    visualStyles: ['soft-depth', 'linear-modern', 'corporate-trust'],
+    jsx: `<span className="inline-flex items-center gap-1 rounded-md bg-primary px-2.5 py-0.5 text-xs font-medium text-primary-foreground">
+  <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
+  Verified
+</span>`,
+    tailwindClasses: {
+      badge:
+        'inline-flex items-center gap-1 rounded-md bg-primary px-2.5 py-0.5 text-xs font-medium text-primary-foreground',
+      icon: 'h-3 w-3',
+    },
+    a11y: {
+      roles: ['status'],
+      ariaAttributes: ['aria-hidden'],
+      keyboardNav: 'N/A — decorative',
+      contrastRatio: '4.5:1',
+      focusVisible: false,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'span' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'gap-1 for tight icon + text spacing',
+        'h-3 w-3 icon scales with text-xs',
+        'aria-hidden on icon since text conveys meaning',
+      ],
+      inspirationSource: 'Vercel deployment status',
+      craftDetails: [
+        'h-3 w-3 (12px) icon matches text-xs hierarchy',
+        'gap-1 tighter than gap-1.5 for compact badge',
+        'leading icon pattern (icon before text)',
+      ],
+    },
+  },
+  {
+    id: 'badge-removable',
+    name: 'Removable Badge',
+    category: 'atom',
+    type: 'badge',
+    variant: 'removable',
+    tags: ['chip', 'tag', 'filter', 'interactive', 'removable'],
+    mood: ['professional', 'minimal'],
+    industry: ['general', 'saas', 'devtools'],
+    visualStyles: ['soft-depth', 'linear-modern', 'corporate-trust'],
+    jsx: `<span className="inline-flex items-center gap-1 rounded-md bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+  JavaScript
+  <button
+    type="button"
+    className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-sm text-primary hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    aria-label="Remove JavaScript"
+  >
+    <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+  </button>
+</span>`,
+    tailwindClasses: {
+      badge: 'inline-flex items-center gap-1 rounded-md bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary',
+      removeButton:
+        'inline-flex h-3.5 w-3.5 items-center justify-center rounded-sm text-primary hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+      icon: 'h-3 w-3',
+    },
+    a11y: {
+      roles: ['button'],
+      ariaAttributes: ['aria-label'],
+      keyboardNav: 'Tab to focus remove button, Enter/Space to remove',
+      contrastRatio: '4.5:1',
+      focusVisible: true,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'span' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'separate focusable remove button',
+        'aria-label includes full context (not just "remove")',
+        'hover:bg-primary/20 provides interaction feedback',
+      ],
+      inspirationSource: 'Gmail label chips',
+      craftDetails: [
+        'h-3.5 w-3.5 button fits within badge height',
+        'gap-1 for tight spacing',
+        'focus-visible:ring-2 for keyboard navigation',
+      ],
+    },
+  },
 ];
