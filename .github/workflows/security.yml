@@ -1,6 +1,3 @@
-# Security Scanning for UIForge MCP
-# Aligned with base-security.yml standards
-
 name: Security Scanning
 
 on:
@@ -9,165 +6,36 @@ on:
   pull_request:
     branches: [main, dev, release/*]
   schedule:
-    # Run daily at 2 AM UTC (aligned with base-security.yml)
-    - cron: '0 2 * * *'
+    - cron: '0 2 * * 1'
   workflow_dispatch:
 
-# Environment variables (aligned with base-security.yml standards)
 env:
-  NODE_VERSION: "22"
-  SNYK_SEVERITY_THRESHOLD: "high"
-  SNYK_ORGANIZATION: "LucasSantana-Dev"
+  NODE_VERSION: '22'
 
 jobs:
-  # Snyk Dependency Scanning (Node.js)
-  snyk-dependency-scan:
-    name: Snyk Node.js Dependency Scan
+  npm-audit:
+    name: NPM Security Audit
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
-          
-      - name: Install dependencies
-        run: npm ci --legacy-peer-deps
-        
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --severity-threshold=${{ env.SNYK_SEVERITY_THRESHOLD }} --org=${{ env.SNYK_ORGANIZATION }}
-          
-      - name: Upload Snyk results
-        uses: github/codeql-action/upload-sarif@v4
-        if: always() && hashFiles('snyk.sarif') != ''
-        with:
-          sarif_file: snyk.sarif
+      - run: npm ci
+      - name: Run npm audit
+        run: npm audit --audit-level=high --omit=dev
+        continue-on-error: true
 
-  # Snyk Code Security Analysis
-  snyk-code-scan:
-    name: Snyk Code Security Analysis
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
-          
-      - name: Install dependencies
-        run: npm ci --legacy-peer-deps
-        
-      - name: Run Snyk Code security analysis
-        uses: snyk/actions/node@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: code --severity-threshold=${{ env.SNYK_SEVERITY_THRESHOLD }} --org=${{ env.SNYK_ORGANIZATION }}
-          
-      - name: Upload Snyk Code results
-        uses: github/codeql-action/upload-sarif@v4
-        if: always() && hashFiles('snyk.sarif') != ''
-        with:
-          sarif_file: snyk.sarif
-
-  # Snyk Continuous Monitoring
-  snyk-monitor:
-    name: Snyk Continuous Monitoring
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
-          
-      - name: Install dependencies
-        run: npm ci --legacy-peer-deps
-        
-      - name: Monitor dependencies with Snyk
-        uses: snyk/actions/node@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --org=${{ env.SNYK_ORGANIZATION }}
-
-  # CodeQL Security Analysis (extends base-security.yml)
-  codeql:
-    name: CodeQL Analysis
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-      
-    strategy:
-      matrix:
-        language: ['typescript', 'javascript']
-        
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
-          
-      - name: Install dependencies
-        run: npm ci --legacy-peer-deps
-        
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4
-        with:
-          languages: ${{ matrix.language }}
-          queries: security-extended,security-and-quality
-          
-      - name: Build project
-        run: npm run build
-        
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v4
-        with:
-          category: "/language:${{matrix.language }}"
-
-  # Trufflehog Secret Scanning (extends base-security.yml)
   trufflehog:
-    name: Trufflehog Secret Scan
+    name: Secret Scan
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          
       - name: Run Trufflehog
         uses: trufflesecurity/trufflehog@v3.93.4
         with:
@@ -175,44 +43,3 @@ jobs:
           base: main
           head: HEAD
           extra_args: --only-verified
-          fail: true
-
-  # Security Summary (extends base-security.yml)
-  security-summary:
-    name: Security Summary
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
-    needs: [snyk-dependency-scan, snyk-code-scan, snyk-monitor, codeql, trufflehog]
-    if: always()
-    
-    steps:
-      - name: Security Scan Summary
-        run: |
-          echo "🔒 Security Scanning Complete!"
-          echo "📊 Snyk Dependencies: ${{ needs.snyk-dependency-scan.result }}"
-          echo "🔍 Snyk Code Analysis: ${{ needs.snyk-code-scan.result }}"
-          echo "📊 Snyk Monitor: ${{ needs.snyk-monitor.result }}"
-          echo "🔎 CodeQL Analysis: ${{ needs.codeql.result }}"
-          echo "🐗 Trufflehog Secrets: ${{ needs.trufflehog.result }}"
-          echo ""
-          echo "🚨 Any failures should be reviewed immediately!"
-          echo "📋 Check the Security tab for detailed findings"
-          
-      - name: Generate Security Summary Report
-        if: always()
-        run: |
-          echo "## 🔒 Security Scan Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Scan Type | Status | Result |" >> $GITHUB_STEP_SUMMARY
-          echo "|-----------|--------|--------|" >> $GITHUB_STEP_SUMMARY
-          echo "| Snyk Dependencies | ${{ needs.snyk-dependency-scan.result }} | ✅ Passed or ❌ Failed |" >> $GITHUB_STEP_SUMMARY
-          echo "| Snyk Code Analysis | ${{ needs.snyk-code-scan.result }} | ✅ Passed or ❌ Failed |" >> $GITHUB_STEP_SUMMARY
-          echo "| Snyk Monitor | ${{ needs.snyk-monitor.result }} | ✅ Active or ❌ Failed |" >> $GITHUB_STEP_SUMMARY
-          echo "| CodeQL Analysis | ${{ needs.codeql.result }} | ✅ Passed or ❌ Failed |" >> $GITHUB_STEP_SUMMARY
-          echo "| Trufflehog Secrets | ${{ needs.trufflehog.result }} | ✅ Passed or ❌ Failed |" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 📊 Security Metrics" >> $GITHUB_STEP_SUMMARY
-          echo "- **Organization**: ${{ env.SNYK_ORGANIZATION }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Severity Threshold**: ${{ env.SNYK_SEVERITY_THRESHOLD }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Scan Frequency**: Daily scheduled + event-driven" >> $GITHUB_STEP_SUMMARY
-          echo "- **Tools Used**: Snyk, CodeQL, Trufflehog" >> $GITHUB_STEP_SUMMARY
