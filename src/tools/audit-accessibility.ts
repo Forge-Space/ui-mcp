@@ -1,6 +1,12 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { IAccessibilityIssue, IAccessibilityReport, Framework } from '../lib/types.js';
+import { embed } from '../lib/ml/embeddings.js';
+import { semanticSearch, getEmbeddingCount } from '../lib/ml/embedding-store.js';
+import { getDatabase } from '../lib/design-references/database/store.js';
+import pino from 'pino';
+
+const a11yLogger = pino({ name: 'audit-accessibility' });
 
 const FRAMEWORK_VALUES = ['react', 'nextjs', 'vue', 'angular', 'svelte', 'html'] as const;
 
@@ -52,8 +58,10 @@ export function registerAuditAccessibility(server: McpServer): void {
     'audit_accessibility',
     'Audit a component for WCAG 2.1 accessibility violations. Checks color contrast hints, ARIA attributes, keyboard navigation, semantic HTML, form labels, focus management, and more. Returns issues with severity, suggestions, and WCAG criteria references.',
     inputSchema,
-    ({ component_code, framework, strict }) => {
+    async ({ component_code, framework, strict }) => {
       const report = auditAccessibility(component_code, framework, strict);
+
+      await enrichIssuesWithRAG(report);
 
       const scoreEmoji = report.score >= 90 ? '🟢' : report.score >= 70 ? '🟡' : '🔴';
 
@@ -98,6 +106,38 @@ function severityIcon(severity: string): string {
       return '🔵';
     default:
       return '⚪';
+  }
+}
+
+async function enrichIssuesWithRAG(report: IAccessibilityReport): Promise<void> {
+  try {
+    const db = getDatabase();
+    const ruleCount = getEmbeddingCount('rule', db);
+    if (ruleCount === 0) return;
+
+    for (const issue of report.issues) {
+      const queryVector = await embed(issue.message);
+      const matches = semanticSearch(queryVector, 'rule', db, 3, 0.4);
+
+      if (matches.length > 0) {
+        const best = matches[0];
+        const ruleIdMatch = best.text.match(/a11y rule ([^:]+)/);
+        const wcagMatch = best.text.match(/\d+\.\d+\.\d+/);
+        const fixMatch = best.text.match(/Fix:\s*(.+)/);
+
+        if (ruleIdMatch) {
+          issue.rule = `${issue.rule} (axe: ${ruleIdMatch[1].trim()})`;
+        }
+        if (wcagMatch && !issue.wcagCriteria) {
+          issue.wcagCriteria = `WCAG ${wcagMatch[0]}`;
+        }
+        if (fixMatch && fixMatch[1].trim().length > issue.suggestion.length) {
+          issue.suggestion = fixMatch[1].trim();
+        }
+      }
+    }
+  } catch (err) {
+    a11yLogger.debug({ error: (err as Error).message }, 'RAG enrichment skipped');
   }
 }
 

@@ -89,10 +89,14 @@ export {
 
 export type { ISidecarResult } from './sidecar-model.js';
 
-export { scoreQuality, isLikelyAccepted } from './quality-scorer.js';
+export { scoreQuality, scoreQualityWithRAG, isLikelyAccepted } from './quality-scorer.js';
 
 export type { IQualityScore } from './quality-scorer.js';
 
-export { enhancePrompt, enhanceWithRules, needsEnhancement } from './prompt-enhancer.js';
+export { enhancePrompt, enhanceWithRules, enhancePromptWithRAG, needsEnhancement } from './prompt-enhancer.js';
 
 export type { IEnhancedPrompt, IEnhancementContext } from './prompt-enhancer.js';
+
+export { recommendStyle } from './style-recommender.js';
+
+export type { IStyleRecommendation, IStyleContext } from './style-recommender.js';

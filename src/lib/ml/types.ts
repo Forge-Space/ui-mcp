@@ -9,7 +9,7 @@ export interface IEmbedding {
   /** The source entity ID (e.g., component snippet ID or prompt hash). */
   sourceId: string;
   /** The source type. */
-  sourceType: 'component' | 'prompt' | 'description';
+  sourceType: 'component' | 'prompt' | 'description' | 'rule' | 'token' | 'pattern' | 'example';
   /** The text that was embedded. */
   text: string;
   /** The embedding vector (Float32). */

@@ -12,6 +12,9 @@
 
 import pino from 'pino';
 import { isSidecarReady, infer } from './sidecar-model.js';
+import { embed } from './embeddings.js';
+import { semanticSearch, getEmbeddingCount } from './embedding-store.js';
+import { getDatabase } from '../design-references/database/store.js';
 
 const logger = pino({ name: 'prompt-enhancer' });
 
@@ -145,6 +148,110 @@ export function enhanceWithRules(
   if (context?.mood && !lower.includes(context.mood.toLowerCase())) {
     enhanced += ` conveying a ${context.mood} mood`;
     additions.push('mood');
+  }
+
+  // Strategy 8: RAG-based enhancement (async-safe, best-effort)
+  try {
+    const ragAdditions = enrichWithRAG(enhanced, context);
+    if (ragAdditions) {
+      enhanced += ragAdditions.text;
+      additions.push(...ragAdditions.additions);
+    }
+  } catch (err) {
+    logger.debug({ error: (err as Error).message }, 'RAG enhancement skipped');
+  }
+
+  return {
+    enhanced,
+    original: prompt,
+    source: 'rules',
+    additions,
+    latencyMs: Date.now() - start,
+  };
+}
+
+function enrichWithRAG(
+  _prompt: string,
+  _context?: IEnhancementContext
+): { text: string; additions: string[] } | null {
+  const db = getDatabase();
+  const patternCount = getEmbeddingCount('pattern', db);
+  const ruleCount = getEmbeddingCount('rule', db);
+
+  if (patternCount === 0 && ruleCount === 0) return null;
+
+  // We need a sync-compatible approach: use pre-computed embeddings
+  // Since embed() is async, we check if we can find keyword-based matches instead
+  // For full async RAG, use enhancePromptWithRAG() directly
+  return null;
+}
+
+/**
+ * Async RAG-enhanced prompt enhancement.
+ * Retrieves relevant ARIA patterns and a11y rules to enrich the prompt.
+ */
+export async function enhancePromptWithRAG(
+  prompt: string,
+  context?: IEnhancementContext
+): Promise<IEnhancedPrompt> {
+  const start = Date.now();
+
+  // First, apply rule-based enhancement
+  const ruleResult = enhanceWithRules(prompt, context, start);
+  let enhanced = ruleResult.enhanced;
+  const additions = [...ruleResult.additions];
+
+  // Then, enrich with RAG
+  try {
+    const db = getDatabase();
+    const patternCount = getEmbeddingCount('pattern', db);
+    const ruleCount = getEmbeddingCount('rule', db);
+
+    if (patternCount === 0 && ruleCount === 0) {
+      return ruleResult;
+    }
+
+    const queryVector = await embed(enhanced);
+
+    if (patternCount > 0) {
+      const patterns = semanticSearch(queryVector, 'pattern', db, 2, 0.4);
+      if (patterns.length > 0) {
+        const patternHints = patterns
+          .map(p => {
+            const rolesMatch = p.text.match(/Roles:\s*([^.]+)/);
+            const keysMatch = p.text.match(/Keys:\s*(.+)/);
+            return [
+              rolesMatch ? `Use roles: ${rolesMatch[1].trim()}` : '',
+              keysMatch ? `Keyboard: ${keysMatch[1].trim()}` : '',
+            ].filter(Boolean).join('. ');
+          })
+          .filter(Boolean);
+
+        if (patternHints.length > 0) {
+          enhanced += `. ${patternHints.join('. ')}`;
+          additions.push('rag:aria-patterns');
+        }
+      }
+    }
+
+    if (ruleCount > 0) {
+      const rules = semanticSearch(queryVector, 'rule', db, 3, 0.4);
+      if (rules.length > 0) {
+        const ruleHints = rules
+          .map(r => {
+            const fixMatch = r.text.match(/Fix:\s*(.+)/);
+            return fixMatch ? fixMatch[1].trim() : '';
+          })
+          .filter(Boolean);
+
+        if (ruleHints.length > 0) {
+          enhanced += `. A11y requirements: ${ruleHints.join('; ')}`;
+          additions.push('rag:a11y-rules');
+        }
+      }
+    }
+  } catch (err) {
+    logger.warn({ error: (err as Error).message }, 'RAG enhancement failed');
   }
 
   return {
