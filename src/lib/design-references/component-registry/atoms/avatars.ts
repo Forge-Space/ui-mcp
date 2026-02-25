@@ -110,13 +110,13 @@ export const avatarSnippets: IComponentSnippet[] = [
     visualStyles: ['soft-depth', 'linear-modern', 'corporate-trust'],
     jsx: `<span className="relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-muted ring-2 ring-background">
   <img src="/avatars/01.jpg" alt="User Name" className="h-full w-full object-cover" />
-  <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-emerald-500 ring-2 ring-background" aria-label="Online" />
+  <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-success ring-2 ring-background" aria-label="Online" />
 </span>`,
     tailwindClasses: {
       avatar:
         'relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-muted ring-2 ring-background',
       image: 'h-full w-full object-cover',
-      status: 'absolute bottom-0 right-0 h-3 w-3 rounded-full bg-emerald-500 ring-2 ring-background',
+      status: 'absolute bottom-0 right-0 h-3 w-3 rounded-full bg-success ring-2 ring-background',
     },
     a11y: {
       roles: ['img'],
@@ -138,7 +138,7 @@ export const avatarSnippets: IComponentSnippet[] = [
       craftDetails: [
         'relative parent enables absolute child',
         'h-3 w-3 status dot follows 12px standard',
-        'emerald-500 for online — semantic green',
+        'bg-success for online — semantic token',
       ],
     },
   },
