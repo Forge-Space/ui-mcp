@@ -1,5 +1,5 @@
 import { generateHtmlProject } from '../../lib/templates/html.js';
-import { designContextStore } from '../../lib/design-context.js';
+import { designContextStore } from '@forgespace/siza-gen';
 
 describe('HTML template generation', () => {
   beforeEach(() => {

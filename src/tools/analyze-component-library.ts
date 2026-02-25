@@ -7,8 +7,7 @@
 
 import { z } from 'zod';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { createLogger } from '../lib/logger.js';
-import { getAvailableComponentLibraries, type ComponentLibraryId } from '../lib/component-libraries/index.js';
+import { createLogger, getAvailableComponentLibraries, type ComponentLibraryId } from '@forgespace/siza-gen';
 
 const logger = createLogger('analyze-component-library');
 

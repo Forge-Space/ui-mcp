@@ -1,6 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { registerCurrentStylesResource } from '../../resources/current-styles.js';
-import { designContextStore } from '../../lib/design-context.js';
+import { designContextStore } from '@forgespace/siza-gen';
 
 describe('current-styles resource', () => {
   it('registers without errors', () => {

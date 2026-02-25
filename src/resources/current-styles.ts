@@ -1,5 +1,5 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { designContextStore } from '../lib/design-context.js';
+import { designContextStore } from '@forgespace/siza-gen';
 
 export function registerCurrentStylesResource(server: McpServer): void {
   server.resource(

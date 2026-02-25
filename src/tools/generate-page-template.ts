@@ -1,10 +1,23 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { designContextStore } from '../lib/design-context.js';
-import type { IDesignContext, IGeneratedFile, PageTemplateType } from '../lib/types.js';
-import { initializeRegistry } from '../lib/design-references/component-registry/init.js';
-import { getRegistrySize } from '../lib/design-references/component-registry/index.js';
-import { createLogger } from '../lib/logger.js';
+import {
+  composePageFromTemplate,
+  createLogger,
+  designContextStore,
+  findBestComposition,
+  getDatabase,
+  getRegistrySize,
+  initializeRegistry,
+  recordGeneration,
+  scoreQuality,
+  type IDesignContext,
+  type IGeneratedFile,
+  type IGeneration,
+  type IndustryTag,
+  type MoodTag,
+  type PageTemplateType,
+  type VisualStyleId,
+} from '@forgespace/siza-gen';
 import {
   getAiChatBody,
   getChangelogBody,
@@ -20,12 +33,6 @@ import {
   getFaqBody,
   getBlogPostBody,
 } from './page-template-bodies.js';
-import { findBestComposition, composePageFromTemplate } from '../lib/design-references/template-compositions/index.js';
-import { scoreQuality } from '../lib/ml/quality-scorer.js';
-import { recordGeneration } from '../lib/feedback/feedback-tracker.js';
-import { getDatabase } from '../lib/design-references/database/store.js';
-import type { MoodTag, IndustryTag, VisualStyleId } from '../lib/design-references/component-registry/types.js';
-import type { IGeneration } from '../lib/feedback/types.js';
 
 const logger = createLogger('generate-page-template');
 

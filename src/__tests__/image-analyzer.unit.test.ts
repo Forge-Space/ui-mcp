@@ -1,5 +1,5 @@
 import sharp from 'sharp';
-import type { IImageAnalysis } from '../lib/types.js';
+import type { IImageAnalysis } from '@forgespace/siza-gen';
 
 // We test the real sharp-based functions (no mocking needed for unit tests)
 let extractDominantColors: typeof import('../lib/image-analyzer.js').extractDominantColors;

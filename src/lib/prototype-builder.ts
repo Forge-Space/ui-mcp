@@ -1,5 +1,4 @@
-import type { IDesignContext, IScreenElement, ITransition } from './types.js';
-import { designContextStore } from './design-context.js';
+import { designContextStore, type IDesignContext, type IScreenElement, type ITransition } from '@forgespace/siza-gen';
 
 export interface PrototypeBuildOptions {
   screens: Array<{ name: string; description?: string; elements: IScreenElement[] }>;

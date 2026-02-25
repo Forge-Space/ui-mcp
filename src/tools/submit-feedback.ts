@@ -7,8 +7,7 @@
 
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { getDatabase } from '../lib/design-references/database/store.js';
-import { recordExplicitFeedback, getFeedbackStats } from '../lib/feedback/feedback-tracker.js';
+import { getDatabase, getFeedbackStats, recordExplicitFeedback } from '@forgespace/siza-gen';
 
 /**
  * Register the submit_feedback MCP tool.

@@ -1,6 +1,5 @@
-import type { IFigmaDesignToken, ITailwindMapping, IDesignContext } from './types.js';
+import { createLogger, type IDesignContext, type IFigmaDesignToken, type ITailwindMapping } from '@forgespace/siza-gen';
 import type { FigmaNode, FigmaFill } from './figma-client.js';
-import { createLogger } from './logger.js';
 
 const logger = createLogger('tailwind-mapper');
 

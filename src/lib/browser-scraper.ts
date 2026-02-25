@@ -1,7 +1,6 @@
 /// <reference lib="dom" />
 import { chromium, type Browser, type Page } from 'playwright';
-import type { IScrapedPage } from './types.js';
-import { createLogger } from './logger.js';
+import { createLogger, type IScrapedPage } from '@forgespace/siza-gen';
 
 const logger = createLogger('browser-scraper');
 

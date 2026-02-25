@@ -3,7 +3,13 @@
 # ── Build stage ──────────────────────────────────────────────
 FROM node:22-alpine AS builder
 
+RUN apk add --no-cache git
+
 WORKDIR /app
+
+# Clone and build siza-gen (file: protocol dependency)
+RUN git clone --depth 1 https://github.com/Forge-Space/siza-gen.git ../siza-gen && \
+    cd ../siza-gen && npm install --legacy-peer-deps && npm run build
 
 # Copy package files first for better caching
 COPY package.json package-lock.json* ./
@@ -29,13 +35,17 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
+# Copy built siza-gen from builder (needed for file: protocol resolution)
+COPY --from=builder /siza-gen /siza-gen
+
 # Copy package files
 COPY package.json package-lock.json* ./
 
 # Install production dependencies with cache
 RUN --mount=type=cache,target=/root/.npm,sharing=locked \
     npm install --omit=dev --ignore-scripts --legacy-peer-deps && \
-    npm cache clean --force
+    npm cache clean --force && \
+    rm -rf /siza-gen
 
 # Copy build output and assets
 COPY --from=builder /app/dist ./dist
@@ -55,8 +65,8 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
 # Labels
 LABEL org.opencontainers.image.title="UIForge MCP"
 LABEL org.opencontainers.image.description="MCP server for AI-driven UI generation"
-LABEL org.opencontainers.image.version="0.1.0"
-LABEL org.opencontainers.image.source="https://github.com/yourusername/uiforge-mcp"
+LABEL org.opencontainers.image.version="0.8.0"
+LABEL org.opencontainers.image.source="https://github.com/Forge-Space/ui-mcp"
 
 ENTRYPOINT ["tini", "--"]
 CMD ["node", "dist/index.js"]

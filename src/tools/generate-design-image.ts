@@ -1,8 +1,7 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { renderSvg, renderPng } from '../lib/image-renderer.js';
-import { designContextStore } from '../lib/design-context.js';
-import type { IDesignContext, ImageType } from '../lib/types.js';
+import { designContextStore, type IDesignContext, type ImageType } from '@forgespace/siza-gen';
 
 // Helper for deep merging design context - handles one level of nesting
 function deepMergeContext(base: IDesignContext, override: Partial<IDesignContext>): IDesignContext {

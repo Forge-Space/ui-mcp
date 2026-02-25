@@ -1,5 +1,4 @@
-import type { IDesignContext } from '../types.js';
-import { designContextStore } from '../design-context.js';
+import { designContextStore, type IDesignContext } from '@forgespace/siza-gen';
 
 interface CssVariableSet {
   light: Record<string, string>;

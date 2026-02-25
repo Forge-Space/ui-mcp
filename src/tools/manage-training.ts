@@ -2,15 +2,17 @@ import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import pino from 'pino';
 import {
-  checkTrainingReadiness,
-  startTrainingJob,
-  getLatestJobStatus,
   cancelTrainingJob,
+  checkTrainingReadiness,
+  getDatabase,
+  getLatestJobStatus,
+  getModelPath,
   getTrainingSummary,
+  listAdapters,
+  startTrainingJob,
   type AdapterType,
-} from '../lib/ml/index.js';
-import { listAdapters, getModelPath, type ModelId } from '../lib/ml/model-manager.js';
-import { getDatabase } from '../lib/design-references/database/store.js';
+  type ModelId,
+} from '@forgespace/siza-gen';
 
 const logger = pino({ name: 'manage-training' });
 

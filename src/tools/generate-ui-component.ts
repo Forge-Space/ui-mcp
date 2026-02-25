@@ -1,29 +1,37 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import pino from 'pino';
-import { designContextStore } from '../lib/design-context.js';
-import { auditStyles } from '../lib/style-audit.js';
-import { extractDesignFromUrl } from '../lib/design-extractor.js';
-import { jsxToHtmlAttributes, jsxToSvelte } from '../lib/utils/jsx.utils.js';
-import { toPascalCase, toKebabCase } from '../lib/utils/string.utils.js';
-import type { IGeneratedFile, IDesignContext, Framework } from '../lib/types.js';
-import { generateComponent as generateComponentWithFactory } from '../lib/generators/generator-factory.js';
-import { ComponentLibrary } from '../lib/generators/base-generator.js';
-import { initializeRegistry } from '../lib/design-references/component-registry/init.js';
 import {
+  ComponentLibrary,
+  designContextStore,
+  embed,
+  enhancePrompt,
+  enhancePromptWithRAG,
+  generateComponent as generateComponentWithFactory,
   getBestMatch,
   getBestMatchWithFeedback,
+  getDatabase,
+  getEmbeddingCount,
+  initializeRegistry,
+  jsxToHtmlAttributes,
+  jsxToSvelte,
+  recommendStyle,
+  recordGeneration,
+  scoreQuality,
+  scoreQualityWithRAG,
+  semanticSearch,
+  toKebabCase,
+  toPascalCase,
   triggerPatternPromotion,
-} from '../lib/design-references/component-registry/index.js';
-import type { MoodTag, IndustryTag, VisualStyleId } from '../lib/design-references/component-registry/types.js';
-import { enhancePrompt, scoreQuality } from '../lib/ml/index.js';
-import { enhancePromptWithRAG } from '../lib/ml/prompt-enhancer.js';
-import { scoreQualityWithRAG } from '../lib/ml/quality-scorer.js';
-import { recommendStyle } from '../lib/ml/style-recommender.js';
-import { embed } from '../lib/ml/embeddings.js';
-import { semanticSearch, getEmbeddingCount } from '../lib/ml/embedding-store.js';
-import { recordGeneration } from '../lib/feedback/index.js';
-import { getDatabase } from '../lib/design-references/database/store.js';
+  type Framework,
+  type IDesignContext,
+  type IGeneratedFile,
+  type IndustryTag,
+  type MoodTag,
+  type VisualStyleId,
+} from '@forgespace/siza-gen';
+import { auditStyles } from '../lib/style-audit.js';
+import { extractDesignFromUrl } from '../lib/design-extractor.js';
 
 // Track generation count for pattern promotion
 // Note: This is incremented after successful generation to avoid race conditions

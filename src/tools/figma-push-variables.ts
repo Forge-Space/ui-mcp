@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { postVariables } from '../lib/figma-client.js';
-import type { IFigmaVariable } from '../lib/types.js';
+import type { IFigmaVariable } from '@forgespace/siza-gen';
 
 const inputSchema = {
   file_key: z.string().describe('Figma file key to push variables to'),

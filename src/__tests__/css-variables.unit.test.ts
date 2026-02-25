@@ -1,10 +1,10 @@
-import { loadConfig } from '../lib/config.js';
+import { loadConfig } from '@forgespace/siza-gen';
 import {
   resolveColorSystemHsl,
   generateCssVariableBlock,
   generateFontImportHtml,
 } from '../lib/templates/css-variables.js';
-import { getPreset } from '../lib/design-references/index.js';
+import { getPreset } from '@forgespace/siza-gen';
 
 // Load config before any dynamic imports that use config
 beforeAll(async () => {

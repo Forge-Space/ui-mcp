@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { designContextStore } from '../lib/design-context.js';
+import { designContextStore } from '@forgespace/siza-gen';
 
 const inputSchema = {
   component_code: z.string().describe('The existing component source code to refine'),

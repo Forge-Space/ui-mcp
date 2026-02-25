@@ -1,5 +1,4 @@
-import type { IFigmaVariable } from '../lib/types.js';
-import { createLogger } from '../lib/logger.js';
+import { createLogger, type IFigmaVariable } from '@forgespace/siza-gen';
 import {
   getFile,
   getFileNodes,

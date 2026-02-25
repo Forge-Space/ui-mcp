@@ -2,7 +2,7 @@
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { loadConfig } from './lib/config.js';
+import { closeDatabase, loadConfig, logger } from '@forgespace/siza-gen';
 import { registerCurrentStylesResource } from './resources/current-styles.js';
 import { registerForgeContextResources } from './resources/forge-context.js';
 import { registerScaffoldFullApplication } from './tools/scaffold-full-application.js';
@@ -26,8 +26,6 @@ import { registerGenerateFromPack } from './tools/generate-from-pack.js';
 import { registerGenerateApiRoute } from './tools/generate-api-route.js';
 import { registerGenerateBackendModule } from './tools/generate-backend-module.js';
 import { registerScaffoldBackend } from './tools/scaffold-backend.js';
-import { closeDatabase } from './lib/design-references/database/store.js';
-import { logger } from './lib/logger.js';
 
 // Load and validate configuration
 let config;

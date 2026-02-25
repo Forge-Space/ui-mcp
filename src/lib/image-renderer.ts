@@ -1,7 +1,7 @@
 import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
 import { readFile } from 'node:fs/promises';
-import type { IDesignContext, ImageType } from './types.js';
+import type { IDesignContext, ImageType } from '@forgespace/siza-gen';
 
 interface RenderOptions {
   description: string;

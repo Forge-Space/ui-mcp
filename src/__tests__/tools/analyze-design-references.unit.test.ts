@@ -1,5 +1,5 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { loadConfig } from '../../lib/config.js';
+import { loadConfig } from '@forgespace/siza-gen';
 
 let registerAnalyzeDesignReferences: typeof import('../../tools/analyze-design-references.js').registerAnalyzeDesignReferences;
 

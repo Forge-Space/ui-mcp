@@ -1,4 +1,4 @@
-import { designContextStore } from '../lib/design-context.js';
+import { designContextStore } from '@forgespace/siza-gen';
 import { auditStyles } from '../lib/style-audit.js';
 
 describe('generate_ui_component', () => {

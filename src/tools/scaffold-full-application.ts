@@ -1,17 +1,23 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import type { IGeneratedFile, PageTemplateType } from '../lib/types.js';
-import { designContextStore } from '../lib/design-context.js';
-import { GeneratorFactory } from '../lib/generators/generator-factory.js';
-import { initializeRegistry } from '../lib/design-references/component-registry/init.js';
-import { findBestComposition, composePageFromTemplate } from '../lib/design-references/template-compositions/index.js';
-import { scoreQuality } from '../lib/ml/quality-scorer.js';
-import { recordGeneration } from '../lib/feedback/feedback-tracker.js';
-import { getDatabase } from '../lib/design-references/database/store.js';
+import {
+  GeneratorFactory,
+  composePageFromTemplate,
+  createLogger,
+  designContextStore,
+  findBestComposition,
+  getDatabase,
+  initializeRegistry,
+  recordGeneration,
+  scoreQuality,
+  type IGeneratedFile,
+  type IGeneration,
+  type IndustryTag,
+  type MoodTag,
+  type PageTemplateType,
+  type VisualStyleId,
+} from '@forgespace/siza-gen';
 import { wrapReact, wrapVue, wrapAngular, wrapSvelte, wrapHtml } from './generate-page-template.js';
-import type { MoodTag, IndustryTag, VisualStyleId } from '../lib/design-references/component-registry/types.js';
-import type { IGeneration } from '../lib/feedback/types.js';
-import { createLogger } from '../lib/logger.js';
 
 const logger = createLogger('scaffold-full-application');
 

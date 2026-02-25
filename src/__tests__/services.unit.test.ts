@@ -4,7 +4,7 @@ import { FigmaService, figmaService } from '../services/figma.service.js';
 import { GenerationService, generationService } from '../services/generation.service.js';
 import { AnalysisService, analysisService } from '../services/analysis.service.js';
 import { ServiceContainer, initializeServices, getServices } from '../services/index.js';
-import { designContextStore } from '../lib/design-context.js';
+import { designContextStore } from '@forgespace/siza-gen';
 
 describe('Service Layer', () => {
   beforeEach(() => {

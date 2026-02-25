@@ -19,7 +19,7 @@
 
 1. **MCP-Native Architecture** — composable tools, swap AI providers, chain
    tools
-2. **True Zero-Cost** — free-tier infrastructure (~50K users at $0/month)
+2. **Low Cost, Generous Free Tier** — scalable infrastructure, high free-tier limits
 3. **Privacy-First BYOK** — client-side AES-256, we cannot read user keys
 4. **Self-Hostable** — Docker, MIT, full infrastructure control
 

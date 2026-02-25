@@ -1,4 +1,4 @@
-import { loadConfig } from '../lib/config.js';
+import { loadConfig } from '@forgespace/siza-gen';
 
 let rgbToHex: typeof import('../lib/browser-scraper.js').rgbToHex;
 let normalizeColors: typeof import('../lib/browser-scraper.js').normalizeColors;

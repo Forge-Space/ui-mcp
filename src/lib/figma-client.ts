@@ -1,5 +1,4 @@
-import type { IFigmaVariable } from './types.js';
-import { createLogger } from './logger.js';
+import { createLogger, type IFigmaVariable } from '@forgespace/siza-gen';
 
 const logger = createLogger('figma-client');
 

@@ -6,13 +6,13 @@
  */
 
 import { z } from 'zod';
-import { createLogger } from '../lib/logger.js';
 import {
+  createLogger,
   setupComponentLibraryProject,
   type ComponentLibraryId,
   type ComponentLibrarySetupOptions,
   type IDesignContext,
-} from '../lib/component-libraries/index.js';
+} from '@forgespace/siza-gen';
 import { designService } from '../services/index.js';
 
 const logger = createLogger('setup-component-library');

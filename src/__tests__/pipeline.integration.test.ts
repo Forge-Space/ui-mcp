@@ -2,15 +2,11 @@ import { generateReactProject } from '../lib/templates/react.js';
 import { generateNextjsProject } from '../lib/templates/nextjs.js';
 import { generateVueProject } from '../lib/templates/vue.js';
 import { generateAngularProject } from '../lib/templates/angular.js';
-import { designContextStore } from '../lib/design-context.js';
-import { getPreset, listPresets } from '../lib/design-references/index.js';
-import {
-  COMPONENT_LIBRARIES,
-  getComponentLibrariesForFramework,
-  getRecommendedLibrary,
-} from '../lib/design-references/component-libraries.js';
-import { ICON_LIBRARIES, getDefaultIconLibrary } from '../lib/design-references/icon-references.js';
-import type { IDesignContext } from '../lib/types.js';
+import { designContextStore } from '@forgespace/siza-gen';
+import { getPreset, listPresets } from '@forgespace/siza-gen';
+import { COMPONENT_LIBRARIES, getComponentLibrariesForFramework, getRecommendedLibrary } from '@forgespace/siza-gen';
+import { ICON_LIBRARIES, getDefaultIconLibrary } from '@forgespace/siza-gen';
+import type { IDesignContext } from '@forgespace/siza-gen';
 
 // --- Helpers ---
 

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { loadConfig } from '../../lib/config.js';
+import { loadConfig } from '@forgespace/siza-gen';
 import { registerImageToComponent } from '../../tools/image-to-component.js';
 
 describe('image_to_component tool', () => {

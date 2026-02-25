@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { designContextStore } from '../lib/design-context.js';
+import { designContextStore } from '@forgespace/siza-gen';
 import type { renderSvg as RenderSvgType, renderPng as RenderPngType } from '../lib/image-renderer.js';
 
 const MOCK_PNG = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00]);

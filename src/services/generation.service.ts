@@ -1,6 +1,12 @@
-import type { IGeneratedFile, IDesignContext, Architecture, StateManagement, Framework } from '../lib/types.js';
-import { createLogger } from '../lib/logger.js';
-import { designContextStore } from '../lib/design-context.js';
+import {
+  createLogger,
+  designContextStore,
+  type Architecture,
+  type Framework,
+  type IDesignContext,
+  type IGeneratedFile,
+  type StateManagement,
+} from '@forgespace/siza-gen';
 
 // Import all template generators
 import { generateReactProject } from '../lib/templates/react.js';

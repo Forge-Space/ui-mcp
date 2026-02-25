@@ -1,4 +1,4 @@
-import { loadConfig } from '../../lib/config.js';
+import { loadConfig } from '@forgespace/siza-gen';
 import {
   generateComponentLibraryHandler,
   getAvailableComponentsHandler,

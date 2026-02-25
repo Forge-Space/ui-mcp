@@ -68,12 +68,26 @@
 [![MIT License](https://img.shields.io/badge/License-MIT-yellow)](https://opensource.org/licenses/MIT)
 [![Open Source](https://img.shields.io/badge/Open%20Source-%E2%9C%9F%8D-blue)](https://github.com/LucasSantana-Dev/siza-mcp)
 
+## Architecture
+
+Siza MCP is a thin MCP protocol adapter that delegates all AI/generation logic
+to [`@forgespace/siza-gen`](https://github.com/Forge-Space/siza-gen):
+
+```
+siza-mcp (~355 KB)                 @forgespace/siza-gen (~1.8 MB)
+├── src/index.ts (MCP server)      ├── ml/        (embeddings, quality, training)
+├── tools/     (21 tool defs)      ├── generators/ (react, vue, angular, svelte, html)
+├── services/  (figma, analysis)   ├── registry/   (502 snippets, compositions, packs)
+├── resources/ (2 MCP resources)   ├── feedback/   (self-learning, pattern promotion)
+└── lib/       (browser, image)    ├── quality/    (anti-generic rules, diversity)
+                                   └── artifacts/  (store, learning loop)
+```
+
 ## ✨ **What It Does**
 
-Siza MCP is a powerful **Model Context Protocol server** that transforms natural
-language into production-ready UI. From full-stack applications to individual
-components, interactive prototypes to design mockups — all generated with AI
-precision.
+Siza MCP is a **Model Context Protocol server** that transforms natural language
+into production-ready UI. From full-stack applications to individual components,
+interactive prototypes to design mockups — all generated with AI precision.
 
 ### 🚀 **Key Capabilities**
 

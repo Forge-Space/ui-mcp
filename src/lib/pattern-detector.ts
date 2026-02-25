@@ -1,5 +1,10 @@
-import type { IScrapedPage, IImageAnalysis, IPatternMatch, IDesignContext } from './types.js';
-import { createLogger } from './logger.js';
+import {
+  createLogger,
+  type IDesignContext,
+  type IImageAnalysis,
+  type IPatternMatch,
+  type IScrapedPage,
+} from '@forgespace/siza-gen';
 
 const logger = createLogger('pattern-detector');
 

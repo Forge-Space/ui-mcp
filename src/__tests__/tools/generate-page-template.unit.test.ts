@@ -1,8 +1,8 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { loadConfig } from '../../lib/config.js';
+import { loadConfig } from '@forgespace/siza-gen';
 import { registerGeneratePageTemplate, generateTemplate } from '../../tools/generate-page-template.js';
-import { designContextStore } from '../../lib/design-context.js';
-import type { PageTemplateType } from '../../lib/types.js';
+import { designContextStore } from '@forgespace/siza-gen';
+import type { PageTemplateType } from '@forgespace/siza-gen';
 
 describe('generate_page_template tool', () => {
   beforeAll(() => {

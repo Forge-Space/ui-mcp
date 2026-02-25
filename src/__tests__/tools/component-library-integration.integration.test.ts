@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from '@jest/globals';
 import { generateComponent } from '../../tools/generate-ui-component.js';
-import type { IDesignContext } from '../../lib/types.js';
+import type { IDesignContext } from '@forgespace/siza-gen';
 
 describe('Component Library Integration', () => {
   let mockDesignContext: IDesignContext;

@@ -1,4 +1,4 @@
-import type { IGeneratedFile, IDesignContext, Architecture, StateManagement } from '../types.js';
+import type { IGeneratedFile, IDesignContext, Architecture, StateManagement } from '@forgespace/siza-gen';
 import { generateFontImportHtml } from './css-variables.js';
 
 /**

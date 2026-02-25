@@ -1,8 +1,6 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { getDatabase } from '../lib/design-references/database/store.js';
-import { extractDesignPatterns } from '../lib/ml/image-design-analyzer.js';
-import { storeDesignLearning } from '../lib/ml/design-to-training-data.js';
+import { extractDesignPatterns, getDatabase, storeDesignLearning } from '@forgespace/siza-gen';
 import pino from 'pino';
 
 const logger = pino({ name: 'analyze-design-image-for-training' });

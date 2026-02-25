@@ -30,7 +30,7 @@ export type {
   StateManagement,
   IFigmaDesignToken,
   ITailwindMapping,
-} from '../lib/types.js';
+} from '@forgespace/siza-gen';
 
 /**
  * Service container for dependency injection

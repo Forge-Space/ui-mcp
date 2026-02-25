@@ -1,9 +1,14 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import type { IAccessibilityIssue, IAccessibilityReport, Framework } from '../lib/types.js';
-import { embed } from '../lib/ml/embeddings.js';
-import { semanticSearch, getEmbeddingCount } from '../lib/ml/embedding-store.js';
-import { getDatabase } from '../lib/design-references/database/store.js';
+import {
+  embed,
+  getDatabase,
+  getEmbeddingCount,
+  semanticSearch,
+  type Framework,
+  type IAccessibilityIssue,
+  type IAccessibilityReport,
+} from '@forgespace/siza-gen';
 import pino from 'pino';
 
 const a11yLogger = pino({ name: 'audit-accessibility' });

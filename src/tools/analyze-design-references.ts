@@ -3,9 +3,13 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { scrapePage, closeBrowser, normalizeColors } from '../lib/browser-scraper.js';
 import { analyzeImage } from '../lib/image-analyzer.js';
 import { detectCommonPatterns, buildSuggestedContext } from '../lib/pattern-detector.js';
-import { designContextStore } from '../lib/design-context.js';
-import { createLogger } from '../lib/logger.js';
-import type { IScrapedPage, IImageAnalysis, IDesignAnalysisResult } from '../lib/types.js';
+import {
+  createLogger,
+  designContextStore,
+  type IDesignAnalysisResult,
+  type IImageAnalysis,
+  type IScrapedPage,
+} from '@forgespace/siza-gen';
 
 const logger = createLogger('analyze-design-references');
 

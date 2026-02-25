@@ -1,8 +1,12 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { designContextStore } from '../lib/design-context.js';
-import { toPascalCase, toKebabCase } from '../lib/utils/string.utils.js';
-import type { IDesignContext, IGeneratedFile } from '../lib/types.js';
+import {
+  designContextStore,
+  toKebabCase,
+  toPascalCase,
+  type IDesignContext,
+  type IGeneratedFile,
+} from '@forgespace/siza-gen';
 
 const inputSchema = {
   image_data: z

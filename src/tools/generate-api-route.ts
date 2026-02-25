@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { searchBackendSnippets, initializeBackendRegistry } from '../lib/design-references/backend-registry/index.js';
-import type { BackendCategory } from '../lib/design-references/backend-registry/types.js';
+import { initializeBackendRegistry, searchBackendSnippets, type BackendCategory } from '@forgespace/siza-gen';
 
 export function registerGenerateApiRoute(server: McpServer): void {
   server.tool(

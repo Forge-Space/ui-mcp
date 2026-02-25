@@ -24,6 +24,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
 
+      - name: Setup siza-gen
+        uses: ./.github/actions/setup-siza-gen
+
       - name: Install dependencies
         run: rm -f package-lock.json && npm install --legacy-peer-deps
 
@@ -54,6 +57,9 @@ jobs:
         with:
           node-version: "22"
           cache: "npm"
+
+      - name: Setup siza-gen
+        uses: ./.github/actions/setup-siza-gen
 
       - name: Install dependencies
         run: rm -f package-lock.json && npm install --legacy-peer-deps
@@ -90,6 +96,9 @@ jobs:
         with:
           node-version: "22"
           cache: "npm"
+
+      - name: Setup siza-gen
+        uses: ./.github/actions/setup-siza-gen
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps

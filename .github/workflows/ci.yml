@@ -19,6 +19,9 @@ jobs:
           node-version: 22
           cache: npm
 
+      - name: Setup siza-gen
+        uses: ./.github/actions/setup-siza-gen
+
       - name: Cache ESLint
         uses: actions/cache@v5
         with:
@@ -46,6 +49,9 @@ jobs:
           node-version: 22
           cache: npm
 
+      - name: Setup siza-gen
+        uses: ./.github/actions/setup-siza-gen
+
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
@@ -65,6 +71,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: Setup siza-gen
+        uses: ./.github/actions/setup-siza-gen
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
@@ -124,6 +133,9 @@ jobs:
         with:
           node-version: 22
 
+      - name: Setup siza-gen
+        uses: ./.github/actions/setup-siza-gen
+
       - name: Install dependencies
         run: rm -f package-lock.json && npm install --legacy-peer-deps
 
@@ -161,40 +173,12 @@ jobs:
 
       - name: Check image size
         run: |
-          SIZE=$(docker image inspect uiforge-mcp:ci --format='{{.Size}}')
+          SIZE=$(docker image inspect uiforge-mcp:ci --format=\x27{{.Size}}\x27)
           SIZE_MB=$((SIZE / 1024 / 1024))
           echo "Image size: ${SIZE_MB}MB"
           if [ $SIZE_MB -gt 500 ]; then
             echo "::warning::Image size exceeds 500MB: ${SIZE_MB}MB"
           fi
-
-  quality:
-    name: Snippet Quality
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps
-
-      - name: Build
-        run: npm run build
-
-      - name: Validate snippet quality
-        run: npm run validate:snippets
-
-      - name: Check semantic tokens
-        run: npm run validate:tokens
-
-      - name: Registry stats
-        run: |
-          npm run registry:stats 2>&1 | tee /dev/stderr >> $GITHUB_STEP_SUMMARY || true
 
   dependency-check:
     name: Dependency Check
@@ -207,6 +191,9 @@ jobs:
         with:
           node-version: 22
           cache: npm
+
+      - name: Setup siza-gen
+        uses: ./.github/actions/setup-siza-gen
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps

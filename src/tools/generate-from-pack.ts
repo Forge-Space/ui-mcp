@@ -1,10 +1,13 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import type { Framework } from '../lib/types.js';
-import { initializeRegistry } from '../lib/design-references/component-registry/init.js';
-import { getPack, getAllPacks } from '../lib/design-references/template-packs/index.js';
-import { composePageFromTemplate } from '../lib/design-references/template-compositions/index.js';
-import { createLogger } from '../lib/logger.js';
+import {
+  composePageFromTemplate,
+  createLogger,
+  getAllPacks,
+  getPack,
+  initializeRegistry,
+  type Framework,
+} from '@forgespace/siza-gen';
 
 const logger = createLogger('generate-from-pack');
 

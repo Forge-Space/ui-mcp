@@ -1,4 +1,4 @@
-import type { IDesignContext } from './types.js';
+import type { IDesignContext } from '@forgespace/siza-gen';
 
 interface StyleAuditResult {
   tokens: Partial<IDesignContext>;

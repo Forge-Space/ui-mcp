@@ -1,5 +1,5 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { loadConfig } from '../../lib/config.js';
+import { loadConfig } from '@forgespace/siza-gen';
 import { registerAuditAccessibility, auditAccessibility } from '../../tools/audit-accessibility.js';
 
 describe('audit_accessibility tool', () => {

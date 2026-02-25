@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { initializeBackendRegistry } from '../lib/design-references/backend-registry/index.js';
+import { initializeBackendRegistry } from '@forgespace/siza-gen';
 
 const inputSchema = {
   projectName: z.string().min(1).describe('Project name (e.g., "my-api", "ecommerce-backend")'),

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { searchBackendSnippets, initializeBackendRegistry } from '../lib/design-references/backend-registry/index.js';
+import { searchBackendSnippets, initializeBackendRegistry } from '@forgespace/siza-gen';
 
 export function registerGenerateBackendModule(server: McpServer): void {
   server.tool(

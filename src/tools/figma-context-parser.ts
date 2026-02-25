@@ -2,7 +2,7 @@ import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { getFile, getFileNodes } from '../lib/figma-client.js';
 import { extractTokensFromFigmaNode, mapTokensToTailwind, tokensToDesignContext } from '../lib/tailwind-mapper.js';
-import { designContextStore } from '../lib/design-context.js';
+import { designContextStore } from '@forgespace/siza-gen';
 
 const inputSchema = {
   file_key: z.string().describe('Figma file key (from the URL: figma.com/file/<file_key>/...)'),

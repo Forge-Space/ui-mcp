@@ -1,8 +1,7 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { buildPrototype } from '../lib/prototype-builder.js';
-import { designContextStore } from '../lib/design-context.js';
-import type { IScreenElement, ITransition, IDesignContext } from '../lib/types.js';
+import { designContextStore, type IDesignContext, type IScreenElement, type ITransition } from '@forgespace/siza-gen';
 
 // Helper for deep merging design context - handles one level of nesting
 function deepMergeContext(base: IDesignContext, override: Partial<IDesignContext>): IDesignContext {

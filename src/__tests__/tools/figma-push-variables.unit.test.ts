@@ -1,5 +1,5 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { loadConfig } from '../../lib/config.js';
+import { loadConfig } from '@forgespace/siza-gen';
 
 let registerFigmaPushVariables: typeof import('../../tools/figma-push-variables.js').registerFigmaPushVariables;
 

@@ -1,5 +1,5 @@
 import sharp from 'sharp';
-import type { IImageAnalysis } from './types.js';
+import type { IImageAnalysis } from '@forgespace/siza-gen';
 
 // Color quantization constants
 const COLOR_QUANTIZATION_STEP = 32; // RGB bucket size for initial quantization

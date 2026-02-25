@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { extractDesignFromUrl } from '../lib/design-extractor.js';
-import { designContextStore } from '../lib/design-context.js';
+import { designContextStore } from '@forgespace/siza-gen';
 
 const inputSchema = {
   url: z.string().url().describe('URL to extract design inspiration from'),

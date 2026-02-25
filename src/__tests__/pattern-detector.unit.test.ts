@@ -1,5 +1,5 @@
-import { loadConfig } from '../lib/config.js';
-import type { IScrapedPage, IImageAnalysis, IPatternMatch } from '../lib/types.js';
+import { loadConfig } from '@forgespace/siza-gen';
+import type { IScrapedPage, IImageAnalysis, IPatternMatch } from '@forgespace/siza-gen';
 
 let detectCommonPatterns: typeof import('../lib/pattern-detector.js').detectCommonPatterns;
 let buildSuggestedContext: typeof import('../lib/pattern-detector.js').buildSuggestedContext;

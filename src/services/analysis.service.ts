@@ -1,12 +1,12 @@
-import type {
-  IDesignContext,
-  IFigmaDesignToken,
-  ITailwindMapping,
-  IPatternMatch,
-  IScrapedPage,
-  IImageAnalysis,
-} from '../lib/types.js';
-import { createLogger } from '../lib/logger.js';
+import {
+  createLogger,
+  type IDesignContext,
+  type IFigmaDesignToken,
+  type IImageAnalysis,
+  type IPatternMatch,
+  type IScrapedPage,
+  type ITailwindMapping,
+} from '@forgespace/siza-gen';
 import { analyzeImage } from '../lib/image-analyzer.js';
 import { detectCommonPatterns } from '../lib/pattern-detector.js';
 import { extractDesignFromUrl } from '../lib/design-extractor.js';

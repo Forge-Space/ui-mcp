@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2026-02-25
+
+### Changed
+- **Architecture**: AI core, generators, registry, feedback, quality, and utils extracted to `@forgespace/siza-gen`
+- **siza-mcp is now a thin MCP protocol adapter** (~355 KB bundle, was ~2.06 MB)
+- All 21 tool files import from `@forgespace/siza-gen` instead of internal `src/lib/`
+
+### Removed
+- `src/lib/ml/` — moved to siza-gen
+- `src/lib/generators/` — moved to siza-gen
+- `src/lib/design-references/` — moved to siza-gen
+- `src/lib/feedback/` — moved to siza-gen
+- `src/lib/quality/` — moved to siza-gen
+- `src/lib/generated-artifacts/` — moved to siza-gen
+- `src/lib/component-libraries/` — moved to siza-gen
+- `src/lib/utils/` — moved to siza-gen
+- `src/lib/errors/` — moved to siza-gen
+- `src/scripts/` — moved to siza-gen
+- Direct dependencies: `@huggingface/transformers`, `sqlite-vss`
+- 26 test files for moved code (now tested in siza-gen: 343 tests, 17 suites)
+
+### Added
+- `@forgespace/siza-gen` dependency (AI generation engine)
+
 ## [0.7.0] - 2026-02-25
 
 ### Added

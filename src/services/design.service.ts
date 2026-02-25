@@ -1,6 +1,4 @@
-import type { IDesignContext } from '../lib/types.js';
-import { designContextStore, DEFAULT_CONTEXT } from '../lib/design-context.js';
-import { getPreset } from '../lib/design-references/index.js';
+import { DEFAULT_CONTEXT, designContextStore, getPreset, type IDesignContext } from '@forgespace/siza-gen';
 
 /**
  * Design Service - Handles all design context operations
