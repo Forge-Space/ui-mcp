@@ -42,10 +42,10 @@ jobs:
             echo "Current coverage: ${LINES}%"
             
             if (( $(echo "$LINES >= 60" | bc -l) )); then
-              echo "✅ Coverage threshold met (≥70%)"
+              echo "✅ Coverage threshold met (≥60%)"
             else
-              echo "❌ Coverage threshold not met (<70%)"
-              echo "::error::Coverage is ${LINES}%, minimum required is 70%"
+              echo "❌ Coverage threshold not met (<60%)"
+              echo "::error::Coverage is ${LINES}%, minimum required is 60%"
               exit 1
             fi
           else

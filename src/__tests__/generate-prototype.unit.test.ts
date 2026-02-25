@@ -1,6 +1,5 @@
+import { designContextStore, type IScreenElement, type ITransition } from '@forgespace/siza-gen';
 import { buildPrototype } from '../lib/prototype-builder.js';
-import { designContextStore } from '@forgespace/siza-gen';
-import type { IScreenElement, ITransition } from '@forgespace/siza-gen';
 
 describe('generate_prototype', () => {
   beforeEach(() => {

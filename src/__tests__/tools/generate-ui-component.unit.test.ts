@@ -1,7 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { registerGenerateUiComponent, generateComponent } from '../../tools/generate-ui-component.js';
-import { DEFAULT_DESIGN_CONTEXT } from '@forgespace/siza-gen';
-import type { IDesignContext } from '@forgespace/siza-gen';
+import { DEFAULT_DESIGN_CONTEXT, type IDesignContext } from '@forgespace/siza-gen';
 
 describe('generate_ui_component tool', () => {
   let server: McpServer;

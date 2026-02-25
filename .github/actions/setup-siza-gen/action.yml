@@ -10,10 +10,18 @@ runs:
         if [ ! -d "../siza-gen" ]; then
           git clone --depth 1 https://github.com/Forge-Space/siza-gen.git ../siza-gen
           cd ../siza-gen
+          INSTALLED=false
           for i in 1 2 3; do
-            npm install --legacy-peer-deps --fetch-retries=5 && break
+            if npm install --legacy-peer-deps --fetch-retries=5; then
+              INSTALLED=true
+              break
+            fi
             echo "npm install attempt $i failed, retrying..."
-            sleep 5
+            [ $i -lt 3 ] && sleep 5
           done
+          if [ "$INSTALLED" = false ]; then
+            echo "::error::Failed to install siza-gen dependencies after 3 attempts"
+            exit 1
+          fi
           npm run build
         fi

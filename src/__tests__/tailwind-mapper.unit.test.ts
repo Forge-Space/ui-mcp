@@ -1,5 +1,4 @@
-import { loadConfig } from '@forgespace/siza-gen';
-import type { IFigmaDesignToken } from '@forgespace/siza-gen';
+import { loadConfig, type IFigmaDesignToken } from '@forgespace/siza-gen';
 
 let mapTokensToTailwind: typeof import('../lib/tailwind-mapper.js').mapTokensToTailwind;
 
