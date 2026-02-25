@@ -23,6 +23,9 @@ import { registerManageTraining } from './tools/manage-training.js';
 import { registerAnalyzeComponentLibrary } from './tools/analyze-component-library.js';
 import { registerForgeContextTools } from './tools/forge-context.js';
 import { registerGenerateFromPack } from './tools/generate-from-pack.js';
+import { registerGenerateApiRoute } from './tools/generate-api-route.js';
+import { registerGenerateBackendModule } from './tools/generate-backend-module.js';
+import { registerScaffoldBackend } from './tools/scaffold-backend.js';
 import { closeDatabase } from './lib/design-references/database/store.js';
 import { logger } from './lib/logger.js';
 
@@ -64,6 +67,9 @@ registerAnalyzeDesignImageForTraining(server);
 registerManageTraining(server);
 registerAnalyzeComponentLibrary(server);
 registerGenerateFromPack(server);
+registerGenerateApiRoute(server);
+registerGenerateBackendModule(server);
+registerScaffoldBackend(server);
 try {
   registerForgeContextTools(server);
   logger.info('Forge context tools registered successfully');
