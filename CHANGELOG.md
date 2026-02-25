@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- Redirect 4 legacy Pino loggers to stderr to prevent stdout contamination in MCP stdio transport
+  (generate-ui-component, manage-training, audit-accessibility, analyze-design-image-for-training)
+
 ## [0.8.0] - 2026-02-25
 
 ### Changed
