@@ -31,7 +31,7 @@ jobs:
         uses: ./.github/actions/setup-siza-gen
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: rm -f package-lock.json && npm install --legacy-peer-deps
 
       - name: Audit production dependencies
         run: npm audit --audit-level=high --omit=dev

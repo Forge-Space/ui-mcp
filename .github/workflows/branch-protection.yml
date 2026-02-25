@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main, dev, "release/*"]
+    branches: [main, "release/*"]
     types: [opened, synchronize, reopened]
 
 permissions:
@@ -165,30 +165,18 @@ jobs:
         if: startsWith(github.base_ref, 'release/')
         run: |
           SOURCE="${{ github.head_ref }}"
-          if [[ "$SOURCE" =~ ^(main|dev)$ ]]; then
+          if [[ "$SOURCE" == "main" ]]; then
             echo "❌ Cannot merge '$SOURCE' into a release branch"
             exit 1
           fi
           echo "✅ Feature/fix branch '$SOURCE' targeting release branch is valid"
 
-      - name: Validate release → dev flow
-        if: github.base_ref == 'dev'
-        run: |
-          SOURCE="${{ github.head_ref }}"
-          if [[ ! "$SOURCE" =~ ^release/ ]]; then
-            echo "❌ PRs to 'dev' must come from a 'release/*' branch (got: '$SOURCE')"
-            echo "Required flow: feature/fix → release/X.Y.Z → dev → main"
-            exit 1
-          fi
-          echo "✅ Release branch '$SOURCE' targeting dev is valid"
-
-      - name: Validate dev → main flow
+      - name: Validate trunk-based flow to main
         if: github.base_ref == 'main'
         run: |
           SOURCE="${{ github.head_ref }}"
-          if [[ "$SOURCE" != "dev" ]]; then
-            echo "❌ PRs to 'main' must come from the 'dev' branch (got: '$SOURCE')"
-            echo "Required flow: feature/fix → release/X.Y.Z → dev → main"
+          if [[ "$SOURCE" == "main" ]]; then
+            echo "❌ Cannot merge 'main' into itself"
             exit 1
           fi
-          echo "✅ Dev branch targeting main is valid"
+          echo "✅ Branch '$SOURCE' targeting main is valid"

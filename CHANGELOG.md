@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- **CI**: Updated branch protection for trunk-based development (removed `dev` branch requirement)
+- **CI**: Remove lockfile before install to avoid transient npm 403 errors
+
 ## [0.8.0] - 2026-02-25
 
 ### Changed
