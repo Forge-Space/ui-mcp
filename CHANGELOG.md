@@ -5,15 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.8.0] - 2026-02-25
 
 ### Changed
 - **CI**: Updated branch protection for trunk-based development (removed `dev` branch requirement)
 - **CI**: Remove lockfile before install to avoid transient npm 403 errors
-
-## [0.8.0] - 2026-02-25
-
-### Changed
+- **Dependencies**: Updated `@modelcontextprotocol/sdk` to 1.27.1
 - **Architecture**: AI core, generators, registry, feedback, quality, and utils extracted to `@forgespace/siza-gen`
 - **siza-mcp is now a thin MCP protocol adapter** (~355 KB bundle, was ~2.06 MB)
 - All 21 tool files import from `@forgespace/siza-gen` instead of internal `src/lib/`
