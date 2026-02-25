@@ -13,6 +13,8 @@ import { chatSnippets } from './chat.js';
 import { contentSnippets } from './content.js';
 import { kanbanSnippets } from './kanban.js';
 import { commandPaletteSnippets } from './command-palettes.js';
+import { settingsSnippets } from './settings.js';
+import { onboardingSnippets } from './onboarding.js';
 
 export function registerOrganisms(): void {
   registerSnippets(heroSnippets);
@@ -29,6 +31,8 @@ export function registerOrganisms(): void {
   registerSnippets(contentSnippets);
   registerSnippets(kanbanSnippets);
   registerSnippets(commandPaletteSnippets);
+  registerSnippets(settingsSnippets);
+  registerSnippets(onboardingSnippets);
 }
 
 export {
@@ -46,4 +50,6 @@ export {
   contentSnippets,
   kanbanSnippets,
   commandPaletteSnippets,
+  settingsSnippets,
+  onboardingSnippets,
 };

@@ -464,4 +464,212 @@ export const testimonialSnippets: IComponentSnippet[] = [
       ],
     },
   },
+  {
+    id: 'testimonial-masonry',
+    name: 'Masonry Testimonial Grid',
+    category: 'organism',
+    type: 'testimonial',
+    variant: 'masonry',
+    tags: ['testimonial', 'masonry', 'grid', 'social-proof'],
+    mood: ['playful', 'creative', 'editorial'],
+    industry: ['saas', 'startup', 'agency'],
+    visualStyles: ['bento-grid', 'retro-playful', 'minimal-editorial'],
+    jsx: `<section className="py-20 sm:py-28" aria-labelledby="masonry-testimonials-heading">
+  <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-2xl text-center">
+      <h2 id="masonry-testimonials-heading" className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Loved by our community</h2>
+      <p className="mt-4 text-lg text-muted-foreground">Real stories from real customers.</p>
+    </div>
+    <div className="mx-auto mt-16 columns-1 gap-6 sm:columns-2 lg:columns-3">
+      <div className="mb-6 break-inside-avoid rounded-xl border bg-card p-6">
+        <div className="flex items-center gap-1 text-warning" aria-label="5 star rating">
+          <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+          <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+          <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+          <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+          <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+        </div>
+        <p className="mt-4 text-sm text-foreground leading-relaxed">"Game changer for our workflow. Shipped 3x faster."</p>
+        <div className="mt-6 flex items-center gap-3">
+          <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center text-xs font-semibold">AL</div>
+          <div>
+            <div className="text-sm font-semibold text-foreground">Alex Lee</div>
+            <div className="text-xs text-muted-foreground">CTO, StartupXYZ</div>
+          </div>
+        </div>
+      </div>
+      <div className="mb-6 break-inside-avoid rounded-xl border bg-card p-6">
+        <div className="flex items-center gap-1 text-warning" aria-label="5 star rating">
+          <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+          <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+          <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+          <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+          <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+        </div>
+        <p className="mt-4 text-sm text-foreground leading-relaxed">"We've tried every tool out there. This is the only one that delivers on its promises. No BS, just results. Our team loves it and customers are happier than ever."</p>
+        <div className="mt-6 flex items-center gap-3">
+          <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center text-xs font-semibold">RN</div>
+          <div>
+            <div className="text-sm font-semibold text-foreground">Rachel Nguyen</div>
+            <div className="text-xs text-muted-foreground">Product Lead, TechCo</div>
+          </div>
+        </div>
+      </div>
+      <div className="mb-6 break-inside-avoid rounded-xl border bg-card p-6">
+        <div className="flex items-center gap-1 text-warning" aria-label="5 star rating">
+          <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+          <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+          <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+          <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+          <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+        </div>
+        <p className="mt-4 text-sm text-foreground leading-relaxed">"Best investment we made this year."</p>
+        <div className="mt-6 flex items-center gap-3">
+          <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center text-xs font-semibold">DM</div>
+          <div>
+            <div className="text-sm font-semibold text-foreground">David Miller</div>
+            <div className="text-xs text-muted-foreground">CEO, GrowthApp</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>`,
+    tailwindClasses: {
+      masonry: 'mx-auto mt-16 columns-1 gap-6 sm:columns-2 lg:columns-3',
+      card: 'mb-6 break-inside-avoid rounded-xl border bg-card p-6',
+      stars: 'flex items-center gap-1 text-warning',
+      quote: 'mt-4 text-sm text-foreground leading-relaxed',
+      author: 'mt-6 flex items-center gap-3',
+    },
+    a11y: {
+      roles: ['region'],
+      ariaAttributes: ['aria-labelledby', 'aria-label for stars', 'aria-hidden on star icons'],
+      keyboardNav: 'N/A — content',
+      contrastRatio: '4.5:1',
+      focusVisible: false,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'section', headingLevel: 'h2' },
+    responsive: { strategy: 'mobile-first', breakpoints: ['sm', 'lg'] },
+    quality: {
+      antiGeneric: [
+        'masonry layout with CSS columns',
+        'varied content lengths for natural flow',
+        'break-inside-avoid prevents card splitting',
+      ],
+      inspirationSource: 'Testimonial.to masonry grid',
+      craftDetails: [
+        'columns-1 → columns-2 → columns-3 responsive',
+        'mb-6 for vertical spacing between cards',
+        'gap-6 for gutter between columns',
+      ],
+    },
+  },
+  {
+    id: 'testimonial-twitter',
+    name: 'Twitter/X Post Embed Style',
+    category: 'organism',
+    type: 'testimonial',
+    variant: 'twitter',
+    tags: ['testimonial', 'twitter', 'social', 'embed'],
+    mood: ['playful', 'editorial', 'creative'],
+    industry: ['saas', 'startup', 'media'],
+    visualStyles: ['minimal-editorial', 'retro-playful'],
+    jsx: `<section className="py-20 sm:py-28" aria-labelledby="twitter-testimonials-heading">
+  <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-2xl text-center">
+      <h2 id="twitter-testimonials-heading" className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">What people are saying</h2>
+      <p className="mt-4 text-lg text-muted-foreground">Real tweets from real users.</p>
+    </div>
+    <div className="mx-auto mt-16 grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <article className="rounded-xl border bg-card p-6">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center text-sm font-semibold">AL</div>
+            <div>
+              <div className="text-sm font-semibold text-foreground">Alex Lee</div>
+              <div className="text-xs text-muted-foreground">@alexlee</div>
+            </div>
+          </div>
+          <svg className="h-5 w-5 shrink-0 text-primary" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
+        </div>
+        <p className="mt-4 text-sm text-foreground leading-relaxed">Just shipped our first feature in 2 hours using this platform. Mind blown. 🤯 This is what dev tools should feel like.</p>
+        <div className="mt-4 flex items-center gap-4 text-xs text-muted-foreground">
+          <time dateTime="2024-02-15">Feb 15, 2024</time>
+          <span>·</span>
+          <span>1.2K views</span>
+        </div>
+      </article>
+      <article className="rounded-xl border bg-card p-6">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center text-sm font-semibold">SC</div>
+            <div>
+              <div className="text-sm font-semibold text-foreground">Sofia Chen</div>
+              <div className="text-xs text-muted-foreground">@sofiachen</div>
+            </div>
+          </div>
+          <svg className="h-5 w-5 shrink-0 text-primary" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
+        </div>
+        <p className="mt-4 text-sm text-foreground leading-relaxed">10x improvement in our build times. This tool pays for itself in saved developer hours. 🚀</p>
+        <div className="mt-4 flex items-center gap-4 text-xs text-muted-foreground">
+          <time dateTime="2024-02-16">Feb 16, 2024</time>
+          <span>·</span>
+          <span>856 views</span>
+        </div>
+      </article>
+      <article className="rounded-xl border bg-card p-6">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center text-sm font-semibold">TB</div>
+            <div>
+              <div className="text-sm font-semibold text-foreground">Tom Brown</div>
+              <div className="text-xs text-muted-foreground">@tombrown</div>
+            </div>
+          </div>
+          <svg className="h-5 w-5 shrink-0 text-primary" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
+        </div>
+        <p className="mt-4 text-sm text-foreground leading-relaxed">Finally, a platform that understands modern development workflows. The CLI is chef's kiss. 👨‍🍳</p>
+        <div className="mt-4 flex items-center gap-4 text-xs text-muted-foreground">
+          <time dateTime="2024-02-17">Feb 17, 2024</time>
+          <span>·</span>
+          <span>2.1K views</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>`,
+    tailwindClasses: {
+      grid: 'mx-auto mt-16 grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3',
+      card: 'rounded-xl border bg-card p-6',
+      header: 'flex items-start justify-between gap-3',
+      author: 'flex items-center gap-3',
+      quote: 'mt-4 text-sm text-foreground leading-relaxed',
+      meta: 'mt-4 flex items-center gap-4 text-xs text-muted-foreground',
+    },
+    a11y: {
+      roles: ['region', 'article'],
+      ariaAttributes: ['aria-labelledby', 'aria-hidden on icons'],
+      keyboardNav: 'N/A — content',
+      contrastRatio: '4.5:1',
+      focusVisible: false,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'section', headingLevel: 'h2' },
+    responsive: { strategy: 'mobile-first', breakpoints: ['sm', 'lg'] },
+    quality: {
+      antiGeneric: [
+        'Twitter icon for social proof context',
+        'timestamp with semantic <time> element',
+        'view count for engagement signal',
+      ],
+      inspirationSource: 'Twitter/X embed style',
+      craftDetails: [
+        'h-12 w-12 larger avatar for tweet aesthetic',
+        'shrink-0 on icon prevents squishing',
+        'dateTime attribute for semantic HTML',
+      ],
+    },
+  },
 ];

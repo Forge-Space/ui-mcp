@@ -19,6 +19,8 @@ import { separatorSnippets } from './separators.js';
 import { kbdSnippets } from './kbd.js';
 import { tagSnippets } from './tags.js';
 import { switchSnippets } from './switches.js';
+import { chipSnippets } from './chips.js';
+import { counterSnippets } from './counters.js';
 
 export function registerAtoms(): void {
   registerSnippets(buttonSnippets);
@@ -41,6 +43,8 @@ export function registerAtoms(): void {
   registerSnippets(kbdSnippets);
   registerSnippets(tagSnippets);
   registerSnippets(switchSnippets);
+  registerSnippets(chipSnippets);
+  registerSnippets(counterSnippets);
 }
 
 export {
@@ -64,4 +68,6 @@ export {
   kbdSnippets,
   tagSnippets,
   switchSnippets,
+  chipSnippets,
+  counterSnippets,
 };

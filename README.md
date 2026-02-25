@@ -22,9 +22,9 @@
 ### 🧪 **Quality & Testing**
 
 [![Tests](https://img.shields.io/github/actions/workflow/status/LucasSantana-Dev/siza-mcp/ci.yml?label=tests)](https://github.com/LucasSantana-Dev/siza-mcp/actions/workflows/ci.yml)
-[![Test Coverage](https://img.shields.io/badge/coverage-84%25-brightgreen)](https://github.com/LucasSantana-Dev/siza-mcp)
-[![Tests Passing](https://img.shields.io/badge/tests-843%2B-brightgreen)](https://github.com/LucasSantana-Dev/siza-mcp)
-[![Test Suites](https://img.shields.io/badge/suites-54%2B-brightgreen)](https://github.com/LucasSantana-Dev/siza-mcp)
+[![Test Coverage](https://img.shields.io/badge/coverage-82%25-brightgreen)](https://github.com/LucasSantana-Dev/siza-mcp)
+[![Tests Passing](https://img.shields.io/badge/tests-1192%2B-brightgreen)](https://github.com/LucasSantana-Dev/siza-mcp)
+[![Test Suites](https://img.shields.io/badge/suites-67%2B-brightgreen)](https://github.com/LucasSantana-Dev/siza-mcp)
 
 ### 🔧 **Build & Deployment**
 
@@ -115,6 +115,9 @@ Built with the
 | 15  | `analyze_component_library`   | Context  | Analyze component library patterns for style-aware generation                                                                    |
 | 16  | `analyze_design_image`        | ML       | Analyze design images for training data extraction                                                                               |
 | 17  | `generate_from_template_pack` | Code     | Generate complete multi-page apps from curated template packs (SaaS, Landing, AI Chat)                                           |
+| 18  | `generate_api_route`          | Backend  | Generate production-ready API routes with validation, auth, and error handling                                                   |
+| 19  | `generate_backend_module`     | Backend  | Generate complete backend feature modules with routes, services, and middleware                                                  |
+| 20  | `scaffold_backend`            | Backend  | Generate full backend project scaffolds with auth, database, monitoring, and caching                                             |
 
 ## Component Library Support
 
@@ -365,14 +368,16 @@ Add to your IDE's MCP configuration:
 
 ### 📋 Available Tools After Setup
 
-Once connected, you'll have access to all 13 MCP tools:
+Once connected, you'll have access to all 20 MCP tools:
 
 - `generate_ui_component` - Create React/Vue/Angular components
 - `scaffold_full_application` - Generate full applications
-- `analyze_design_image_for_training` - Analyze UI designs
+- `generate_api_route` - Generate production-ready API routes
+- `generate_backend_module` - Generate backend feature modules
+- `scaffold_backend` - Generate complete backend projects
 - `figma_context_parser` - Extract Figma design tokens
 - `image_to_component` - Convert screenshots to code
-- And 9+ more tools
+- And 13+ more tools
 
 ### 🔐 Authentication
 
@@ -444,23 +449,18 @@ comprehensive IDE configuration guide.
 
 ## Test Coverage
 
-Current test coverage: **77.39%** (39 test suites, 550 tests)
-
-- **Statements**: 77.39%
-- **Branches**: 70.77%
-- **Functions**: 78.72%
-- **Lines**: 77.39%
+Current test coverage: **82%+** (67 test suites, 1192 tests)
 
 Coverage thresholds are enforced via Jest configuration. All tests must pass and
 maintain coverage levels before merging.
 
 ### Coverage Status
 
-- ✅ **All 550 tests passing**
-- ⚠️ **Coverage below threshold** (target: 84%)
-- 📊 **39 test suites** covering all tools and core functionality
-- 🎯 **Component library integration** fully tested
-- ♿ **Accessibility features** comprehensively tested
+- 1192+ tests passing across 67 test suites
+- 82%+ statement coverage
+- Component library integration fully tested
+- Accessibility features comprehensively tested
+- Quality validation for 450+ component snippets
 
 ## Docker
 
@@ -505,7 +505,7 @@ echo '{"jsonrpc": "2.0", "id": 2, "method": "tools/call", "params": {"name": "fi
 
 ### 🚀 **Production Ready Features**
 
-- ✅ **12 MCP tools** fully operational
+- ✅ **20 MCP tools** fully operational
 - ✅ **Component library integration** (shadcn/ui, Radix UI, Headless UI,
   Material UI)
 - ✅ **Accessibility compliance** (WCAG 2.1 AA/AAA)

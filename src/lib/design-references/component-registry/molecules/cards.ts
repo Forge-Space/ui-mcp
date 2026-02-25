@@ -528,4 +528,49 @@ export const cardSnippets: IComponentSnippet[] = [
       ],
     },
   },
+  {
+    id: 'card-feature-highlight',
+    name: 'Feature Highlight Card',
+    category: 'molecule',
+    type: 'card',
+    variant: 'feature-highlight',
+    tags: ['feature', 'icon', 'highlight', 'product'],
+    mood: ['professional', 'bold', 'minimal'],
+    industry: ['saas', 'startup', 'agency'],
+    visualStyles: ['soft-depth', 'gradient-mesh', 'linear-modern'],
+    jsx: `<article className="group rounded-xl border bg-card p-6 text-card-foreground shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
+  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
+  </div>
+  <h3 className="text-base font-semibold text-foreground">Lightning Fast</h3>
+  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">Built for speed with optimized rendering and minimal bundle size for the best user experience.</p>
+</article>`,
+    tailwindClasses: {
+      card: 'group rounded-xl border bg-card p-6 text-card-foreground shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5',
+      iconWrapper:
+        'mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground',
+      icon: 'h-6 w-6',
+      title: 'text-base font-semibold text-foreground',
+      description: 'mt-2 text-sm text-muted-foreground leading-relaxed',
+    },
+    a11y: {
+      roles: ['article'],
+      ariaAttributes: ['aria-hidden on icon'],
+      keyboardNav: 'N/A — content',
+      contrastRatio: '4.5:1',
+      focusVisible: false,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'article' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'group hover transforms icon wrapper',
+        'hover:-translate-y-0.5 lift effect',
+        'icon bg transitions from primary/10 to primary on hover',
+      ],
+      inspirationSource: 'Linear feature showcase',
+      craftDetails: ['group utility for parent-child hover', 'icon wrapper bg change adds interaction depth'],
+    },
+  },
 ];

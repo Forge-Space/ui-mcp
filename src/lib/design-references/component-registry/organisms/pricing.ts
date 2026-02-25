@@ -290,7 +290,7 @@ export const pricingSnippets: IComponentSnippet[] = [
           <span className="pointer-events-none inline-block h-5 w-5 translate-x-0 rounded-full bg-background shadow ring-0 transition-transform group-aria-checked:translate-x-5" aria-hidden="true"></span>
         </button>
         <span className="text-sm font-medium text-foreground">Annual</span>
-        <span className="inline-flex items-center rounded-full bg-success/10 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-success/100/10 dark:text-green-400">Save 20%</span>
+        <span className="inline-flex items-center rounded-full bg-success/10 px-2 py-0.5 text-xs font-medium text-success dark:bg-success/100/10 dark:text-green-400">Save 20%</span>
       </div>
     </div>
     <div className="mx-auto mt-16 grid max-w-5xl gap-8 lg:grid-cols-2">
@@ -354,7 +354,7 @@ export const pricingSnippets: IComponentSnippet[] = [
         'group relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-muted',
       toggleThumb:
         'pointer-events-none inline-block h-5 w-5 translate-x-0 rounded-full bg-background shadow ring-0 group-aria-checked:translate-x-5',
-      saveBadge: 'inline-flex items-center rounded-full bg-success/10 px-2 py-0.5 text-xs font-medium text-green-700',
+      saveBadge: 'inline-flex items-center rounded-full bg-success/10 px-2 py-0.5 text-xs font-medium text-success',
       billingNote: 'mt-1 text-xs text-muted-foreground',
     },
     a11y: {
@@ -454,7 +454,7 @@ export const pricingSnippets: IComponentSnippet[] = [
             <div className="flex-1">
               <div className="flex items-center gap-2">
                 <h4 className="text-sm font-semibold text-foreground">Support</h4>
-                <span className="inline-flex items-center rounded-md bg-success/10 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-success/100/10 dark:text-green-400">Included</span>
+                <span className="inline-flex items-center rounded-md bg-success/10 px-2 py-0.5 text-xs font-medium text-success dark:bg-success/100/10 dark:text-green-400">Included</span>
               </div>
               <p className="mt-1 text-xs text-muted-foreground">Email and community support included</p>
             </div>

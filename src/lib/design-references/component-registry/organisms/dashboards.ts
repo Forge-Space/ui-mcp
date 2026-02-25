@@ -301,4 +301,277 @@ export const dashboardSnippets: IComponentSnippet[] = [
       craftDetails: ['Semantic table structure', 'Alternating row hover', 'Color-coded status indicators'],
     },
   },
+  {
+    id: 'dashboard-analytics-chart',
+    name: 'Analytics Chart Dashboard',
+    category: 'organism',
+    type: 'saas',
+    variant: 'analytics-chart',
+    tags: ['saas', 'chart', 'analytics', 'graph'],
+    mood: ['professional', 'minimal'] as const,
+    industry: ['saas', 'fintech', 'general'] as const,
+    visualStyles: ['soft-depth', 'linear-modern'] as const,
+    jsx: `<section className="py-8">
+  <div className="container">
+    <div className="mb-6 flex items-center justify-between">
+      <div>
+        <h2 className="text-xl font-bold text-foreground">Revenue Analytics</h2>
+        <p className="text-sm text-muted-foreground">Last 30 days performance</p>
+      </div>
+      <div className="flex items-center gap-2">
+        <button className="inline-flex h-9 items-center gap-2 rounded-md border border-input bg-background px-3 text-sm font-medium text-foreground hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" /></svg>
+          Last 30 days
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+        </button>
+        <button className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-input bg-background text-muted-foreground hover:bg-accent hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label="Download report">
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+        </button>
+      </div>
+    </div>
+    <div className="rounded-lg border border-input bg-card p-6">
+      <div className="mb-6 grid grid-cols-3 gap-4">
+        <div>
+          <p className="text-xs text-muted-foreground">Total Revenue</p>
+          <p className="mt-1 text-2xl font-bold text-foreground">$142,350</p>
+          <p className="mt-1 text-xs text-success">+24.5% from last period</p>
+        </div>
+        <div>
+          <p className="text-xs text-muted-foreground">Average Order Value</p>
+          <p className="mt-1 text-2xl font-bold text-foreground">$89.42</p>
+          <p className="mt-1 text-xs text-success">+12.3% from last period</p>
+        </div>
+        <div>
+          <p className="text-xs text-muted-foreground">Conversion Rate</p>
+          <p className="mt-1 text-2xl font-bold text-foreground">3.24%</p>
+          <p className="mt-1 text-xs text-muted-foreground">-0.4% from last period</p>
+        </div>
+      </div>
+      <div className="relative h-64">
+        <svg className="w-full h-full" viewBox="0 0 800 256" fill="none" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" className="text-primary" stopColor="currentColor" stopOpacity="0.2" />
+              <stop offset="100%" className="text-primary" stopColor="currentColor" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          <path d="M0,200 L100,180 L200,160 L300,140 L400,120 L500,100 L600,80 L700,60 L800,40" stroke="currentColor" strokeWidth="2" fill="none" className="text-primary" />
+          <path d="M0,200 L100,180 L200,160 L300,140 L400,120 L500,100 L600,80 L700,60 L800,40 L800,256 L0,256 Z" fill="url(#chartGradient)" />
+        </svg>
+        <div className="absolute bottom-0 left-0 right-0 flex justify-between px-2 text-xs text-muted-foreground">
+          <span>Jan 1</span>
+          <span>Jan 8</span>
+          <span>Jan 15</span>
+          <span>Jan 22</span>
+          <span>Jan 29</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>`,
+    tailwindClasses: {
+      root: 'py-8',
+      container: 'container',
+      header: 'mb-6 flex items-center justify-between',
+      title: 'text-xl font-bold text-foreground',
+      subtitle: 'text-sm text-muted-foreground',
+      controls: 'flex items-center gap-2',
+      periodButton:
+        'inline-flex h-9 items-center gap-2 rounded-md border border-input bg-background px-3 text-sm font-medium text-foreground hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+      downloadButton:
+        'inline-flex h-9 w-9 items-center justify-center rounded-md border border-input bg-background text-muted-foreground hover:bg-accent hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+      card: 'rounded-lg border border-input bg-card p-6',
+      metrics: 'mb-6 grid grid-cols-3 gap-4',
+      metricLabel: 'text-xs text-muted-foreground',
+      metricValue: 'mt-1 text-2xl font-bold text-foreground',
+      metricChange: 'mt-1 text-xs text-success',
+      chartContainer: 'relative h-64',
+      chart: 'w-full h-full',
+      xAxis: 'absolute bottom-0 left-0 right-0 flex justify-between px-2 text-xs text-muted-foreground',
+    },
+    a11y: {
+      roles: ['region', 'img'],
+      ariaAttributes: ['aria-label'],
+      keyboardNav: 'Tab through controls',
+      contrastRatio: '4.5:1',
+      focusVisible: true,
+      reducedMotion: true,
+    },
+    responsive: { strategy: 'mobile-first' as const, breakpoints: ['sm', 'lg'] },
+    quality: {
+      antiGeneric: [
+        'inline metrics above chart for context',
+        'gradient fill under line chart',
+        'period selector dropdown',
+        'download report button',
+      ],
+      inspirationSource: 'Stripe Analytics',
+      craftDetails: [
+        'preserveAspectRatio="none" for responsive SVG',
+        'linearGradient for visual depth',
+        'grid grid-cols-3 for metric layout',
+        'relative h-64 fixed chart height',
+      ],
+    },
+  },
+  {
+    id: 'dashboard-real-time-monitoring',
+    name: 'Real-Time Monitoring Dashboard',
+    category: 'organism',
+    type: 'saas',
+    variant: 'real-time-monitoring',
+    tags: ['saas', 'monitoring', 'real-time', 'live'],
+    mood: ['professional', 'futuristic'] as const,
+    industry: ['saas', 'devtools', 'fintech'] as const,
+    visualStyles: ['soft-depth', 'linear-modern', 'corporate-trust'] as const,
+    jsx: `<section className="py-8">
+  <div className="container">
+    <div className="mb-6 flex items-center justify-between">
+      <div>
+        <h2 className="text-xl font-bold text-foreground">System Status</h2>
+        <div className="flex items-center gap-2 mt-1">
+          <div className="flex items-center gap-1.5">
+            <div className="h-2 w-2 rounded-full bg-success animate-pulse" />
+            <span className="text-xs text-success font-medium">All systems operational</span>
+          </div>
+          <span className="text-xs text-muted-foreground">•</span>
+          <span className="text-xs text-muted-foreground">Updated 5s ago</span>
+        </div>
+      </div>
+      <button className="inline-flex h-9 items-center gap-2 rounded-md border border-input bg-background px-3 text-sm font-medium text-foreground hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
+        Refresh
+      </button>
+    </div>
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="rounded-lg border border-input bg-card p-6">
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-sm font-medium text-muted-foreground">API Response Time</p>
+          <div className="h-2 w-2 rounded-full bg-success" />
+        </div>
+        <div className="flex items-baseline gap-2">
+          <div className="text-3xl font-bold text-foreground">45ms</div>
+          <div className="flex items-center gap-1 text-xs text-success">
+            <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" /></svg>
+            12ms
+          </div>
+        </div>
+        <div className="mt-3 h-12 flex items-end gap-0.5">
+          <div className="h-6 w-full bg-success/20 rounded-sm" />
+          <div className="h-8 w-full bg-success/20 rounded-sm" />
+          <div className="h-10 w-full bg-success/20 rounded-sm" />
+          <div className="h-7 w-full bg-success/20 rounded-sm" />
+          <div className="h-9 w-full bg-success/20 rounded-sm" />
+          <div className="h-12 w-full bg-success/30 rounded-sm" />
+        </div>
+      </div>
+      <div className="rounded-lg border border-input bg-card p-6">
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-sm font-medium text-muted-foreground">Active Connections</p>
+          <div className="h-2 w-2 rounded-full bg-primary" />
+        </div>
+        <div className="flex items-baseline gap-2">
+          <div className="text-3xl font-bold text-foreground">1,234</div>
+          <div className="flex items-center gap-1 text-xs text-primary">
+            <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" /></svg>
+            +23
+          </div>
+        </div>
+        <div className="mt-3 h-12 flex items-end gap-0.5">
+          <div className="h-9 w-full bg-primary/20 rounded-sm" />
+          <div className="h-7 w-full bg-primary/20 rounded-sm" />
+          <div className="h-11 w-full bg-primary/20 rounded-sm" />
+          <div className="h-8 w-full bg-primary/20 rounded-sm" />
+          <div className="h-10 w-full bg-primary/20 rounded-sm" />
+          <div className="h-12 w-full bg-primary/30 rounded-sm" />
+        </div>
+      </div>
+      <div className="rounded-lg border border-input bg-card p-6">
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-sm font-medium text-muted-foreground">Error Rate</p>
+          <div className="h-2 w-2 rounded-full bg-success" />
+        </div>
+        <div className="flex items-baseline gap-2">
+          <div className="text-3xl font-bold text-foreground">0.03%</div>
+          <div className="flex items-center gap-1 text-xs text-success">
+            <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" /></svg>
+            0.01%
+          </div>
+        </div>
+        <div className="mt-3 h-12 flex items-end gap-0.5">
+          <div className="h-4 w-full bg-success/20 rounded-sm" />
+          <div className="h-3 w-full bg-success/20 rounded-sm" />
+          <div className="h-5 w-full bg-success/20 rounded-sm" />
+          <div className="h-4 w-full bg-success/20 rounded-sm" />
+          <div className="h-3 w-full bg-success/20 rounded-sm" />
+          <div className="h-2 w-full bg-success/30 rounded-sm" />
+        </div>
+      </div>
+      <div className="rounded-lg border border-input bg-card p-6">
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-sm font-medium text-muted-foreground">Uptime</p>
+          <div className="h-2 w-2 rounded-full bg-success" />
+        </div>
+        <div className="flex items-baseline gap-2">
+          <div className="text-3xl font-bold text-foreground">99.99%</div>
+        </div>
+        <p className="mt-1 text-xs text-muted-foreground">30 days</p>
+        <div className="mt-3 flex gap-0.5">
+          {Array.from({ length: 30 }).map((_, i) => (
+            <div key={i} className="h-6 w-full rounded-sm bg-success/30" />
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>`,
+    tailwindClasses: {
+      root: 'py-8',
+      container: 'container',
+      header: 'mb-6 flex items-center justify-between',
+      title: 'text-xl font-bold text-foreground',
+      statusRow: 'flex items-center gap-2 mt-1',
+      statusIndicator: 'flex items-center gap-1.5',
+      pulse: 'h-2 w-2 rounded-full bg-success animate-pulse',
+      statusText: 'text-xs text-success font-medium',
+      timestamp: 'text-xs text-muted-foreground',
+      refreshButton:
+        'inline-flex h-9 items-center gap-2 rounded-md border border-input bg-background px-3 text-sm font-medium text-foreground hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+      grid: 'grid gap-4 md:grid-cols-2 lg:grid-cols-4',
+      card: 'rounded-lg border border-input bg-card p-6',
+      cardHeader: 'flex items-center justify-between mb-4',
+      cardLabel: 'text-sm font-medium text-muted-foreground',
+      statusDot: 'h-2 w-2 rounded-full',
+      metricRow: 'flex items-baseline gap-2',
+      metricValue: 'text-3xl font-bold text-foreground',
+      metricChange: 'flex items-center gap-1 text-xs',
+      sparkline: 'mt-3 h-12 flex items-end gap-0.5',
+      sparklineBar: 'w-full rounded-sm',
+      uptimeGrid: 'mt-3 flex gap-0.5',
+    },
+    a11y: {
+      roles: ['region', 'status'],
+      ariaAttributes: ['aria-label', 'aria-live="polite"'],
+      keyboardNav: 'Tab to refresh button',
+      contrastRatio: '4.5:1',
+      focusVisible: true,
+      reducedMotion: true,
+    },
+    responsive: { strategy: 'mobile-first' as const, breakpoints: ['md', 'lg'] },
+    quality: {
+      antiGeneric: [
+        'animate-pulse on status indicator for "live" feel',
+        'sparkline charts in each metric card',
+        'color-coded status dots (green for healthy)',
+        'relative timestamps ("Updated 5s ago")',
+      ],
+      inspirationSource: 'Datadog monitoring',
+      craftDetails: [
+        'h-12 flex items-end gap-0.5 for bar chart layout',
+        'Array.from({ length: 30 }) for uptime grid',
+        'bg-success/30 for most recent value emphasis',
+        'grid md:grid-cols-2 lg:grid-cols-4 responsive layout',
+      ],
+    },
+  },
 ];

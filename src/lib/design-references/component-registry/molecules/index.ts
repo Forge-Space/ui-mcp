@@ -22,6 +22,10 @@ import { datePickerSnippets } from './date-pickers.js';
 import { fileUploadSnippets } from './file-upload.js';
 import { carouselSnippets } from './carousels.js';
 import { timelineSnippets } from './timelines.js';
+import { toastSnippets } from './toast.js';
+import { ratingSnippets } from './rating.js';
+import { colorPickerSnippets } from './color-picker.js';
+import { commandMenuSnippets } from './command-menu.js';
 
 export function registerMolecules(): void {
   registerSnippets(cardSnippets);
@@ -47,6 +51,10 @@ export function registerMolecules(): void {
   registerSnippets(fileUploadSnippets);
   registerSnippets(carouselSnippets);
   registerSnippets(timelineSnippets);
+  registerSnippets(toastSnippets);
+  registerSnippets(ratingSnippets);
+  registerSnippets(colorPickerSnippets);
+  registerSnippets(commandMenuSnippets);
 }
 
 export {
@@ -73,4 +81,8 @@ export {
   fileUploadSnippets,
   carouselSnippets,
   timelineSnippets,
+  toastSnippets,
+  ratingSnippets,
+  colorPickerSnippets,
+  commandMenuSnippets,
 };

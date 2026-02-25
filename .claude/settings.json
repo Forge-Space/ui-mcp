@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "agent",
+            "prompt": "Session task completed. Update Serena project memories with what was accomplished:\n\n1. Run `git log --oneline -5` to see recent commits\n2. Run `git diff --stat HEAD~1` to see what changed\n3. Use Serena's `write_memory` or `edit_memory` tool to persist:\n   - Key accomplishments and code changes\n   - Architectural decisions made\n   - Gotchas or patterns discovered\n   - File paths of important new/modified files\n4. Keep memories concise and actionable for future sessions\n\nFocus on siza-mcp project context. Category should reflect the work area (e.g., 'training-data', 'backend-tools', 'quality-validation').",
+            "model": "claude-haiku-4-5-20251001",
+            "timeout": 120
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -151,4 +151,267 @@ export const formSnippets: IComponentSnippet[] = [
       craftDetails: ['responsive grid for first/last name', 'min-h-[120px] textarea', 'sm:w-auto button sizing'],
     },
   },
+  {
+    id: 'form-multi-step',
+    name: 'Multi-Step Wizard Form',
+    category: 'molecule',
+    type: 'form',
+    variant: 'multi-step',
+    tags: ['wizard', 'multi-step', 'progress', 'onboarding'],
+    mood: ['professional', 'minimal'],
+    industry: ['saas', 'fintech', 'ecommerce'],
+    visualStyles: ['soft-depth', 'linear-modern', 'corporate-trust'],
+    jsx: `<form className="mx-auto w-full max-w-2xl space-y-8" aria-label="Multi-step registration" noValidate>
+  <div className="flex items-center justify-between">
+    <div className="flex items-center gap-2">
+      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">1</div>
+      <span className="text-sm font-medium text-foreground">Account</span>
+    </div>
+    <div className="h-px flex-1 bg-border mx-4" />
+    <div className="flex items-center gap-2">
+      <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-border text-sm font-medium text-muted-foreground">2</div>
+      <span className="text-sm font-medium text-muted-foreground">Profile</span>
+    </div>
+    <div className="h-px flex-1 bg-border mx-4" />
+    <div className="flex items-center gap-2">
+      <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-border text-sm font-medium text-muted-foreground">3</div>
+      <span className="text-sm font-medium text-muted-foreground">Complete</span>
+    </div>
+  </div>
+  <div className="space-y-4">
+    <div className="space-y-2">
+      <label htmlFor="step1-email" className="text-sm font-medium text-foreground">Email</label>
+      <input id="step1-email" type="email" className="flex h-10 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" aria-required="true" />
+    </div>
+    <div className="space-y-2">
+      <label htmlFor="step1-password" className="text-sm font-medium text-foreground">Password</label>
+      <input id="step1-password" type="password" className="flex h-10 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" aria-required="true" />
+    </div>
+  </div>
+  <div className="flex justify-between">
+    <button type="button" className="inline-flex h-10 items-center justify-center rounded-lg border border-input px-6 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" disabled>Previous</button>
+    <button type="button" className="inline-flex h-10 items-center justify-center rounded-lg bg-primary px-6 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98]">Next</button>
+  </div>
+</form>`,
+    tailwindClasses: {
+      form: 'mx-auto w-full max-w-2xl space-y-8',
+      progress: 'flex items-center justify-between',
+      stepActive:
+        'flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground',
+      stepInactive:
+        'flex h-8 w-8 items-center justify-center rounded-full border-2 border-border text-sm font-medium text-muted-foreground',
+      connector: 'h-px flex-1 bg-border mx-4',
+      label: 'text-sm font-medium text-foreground',
+      input:
+        'flex h-10 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+    },
+    a11y: {
+      roles: ['form'],
+      ariaAttributes: ['aria-label', 'aria-required'],
+      htmlAttributes: ['noValidate'],
+      keyboardNav: 'Tab through fields, Enter to advance',
+      contrastRatio: '4.5:1',
+      focusVisible: true,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'form' },
+    responsive: { strategy: 'mobile-first', breakpoints: ['sm'] },
+    quality: {
+      antiGeneric: [
+        'visual progress indicator with numbered steps',
+        'disabled state on Previous button for step 1',
+        'connector lines between steps',
+      ],
+      inspirationSource: 'Stripe onboarding flows',
+      craftDetails: [
+        'max-w-2xl for comfortable multi-step layout',
+        'space-y-8 for vertical rhythm',
+        'h-8 w-8 step circles for consistency',
+      ],
+    },
+  },
+  {
+    id: 'form-inline-edit',
+    name: 'Inline Edit Form',
+    category: 'molecule',
+    type: 'form',
+    variant: 'inline-edit',
+    tags: ['inline', 'edit', 'settings', 'profile'],
+    mood: ['minimal', 'professional'],
+    industry: ['saas', 'devtools', 'general'],
+    visualStyles: ['minimal-editorial', 'linear-modern'],
+    jsx: `<div className="space-y-4">
+  <div className="group rounded-lg border bg-card p-4 transition-colors hover:border-primary/50">
+    <div className="flex items-center justify-between">
+      <div className="flex-1">
+        <label htmlFor="inline-name" className="text-sm font-medium text-muted-foreground">Full Name</label>
+        <input id="inline-name" type="text" defaultValue="Jane Doe" className="mt-1 block w-full border-0 bg-transparent p-0 text-base text-foreground focus:outline-none focus:ring-0" />
+      </div>
+      <button type="button" className="opacity-0 transition-opacity group-hover:opacity-100 rounded-md px-3 py-1.5 text-xs font-medium text-primary hover:bg-primary/10 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">Edit</button>
+    </div>
+  </div>
+  <div className="group rounded-lg border bg-card p-4 transition-colors hover:border-primary/50">
+    <div className="flex items-center justify-between">
+      <div className="flex-1">
+        <label htmlFor="inline-email" className="text-sm font-medium text-muted-foreground">Email</label>
+        <input id="inline-email" type="email" defaultValue="jane@company.co" className="mt-1 block w-full border-0 bg-transparent p-0 text-base text-foreground focus:outline-none focus:ring-0" />
+      </div>
+      <button type="button" className="opacity-0 transition-opacity group-hover:opacity-100 rounded-md px-3 py-1.5 text-xs font-medium text-primary hover:bg-primary/10 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">Edit</button>
+    </div>
+  </div>
+</div>`,
+    tailwindClasses: {
+      container: 'space-y-4',
+      row: 'group rounded-lg border bg-card p-4 transition-colors hover:border-primary/50',
+      label: 'text-sm font-medium text-muted-foreground',
+      input: 'mt-1 block w-full border-0 bg-transparent p-0 text-base text-foreground focus:outline-none focus:ring-0',
+      editButton:
+        'opacity-0 transition-opacity group-hover:opacity-100 rounded-md px-3 py-1.5 text-xs font-medium text-primary hover:bg-primary/10',
+    },
+    a11y: {
+      roles: [],
+      ariaAttributes: [],
+      htmlAttributes: ['defaultValue'],
+      keyboardNav: 'Tab to field, Enter to edit, Escape to cancel',
+      contrastRatio: '4.5:1',
+      focusVisible: true,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'div' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'edit button appears on hover for clean default state',
+        'border-0 on input for seamless inline appearance',
+        'group-hover:border-primary/50 highlights editable row',
+      ],
+      inspirationSource: 'Linear settings page',
+      craftDetails: [
+        'opacity-0 → group-hover:opacity-100 for edit button',
+        'focus-visible:opacity-100 ensures keyboard access',
+        'bg-transparent input blends with card',
+      ],
+    },
+  },
+  {
+    id: 'form-floating-label',
+    name: 'Floating Label Input',
+    category: 'molecule',
+    type: 'form',
+    variant: 'floating-label',
+    tags: ['floating', 'label', 'material', 'modern'],
+    mood: ['minimal', 'creative', 'futuristic'],
+    industry: ['saas', 'startup', 'general'],
+    visualStyles: ['linear-modern', 'minimal-editorial'],
+    jsx: `<form className="mx-auto w-full max-w-md space-y-6" aria-label="Contact form">
+  <div className="relative">
+    <input id="float-email" type="email" className="peer h-12 w-full rounded-lg border border-input bg-background px-3 pt-5 pb-1 text-sm text-foreground ring-offset-background transition-all placeholder:text-transparent focus:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="Email" />
+    <label htmlFor="float-email" className="absolute left-3 top-1.5 text-xs font-medium text-muted-foreground transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:top-1.5 peer-focus:text-xs">Email</label>
+  </div>
+  <div className="relative">
+    <input id="float-name" type="text" className="peer h-12 w-full rounded-lg border border-input bg-background px-3 pt-5 pb-1 text-sm text-foreground ring-offset-background transition-all placeholder:text-transparent focus:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="Full Name" />
+    <label htmlFor="float-name" className="absolute left-3 top-1.5 text-xs font-medium text-muted-foreground transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:top-1.5 peer-focus:text-xs">Full Name</label>
+  </div>
+  <div className="relative">
+    <textarea id="float-message" rows={4} className="peer w-full rounded-lg border border-input bg-background px-3 pt-5 pb-1 text-sm text-foreground ring-offset-background transition-all placeholder:text-transparent focus:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 resize-none" placeholder="Message" />
+    <label htmlFor="float-message" className="absolute left-3 top-1.5 text-xs font-medium text-muted-foreground transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:top-1.5 peer-focus:text-xs">Message</label>
+  </div>
+  <button type="submit" className="inline-flex h-10 w-full items-center justify-center rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98]">Send</button>
+</form>`,
+    tailwindClasses: {
+      form: 'mx-auto w-full max-w-md space-y-6',
+      inputWrapper: 'relative',
+      input:
+        'peer h-12 w-full rounded-lg border border-input bg-background px-3 pt-5 pb-1 text-sm text-foreground ring-offset-background transition-all placeholder:text-transparent focus:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+      label:
+        'absolute left-3 top-1.5 text-xs font-medium text-muted-foreground transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:top-1.5 peer-focus:text-xs',
+    },
+    a11y: {
+      roles: ['form'],
+      ariaAttributes: ['aria-label'],
+      htmlAttributes: ['placeholder'],
+      keyboardNav: 'Tab through fields, Enter to submit',
+      contrastRatio: '4.5:1',
+      focusVisible: true,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'form' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'peer selector for pure CSS floating label',
+        'placeholder:text-transparent hides placeholder until focus',
+        'pt-5 pb-1 padding reserves space for label',
+      ],
+      inspirationSource: 'Material Design text fields',
+      craftDetails: [
+        'peer-placeholder-shown for empty state',
+        'peer-focus for active state',
+        'transition-all animates label movement',
+      ],
+    },
+  },
+  {
+    id: 'form-otp',
+    name: 'OTP Verification Form',
+    category: 'molecule',
+    type: 'form',
+    variant: 'otp',
+    tags: ['otp', 'verification', 'code', 'security', '2fa'],
+    mood: ['professional', 'minimal'],
+    industry: ['fintech', 'saas', 'general'],
+    visualStyles: ['soft-depth', 'corporate-trust', 'linear-modern'],
+    jsx: `<form className="mx-auto w-full max-w-sm space-y-6" aria-label="Enter verification code" noValidate>
+  <div className="space-y-2 text-center">
+    <h2 className="text-xl font-bold tracking-tight text-foreground">Verification Code</h2>
+    <p className="text-sm text-muted-foreground">Enter the 6-digit code sent to your email</p>
+  </div>
+  <div className="flex justify-center gap-2">
+    <input type="text" inputMode="numeric" pattern="[0-9]" maxLength={1} className="h-14 w-12 rounded-lg border border-input bg-background text-center text-lg font-semibold text-foreground ring-offset-background transition-colors focus:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" aria-label="Digit 1" />
+    <input type="text" inputMode="numeric" pattern="[0-9]" maxLength={1} className="h-14 w-12 rounded-lg border border-input bg-background text-center text-lg font-semibold text-foreground ring-offset-background transition-colors focus:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" aria-label="Digit 2" />
+    <input type="text" inputMode="numeric" pattern="[0-9]" maxLength={1} className="h-14 w-12 rounded-lg border border-input bg-background text-center text-lg font-semibold text-foreground ring-offset-background transition-colors focus:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" aria-label="Digit 3" />
+    <div className="w-4" />
+    <input type="text" inputMode="numeric" pattern="[0-9]" maxLength={1} className="h-14 w-12 rounded-lg border border-input bg-background text-center text-lg font-semibold text-foreground ring-offset-background transition-colors focus:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" aria-label="Digit 4" />
+    <input type="text" inputMode="numeric" pattern="[0-9]" maxLength={1} className="h-14 w-12 rounded-lg border border-input bg-background text-center text-lg font-semibold text-foreground ring-offset-background transition-colors focus:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" aria-label="Digit 5" />
+    <input type="text" inputMode="numeric" pattern="[0-9]" maxLength={1} className="h-14 w-12 rounded-lg border border-input bg-background text-center text-lg font-semibold text-foreground ring-offset-background transition-colors focus:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" aria-label="Digit 6" />
+  </div>
+  <button type="submit" className="inline-flex h-10 w-full items-center justify-center rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98]">Verify</button>
+  <p className="text-center text-sm text-muted-foreground">Didn&apos;t receive a code? <button type="button" className="font-medium text-primary hover:text-primary/80 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm">Resend</button></p>
+</form>`,
+    tailwindClasses: {
+      form: 'mx-auto w-full max-w-sm space-y-6',
+      title: 'text-xl font-bold tracking-tight text-foreground',
+      subtitle: 'text-sm text-muted-foreground',
+      inputGroup: 'flex justify-center gap-2',
+      input:
+        'h-14 w-12 rounded-lg border border-input bg-background text-center text-lg font-semibold text-foreground ring-offset-background transition-colors focus:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+      spacer: 'w-4',
+      submit:
+        'inline-flex h-10 w-full items-center justify-center rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98]',
+    },
+    a11y: {
+      roles: ['form'],
+      ariaAttributes: ['aria-label on each input'],
+      htmlAttributes: ['inputMode', 'pattern', 'maxLength', 'noValidate'],
+      keyboardNav: 'Auto-advance on digit entry, Backspace to previous',
+      contrastRatio: '4.5:1',
+      focusVisible: true,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'form' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'inputMode="numeric" triggers numeric keyboard on mobile',
+        'maxLength={1} restricts to single digit',
+        'visual grouping with spacer div (3-3 pattern)',
+      ],
+      inspirationSource: 'Coinbase 2FA verification',
+      craftDetails: [
+        'h-14 w-12 for comfortable touch targets',
+        'text-center + text-lg for clear digit display',
+        'gap-2 for spacing between inputs',
+      ],
+    },
+  },
 ];

@@ -40,7 +40,7 @@ export const dataTableSnippets: IComponentSnippet[] = [
       <tr className="hover:bg-muted/50 transition-colors">
         <td className="px-4 py-3 font-medium text-foreground">Project Alpha</td>
         <td className="px-4 py-3">
-          <span className="inline-flex items-center rounded-full bg-success/10 px-2 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-400 ring-1 ring-inset ring-emerald-500/20">Active</span>
+          <span className="inline-flex items-center rounded-full bg-success/10 px-2 py-1 text-xs font-medium text-success dark:text-emerald-400 ring-1 ring-inset ring-emerald-500/20">Active</span>
         </td>
         <td className="px-4 py-3 text-muted-foreground">Jan 15, 2025</td>
         <td className="px-4 py-3 text-right">
@@ -75,7 +75,7 @@ export const dataTableSnippets: IComponentSnippet[] = [
       tr: 'hover:bg-muted/50 transition-colors',
       td: 'px-4 py-3',
       badge:
-        'inline-flex items-center rounded-full bg-success/10 px-2 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-400 ring-1 ring-inset ring-emerald-500/20',
+        'inline-flex items-center rounded-full bg-success/10 px-2 py-1 text-xs font-medium text-success dark:text-emerald-400 ring-1 ring-inset ring-emerald-500/20',
     },
     a11y: {
       roles: ['table'],
@@ -242,7 +242,7 @@ export const dataTableSnippets: IComponentSnippet[] = [
           </div>
         </td>
         <td className="px-4 py-3">
-          <span className="inline-flex items-center rounded-full bg-success/10 px-2 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-400 ring-1 ring-inset ring-emerald-500/20">Completed</span>
+          <span className="inline-flex items-center rounded-full bg-success/10 px-2 py-1 text-xs font-medium text-success dark:text-emerald-400 ring-1 ring-inset ring-emerald-500/20">Completed</span>
         </td>
         <td className="px-4 py-3 text-right font-medium text-foreground">$1,299.00</td>
       </tr>

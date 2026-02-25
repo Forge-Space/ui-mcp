@@ -148,4 +148,186 @@ export const searchSnippets: IComponentSnippet[] = [
       craftDetails: ['Command palette pattern', 'Keyboard shortcuts', 'Dropdown results'],
     },
   },
+  {
+    id: 'search-results-list',
+    name: 'Search Results List',
+    category: 'molecule',
+    type: 'search',
+    variant: 'results-list',
+    tags: ['search', 'results', 'list'],
+    mood: ['professional', 'minimal'] as const,
+    industry: ['general', 'saas', 'devtools'] as const,
+    visualStyles: ['soft-depth', 'linear-modern'] as const,
+    jsx: `<div className="rounded-lg border border-input bg-card shadow-lg">
+  <div className="p-3 border-b border-input">
+    <p className="text-xs text-muted-foreground">Found 4 results for "<span className="font-medium text-foreground">react hooks</span>"</p>
+  </div>
+  <div className="max-h-96 overflow-y-auto">
+    <div className="p-2 space-y-1">
+      <a href="#" className="flex items-start gap-3 rounded-md px-3 py-2 hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        <svg className="h-5 w-5 shrink-0 mt-0.5 text-muted-foreground" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9z" /></svg>
+        <div className="flex-1 min-w-0">
+          <div className="text-sm font-medium text-foreground">Getting Started with React Hooks</div>
+          <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">Learn how to use useState and useEffect in your React components...</p>
+        </div>
+      </a>
+      <a href="#" className="flex items-start gap-3 rounded-md px-3 py-2 hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        <svg className="h-5 w-5 shrink-0 mt-0.5 text-muted-foreground" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" /></svg>
+        <div className="flex-1 min-w-0">
+          <div className="text-sm font-medium text-foreground">Custom Hooks Best Practices</div>
+          <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">Build reusable logic with custom hooks and avoid common pitfalls...</p>
+        </div>
+      </a>
+      <a href="#" className="flex items-start gap-3 rounded-md px-3 py-2 hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        <svg className="h-5 w-5 shrink-0 mt-0.5 text-muted-foreground" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25z" /></svg>
+        <div className="flex-1 min-w-0">
+          <div className="text-sm font-medium text-foreground">React Hooks Video Tutorial</div>
+          <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">45-minute deep dive into all built-in hooks with live examples...</p>
+        </div>
+      </a>
+      <a href="#" className="flex items-start gap-3 rounded-md px-3 py-2 hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        <svg className="h-5 w-5 shrink-0 mt-0.5 text-muted-foreground" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" /></svg>
+        <div className="flex-1 min-w-0">
+          <div className="text-sm font-medium text-foreground">React Hooks API Reference</div>
+          <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">Complete documentation for all React hooks with usage examples...</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>`,
+    tailwindClasses: {
+      root: 'rounded-lg border border-input bg-card shadow-lg',
+      header: 'p-3 border-b border-input',
+      headerText: 'text-xs text-muted-foreground',
+      query: 'font-medium text-foreground',
+      resultsContainer: 'max-h-96 overflow-y-auto',
+      resultsList: 'p-2 space-y-1',
+      resultItem:
+        'flex items-start gap-3 rounded-md px-3 py-2 hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+      icon: 'h-5 w-5 shrink-0 mt-0.5 text-muted-foreground',
+      content: 'flex-1 min-w-0',
+      title: 'text-sm font-medium text-foreground',
+      description: 'text-xs text-muted-foreground mt-0.5 line-clamp-1',
+    },
+    a11y: {
+      roles: ['list', 'listitem'],
+      ariaAttributes: ['aria-label'],
+      keyboardNav: 'Tab through results, Enter to select',
+      contrastRatio: '4.5:1',
+      focusVisible: true,
+      reducedMotion: true,
+    },
+    responsive: { strategy: 'mobile-first' as const, breakpoints: ['sm'] },
+    quality: {
+      antiGeneric: [
+        'result count with search query highlight',
+        'icon indicators for content type (doc, code, video, reference)',
+        'line-clamp-1 for consistent description heights',
+        'max-h-96 scrollable container',
+      ],
+      inspirationSource: 'Algolia DocSearch',
+      craftDetails: [
+        'shrink-0 mt-0.5 aligns icons with text baseline',
+        'min-w-0 prevents flex overflow on long titles',
+        'space-y-1 tight result spacing',
+        'hover:bg-accent for clear interaction feedback',
+      ],
+    },
+  },
+  {
+    id: 'search-autocomplete-dropdown',
+    name: 'Autocomplete Dropdown',
+    category: 'molecule',
+    type: 'search',
+    variant: 'autocomplete',
+    tags: ['search', 'autocomplete', 'dropdown', 'suggestions'],
+    mood: ['professional', 'minimal'] as const,
+    industry: ['general', 'saas', 'ecommerce'] as const,
+    visualStyles: ['soft-depth', 'linear-modern'] as const,
+    jsx: `<div className="relative w-full max-w-md">
+  <div className="relative">
+    <svg className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+    <input
+      type="search"
+      placeholder="Search products..."
+      className="h-10 w-full rounded-lg border border-input bg-background pl-10 pr-3 py-2 text-sm text-foreground ring-offset-background transition-colors placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+      aria-autocomplete="list"
+      aria-expanded="true"
+      role="combobox"
+    />
+  </div>
+  <div className="absolute top-full left-0 right-0 mt-2 rounded-lg border border-input bg-card shadow-lg z-50">
+    <div className="p-2">
+      <div className="mb-2 px-3 py-1.5 text-xs font-medium text-muted-foreground">Suggestions</div>
+      <a href="#" className="flex items-center gap-3 rounded-md px-3 py-2 hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        <svg className="h-4 w-4 shrink-0 text-muted-foreground" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+        <span className="flex-1 text-sm text-foreground">wireless headphones</span>
+        <kbd className="inline-flex items-center rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">⌘1</kbd>
+      </a>
+      <a href="#" className="flex items-center gap-3 rounded-md px-3 py-2 hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        <svg className="h-4 w-4 shrink-0 text-muted-foreground" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+        <span className="flex-1 text-sm text-foreground">bluetooth speakers</span>
+        <kbd className="inline-flex items-center rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">⌘2</kbd>
+      </a>
+      <a href="#" className="flex items-center gap-3 rounded-md px-3 py-2 hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        <svg className="h-4 w-4 shrink-0 text-muted-foreground" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+        <span className="flex-1 text-sm text-foreground">laptop accessories</span>
+        <kbd className="inline-flex items-center rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">⌘3</kbd>
+      </a>
+      <div className="mt-2 border-t border-input pt-2">
+        <div className="mb-2 px-3 py-1.5 text-xs font-medium text-muted-foreground">Recent</div>
+        <a href="#" className="flex items-center gap-3 rounded-md px-3 py-2 hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+          <svg className="h-4 w-4 shrink-0 text-muted-foreground" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+          <span className="flex-1 text-sm text-muted-foreground">mechanical keyboards</span>
+        </a>
+        <a href="#" className="flex items-center gap-3 rounded-md px-3 py-2 hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+          <svg className="h-4 w-4 shrink-0 text-muted-foreground" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+          <span className="flex-1 text-sm text-muted-foreground">usb-c cables</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>`,
+    tailwindClasses: {
+      root: 'relative w-full max-w-md',
+      inputWrapper: 'relative',
+      icon: 'absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground',
+      input:
+        'h-10 w-full rounded-lg border border-input bg-background pl-10 pr-3 py-2 text-sm text-foreground ring-offset-background transition-colors placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary',
+      dropdown: 'absolute top-full left-0 right-0 mt-2 rounded-lg border border-input bg-card shadow-lg z-50',
+      dropdownContent: 'p-2',
+      sectionLabel: 'mb-2 px-3 py-1.5 text-xs font-medium text-muted-foreground',
+      suggestionItem:
+        'flex items-center gap-3 rounded-md px-3 py-2 hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+      suggestionIcon: 'h-4 w-4 shrink-0 text-muted-foreground',
+      suggestionText: 'flex-1 text-sm text-foreground',
+      shortcut: 'inline-flex items-center rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground',
+      separator: 'mt-2 border-t border-input pt-2',
+      recentText: 'flex-1 text-sm text-muted-foreground',
+    },
+    a11y: {
+      roles: ['combobox', 'listbox'],
+      ariaAttributes: ['aria-autocomplete="list"', 'aria-expanded', 'aria-controls'],
+      keyboardNav: 'Arrow keys to navigate, Enter to select, Cmd+number for shortcuts',
+      contrastRatio: '4.5:1',
+      focusVisible: true,
+      reducedMotion: true,
+    },
+    responsive: { strategy: 'mobile-first' as const, breakpoints: ['sm'] },
+    quality: {
+      antiGeneric: [
+        'keyboard shortcuts (⌘1, ⌘2, ⌘3) for quick selection',
+        'grouped sections (suggestions vs recent)',
+        'icon differentiation (search vs clock)',
+        'recent items with muted text',
+      ],
+      inspirationSource: 'Raycast search',
+      craftDetails: [
+        'z-50 ensures dropdown appears above content',
+        'top-full left-0 right-0 for full-width dropdown',
+        'border-t separator between sections',
+        'shrink-0 on icons prevents squishing',
+      ],
+    },
+  },
 ];
