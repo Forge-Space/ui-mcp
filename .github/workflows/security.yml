@@ -21,14 +21,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup siza-gen
-        uses: ./.github/actions/setup-siza-gen
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
+
+      - name: Setup siza-gen
+        uses: ./.github/actions/setup-siza-gen
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
@@ -53,14 +53,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup siza-gen
-        uses: ./.github/actions/setup-siza-gen
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
+
+      - name: Setup siza-gen
+        uses: ./.github/actions/setup-siza-gen
 
       - name: Install dependencies
         run: rm -f package-lock.json && npm install --legacy-peer-deps
