@@ -115,7 +115,7 @@ const configFiles: IConfigFile[] = [
     "type-check": "turbo run type-check",
     "test": "turbo run test",
     "clean": "turbo run clean && rm -rf node_modules",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write '**/*.{ts,tsx,md}'"
   },
   "devDependencies": {
     "turbo": "^2.3.0",
