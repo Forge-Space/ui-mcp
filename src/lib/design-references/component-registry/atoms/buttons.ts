@@ -7,7 +7,7 @@ export const buttonSnippets: IComponentSnippet[] = [
     category: 'atom',
     type: 'button',
     variant: 'default',
-    tags: ['cta', 'action', 'primary', 'interactive'],
+    tags: ['cta', 'action', 'primary', 'energetic'],
     mood: ['professional', 'minimal'],
     industry: ['general', 'saas', 'fintech'],
     visualStyles: ['soft-depth', 'corporate-trust', 'linear-modern', 'minimal-editorial'],
@@ -48,7 +48,7 @@ export const buttonSnippets: IComponentSnippet[] = [
     category: 'atom',
     type: 'button',
     variant: 'outline',
-    tags: ['secondary', 'action', 'subtle', 'interactive'],
+    tags: ['secondary', 'action', 'calm', 'energetic'],
     mood: ['minimal', 'calm', 'professional'],
     industry: ['general', 'saas', 'fintech'],
     visualStyles: ['soft-depth', 'corporate-trust', 'minimal-editorial'],
@@ -84,7 +84,7 @@ export const buttonSnippets: IComponentSnippet[] = [
     category: 'atom',
     type: 'button',
     variant: 'ghost',
-    tags: ['tertiary', 'subtle', 'navigation', 'interactive'],
+    tags: ['tertiary', 'calm', 'navigation', 'energetic'],
     mood: ['minimal', 'calm'],
     industry: ['general', 'saas', 'devtools'],
     visualStyles: ['minimal-editorial', 'linear-modern', 'soft-depth'],
@@ -156,7 +156,7 @@ export const buttonSnippets: IComponentSnippet[] = [
     category: 'atom',
     type: 'button',
     variant: 'gradient',
-    tags: ['cta', 'conversion', 'primary', 'premium', 'marketing'],
+    tags: ['cta', 'conversion', 'primary', 'premium', 'agency'],
     mood: ['bold', 'energetic', 'premium'],
     industry: ['saas', 'startup', 'agency'],
     visualStyles: ['gradient-mesh', 'dark-premium'],
@@ -200,7 +200,7 @@ export const buttonSnippets: IComponentSnippet[] = [
     category: 'atom',
     type: 'button',
     variant: 'glass',
-    tags: ['frosted', 'premium', 'overlay', 'interactive'],
+    tags: ['frosted', 'premium', 'overlay', 'energetic'],
     mood: ['futuristic', 'premium', 'creative'],
     industry: ['saas', 'agency', 'startup'],
     visualStyles: ['glassmorphism', 'dark-premium'],
@@ -240,7 +240,7 @@ export const buttonSnippets: IComponentSnippet[] = [
     category: 'atom',
     type: 'button',
     variant: 'icon',
-    tags: ['icon-only', 'toolbar', 'compact', 'action'],
+    tags: ['icon-only', 'toolbar', 'minimal-editorial', 'action'],
     mood: ['minimal', 'professional'],
     industry: ['general', 'saas', 'devtools'],
     visualStyles: ['linear-modern', 'minimal-editorial', 'soft-depth'],
@@ -499,7 +499,7 @@ export const buttonSnippets: IComponentSnippet[] = [
     category: 'atom',
     type: 'button',
     variant: 'pill',
-    tags: ['rounded', 'tag', 'filter', 'chip'],
+    tags: ['soft-depth', 'tag', 'filter', 'chip'],
     mood: ['playful', 'creative', 'warm'],
     industry: ['ecommerce', 'media', 'agency'],
     visualStyles: ['retro-playful', 'gradient-mesh', 'minimal-editorial'],
@@ -587,7 +587,7 @@ export const buttonSnippets: IComponentSnippet[] = [
     category: 'atom',
     type: 'button',
     variant: 'link',
-    tags: ['link', 'text', 'inline', 'subtle'],
+    tags: ['link', 'text', 'inline', 'calm'],
     mood: ['minimal', 'calm', 'professional'],
     industry: ['general', 'saas', 'fintech'],
     visualStyles: ['minimal-editorial', 'linear-modern', 'corporate-trust'],
@@ -624,6 +624,215 @@ export const buttonSnippets: IComponentSnippet[] = [
         'text-primary for link color',
         'hover:underline for standard link affordance',
         'no background or border — pure text button',
+      ],
+    },
+  },
+  {
+    id: 'button-loading-spinner',
+    name: 'Loading Spinner Button',
+    category: 'atom',
+    type: 'button',
+    variant: 'loading-spinner',
+    tags: ['loading', 'spinner', 'async', 'submit', 'pending'],
+    mood: ['professional', 'minimal'],
+    industry: ['general', 'saas', 'fintech'],
+    visualStyles: ['soft-depth', 'linear-modern', 'corporate-trust'],
+    jsx: `<button disabled className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground opacity-80 ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" aria-busy="true">
+  <svg className="h-4 w-4 motion-safe:animate-spin motion-reduce:animate-none" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
+  Processing...
+</button>`,
+    tailwindClasses: {
+      button:
+        'inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground opacity-80 ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+      spinner: 'h-4 w-4 motion-safe:animate-spin motion-reduce:animate-none',
+    },
+    a11y: {
+      roles: ['button'],
+      ariaAttributes: ['disabled', 'aria-busy'],
+      keyboardNav: 'N/A — disabled state',
+      contrastRatio: '4.5:1',
+      focusVisible: false,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'button' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: ['opacity-80 for disabled state clarity', 'gap-2 spinner-text alignment'],
+      inspirationSource: 'shadcn/ui Button loading state',
+      craftDetails: [
+        'motion-safe:animate-spin with motion-reduce fallback',
+        'disabled attribute prevents double-submit',
+      ],
+    },
+  },
+  {
+    id: 'button-social',
+    name: 'Social Login Button',
+    category: 'atom',
+    type: 'button',
+    variant: 'media',
+    tags: ['media', 'oauth', 'login', 'authentication', 'third-party'],
+    mood: ['professional', 'minimal'],
+    industry: ['general', 'saas', 'ecommerce'],
+    visualStyles: ['soft-depth', 'corporate-trust', 'linear-modern'],
+    jsx: `<button type="button" className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-input bg-background px-4 py-2.5 text-sm font-medium text-foreground ring-offset-background transition-all hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50">
+  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z" /></svg>
+  Continue with Google
+</button>`,
+    tailwindClasses: {
+      button:
+        'inline-flex w-full items-center justify-center gap-2 rounded-lg border border-input bg-background px-4 py-2.5 text-sm font-medium text-foreground ring-offset-background transition-all hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50',
+      icon: 'h-5 w-5',
+    },
+    a11y: {
+      roles: ['button'],
+      ariaAttributes: ['aria-label', 'aria-hidden on icon'],
+      keyboardNav: 'Enter/Space to activate, Tab to focus',
+      contrastRatio: '4.5:1',
+      focusVisible: true,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'button' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'w-full for consistent auth flow layout',
+        'h-5 w-5 larger icon for brand recognition',
+        'justify-center for centered content',
+      ],
+      inspirationSource: 'Clerk / NextAuth social buttons',
+      craftDetails: ['brand icon uses currentColor for theme adaptation', 'outline variant for non-primary action'],
+    },
+  },
+  {
+    id: 'button-icon-only-circle',
+    name: 'Circular Icon Button',
+    category: 'atom',
+    type: 'button',
+    variant: 'icon-only-circle',
+    tags: ['icon-only', 'circular', 'toolbar', 'minimal-editorial'],
+    mood: ['minimal', 'professional', 'premium'],
+    industry: ['general', 'saas', 'devtools'],
+    visualStyles: ['soft-depth', 'linear-modern', 'dark-premium'],
+    jsx: `<button type="button" className="inline-flex h-10 w-10 items-center justify-center rounded-full border bg-card text-muted-foreground shadow-sm ring-offset-background transition-all hover:bg-accent hover:text-accent-foreground hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-95 disabled:pointer-events-none disabled:opacity-50" aria-label="More options">
+  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" /></svg>
+</button>`,
+    tailwindClasses: {
+      button:
+        'inline-flex h-10 w-10 items-center justify-center rounded-full border bg-card text-muted-foreground shadow-sm ring-offset-background transition-all hover:bg-accent hover:text-accent-foreground hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-95 disabled:pointer-events-none disabled:opacity-50',
+      icon: 'h-5 w-5',
+    },
+    a11y: {
+      roles: ['button'],
+      ariaAttributes: ['aria-label'],
+      keyboardNav: 'Enter/Space to activate, Tab to focus',
+      contrastRatio: '3:1',
+      focusVisible: true,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'button' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'rounded-full for circular shape',
+        'active:scale-95 for press feedback',
+        'shadow-sm → shadow-md hover transition',
+      ],
+      inspirationSource: 'Telegram / WhatsApp action buttons',
+      craftDetails: [
+        'h-10 w-10 for 40px touch target',
+        'border + shadow-sm for subtle elevation',
+        'bg-card instead of transparent for definition',
+      ],
+    },
+  },
+  {
+    id: 'button-animated-gradient',
+    name: 'Animated Gradient Button',
+    category: 'atom',
+    type: 'button',
+    variant: 'animated-gradient',
+    tags: ['gradient', 'energetic', 'premium', 'cta', 'agency'],
+    mood: ['bold', 'energetic', 'premium'],
+    industry: ['saas', 'startup', 'agency'],
+    visualStyles: ['gradient-mesh', 'dark-premium'],
+    jsx: `<button type="button" className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_100%] px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 ring-offset-background transition-all duration-300 hover:bg-[position:100%_0] hover:shadow-xl hover:shadow-primary/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50 motion-safe:animate-[gradient_3s_ease-in-out_infinite] motion-reduce:animate-none">
+  Get Started Free
+</button>`,
+    tailwindClasses: {
+      button:
+        'group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_100%] px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 ring-offset-background transition-all duration-300 hover:bg-[position:100%_0] hover:shadow-xl hover:shadow-primary/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50',
+    },
+    animations: [
+      '@keyframes gradient { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }',
+    ],
+    a11y: {
+      roles: ['button'],
+      ariaAttributes: ['aria-label', 'aria-disabled'],
+      keyboardNav: 'Enter/Space to activate, Tab to focus',
+      contrastRatio: '4.5:1',
+      focusVisible: true,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'button' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'bg-[length:200%_100%] for animated gradient effect',
+        'motion-safe:animate with motion-reduce fallback',
+        'duration-300 for smooth hover transition',
+      ],
+      inspirationSource: 'Vercel marketing CTAs',
+      craftDetails: [
+        'gradient animates on hover via bg-position',
+        'shadow-lg with colored shadow (shadow-primary/25)',
+        'overflow-hidden prevents gradient bleed',
+      ],
+    },
+  },
+  {
+    id: 'button-magnetic-hover',
+    name: 'Magnetic Hover Button',
+    category: 'atom',
+    type: 'button',
+    variant: 'magnetic-hover',
+    tags: ['magnetic', 'energetic', 'premium', 'creative'],
+    mood: ['premium', 'futuristic', 'creative'],
+    industry: ['agency', 'startup', 'saas'],
+    visualStyles: ['dark-premium', 'glassmorphism'],
+    jsx: `<button type="button" className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-lg border-2 border-primary bg-background px-6 py-3 text-sm font-semibold text-foreground ring-offset-background transition-all duration-200 hover:bg-primary hover:text-primary-foreground hover:shadow-lg hover:shadow-primary/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-95 disabled:pointer-events-none disabled:opacity-50">
+  <span className="relative z-10 transition-transform duration-200 group-hover:translate-x-0.5">Explore</span>
+  <svg className="relative z-10 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg>
+  <span className="absolute inset-0 bg-primary opacity-0 transition-opacity duration-200 group-hover:opacity-100" aria-hidden="true" />
+</button>`,
+    tailwindClasses: {
+      button:
+        'group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-lg border-2 border-primary bg-background px-6 py-3 text-sm font-semibold text-foreground ring-offset-background transition-all duration-200 hover:bg-primary hover:text-primary-foreground hover:shadow-lg hover:shadow-primary/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-95 disabled:pointer-events-none disabled:opacity-50',
+      text: 'relative z-10 transition-transform duration-200 group-hover:translate-x-0.5',
+      icon: 'relative z-10 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1',
+      overlay: 'absolute inset-0 bg-primary opacity-0 transition-opacity duration-200 group-hover:opacity-100',
+    },
+    a11y: {
+      roles: ['button'],
+      ariaAttributes: ['aria-label', 'aria-hidden on overlay'],
+      keyboardNav: 'Enter/Space to activate, Tab to focus',
+      contrastRatio: '4.5:1',
+      focusVisible: true,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'button' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'group-hover:translate-x for magnetic effect',
+        'layered z-10 content above overlay',
+        'border-2 for stronger outline',
+      ],
+      inspirationSource: 'Awwwards agency sites',
+      craftDetails: [
+        'text and icon translate on hover for cursor follow illusion',
+        'absolute overlay fills background smoothly',
+        'duration-200 for snappy interaction',
       ],
     },
   },

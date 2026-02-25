@@ -73,7 +73,7 @@ export const navigationSnippets: IComponentSnippet[] = [
     category: 'molecule',
     type: 'sidebar',
     variant: 'default',
-    tags: ['navigation', 'dashboard', 'app', 'menu'],
+    tags: ['navigation', 'saas', 'app', 'menu'],
     mood: ['professional', 'minimal'],
     industry: ['saas', 'devtools', 'fintech'],
     visualStyles: ['linear-modern', 'dark-premium', 'soft-depth'],
@@ -103,7 +103,7 @@ export const navigationSnippets: IComponentSnippet[] = [
       <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-muted-foreground" aria-hidden="true">JD</div>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium text-foreground truncate">Jane Doe</p>
-        <p className="text-xs text-muted-foreground truncate">jane@example.com</p>
+        <p className="text-xs text-muted-foreground truncate">jane@acme.co</p>
       </div>
     </div>
   </div>

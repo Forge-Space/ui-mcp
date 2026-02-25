@@ -5,9 +5,9 @@ export const listSnippets: IComponentSnippet[] = [
     id: 'list-checkbox',
     name: 'Checkbox List',
     category: 'molecule',
-    type: 'list',
+    type: 'minimal-editorial',
     variant: 'checkbox',
-    tags: ['list', 'checkbox', 'task', 'todo'],
+    tags: ['minimal-editorial', 'checkbox', 'task', 'todo'],
     mood: ['professional', 'minimal'],
     industry: ['saas', 'saas', 'general'],
     visualStyles: ['linear-modern', 'minimal-editorial', 'soft-depth'],
@@ -18,7 +18,7 @@ export const listSnippets: IComponentSnippet[] = [
       <span className="text-sm font-medium text-foreground group-has-[:checked]:line-through group-has-[:checked]:text-muted-foreground transition-all">Complete project documentation</span>
       <span className="text-xs text-muted-foreground">Due today at 5:00 PM</span>
     </div>
-    <span className="inline-flex items-center rounded-full bg-red-500/10 px-2 py-1 text-xs font-medium text-red-700 dark:text-red-400 ring-1 ring-inset ring-red-500/20">High</span>
+    <span className="inline-flex items-center rounded-full bg-destructive/10 px-2 py-1 text-xs font-medium text-red-700 dark:text-red-400 ring-1 ring-inset ring-red-500/20">High</span>
   </label>
   <label className="flex items-start gap-3 rounded-lg border bg-card p-4 transition-colors hover:bg-accent cursor-pointer group">
     <input type="checkbox" className="mt-0.5 h-4 w-4 rounded border-input text-primary focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background" checked />
@@ -46,7 +46,7 @@ export const listSnippets: IComponentSnippet[] = [
         'text-sm font-medium text-foreground group-has-[:checked]:line-through group-has-[:checked]:text-muted-foreground transition-all',
       meta: 'text-xs text-muted-foreground',
       badge:
-        'inline-flex items-center rounded-full bg-red-500/10 px-2 py-1 text-xs font-medium text-red-700 dark:text-red-400 ring-1 ring-inset ring-red-500/20',
+        'inline-flex items-center rounded-full bg-destructive/10 px-2 py-1 text-xs font-medium text-red-700 dark:text-red-400 ring-1 ring-inset ring-red-500/20',
     },
     a11y: {
       roles: [],
@@ -77,9 +77,9 @@ export const listSnippets: IComponentSnippet[] = [
     id: 'list-radio-group',
     name: 'Radio Option List',
     category: 'molecule',
-    type: 'list',
+    type: 'minimal-editorial',
     variant: 'radio-group',
-    tags: ['list', 'radio', 'select', 'option'],
+    tags: ['minimal-editorial', 'radio', 'select', 'option'],
     mood: ['professional', 'minimal'],
     industry: ['ecommerce', 'saas', 'fintech'],
     visualStyles: ['soft-depth', 'corporate-trust', 'linear-modern'],
@@ -164,9 +164,9 @@ export const listSnippets: IComponentSnippet[] = [
     id: 'list-stacked',
     name: 'Stacked List',
     category: 'molecule',
-    type: 'list',
+    type: 'minimal-editorial',
     variant: 'stacked',
-    tags: ['list', 'items', 'notifications', 'feed'],
+    tags: ['minimal-editorial', 'items', 'saas', 'media'],
     mood: ['professional', 'minimal'],
     industry: ['saas', 'general', 'saas'],
     visualStyles: ['linear-modern', 'soft-depth', 'minimal-editorial'],
@@ -218,7 +218,7 @@ export const listSnippets: IComponentSnippet[] = [
         'shrink-0 rounded-md p-1 text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
     },
     a11y: {
-      roles: ['list', 'listitem'],
+      roles: ['minimal-editorial', 'listitem'],
       ariaAttributes: ['aria-label on dismiss buttons'],
       keyboardNav: 'Tab through dismiss buttons',
       contrastRatio: '4.5:1',
@@ -246,9 +246,9 @@ export const listSnippets: IComponentSnippet[] = [
     id: 'list-timeline',
     name: 'Timeline List',
     category: 'molecule',
-    type: 'list',
-    variant: 'timeline',
-    tags: ['list', 'timeline', 'activity', 'history'],
+    type: 'minimal-editorial',
+    variant: 'general',
+    tags: ['minimal-editorial', 'general', 'saas', 'soft-depth'],
     mood: ['professional', 'minimal'],
     industry: ['saas', 'saas', 'devtools'],
     visualStyles: ['linear-modern', 'minimal-editorial', 'soft-depth'],
@@ -260,7 +260,7 @@ export const listSnippets: IComponentSnippet[] = [
     <div className="flex flex-col gap-1">
       <div className="flex items-center gap-2">
         <span className="text-sm font-semibold text-foreground">Issue closed</span>
-        <span className="inline-flex items-center rounded-full bg-purple-500/10 px-2 py-0.5 text-xs font-medium text-purple-700 dark:text-purple-400 ring-1 ring-inset ring-purple-500/20">Completed</span>
+        <span className="inline-flex items-center rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-purple-700 dark:text-purple-400 ring-1 ring-inset ring-purple-500/20">Completed</span>
       </div>
       <p className="text-sm text-muted-foreground">The bug has been fixed and deployed to production</p>
       <time className="text-xs text-muted-foreground" dateTime="2025-01-24T14:30">Jan 24, 2025 at 2:30 PM</time>
@@ -312,10 +312,10 @@ export const listSnippets: IComponentSnippet[] = [
       description: 'text-sm text-muted-foreground',
       timestamp: 'text-xs text-muted-foreground',
       badge:
-        'inline-flex items-center rounded-full bg-purple-500/10 px-2 py-0.5 text-xs font-medium text-purple-700 dark:text-purple-400 ring-1 ring-inset ring-purple-500/20',
+        'inline-flex items-center rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-purple-700 dark:text-purple-400 ring-1 ring-inset ring-purple-500/20',
     },
     a11y: {
-      roles: ['list', 'listitem'],
+      roles: ['minimal-editorial', 'listitem'],
       ariaAttributes: ['dateTime on time elements'],
       keyboardNav: 'N/A — informational',
       contrastRatio: '4.5:1',
@@ -343,9 +343,9 @@ export const listSnippets: IComponentSnippet[] = [
     id: 'list-tree',
     name: 'Tree View List',
     category: 'molecule',
-    type: 'list',
+    type: 'minimal-editorial',
     variant: 'tree',
-    tags: ['list', 'tree', 'folder', 'hierarchy'],
+    tags: ['minimal-editorial', 'tree', 'folder', 'hierarchy'],
     mood: ['professional', 'minimal'],
     industry: ['devtools', 'saas', 'general'],
     visualStyles: ['linear-modern', 'minimal-editorial', 'dark-premium'],
@@ -355,7 +355,7 @@ export const listSnippets: IComponentSnippet[] = [
       <button type="button" className="h-4 w-4 shrink-0 rounded hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label="Expand folder" aria-expanded="true">
         <svg className="h-3.5 w-3.5 transition-transform rotate-90" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
       </button>
-      <svg className="h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" /></svg>
+      <svg className="h-4 w-4 shrink-0 text-primary dark:text-blue-400" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" /></svg>
       <span className="flex-1 font-medium text-foreground truncate">src</span>
     </div>
     <ul className="ml-4 space-y-0.5 border-l border-border pl-2" role="group">
@@ -364,7 +364,7 @@ export const listSnippets: IComponentSnippet[] = [
           <button type="button" className="h-4 w-4 shrink-0 rounded hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label="Expand folder" aria-expanded="true">
             <svg className="h-3.5 w-3.5 transition-transform rotate-90" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
           </button>
-          <svg className="h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" /></svg>
+          <svg className="h-4 w-4 shrink-0 text-primary dark:text-blue-400" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" /></svg>
           <span className="flex-1 font-medium text-foreground truncate">components</span>
         </div>
         <ul className="ml-4 space-y-0.5 border-l border-border pl-2" role="group">
@@ -400,7 +400,7 @@ export const listSnippets: IComponentSnippet[] = [
       expandButton:
         'h-4 w-4 shrink-0 rounded hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
       chevron: 'h-3.5 w-3.5 transition-transform rotate-90',
-      folderIcon: 'h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400',
+      folderIcon: 'h-4 w-4 shrink-0 text-primary dark:text-blue-400',
       fileIcon: 'h-4 w-4 shrink-0 text-muted-foreground',
       label: 'flex-1 text-foreground truncate',
       selected: 'bg-accent',

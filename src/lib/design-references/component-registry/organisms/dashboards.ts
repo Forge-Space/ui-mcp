@@ -5,9 +5,9 @@ export const dashboardSnippets: IComponentSnippet[] = [
     id: 'dashboard-stats-overview',
     name: 'Stats Overview Dashboard',
     category: 'organism',
-    type: 'dashboard',
+    type: 'saas',
     variant: 'stats-overview',
-    tags: ['dashboard', 'stats', 'kpi', 'analytics'],
+    tags: ['saas', 'stats', 'kpi', 'saas'],
     mood: ['professional', 'minimal'] as const,
     industry: ['saas', 'general'] as const,
     visualStyles: ['soft-depth'] as const,
@@ -28,7 +28,7 @@ export const dashboardSnippets: IComponentSnippet[] = [
         <div className="mt-3">
           <div className="text-2xl font-bold text-foreground">$45,231</div>
           <p className="text-xs text-muted-foreground mt-1">
-            <span className="text-green-600 font-medium">+20.1%</span> from last month
+            <span className="text-success font-medium">+20.1%</span> from last month
           </p>
         </div>
       </div>
@@ -42,7 +42,7 @@ export const dashboardSnippets: IComponentSnippet[] = [
         <div className="mt-3">
           <div className="text-2xl font-bold text-foreground">2,350</div>
           <p className="text-xs text-muted-foreground mt-1">
-            <span className="text-green-600 font-medium">+180</span> from last month
+            <span className="text-success font-medium">+180</span> from last month
           </p>
         </div>
       </div>
@@ -56,7 +56,7 @@ export const dashboardSnippets: IComponentSnippet[] = [
         <div className="mt-3">
           <div className="text-2xl font-bold text-foreground">24.8%</div>
           <p className="text-xs text-muted-foreground mt-1">
-            <span className="text-green-600 font-medium">+4.2%</span> from last month
+            <span className="text-success font-medium">+4.2%</span> from last month
           </p>
         </div>
       </div>
@@ -99,9 +99,9 @@ export const dashboardSnippets: IComponentSnippet[] = [
     id: 'dashboard-activity-feed',
     name: 'Activity Feed Dashboard',
     category: 'organism',
-    type: 'dashboard',
+    type: 'saas',
     variant: 'activity-feed',
-    tags: ['dashboard', 'activity', 'timeline', 'feed'],
+    tags: ['saas', 'saas', 'general', 'media'],
     mood: ['professional', 'minimal'] as const,
     industry: ['saas', 'devtools'] as const,
     visualStyles: ['soft-depth'] as const,
@@ -199,7 +199,7 @@ export const dashboardSnippets: IComponentSnippet[] = [
       root: 'py-8',
     },
     a11y: {
-      roles: ['region', 'feed'],
+      roles: ['region', 'media'],
       ariaAttributes: ['aria-label'],
       keyboardNav: 'Tab through activity items',
       contrastRatio: '4.5:1',
@@ -217,9 +217,9 @@ export const dashboardSnippets: IComponentSnippet[] = [
     id: 'dashboard-data-table',
     name: 'Data Table Dashboard',
     category: 'organism',
-    type: 'dashboard',
+    type: 'saas',
     variant: 'data-table',
-    tags: ['dashboard', 'table', 'data', 'grid'],
+    tags: ['saas', 'table', 'data', 'grid'],
     mood: ['professional', 'minimal'] as const,
     industry: ['saas', 'general'] as const,
     visualStyles: ['soft-depth'] as const,
@@ -254,14 +254,14 @@ export const dashboardSnippets: IComponentSnippet[] = [
               <td className="px-6 py-4 text-sm font-medium text-foreground">#3210</td>
               <td className="px-6 py-4 text-sm text-muted-foreground">john@company.com</td>
               <td className="px-6 py-4">
-                <span className="inline-flex items-center rounded-full bg-green-600/10 px-2 py-1 text-xs font-medium text-green-600">Completed</span>
+                <span className="inline-flex items-center rounded-full bg-green-600/10 px-2 py-1 text-xs font-medium text-success">Completed</span>
               </td>
               <td className="px-6 py-4 text-sm text-foreground">$1,234.00</td>
               <td className="px-6 py-4 text-sm text-muted-foreground">Jan 15, 2024</td>
             </tr>
             <tr className="hover:bg-muted/50 transition-colors">
               <td className="px-6 py-4 text-sm font-medium text-foreground">#3209</td>
-              <td className="px-6 py-4 text-sm text-muted-foreground">sarah@example.com</td>
+              <td className="px-6 py-4 text-sm text-muted-foreground">sarah@acme.co</td>
               <td className="px-6 py-4">
                 <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-1 text-xs font-medium text-primary">Processing</span>
               </td>

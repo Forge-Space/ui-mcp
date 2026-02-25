@@ -5,7 +5,7 @@ export const progressSnippets: IComponentSnippet[] = [
     id: 'progress-bar',
     name: 'Progress Bar',
     category: 'atom',
-    type: 'progress',
+    type: 'linear-modern',
     variant: 'bar',
     tags: ['loading', 'status', 'percentage', 'indicator'],
     mood: ['professional', 'minimal'],
@@ -88,7 +88,7 @@ export const progressSnippets: IComponentSnippet[] = [
     },
   },
   {
-    id: 'skeleton-card',
+    id: 'skeleton-card-loading',
     name: 'Card Skeleton',
     category: 'atom',
     type: 'skeleton',

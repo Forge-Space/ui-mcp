@@ -34,7 +34,11 @@
     "lint:check": "eslint .",
     "pre-commit": "npm run lint && npm run format && npm run test",
     "prepack": "npm run build",
-    "publish": "npm publish --access public"
+    "publish": "npm publish --access public",
+    "validate:snippets": "npx tsx src/scripts/validate-all-snippets.ts",
+    "validate:tokens": "npx tsx src/scripts/check-semantic-tokens.ts",
+    "registry:stats": "npx tsx src/scripts/count-registry.ts",
+    "export:training": "npx tsx src/scripts/export-training-data.ts"
   },
   "dependencies": {
     "@huggingface/transformers": "^3.8.1",

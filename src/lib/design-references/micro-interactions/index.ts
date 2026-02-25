@@ -1,5 +1,21 @@
 import type { IMicroInteraction, AnimationCategory } from '../component-registry/types.js';
 
+import { entranceFadeAnimations } from './entrance-fade.js';
+import { entranceSlideAnimations } from './entrance-slide.js';
+import { scrollRevealAnimations } from './scroll-reveal.js';
+import { hoverEffectAnimations } from './hover-effects.js';
+import { textAnimationEffects } from './text-animations.js';
+import { loadingStateAnimations } from './loading-states.js';
+import { pageTransitionAnimations } from './page-transitions.js';
+import { feedbackAnimationEffects } from './feedback-animations.js';
+import { backgroundEffectAnimations } from './background-effects.js';
+import { buttonAnimationEffects } from './button-animations.js';
+import { cardAnimationEffects } from './card-animations.js';
+import { listAnimationEffects } from './list-animations.js';
+import { modalAnimationEffects } from './modal-animations.js';
+import { navigationAnimationEffects } from './navigation-animations.js';
+import { chartAnimationEffects } from './chart-animations.js';
+
 // --- Micro-Interaction Registry ---
 
 const interactions: IMicroInteraction[] = [];
@@ -328,6 +344,22 @@ export function initializeInteractions(): void {
     ...feedbackAnimations,
     ...textAnimations,
     ...transitionAnimations,
+    // New animation arrays
+    ...entranceFadeAnimations,
+    ...entranceSlideAnimations,
+    ...scrollRevealAnimations,
+    ...hoverEffectAnimations,
+    ...textAnimationEffects,
+    ...loadingStateAnimations,
+    ...pageTransitionAnimations,
+    ...feedbackAnimationEffects,
+    ...backgroundEffectAnimations,
+    ...buttonAnimationEffects,
+    ...cardAnimationEffects,
+    ...listAnimationEffects,
+    ...modalAnimationEffects,
+    ...navigationAnimationEffects,
+    ...chartAnimationEffects,
   ]);
   initialized = true;
 }

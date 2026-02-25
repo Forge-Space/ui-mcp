@@ -7,7 +7,7 @@ export const statSnippets: IComponentSnippet[] = [
     category: 'molecule',
     type: 'stat',
     variant: 'card',
-    tags: ['stat', 'metric', 'kpi', 'dashboard'],
+    tags: ['stat', 'metric', 'kpi', 'saas'],
     mood: ['professional', 'minimal'],
     industry: ['saas', 'fintech', 'devtools'],
     visualStyles: ['linear-modern', 'dark-premium', 'corporate-trust'],
@@ -18,7 +18,7 @@ export const statSnippets: IComponentSnippet[] = [
   </div>
   <div className="mt-3 flex items-baseline gap-2">
     <p className="text-3xl font-bold tracking-tight text-foreground">$45,231.89</p>
-    <span className="inline-flex items-center gap-0.5 text-sm font-medium text-emerald-600 dark:text-emerald-400">
+    <span className="inline-flex items-center gap-0.5 text-sm font-medium text-success dark:text-emerald-400">
       <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" /></svg>
       +20.1%
     </span>
@@ -31,7 +31,7 @@ export const statSnippets: IComponentSnippet[] = [
       label: 'text-sm font-medium text-muted-foreground',
       icon: 'h-4 w-4 text-muted-foreground',
       value: 'text-3xl font-bold tracking-tight text-foreground',
-      trend: 'inline-flex items-center gap-0.5 text-sm font-medium text-emerald-600 dark:text-emerald-400',
+      trend: 'inline-flex items-center gap-0.5 text-sm font-medium text-success dark:text-emerald-400',
       description: 'mt-1 text-xs text-muted-foreground',
     },
     a11y: {
@@ -74,7 +74,7 @@ export const statSnippets: IComponentSnippet[] = [
     <div className="space-y-1">
       <p className="text-sm font-medium text-muted-foreground">Active Users</p>
       <p className="text-3xl font-bold tracking-tight text-foreground">2,845</p>
-      <p className="inline-flex items-center gap-0.5 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+      <p className="inline-flex items-center gap-0.5 text-xs font-medium text-success dark:text-emerald-400">
         <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" /></svg>
         +12.5% vs last week
       </p>
@@ -99,7 +99,7 @@ export const statSnippets: IComponentSnippet[] = [
       content: 'space-y-1',
       label: 'text-sm font-medium text-muted-foreground',
       value: 'text-3xl font-bold tracking-tight text-foreground',
-      trend: 'inline-flex items-center gap-0.5 text-xs font-medium text-emerald-600 dark:text-emerald-400',
+      trend: 'inline-flex items-center gap-0.5 text-xs font-medium text-success dark:text-emerald-400',
       chart: 'h-16 w-24',
     },
     a11y: {
@@ -149,7 +149,7 @@ export const statSnippets: IComponentSnippet[] = [
       </div>
     </div>
     <div className="flex flex-col items-end gap-0.5">
-      <div className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-1 text-sm font-semibold text-emerald-700 dark:text-emerald-400">
+      <div className="inline-flex items-center gap-1 rounded-full bg-success/10 px-2.5 py-1 text-sm font-semibold text-emerald-700 dark:text-emerald-400">
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" /></svg>
         18.2%
       </div>
@@ -166,7 +166,7 @@ export const statSnippets: IComponentSnippet[] = [
       label: 'text-sm font-medium text-muted-foreground',
       value: 'text-2xl font-bold tracking-tight text-foreground',
       trendBadge:
-        'inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-1 text-sm font-semibold text-emerald-700 dark:text-emerald-400',
+        'inline-flex items-center gap-1 rounded-full bg-success/10 px-2.5 py-1 text-sm font-semibold text-emerald-700 dark:text-emerald-400',
       trendIcon: 'h-4 w-4',
       trendLabel: 'text-xs text-muted-foreground',
     },
@@ -183,7 +183,7 @@ export const statSnippets: IComponentSnippet[] = [
     quality: {
       antiGeneric: [
         'rounded-full trend badge',
-        'bg-emerald-500/10 with ring for depth',
+        'bg-success/10 with ring for depth',
         'icon wrapper with primary/10 background',
         'trending-up icon in badge',
       ],
@@ -209,8 +209,8 @@ export const statSnippets: IComponentSnippet[] = [
       <div className="mt-2 flex items-baseline gap-2">
         <p className="text-3xl font-bold tracking-tight text-foreground">3.2s</p>
       </div>
-      <div className="mt-3 h-2 w-full rounded-full bg-red-500/20">
-        <div className="h-2 rounded-full bg-red-600 dark:bg-red-500" style={{ width: '80%' }}></div>
+      <div className="mt-3 h-2 w-full rounded-full bg-destructive/20">
+        <div className="h-2 rounded-full bg-red-600 dark:bg-destructive" style={{ width: '80%' }}></div>
       </div>
     </div>
     <svg className="h-6 w-6 shrink-0 text-muted-foreground" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg>
@@ -218,13 +218,13 @@ export const statSnippets: IComponentSnippet[] = [
       <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">After</p>
       <div className="mt-2 flex items-baseline gap-2">
         <p className="text-3xl font-bold tracking-tight text-foreground">1.1s</p>
-        <span className="inline-flex items-center gap-0.5 text-sm font-medium text-emerald-600 dark:text-emerald-400">
+        <span className="inline-flex items-center gap-0.5 text-sm font-medium text-success dark:text-emerald-400">
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m4.5 4.5 15 15m0 0V8.25m0 11.25H8.25" /></svg>
           -66%
         </span>
       </div>
-      <div className="mt-3 h-2 w-full rounded-full bg-emerald-500/20">
-        <div className="h-2 rounded-full bg-emerald-600 dark:bg-emerald-500" style={{ width: '28%' }}></div>
+      <div className="mt-3 h-2 w-full rounded-full bg-success/20">
+        <div className="h-2 rounded-full bg-success dark:bg-success" style={{ width: '28%' }}></div>
       </div>
     </div>
   </div>
@@ -237,10 +237,10 @@ export const statSnippets: IComponentSnippet[] = [
       side: 'flex-1',
       sideLabel: 'text-xs font-medium text-muted-foreground uppercase tracking-wide',
       value: 'text-3xl font-bold tracking-tight text-foreground',
-      change: 'inline-flex items-center gap-0.5 text-sm font-medium text-emerald-600 dark:text-emerald-400',
+      change: 'inline-flex items-center gap-0.5 text-sm font-medium text-success dark:text-emerald-400',
       progressBar: 'mt-3 h-2 w-full rounded-full',
-      progressBarBefore: 'bg-red-500/20',
-      progressBarAfter: 'bg-emerald-500/20',
+      progressBarBefore: 'bg-destructive/20',
+      progressBarAfter: 'bg-success/20',
       progressFill: 'h-2 rounded-full',
       arrow: 'h-6 w-6 shrink-0 text-muted-foreground',
       description: 'mt-4 text-xs text-muted-foreground',
@@ -266,7 +266,7 @@ export const statSnippets: IComponentSnippet[] = [
       craftDetails: [
         'gap-8 for visual separation',
         'inline style for dynamic progress width',
-        'bg-red-500/20 and bg-emerald-500/20 for bar backgrounds',
+        'bg-destructive/20 and bg-success/20 for bar backgrounds',
       ],
     },
   },

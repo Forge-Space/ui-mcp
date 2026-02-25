@@ -22,7 +22,7 @@ export const authSnippets: IComponentSnippet[] = [
       <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
         <div className="space-y-2">
           <label htmlFor="email" className="text-sm font-medium text-foreground">Email address</label>
-          <input id="email" name="email" type="email" autoComplete="email" required aria-required="true" className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" placeholder="you@example.com" />
+          <input id="email" name="email" type="email" autoComplete="email" required aria-required="true" className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" placeholder="you@acme.co" />
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
@@ -126,7 +126,7 @@ export const authSnippets: IComponentSnippet[] = [
         </div>
         <div className="space-y-2">
           <label htmlFor="email" className="text-sm font-medium text-foreground">Email address</label>
-          <input id="email" name="email" type="email" autoComplete="email" required aria-required="true" className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" placeholder="you@example.com" />
+          <input id="email" name="email" type="email" autoComplete="email" required aria-required="true" className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" placeholder="you@acme.co" />
         </div>
         <div className="space-y-2">
           <label htmlFor="password" className="text-sm font-medium text-foreground">Password</label>
@@ -199,7 +199,7 @@ export const authSnippets: IComponentSnippet[] = [
       <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
         <div className="space-y-2">
           <label htmlFor="email" className="text-sm font-medium text-foreground">Email address</label>
-          <input id="email" name="email" type="email" autoComplete="email" required aria-required="true" className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" placeholder="you@example.com" />
+          <input id="email" name="email" type="email" autoComplete="email" required aria-required="true" className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" placeholder="you@acme.co" />
         </div>
       </div>
       <button type="submit" className="w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">Send reset link</button>
@@ -261,7 +261,7 @@ export const authSnippets: IComponentSnippet[] = [
         <svg className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
       </div>
       <h2 className="mt-6 text-3xl font-bold tracking-tight text-foreground">Check your email</h2>
-      <p className="mt-2 text-sm text-muted-foreground">We sent a verification code to <span className="font-medium text-foreground">you@example.com</span></p>
+      <p className="mt-2 text-sm text-muted-foreground">We sent a verification code to <span className="font-medium text-foreground">you@acme.co</span></p>
     </div>
     <form className="mt-8 space-y-6" action="#" method="POST">
       <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
@@ -315,8 +315,8 @@ export const authSnippets: IComponentSnippet[] = [
     name: 'Social Auth Buttons',
     category: 'organism',
     type: 'auth',
-    variant: 'social',
-    tags: ['auth', 'social', 'oauth', 'sso'],
+    variant: 'media',
+    tags: ['auth', 'media', 'oauth', 'sso'],
     mood: ['minimal', 'professional'],
     industry: ['saas', 'startup'],
     visualStyles: ['minimal-editorial', 'soft-depth'],

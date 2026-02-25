@@ -1,0 +1,136 @@
+import type { IComponentSnippet } from '../types.js';
+
+export const separatorSnippets: IComponentSnippet[] = [
+  {
+    id: 'separator-horizontal',
+    name: 'Horizontal Separator',
+    category: 'atom',
+    type: 'separator',
+    variant: 'horizontal',
+    tags: ['separator', 'divider', 'horizontal', 'hr'],
+    mood: ['minimal', 'minimal'],
+    industry: ['general', 'saas', 'media'],
+    visualStyles: ['minimal-editorial', 'linear-modern'],
+    jsx: `<div role="separator" aria-orientation="horizontal" className="h-px w-full bg-border"></div>`,
+    tailwindClasses: {
+      separator: 'h-px w-full bg-border',
+    },
+    a11y: {
+      roles: ['separator'],
+      ariaAttributes: ['aria-orientation=horizontal'],
+      keyboardNav: 'N/A — decorative element',
+      contrastRatio: '3:1',
+      focusVisible: false,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'div[role=separator]' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: ['h-px creates 1px line for subtle separation', 'w-full spans container width'],
+      inspirationSource: 'Radix Separator',
+      craftDetails: ['role=separator provides semantic meaning', 'bg-border uses semantic border color'],
+    },
+  },
+  {
+    id: 'separator-vertical',
+    name: 'Vertical Separator',
+    category: 'atom',
+    type: 'separator',
+    variant: 'soft-depth',
+    tags: ['separator', 'divider', 'soft-depth', 'inline'],
+    mood: ['minimal', 'minimal'],
+    industry: ['general', 'saas', 'saas'],
+    visualStyles: ['minimal-editorial', 'linear-modern'],
+    jsx: `<div role="separator" aria-orientation="vertical" className="h-6 w-px bg-border"></div>`,
+    tailwindClasses: {
+      separator: 'h-6 w-px bg-border',
+    },
+    a11y: {
+      roles: ['separator'],
+      ariaAttributes: ['aria-orientation=vertical'],
+      keyboardNav: 'N/A — decorative element',
+      contrastRatio: '3:1',
+      focusVisible: false,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'div[role=separator]' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: ['w-px creates 1px vertical line', 'h-6 matches typical inline content height'],
+      inspirationSource: 'Radix Separator vertical variant',
+      craftDetails: ['aria-orientation=vertical for screen readers', 'bg-border for consistent border color'],
+    },
+  },
+  {
+    id: 'separator-label',
+    name: 'Labeled Separator',
+    category: 'atom',
+    type: 'separator',
+    variant: 'label',
+    tags: ['separator', 'divider', 'labeled', 'text'],
+    mood: ['professional', 'professional'],
+    industry: ['general', 'saas', 'ecommerce'],
+    visualStyles: ['linear-modern', 'soft-depth'],
+    jsx: `<div role="separator" className="flex items-center gap-4" aria-label="Section divider">
+  <div className="h-px flex-1 bg-border"></div>
+  <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">or</span>
+  <div className="h-px flex-1 bg-border"></div>
+</div>`,
+    tailwindClasses: {
+      container: 'flex items-center gap-4',
+      line: 'h-px flex-1 bg-border',
+      label: 'text-xs font-medium uppercase tracking-wider text-muted-foreground',
+    },
+    a11y: {
+      roles: ['separator'],
+      ariaAttributes: ['aria-label=Section divider'],
+      keyboardNav: 'N/A — decorative element',
+      contrastRatio: '4.5:1',
+      focusVisible: false,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'div[role=separator]' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'flex-1 on lines creates balanced spacing around label',
+        'uppercase tracking-wider for emphasis on label',
+      ],
+      inspirationSource: 'DaisyUI Divider',
+      craftDetails: ['gap-4 provides breathing room around label', 'text-xs keeps label subtle'],
+    },
+  },
+  {
+    id: 'separator-gradient',
+    name: 'Gradient Separator',
+    category: 'atom',
+    type: 'separator',
+    variant: 'gradient',
+    tags: ['separator', 'divider', 'gradient', 'decorative'],
+    mood: ['minimal', 'premium'],
+    industry: ['agency', 'media', 'ecommerce'],
+    visualStyles: ['gradient-mesh', 'retro-playful'],
+    jsx: `<div role="separator" aria-orientation="horizontal" className="h-px w-full bg-gradient-to-r from-transparent via-border to-transparent"></div>`,
+    tailwindClasses: {
+      separator: 'h-px w-full bg-gradient-to-r from-transparent via-border to-transparent',
+    },
+    a11y: {
+      roles: ['separator'],
+      ariaAttributes: ['aria-orientation=horizontal'],
+      keyboardNav: 'N/A — decorative element',
+      contrastRatio: '3:1',
+      focusVisible: false,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'div[role=separator]' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'bg-gradient-to-r from-transparent creates fade-in/fade-out effect',
+        'via-border centers gradient on semantic border color',
+      ],
+      inspirationSource: 'Modern gradient divider patterns',
+      craftDetails: ['to-transparent on both ends fades line into background', 'h-px maintains subtle 1px height'],
+    },
+  },
+];

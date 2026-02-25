@@ -1,0 +1,105 @@
+import type { IMicroInteraction } from '../component-registry/types.js';
+
+export const textAnimationEffects: IMicroInteraction[] = [
+  {
+    id: 'text-typewriter',
+    name: 'Text Typewriter',
+    category: 'text',
+    purpose: ['delight', 'attention'],
+    tailwindClasses: 'overflow-hidden border-r-2 border-text-default whitespace-nowrap',
+    css: '.text-typewriter { animation: typewriter 3s steps(40) 1s both, blink 0.75s step-end infinite; width: 0; } @keyframes typewriter { to { width: 100%; } } @keyframes blink { 50% { border-color: transparent; } }',
+    keyframes: '@keyframes typewriter { to { width: 100%; } } @keyframes blink { 50% { border-color: transparent; } }',
+    reducedMotionFallback: 'motion-reduce:animate-none motion-reduce:w-full motion-reduce:border-r-0',
+    duration: '3000ms',
+    description: 'Typing effect with blinking cursor — use on hero headlines for storytelling',
+  },
+  {
+    id: 'text-gradient-flow',
+    name: 'Text Gradient Flow',
+    category: 'text',
+    purpose: ['attention', 'delight'],
+    tailwindClasses:
+      'bg-gradient-to-r from-brand-solid-default via-brand-solid-hover to-brand-solid-default bg-clip-text text-transparent bg-[length:200%_100%]',
+    css: '.text-gradient-flow { animation: gradientFlow 4s linear infinite; } @keyframes gradientFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }',
+    keyframes:
+      '@keyframes gradientFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }',
+    reducedMotionFallback: 'motion-reduce:animate-none',
+    duration: '4000ms',
+    description: 'Flowing gradient animation through text — premium heading effect',
+  },
+  {
+    id: 'text-split-reveal',
+    name: 'Text Split Reveal',
+    category: 'text',
+    purpose: ['orientation', 'delight'],
+    tailwindClasses:
+      '[&>span]:inline-block [&>span]:animate-in [&>span]:fade-in-0 [&>span]:slide-in-from-bottom-2 [&>span]:duration-500',
+    css: '.text-split-reveal > span:nth-child(1) { animation-delay: 0ms; } .text-split-reveal > span:nth-child(2) { animation-delay: 50ms; } .text-split-reveal > span:nth-child(3) { animation-delay: 100ms; } .text-split-reveal > span:nth-child(4) { animation-delay: 150ms; } .text-split-reveal > span:nth-child(5) { animation-delay: 200ms; }',
+    reducedMotionFallback: 'motion-reduce:[&>span]:animate-none',
+    duration: '500ms',
+    description: 'Each character/word fades in sequentially — wrap text in <span> elements',
+  },
+  {
+    id: 'text-counter',
+    name: 'Text Counter',
+    category: 'text',
+    purpose: ['attention', 'delight'],
+    tailwindClasses: 'tabular-nums',
+    css: '.text-counter { animation: countUp 2s ease-out forwards; } @keyframes countUp { from { --counter: 0; } to { --counter: var(--target); } } .text-counter::after { content: counter(number); counter-reset: number var(--counter); }',
+    keyframes: '@keyframes countUp { from { --counter: 0; } to { --counter: var(--target); } }',
+    reducedMotionFallback: 'motion-reduce:animate-none',
+    duration: '2000ms',
+    description: 'Animated number counter — requires JS to set --target CSS variable',
+  },
+  {
+    id: 'text-blur-reveal',
+    name: 'Text Blur Reveal',
+    category: 'text',
+    purpose: ['attention', 'delight'],
+    tailwindClasses: '',
+    css: '.text-blur-reveal { animation: blurReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; } @keyframes blurReveal { from { opacity: 0; filter: blur(20px); } to { opacity: 1; filter: blur(0); } }',
+    keyframes: '@keyframes blurReveal { from { opacity: 0; filter: blur(20px); } to { opacity: 1; filter: blur(0); } }',
+    reducedMotionFallback: 'motion-reduce:animate-none motion-reduce:opacity-100',
+    duration: '1000ms',
+    description: 'Text sharpens from blur — premium hero headline entrance',
+  },
+  {
+    id: 'text-scramble',
+    name: 'Text Scramble',
+    category: 'text',
+    purpose: ['delight'],
+    tailwindClasses: '',
+    css: '.text-scramble { animation: scramble 0.6s ease-in-out; } @keyframes scramble { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }',
+    keyframes: '@keyframes scramble { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }',
+    reducedMotionFallback: 'motion-reduce:animate-none',
+    duration: '600ms',
+    description: 'Random character scramble effect — requires JS to swap characters during animation',
+  },
+  {
+    id: 'text-highlight',
+    name: 'Text Highlight',
+    category: 'text',
+    purpose: ['attention'],
+    tailwindClasses:
+      'relative inline-block after:absolute after:inset-0 after:bg-brand-solid-default/20 after:scale-x-0 after:origin-left after:transition-transform after:duration-500 hover:after:scale-x-100',
+    reducedMotionFallback: 'motion-reduce:after:transition-none',
+    duration: '500ms',
+    description: 'Highlight sweeps under text on hover — subtle emphasis for links and CTAs',
+  },
+  {
+    id: 'text-wave',
+    name: 'Text Wave',
+    category: 'text',
+    purpose: ['delight'],
+    tailwindClasses: '[&>span]:inline-block [&>span]:transition-transform [&>span]:duration-300',
+    css: '.text-wave:hover > span:nth-child(1) { animation: wave 0.5s ease-in-out 0s; } .text-wave:hover > span:nth-child(2) { animation: wave 0.5s ease-in-out 0.05s; } .text-wave:hover > span:nth-child(3) { animation: wave 0.5s ease-in-out 0.1s; } @keyframes wave { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }',
+    keyframes: '@keyframes wave { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }',
+    reducedMotionFallback: 'motion-reduce:[&>span]:animate-none',
+    duration: '500ms',
+    description: 'Characters wave up on hover — playful effect for headers and logos',
+  },
+];
+
+export function registerTextAnimationEffects(): void {
+  // Registration handled by index.ts
+}

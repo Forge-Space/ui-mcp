@@ -44,7 +44,7 @@ export const dividerSnippets: IComponentSnippet[] = [
     name: 'Vertical Divider',
     category: 'atom',
     type: 'divider',
-    variant: 'vertical',
+    variant: 'soft-depth',
     tags: ['separator', 'line', 'toolbar', 'spacer'],
     mood: ['minimal', 'professional'],
     industry: ['general', 'saas', 'devtools'],

@@ -7,7 +7,7 @@ export const avatarSnippets: IComponentSnippet[] = [
     category: 'atom',
     type: 'avatar',
     variant: 'single',
-    tags: ['user', 'profile', 'image', 'identity'],
+    tags: ['user', 'saas', 'image', 'identity'],
     mood: ['professional', 'minimal'],
     industry: ['general', 'saas', 'devtools'],
     visualStyles: ['soft-depth', 'linear-modern', 'minimal-editorial'],

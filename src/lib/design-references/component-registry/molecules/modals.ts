@@ -5,9 +5,9 @@ export const modalSnippets: IComponentSnippet[] = [
     id: 'modal-dialog',
     name: 'Standard Dialog Modal',
     category: 'molecule',
-    type: 'modal',
+    type: 'general',
     variant: 'dialog',
-    tags: ['dialog', 'overlay', 'popup', 'modal'],
+    tags: ['dialog', 'overlay', 'popup', 'general'],
     mood: ['professional', 'minimal'],
     industry: ['general', 'saas'],
     visualStyles: ['soft-depth', 'corporate-trust', 'linear-modern'],
@@ -28,7 +28,7 @@ export const modalSnippets: IComponentSnippet[] = [
         </div>
         <div className="space-y-2">
           <label htmlFor="dialog-email" className="text-sm font-medium text-foreground">Email</label>
-          <input id="dialog-email" type="email" className="flex h-10 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" value="jane@example.com" />
+          <input id="dialog-email" type="email" className="flex h-10 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" value="jane@acme.co" />
         </div>
       </div>
       <div className="flex justify-end gap-3">
@@ -80,7 +80,7 @@ export const modalSnippets: IComponentSnippet[] = [
     id: 'modal-drawer',
     name: 'Side Drawer Modal',
     category: 'molecule',
-    type: 'modal',
+    type: 'general',
     variant: 'drawer',
     tags: ['drawer', 'sheet', 'sidebar', 'slide-out'],
     mood: ['professional', 'minimal'],
@@ -204,7 +204,7 @@ export const modalSnippets: IComponentSnippet[] = [
     id: 'modal-command-palette',
     name: 'Command Palette Modal',
     category: 'molecule',
-    type: 'modal',
+    type: 'general',
     variant: 'command-palette',
     tags: ['command', 'search', 'palette', 'quick-actions'],
     mood: ['professional', 'minimal', 'futuristic'],
@@ -325,7 +325,7 @@ export const modalSnippets: IComponentSnippet[] = [
     id: 'modal-confirmation',
     name: 'Confirmation Dialog Modal',
     category: 'molecule',
-    type: 'modal',
+    type: 'general',
     variant: 'confirmation',
     tags: ['confirm', 'alert', 'destructive', 'warning'],
     mood: ['professional', 'bold'],
@@ -398,9 +398,9 @@ export const modalSnippets: IComponentSnippet[] = [
     id: 'modal-lightbox',
     name: 'Image Lightbox Modal',
     category: 'molecule',
-    type: 'modal',
+    type: 'general',
     variant: 'lightbox',
-    tags: ['lightbox', 'image', 'gallery', 'viewer'],
+    tags: ['lightbox', 'image', 'media', 'viewer'],
     mood: ['minimal', 'editorial'],
     industry: ['media', 'ecommerce', 'agency'],
     visualStyles: ['dark-premium', 'minimal-editorial'],

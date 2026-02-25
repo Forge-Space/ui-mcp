@@ -7,7 +7,7 @@ export const emptyStateSnippets: IComponentSnippet[] = [
     category: 'molecule',
     type: 'empty-state',
     variant: 'no-data',
-    tags: ['empty', 'placeholder', 'illustration', 'onboarding'],
+    tags: ['empty', 'placeholder', 'illustration', 'startup'],
     mood: ['professional', 'warm'],
     industry: ['saas', 'general', 'devtools'],
     visualStyles: ['linear-modern', 'minimal-editorial', 'soft-depth'],

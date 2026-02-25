@@ -151,7 +151,7 @@ export const chatSnippets: IComponentSnippet[] = [
     category: 'organism',
     type: 'chat',
     variant: 'sidebar',
-    tags: ['chat', 'sidebar', 'conversations', 'list'],
+    tags: ['chat', 'sidebar', 'conversations', 'minimal-editorial'],
     mood: ['professional', 'minimal'] as const,
     industry: ['saas', 'general'] as const,
     visualStyles: ['soft-depth'] as const,

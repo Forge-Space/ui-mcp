@@ -7,7 +7,7 @@ export const cardSnippets: IComponentSnippet[] = [
     category: 'molecule',
     type: 'card',
     variant: 'basic',
-    tags: ['container', 'content', 'surface'],
+    tags: ['container', 'media', 'surface'],
     mood: ['professional', 'minimal'],
     industry: ['general', 'saas'],
     visualStyles: ['soft-depth', 'corporate-trust', 'linear-modern'],
@@ -56,7 +56,7 @@ export const cardSnippets: IComponentSnippet[] = [
     category: 'molecule',
     type: 'card',
     variant: 'stats',
-    tags: ['dashboard', 'metric', 'number', 'kpi'],
+    tags: ['saas', 'metric', 'number', 'kpi'],
     mood: ['professional', 'minimal'],
     industry: ['saas', 'fintech', 'devtools'],
     visualStyles: ['linear-modern', 'dark-premium', 'corporate-trust'],
@@ -150,7 +150,7 @@ export const cardSnippets: IComponentSnippet[] = [
       cta: 'mt-8 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98] transition-all',
     },
     a11y: {
-      roles: ['list', 'listitem'],
+      roles: ['minimal-editorial', 'listitem'],
       ariaAttributes: ['role="list"', 'aria-hidden on check icons'],
       keyboardNav: 'Tab to CTA button',
       contrastRatio: '4.5:1',
@@ -227,7 +227,7 @@ export const cardSnippets: IComponentSnippet[] = [
     category: 'molecule',
     type: 'card',
     variant: 'feature',
-    tags: ['feature', 'benefit', 'marketing', 'showcase'],
+    tags: ['feature', 'benefit', 'agency', 'agency'],
     mood: ['professional', 'bold'],
     industry: ['saas', 'startup', 'agency'],
     visualStyles: ['soft-depth', 'gradient-mesh', 'dark-premium'],
@@ -264,6 +264,268 @@ export const cardSnippets: IComponentSnippet[] = [
       ],
       inspirationSource: 'Linear feature showcase',
       craftDetails: ['group utility for parent-child hover', 'icon wrapper bg change adds interaction depth'],
+    },
+  },
+  {
+    id: 'card-bento',
+    name: 'Bento Grid Card',
+    category: 'molecule',
+    type: 'card',
+    variant: 'bento',
+    tags: ['bento', 'grid', 'feature', 'agency'],
+    mood: ['bold', 'creative', 'premium'],
+    industry: ['agency', 'startup', 'saas'],
+    visualStyles: ['bento-grid', 'soft-depth', 'gradient-mesh'],
+    jsx: `<article className="group relative col-span-2 row-span-2 overflow-hidden rounded-2xl border bg-gradient-to-br from-primary/10 via-card to-card p-8 shadow-sm transition-all hover:shadow-xl">
+  <div className="relative z-10">
+    <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
+    </div>
+    <h3 className="mt-4 text-2xl font-bold text-foreground">Lightning Fast</h3>
+    <p className="mt-2 text-sm text-muted-foreground leading-relaxed">Experience blazing speeds with our optimized infrastructure.</p>
+  </div>
+  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" />
+</article>`,
+    tailwindClasses: {
+      card: 'group relative col-span-2 row-span-2 overflow-hidden rounded-2xl border bg-gradient-to-br from-primary/10 via-card to-card p-8 shadow-sm transition-all hover:shadow-xl',
+      icon: 'inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary',
+      title: 'mt-4 text-2xl font-bold text-foreground',
+      description: 'mt-2 text-sm text-muted-foreground leading-relaxed',
+      overlay:
+        'absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 transition-opacity group-hover:opacity-100',
+    },
+    a11y: {
+      roles: ['article'],
+      ariaAttributes: ['aria-hidden on decorative elements'],
+      keyboardNav: 'N/A — informational',
+      contrastRatio: '4.5:1',
+      focusVisible: false,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'article' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'col-span-2 row-span-2 for grid layout',
+        'gradient from-primary/10 via-card for depth',
+        'hover overlay with opacity transition',
+      ],
+      inspirationSource: 'Apple bento grids / Linear feature cards',
+      craftDetails: [
+        'larger icon (h-12 w-12) for bento prominence',
+        'rounded-2xl for modern premium feel',
+        'gradient overlay on hover',
+      ],
+    },
+  },
+  {
+    id: 'card-glass',
+    name: 'Glassmorphism Card',
+    category: 'molecule',
+    type: 'card',
+    variant: 'glass',
+    tags: ['glass', 'frosted', 'premium', 'overlay'],
+    mood: ['premium', 'futuristic', 'creative'],
+    industry: ['agency', 'startup', 'saas'],
+    visualStyles: ['glassmorphism', 'dark-premium'],
+    jsx: `<article className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md shadow-lg">
+  <h3 className="text-lg font-semibold text-white">Glassmorphism Card</h3>
+  <p className="mt-2 text-sm text-white/70 leading-relaxed">Semi-transparent design with backdrop blur for modern, layered UIs.</p>
+  <div className="mt-4 flex gap-2">
+    <button type="button" className="rounded-lg bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm transition-all hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 active:scale-[0.98]">Action</button>
+  </div>
+</article>`,
+    tailwindClasses: {
+      card: 'rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md shadow-lg',
+      title: 'text-lg font-semibold text-white',
+      description: 'mt-2 text-sm text-white/70 leading-relaxed',
+      button:
+        'rounded-lg bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm transition-all hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 active:scale-[0.98]',
+    },
+    a11y: {
+      roles: ['article'],
+      ariaAttributes: [],
+      keyboardNav: 'Tab through interactive elements',
+      contrastRatio: '4.5:1',
+      focusVisible: true,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'article' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'backdrop-blur-md for frosted glass effect',
+        'border-white/10 for subtle edge',
+        'bg-white/5 for transparency',
+      ],
+      inspirationSource: 'Apple visionOS / iOS 15+ cards',
+      craftDetails: [
+        'semi-transparent backgrounds require dark/gradient parent',
+        'backdrop-blur creates real glass effect',
+        'white/opacity for dark backgrounds',
+      ],
+    },
+  },
+  {
+    id: 'card-interactive-3d',
+    name: '3D Tilt Card',
+    category: 'molecule',
+    type: 'card',
+    variant: 'interactive-3d',
+    tags: ['3d', 'tilt', 'energetic', 'premium'],
+    mood: ['premium', 'creative', 'futuristic'],
+    industry: ['agency', 'startup', 'media'],
+    visualStyles: ['dark-premium', 'gradient-mesh'],
+    jsx: `<article className="group relative rounded-2xl border bg-card p-6 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl" style={{ transformStyle: 'preserve-3d' }}>
+  <div className="relative z-10">
+    <h3 className="text-lg font-semibold text-foreground">Interactive Card</h3>
+    <p className="mt-2 text-sm text-muted-foreground leading-relaxed">Hover to see the 3D tilt effect in action.</p>
+  </div>
+  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" />
+</article>`,
+    tailwindClasses: {
+      card: 'group relative rounded-2xl border bg-card p-6 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl',
+      content: 'relative z-10',
+      title: 'text-lg font-semibold text-foreground',
+      description: 'mt-2 text-sm text-muted-foreground leading-relaxed',
+      gradientOverlay:
+        'absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 opacity-0 transition-opacity group-hover:opacity-100',
+    },
+    a11y: {
+      roles: ['article'],
+      ariaAttributes: ['aria-hidden on decorative overlay'],
+      keyboardNav: 'N/A — visual effect only',
+      contrastRatio: '4.5:1',
+      focusVisible: false,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'article' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'hover:-translate-y-1 for lift effect',
+        'duration-300 for smooth animation',
+        'shadow-lg → shadow-2xl transition',
+      ],
+      inspirationSource: 'Dribbble card hover effects',
+      craftDetails: [
+        'transformStyle: preserve-3d for 3D context',
+        'gradient overlay fades in on hover',
+        'layered z-10 content',
+      ],
+    },
+  },
+  {
+    id: 'card-hover-lift',
+    name: 'Hover Lift Card',
+    category: 'molecule',
+    type: 'card',
+    variant: 'hover-lift',
+    tags: ['hover', 'lift', 'energetic', 'depth'],
+    mood: ['professional', 'minimal', 'premium'],
+    industry: ['saas', 'fintech', 'general'],
+    visualStyles: ['soft-depth', 'linear-modern', 'corporate-trust'],
+    jsx: `<article className="group rounded-xl border bg-card p-6 shadow-sm transition-all duration-200 hover:-translate-y-2 hover:shadow-xl">
+  <div className="flex items-start justify-between">
+    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /></svg>
+    </div>
+    <span className="rounded-full bg-success/10 px-2 py-0.5 text-xs font-medium text-success">+12%</span>
+  </div>
+  <h3 className="mt-4 text-lg font-semibold text-foreground">Active Users</h3>
+  <p className="text-2xl font-bold text-foreground mt-1">2,543</p>
+  <p className="mt-2 text-xs text-muted-foreground">Updated 2 minutes ago</p>
+</article>`,
+    tailwindClasses: {
+      card: 'group rounded-xl border bg-card p-6 shadow-sm transition-all duration-200 hover:-translate-y-2 hover:shadow-xl',
+      header: 'flex items-start justify-between',
+      icon: 'flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground',
+      badge: 'rounded-full bg-success/10 px-2 py-0.5 text-xs font-medium text-success',
+      title: 'mt-4 text-lg font-semibold text-foreground',
+      value: 'text-2xl font-bold text-foreground mt-1',
+      timestamp: 'mt-2 text-xs text-muted-foreground',
+    },
+    a11y: {
+      roles: ['article'],
+      ariaAttributes: ['aria-hidden on icon'],
+      keyboardNav: 'N/A — informational',
+      contrastRatio: '4.5:1',
+      focusVisible: false,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'article' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'hover:-translate-y-2 for pronounced lift',
+        'icon bg changes on hover',
+        'duration-200 for snappy interaction',
+      ],
+      inspirationSource: 'Tremor dashboard cards',
+      craftDetails: [
+        'shadow-sm → shadow-xl for dramatic depth change',
+        'group-hover on icon for coordinated animation',
+        'success badge for trend indicator',
+      ],
+    },
+  },
+  {
+    id: 'card-media-overlay',
+    name: 'Media Overlay Card',
+    category: 'molecule',
+    type: 'card',
+    variant: 'media-overlay',
+    tags: ['media', 'image', 'overlay', 'media'],
+    mood: ['bold', 'creative', 'editorial'],
+    industry: ['media', 'ecommerce', 'agency'],
+    visualStyles: ['gradient-mesh', 'dark-premium', 'minimal-editorial'],
+    jsx: `<article className="group relative overflow-hidden rounded-2xl bg-muted shadow-lg transition-all hover:shadow-2xl">
+  <div className="aspect-[16/9] bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
+    <svg className="h-16 w-16 text-muted-foreground/30" fill="none" viewBox="0 0 24 24" strokeWidth="0.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z" /></svg>
+  </div>
+  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" />
+  <div className="absolute bottom-0 left-0 right-0 p-6 text-white translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+    <h3 className="text-xl font-bold">Featured Article</h3>
+    <p className="mt-1 text-sm text-white/80">Discover the latest insights and trends in the industry.</p>
+    <button type="button" className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-white hover:gap-2 transition-all">
+      Read more
+      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
+    </button>
+  </div>
+</article>`,
+    tailwindClasses: {
+      card: 'group relative overflow-hidden rounded-2xl bg-muted shadow-lg transition-all hover:shadow-2xl',
+      media: 'aspect-[16/9] bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center',
+      overlay:
+        'absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100',
+      content:
+        'absolute bottom-0 left-0 right-0 p-6 text-white translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100',
+      title: 'text-xl font-bold',
+      description: 'mt-1 text-sm text-white/80',
+      link: 'mt-3 inline-flex items-center gap-1 text-sm font-medium text-white hover:gap-2 transition-all',
+    },
+    a11y: {
+      roles: ['article'],
+      ariaAttributes: ['aria-hidden on decorative elements'],
+      keyboardNav: 'Tab to link',
+      contrastRatio: '4.5:1',
+      focusVisible: true,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'article' },
+    responsive: { strategy: 'mobile-first', breakpoints: [] },
+    quality: {
+      antiGeneric: [
+        'translate-y-4 content slides up on hover',
+        'gradient overlay from-background for readability',
+        'aspect-[16/9] for consistent media ratio',
+      ],
+      inspirationSource: 'Medium article cards / Unsplash',
+      craftDetails: [
+        'duration-300 for smooth slide-up animation',
+        'hover:gap-2 on link for interactive arrow',
+        'layered gradients for depth',
+      ],
     },
   },
 ];

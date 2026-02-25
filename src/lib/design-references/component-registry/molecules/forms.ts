@@ -19,7 +19,7 @@ export const formSnippets: IComponentSnippet[] = [
   <div className="space-y-4">
     <div className="space-y-2">
       <label htmlFor="login-email" className="text-sm font-medium text-foreground">Email</label>
-      <input id="login-email" type="email" placeholder="name@example.com" autoComplete="email" className="flex h-10 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" aria-required="true" />
+      <input id="login-email" type="email" placeholder="name@acme.co" autoComplete="email" className="flex h-10 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" aria-required="true" />
     </div>
     <div className="space-y-2">
       <div className="flex items-center justify-between">
@@ -90,7 +90,7 @@ export const formSnippets: IComponentSnippet[] = [
     category: 'molecule',
     type: 'form',
     variant: 'contact',
-    tags: ['contact', 'feedback', 'support', 'communication'],
+    tags: ['contact', 'feedback', 'saas', 'communication'],
     mood: ['professional', 'warm'],
     industry: ['general', 'agency', 'saas'],
     visualStyles: ['soft-depth', 'corporate-trust', 'minimal-editorial'],

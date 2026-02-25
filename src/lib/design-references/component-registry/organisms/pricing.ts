@@ -112,7 +112,7 @@ export const pricingSnippets: IComponentSnippet[] = [
       featureItem: 'flex items-start gap-3',
     },
     a11y: {
-      roles: ['region', 'list'],
+      roles: ['region', 'minimal-editorial'],
       ariaAttributes: ['aria-labelledby'],
       keyboardNav: 'Tab through CTA buttons',
       contrastRatio: '7:1',
@@ -191,11 +191,11 @@ export const pricingSnippets: IComponentSnippet[] = [
               <span className="sr-only">Not included</span>
             </td>
             <td className="px-4 py-4 text-center">
-              <svg className="mx-auto h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
+              <svg className="mx-auto h-5 w-5 text-success" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
               <span className="sr-only">Included</span>
             </td>
             <td className="px-4 py-4 text-center">
-              <svg className="mx-auto h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
+              <svg className="mx-auto h-5 w-5 text-success" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
               <span className="sr-only">Included</span>
             </td>
           </tr>
@@ -210,7 +210,7 @@ export const pricingSnippets: IComponentSnippet[] = [
               <span className="sr-only">Not included</span>
             </td>
             <td className="px-4 py-4 text-center">
-              <svg className="mx-auto h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
+              <svg className="mx-auto h-5 w-5 text-success" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
               <span className="sr-only">Included</span>
             </td>
           </tr>
@@ -225,7 +225,7 @@ export const pricingSnippets: IComponentSnippet[] = [
               <span className="sr-only">Not included</span>
             </td>
             <td className="px-4 py-4 text-center">
-              <svg className="mx-auto h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
+              <svg className="mx-auto h-5 w-5 text-success" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
               <span className="sr-only">Included</span>
             </td>
           </tr>
@@ -265,7 +265,7 @@ export const pricingSnippets: IComponentSnippet[] = [
       craftDetails: [
         'divide-y on tbody for row separators',
         'mx-auto on icons for centering',
-        'text-green-600 for positive indicators',
+        'text-success for positive indicators',
       ],
     },
   },
@@ -290,7 +290,7 @@ export const pricingSnippets: IComponentSnippet[] = [
           <span className="pointer-events-none inline-block h-5 w-5 translate-x-0 rounded-full bg-background shadow ring-0 transition-transform group-aria-checked:translate-x-5" aria-hidden="true"></span>
         </button>
         <span className="text-sm font-medium text-foreground">Annual</span>
-        <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-green-500/10 dark:text-green-400">Save 20%</span>
+        <span className="inline-flex items-center rounded-full bg-success/10 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-success/100/10 dark:text-green-400">Save 20%</span>
       </div>
     </div>
     <div className="mx-auto mt-16 grid max-w-5xl gap-8 lg:grid-cols-2">
@@ -354,11 +354,11 @@ export const pricingSnippets: IComponentSnippet[] = [
         'group relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-muted',
       toggleThumb:
         'pointer-events-none inline-block h-5 w-5 translate-x-0 rounded-full bg-background shadow ring-0 group-aria-checked:translate-x-5',
-      saveBadge: 'inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700',
+      saveBadge: 'inline-flex items-center rounded-full bg-success/10 px-2 py-0.5 text-xs font-medium text-green-700',
       billingNote: 'mt-1 text-xs text-muted-foreground',
     },
     a11y: {
-      roles: ['region', 'switch', 'list'],
+      roles: ['region', 'switch', 'minimal-editorial'],
       ariaAttributes: ['aria-labelledby', 'aria-checked'],
       keyboardNav: 'Tab to toggle, Space to switch',
       contrastRatio: '7:1',
@@ -454,7 +454,7 @@ export const pricingSnippets: IComponentSnippet[] = [
             <div className="flex-1">
               <div className="flex items-center gap-2">
                 <h4 className="text-sm font-semibold text-foreground">Support</h4>
-                <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-green-500/10 dark:text-green-400">Included</span>
+                <span className="inline-flex items-center rounded-md bg-success/10 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-success/100/10 dark:text-green-400">Included</span>
               </div>
               <p className="mt-1 text-xs text-muted-foreground">Email and community support included</p>
             </div>
@@ -612,7 +612,7 @@ export const pricingSnippets: IComponentSnippet[] = [
       statLabel: 'text-xs text-muted-foreground',
     },
     a11y: {
-      roles: ['region', 'list'],
+      roles: ['region', 'minimal-editorial'],
       ariaAttributes: ['aria-labelledby'],
       keyboardNav: 'Tab through CTAs',
       contrastRatio: '7:1',
@@ -752,7 +752,7 @@ export const pricingSnippets: IComponentSnippet[] = [
       pricePeriod: 'text-sm text-muted-foreground',
     },
     a11y: {
-      roles: ['region', 'list'],
+      roles: ['region', 'minimal-editorial'],
       ariaAttributes: ['aria-labelledby'],
       keyboardNav: 'Tab through CTAs',
       contrastRatio: '7:1',

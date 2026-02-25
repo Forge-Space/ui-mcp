@@ -6,7 +6,7 @@ export const heroSnippets: IComponentSnippet[] = [
     name: 'Centered Hero',
     category: 'organism',
     type: 'hero',
-    variant: 'centered',
+    variant: 'soft-depth',
     tags: ['hero', 'landing', 'headline', 'cta', 'above-fold'],
     mood: ['professional', 'minimal', 'bold'],
     industry: ['saas', 'startup', 'agency'],
@@ -227,6 +227,280 @@ export const heroSnippets: IComponentSnippet[] = [
         'radial-gradient from above for aurora effect',
         'text scale up to 7xl',
         'h-12 larger CTAs for dark hero impact',
+      ],
+    },
+  },
+  {
+    id: 'hero-parallax',
+    name: 'Parallax Hero',
+    category: 'organism',
+    type: 'hero',
+    variant: 'parallax',
+    tags: ['hero', 'parallax', 'scroll', 'energetic', 'landing'],
+    mood: ['creative', 'premium', 'futuristic'],
+    industry: ['agency', 'startup', 'media'],
+    visualStyles: ['gradient-mesh', 'dark-premium'],
+    jsx: `<section className="relative min-h-screen overflow-hidden flex items-center" aria-labelledby="hero-parallax-heading">
+  <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10" aria-hidden="true" />
+  <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,...')] opacity-20" aria-hidden="true" />
+  <div className="relative z-10 mx-auto max-w-7xl px-4 py-32 sm:px-6 lg:px-8">
+    <div className="max-w-3xl">
+      <h1 id="hero-parallax-heading" className="text-5xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+        Design that moves<br />
+        <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">with you</span>
+      </h1>
+      <p className="mt-6 text-xl text-muted-foreground leading-relaxed">
+        Experience depth and motion as you scroll. Built for immersive storytelling.
+      </p>
+      <div className="mt-10 flex gap-4">
+        <a href="/start" className="inline-flex h-12 items-center justify-center rounded-lg bg-primary px-8 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98]">Get Started</a>
+      </div>
+    </div>
+  </div>
+</section>`,
+    tailwindClasses: {
+      section: 'relative min-h-screen overflow-hidden flex items-center',
+      gradient: 'absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10',
+      pattern: 'absolute inset-0 opacity-20',
+      container: 'relative z-10 mx-auto max-w-7xl px-4 py-32 sm:px-6 lg:px-8',
+      heading: 'text-5xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl',
+      gradientText: 'bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent',
+      description: 'mt-6 text-xl text-muted-foreground leading-relaxed',
+      cta: 'inline-flex h-12 items-center justify-center rounded-lg bg-primary px-8 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98]',
+    },
+    a11y: {
+      roles: ['region'],
+      ariaAttributes: ['aria-labelledby', 'aria-hidden on decorative layers'],
+      keyboardNav: 'Tab to CTA',
+      contrastRatio: '7:1',
+      focusVisible: true,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'section', headingLevel: 'h1' },
+    responsive: { strategy: 'mobile-first', breakpoints: ['sm', 'lg'] },
+    quality: {
+      antiGeneric: [
+        'min-h-screen for full viewport impact',
+        'layered backgrounds for depth',
+        'gradient text on key phrase',
+      ],
+      inspirationSource: 'Apple product pages / Stripe homepage',
+      craftDetails: [
+        'absolute layers with z-index stacking',
+        'max-w-3xl for readability',
+        'shadow-lg with colored shadows',
+      ],
+    },
+  },
+  {
+    id: 'hero-video-bg',
+    name: 'Video Background Hero',
+    category: 'organism',
+    type: 'hero',
+    variant: 'video-bg',
+    tags: ['hero', 'video', 'background', 'media', 'immersive'],
+    mood: ['bold', 'premium', 'creative'],
+    industry: ['agency', 'media', 'startup'],
+    visualStyles: ['dark-premium', 'gradient-mesh'],
+    jsx: `<section className="relative min-h-screen overflow-hidden flex items-center" aria-labelledby="hero-video-heading">
+  <div className="absolute inset-0 bg-background/60 backdrop-blur-sm z-10" aria-hidden="true" />
+  <div className="absolute inset-0 bg-muted">
+    <svg className="h-full w-full text-muted-foreground/10" fill="none" viewBox="0 0 24 24" strokeWidth="0.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" /></svg>
+  </div>
+  <div className="relative z-20 mx-auto max-w-5xl px-4 py-32 text-center sm:px-6 lg:px-8">
+    <h1 id="hero-video-heading" className="text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
+      See it in action
+    </h1>
+    <p className="mx-auto mt-6 max-w-2xl text-lg text-white/90 leading-relaxed">
+      Full-screen video backgrounds that captivate and engage your audience from the first frame.
+    </p>
+    <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+      <a href="/demo" className="inline-flex h-12 items-center justify-center rounded-lg bg-white px-8 text-sm font-semibold text-zinc-900 shadow-lg transition-all hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 active:scale-[0.98]">Watch Demo</a>
+      <button type="button" className="inline-flex h-12 items-center justify-center gap-2 rounded-lg border-2 border-white/20 px-8 text-sm font-medium text-white backdrop-blur-sm transition-all hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 active:scale-[0.98]" aria-label="Mute video">
+        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6l4.72-4.72a.75.75 0 011.28.531V19.94a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.506-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.395C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg>
+      </button>
+    </div>
+  </div>
+</section>`,
+    tailwindClasses: {
+      section: 'relative min-h-screen overflow-hidden flex items-center',
+      overlay: 'absolute inset-0 bg-background/60 backdrop-blur-sm z-10',
+      videoPlaceholder: 'absolute inset-0 bg-muted',
+      container: 'relative z-20 mx-auto max-w-5xl px-4 py-32 text-center sm:px-6 lg:px-8',
+      heading: 'text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl',
+      description: 'mx-auto mt-6 max-w-2xl text-lg text-white/90 leading-relaxed',
+      actions: 'mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center',
+      primaryCta:
+        'inline-flex h-12 items-center justify-center rounded-lg bg-white px-8 text-sm font-semibold text-zinc-900 shadow-lg transition-all hover:bg-white/90',
+      muteButton:
+        'inline-flex h-12 items-center justify-center gap-2 rounded-lg border-2 border-white/20 px-8 text-sm font-medium text-white backdrop-blur-sm transition-all hover:bg-white/10',
+    },
+    a11y: {
+      roles: ['region'],
+      ariaAttributes: ['aria-labelledby', 'aria-label on mute button', 'aria-hidden on decorative video'],
+      keyboardNav: 'Tab through CTAs',
+      contrastRatio: '7:1',
+      focusVisible: true,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'section', headingLevel: 'h1' },
+    responsive: { strategy: 'mobile-first', breakpoints: ['sm', 'lg'] },
+    quality: {
+      antiGeneric: [
+        'backdrop-blur-sm overlay for text readability',
+        'z-index layering for video/overlay/content',
+        'mute button for a11y control',
+      ],
+      inspirationSource: 'Airbnb experiences / Nike product launches',
+      craftDetails: [
+        'bg-background/60 darkens video without black',
+        'white text with white/90 description',
+        'border-2 border-white/20 for glass mute button',
+      ],
+    },
+  },
+  {
+    id: 'hero-animated-text',
+    name: 'Animated Text Hero',
+    category: 'organism',
+    type: 'hero',
+    variant: 'animated-text',
+    tags: ['hero', 'energetic', 'text', 'typewriter', 'creative'],
+    mood: ['energetic', 'creative', 'futuristic'],
+    industry: ['agency', 'startup', 'devtools'],
+    visualStyles: ['linear-modern', 'dark-premium', 'gradient-mesh'],
+    jsx: `<section className="relative overflow-hidden" aria-labelledby="hero-animated-heading">
+  <div className="mx-auto max-w-6xl px-4 py-32 sm:px-6 lg:px-8">
+    <div className="text-center">
+      <h1 id="hero-animated-heading" className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+        Build products that are<br />
+        <span className="inline-block bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent motion-safe:animate-pulse motion-reduce:animate-none">impossible to ignore</span>
+      </h1>
+      <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed opacity-0 motion-safe:animate-[fadeIn_0.6s_ease-in_0.3s_forwards] motion-reduce:opacity-100">
+        From concept to launch in record time. No code, no limits.
+      </p>
+      <div className="mt-10 flex justify-center gap-4 opacity-0 motion-safe:animate-[fadeIn_0.6s_ease-in_0.6s_forwards] motion-reduce:opacity-100">
+        <a href="/signup" className="inline-flex h-12 items-center justify-center rounded-lg bg-primary px-8 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98]">Start Building</a>
+      </div>
+    </div>
+  </div>
+</section>`,
+    tailwindClasses: {
+      section: 'relative overflow-hidden',
+      container: 'mx-auto max-w-6xl px-4 py-32 sm:px-6 lg:px-8',
+      heading: 'text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl',
+      animatedText:
+        'inline-block bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent motion-safe:animate-pulse motion-reduce:animate-none',
+      description:
+        'mx-auto mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed opacity-0 motion-safe:animate-[fadeIn_0.6s_ease-in_0.3s_forwards] motion-reduce:opacity-100',
+      actions:
+        'mt-10 flex justify-center gap-4 opacity-0 motion-safe:animate-[fadeIn_0.6s_ease-in_0.6s_forwards] motion-reduce:opacity-100',
+    },
+    animations: ['@keyframes fadeIn { to { opacity: 1; } }'],
+    a11y: {
+      roles: ['region'],
+      ariaAttributes: ['aria-labelledby'],
+      keyboardNav: 'Tab to CTA',
+      contrastRatio: '7:1',
+      focusVisible: true,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'section', headingLevel: 'h1' },
+    responsive: { strategy: 'mobile-first', breakpoints: ['sm', 'lg'] },
+    quality: {
+      antiGeneric: [
+        'staggered fade-in animations (0.3s, 0.6s delays)',
+        'motion-safe/reduce for a11y',
+        'animate-pulse on gradient text',
+      ],
+      inspirationSource: 'Framer Motion landing pages',
+      craftDetails: [
+        'inline-block on animated span for transform support',
+        'forwards fill-mode retains opacity:1',
+        'motion-reduce:opacity-100 fallback',
+      ],
+    },
+  },
+  {
+    id: 'hero-waitlist',
+    name: 'Waitlist Hero',
+    category: 'organism',
+    type: 'hero',
+    variant: 'waitlist',
+    tags: ['hero', 'waitlist', 'email', 'signup', 'launch'],
+    mood: ['professional', 'minimal', 'bold'],
+    industry: ['startup', 'saas'],
+    visualStyles: ['soft-depth', 'linear-modern', 'corporate-trust'],
+    jsx: `<section className="relative overflow-hidden" aria-labelledby="hero-waitlist-heading">
+  <div className="mx-auto max-w-4xl px-4 py-32 text-center sm:px-6 lg:px-8">
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-6">
+      <span className="h-1.5 w-1.5 rounded-full bg-primary motion-safe:animate-pulse motion-reduce:animate-none" aria-hidden="true" />
+      Coming Soon
+    </span>
+    <h1 id="hero-waitlist-heading" className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+      The future of productivity<br />
+      <span className="text-primary">starts here</span>
+    </h1>
+    <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">
+      Join thousands on the waitlist. Be the first to know when we launch.
+    </p>
+    <form className="mx-auto mt-10 max-w-md" onSubmit={(e) => e.preventDefault()}>
+      <div className="flex flex-col gap-3 sm:flex-row">
+        <input type="email" className="flex-1 rounded-lg border border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring" placeholder="Enter your email" required aria-label="Email address" />
+        <button type="submit" className="inline-flex h-12 items-center justify-center whitespace-nowrap rounded-lg bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98]">Join Waitlist</button>
+      </div>
+      <p className="mt-3 text-xs text-muted-foreground">We'll never share your email. Unsubscribe anytime.</p>
+    </form>
+    <div className="mt-12 flex items-center justify-center gap-6 text-sm text-muted-foreground">
+      <div className="flex items-center gap-2">
+        <div className="flex -space-x-2">
+          <div className="h-8 w-8 rounded-full border-2 border-background bg-muted" aria-hidden="true" />
+          <div className="h-8 w-8 rounded-full border-2 border-background bg-muted" aria-hidden="true" />
+          <div className="h-8 w-8 rounded-full border-2 border-background bg-muted" aria-hidden="true" />
+        </div>
+        <span><span className="font-semibold text-foreground">2,543</span> people joined</span>
+      </div>
+    </div>
+  </div>
+</section>`,
+    tailwindClasses: {
+      section: 'relative overflow-hidden',
+      container: 'mx-auto max-w-4xl px-4 py-32 text-center sm:px-6 lg:px-8',
+      badge:
+        'inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-6',
+      heading: 'text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl',
+      headingAccent: 'text-primary',
+      description: 'mx-auto mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed',
+      form: 'mx-auto mt-10 max-w-md',
+      formRow: 'flex flex-col gap-3 sm:flex-row',
+      input:
+        'flex-1 rounded-lg border border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring',
+      submit:
+        'inline-flex h-12 items-center justify-center whitespace-nowrap rounded-lg bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98]',
+      disclaimer: 'mt-3 text-xs text-muted-foreground',
+      socialProof: 'mt-12 flex items-center justify-center gap-6 text-sm text-muted-foreground',
+    },
+    a11y: {
+      roles: ['region'],
+      ariaAttributes: ['aria-labelledby', 'aria-label on input', 'required on email'],
+      keyboardNav: 'Tab through form fields',
+      contrastRatio: '4.5:1',
+      focusVisible: true,
+      reducedMotion: true,
+    },
+    seo: { semanticElement: 'section', headingLevel: 'h1' },
+    responsive: { strategy: 'mobile-first', breakpoints: ['sm', 'lg'] },
+    quality: {
+      antiGeneric: [
+        'form-first design for conversion',
+        'social proof with avatar stack + count',
+        'disclaimer reduces friction',
+      ],
+      inspirationSource: 'Product Hunt / Linear waitlist pages',
+      craftDetails: [
+        'max-w-md constrains form width',
+        'flex-col → flex-row for mobile input stacking',
+        'whitespace-nowrap on button text',
       ],
     },
   },

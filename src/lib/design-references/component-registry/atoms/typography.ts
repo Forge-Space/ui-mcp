@@ -104,7 +104,7 @@ export const typographySnippets: IComponentSnippet[] = [
     category: 'atom',
     type: 'paragraph',
     variant: 'default',
-    tags: ['text', 'body', 'content', 'typography'],
+    tags: ['text', 'body', 'media', 'typography'],
     mood: ['professional', 'minimal', 'calm'],
     industry: ['general'],
     visualStyles: ['minimal-editorial', 'soft-depth', 'corporate-trust'],
