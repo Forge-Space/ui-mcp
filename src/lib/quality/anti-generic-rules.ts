@@ -18,7 +18,7 @@ const PLACEHOLDER_PATTERNS = [
   />\s*type here/i,
   /todo:/i,
   /xxx/i,
-  /example\.com/i,
+  /\bexample\.com\b/i,
 ];
 
 export function validateSnippet(snippet: IComponentSnippet): IValidationResult {

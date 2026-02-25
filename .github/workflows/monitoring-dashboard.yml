@@ -43,7 +43,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: rm -f package-lock.json && npm install --legacy-peer-deps
 
       - name: Check repository health
         run: |
@@ -163,7 +163,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: rm -f package-lock.json && npm install --legacy-peer-deps
 
       - name: Collect project metrics
         run: |
@@ -239,7 +239,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: rm -f package-lock.json && npm install --legacy-peer-deps
 
       - name: Audit production dependencies
         run: npm audit --audit-level=high --omit=dev

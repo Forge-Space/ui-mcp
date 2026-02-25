@@ -41,7 +41,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: rm -f package-lock.json && npm install --legacy-peer-deps
 
       # Initializes the CodeQL tools for scanning
       - name: Initialize CodeQL

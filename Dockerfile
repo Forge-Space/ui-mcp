@@ -10,7 +10,7 @@ COPY package.json package-lock.json* ./
 
 # Fresh install without lockfile for cross-platform native deps
 RUN --mount=type=cache,target=/root/.npm,sharing=locked \
-    npm install --ignore-scripts --legacy-peer-deps
+    rm -f package-lock.json && npm install --legacy-peer-deps
 
 # Copy tsup config for bundled build
 COPY tsconfig.json tsup.config.ts ./

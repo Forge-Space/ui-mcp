@@ -147,7 +147,7 @@ export function registerScaffoldFullApplication(server: McpServer): void {
           try {
             const db = getDatabase();
             const gen: IGeneration = {
-              id: `gen-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+              id: `gen-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`,
               tool: 'generate_page_template',
               params: {
                 template: pageType,
@@ -160,7 +160,7 @@ export function registerScaffoldFullApplication(server: McpServer): void {
               framework,
               outputHash: '',
               timestamp: Date.now(),
-              sessionId: `session-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+              sessionId: `session-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`,
               mood,
               industry,
               style: visual_style,

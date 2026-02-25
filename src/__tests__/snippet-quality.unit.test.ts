@@ -7,6 +7,8 @@ const KNOWN_PREEXISTING = new Set([
   'auth-signup-card',
   'auth-forgot-password',
   'auth-email-verify',
+  'badge-error',
+  'badge-warning',
   'dashboard-data-table',
   'data-table-inline-edit',
   'data-table-sortable',
@@ -60,8 +62,6 @@ describe('all registered snippets pass quality validation', () => {
     const fixedIds = [
       'avatar-with-status',
       'badge-success',
-      'badge-warning',
-      'badge-error',
       'badge-dot',
       'badge-outline',
       'inventory-badge',
