@@ -3,13 +3,7 @@
 # ── Build stage ──────────────────────────────────────────────
 FROM node:22-alpine AS builder
 
-RUN apk add --no-cache git
-
 WORKDIR /app
-
-# Clone and build siza-gen (file: protocol dependency)
-RUN git clone --depth 1 https://github.com/Forge-Space/siza-gen.git ../siza-gen && \
-    cd ../siza-gen && npm install --legacy-peer-deps && npm run build
 
 # Copy package files first for better caching
 COPY package.json package-lock.json* ./
@@ -35,17 +29,13 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-# Copy built siza-gen from builder (needed for file: protocol resolution)
-COPY --from=builder /siza-gen /siza-gen
-
 # Copy package files
 COPY package.json package-lock.json* ./
 
 # Install production dependencies with cache
 RUN --mount=type=cache,target=/root/.npm,sharing=locked \
     npm install --omit=dev --ignore-scripts --legacy-peer-deps && \
-    npm cache clean --force && \
-    rm -rf /siza-gen
+    npm cache clean --force
 
 # Copy build output and assets
 COPY --from=builder /app/dist ./dist

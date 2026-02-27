@@ -7,10 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Fixed
+## [0.9.0] - 2026-02-27
 
-- Fix security-monitoring.yml: add `setup-siza-gen` action, Node 22, `npm run build` before tests
-- Add duplicate issue detection to monitoring alert notifications
+### Changed
+
+- **Dependencies**: `@forgespace/siza-gen` now installed from npm registry (`^0.2.0`) instead of `file:../siza-gen`
+- **CI**: Removed `setup-siza-gen` composite action from all workflows (no longer needed)
+- **Docker**: Simplified Dockerfile — removed siza-gen sibling clone/build/copy steps
+
+### Removed
+
+- `.github/actions/setup-siza-gen/` composite action (npm resolves dependency directly)
 
 ## [0.8.1] - 2026-02-25
 
