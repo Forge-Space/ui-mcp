@@ -21,11 +21,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: rm -f package-lock.json && npm install --legacy-peer-deps
 
       - name: Audit production dependencies
         run: npm audit --audit-level=high --omit=dev
@@ -53,11 +53,17 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 22
           cache: npm
 
+      - name: Setup siza-gen
+        uses: ./.github/actions/setup-siza-gen
+
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: rm -f package-lock.json && npm install --legacy-peer-deps
+
+      - name: Build
+        run: npm run build
 
       - name: Run tests with coverage
         run: npm run test:coverage
@@ -106,6 +112,20 @@ jobs:
             const { owner, repo } = context.repo;
             const date = new Date().toISOString().split('T')[0];
             const title = `Security/Coverage Monitoring Alert - ${date}`;
+
+            const existing = await github.rest.issues.listForRepo({
+              owner,
+              repo,
+              state: 'open',
+              labels: 'monitoring,security',
+              per_page: 5,
+            });
+            const duplicate = existing.data.find(i => i.title === title);
+            if (duplicate) {
+              console.log(`Issue "${title}" already exists (#${duplicate.number}), skipping.`);
+              return;
+            }
+
             const body = [
               '## Monitoring Alert',
               '',

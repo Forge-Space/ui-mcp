@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- Fix security-monitoring.yml: add `setup-siza-gen` action, Node 22, `npm run build` before tests
+- Add duplicate issue detection to monitoring alert notifications
+
 ## [0.8.1] - 2026-02-25
 
 ### Fixed
