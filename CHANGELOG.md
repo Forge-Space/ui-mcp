@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.1] - 2026-02-28
+
+### Security
+
+- **Fix minimatch ReDoS vulnerability** — Updated minimatch 5.1.0 → 9.0.5 via npm audit fix to patch GHSA-7r86-cg39-jmmj (Regular Expression Denial of Service)
+
 ## [0.9.0] - 2026-02-27
 
 ### Changed
