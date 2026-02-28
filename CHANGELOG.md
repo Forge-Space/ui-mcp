@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-02-28
+
+### Added
+
+- `brand_identity` parameter on all 5 generation tools (`generate_ui_component`, `generate_page_template`, `scaffold_full_application`, `generate_design_image`, `generate_prototype`)
+- Brand token injection from branding-mcp output — colors, typography, spacing, shadows, border radii
+- `withBrandContext` scoped helper with automatic context restore
+
+### Changed
+
+- Upgraded `@forgespace/siza-gen` to `^0.3.0`
+
 ## [0.9.1] - 2026-02-28
 
 ### Security
