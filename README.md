@@ -13,6 +13,8 @@ frameworks, brand-aware — zero API keys required.
 
 Part of the [Forge Space](https://github.com/Forge-Space) ecosystem.
 
+![Siza Capabilities](assets/capabilities.png)
+
 ## Architecture
 
 Siza MCP is a thin protocol adapter. All AI/generation logic lives in
