@@ -18,6 +18,7 @@ import {
   type VisualStyleId,
 } from '@forgespace/siza-gen';
 import { wrapReact, wrapVue, wrapAngular, wrapSvelte, wrapHtml } from './generate-page-template.js';
+import { withBrandContext } from '../lib/brand-context.js';
 
 const logger = createLogger('scaffold-full-application');
 
@@ -83,6 +84,10 @@ const inputSchema = {
     ])
     .optional()
     .describe('Visual style for composed pages'),
+  brand_identity: z
+    .string()
+    .optional()
+    .describe('JSON string from branding-mcp generate_brand_identity. Overrides design context with brand tokens.'),
 };
 
 export function registerScaffoldFullApplication(server: McpServer): void {
@@ -99,109 +104,112 @@ export function registerScaffoldFullApplication(server: McpServer): void {
       mood,
       industry,
       visual_style,
+      brand_identity,
     }) => {
-      initializeRegistry();
-      const ctx = designContextStore.get();
+      return withBrandContext(brand_identity, async () => {
+        initializeRegistry();
+        const ctx = designContextStore.get();
 
-      const mappedStateManagement =
-        framework === 'svelte' ? (state_management === 'useState' ? 'stores' : 'none') : state_management;
+        const mappedStateManagement =
+          framework === 'svelte' ? (state_management === 'useState' ? 'stores' : 'none') : state_management;
 
-      const generator = GeneratorFactory.getInstance().createGenerator(framework);
-      const files = generator.generateProject(project_name, architecture, mappedStateManagement, ctx);
+        const generator = GeneratorFactory.getInstance().createGenerator(framework);
+        const files = generator.generateProject(project_name, architecture, mappedStateManagement, ctx);
 
-      const pageTypes = ARCH_PAGES[architecture] ?? ARCH_PAGES['flat'];
-      const composedPages: IGeneratedFile[] = [];
-      const useML = !!(mood || industry || visual_style);
+        const pageTypes = ARCH_PAGES[architecture] ?? ARCH_PAGES['flat'];
+        const composedPages: IGeneratedFile[] = [];
+        const useML = !!(mood || industry || visual_style);
 
-      for (const pageType of pageTypes) {
-        let pageFiles: IGeneratedFile[] | null = null;
+        for (const pageType of pageTypes) {
+          let pageFiles: IGeneratedFile[] | null = null;
 
-        if (useML) {
-          try {
-            const comp = findBestComposition(pageType, {
-              mood: mood ? [mood as MoodTag] : undefined,
-              industry: industry ? [industry as IndustryTag] : undefined,
-              visualStyle: visual_style as VisualStyleId | undefined,
-            });
-            if (comp) {
-              const result = composePageFromTemplate(comp.id, {
+          if (useML) {
+            try {
+              const comp = findBestComposition(pageType, {
                 mood: mood ? [mood as MoodTag] : undefined,
                 industry: industry ? [industry as IndustryTag] : undefined,
                 visualStyle: visual_style as VisualStyleId | undefined,
               });
-              if (result) {
-                const quality = await scoreQuality(pageType, result.jsx, {
-                  componentType: pageType,
+              if (comp) {
+                const result = composePageFromTemplate(comp.id, {
+                  mood: mood ? [mood as MoodTag] : undefined,
+                  industry: industry ? [industry as IndustryTag] : undefined,
+                  visualStyle: visual_style as VisualStyleId | undefined,
                 });
-                if (quality.score >= 5) {
-                  pageFiles = wrapForFramework(pageType, result.jsx, framework, ctx);
-                  logger.info(
-                    { pageType, score: quality.score, compositionId: comp.id },
-                    'Scaffold: composed page from ML'
-                  );
+                if (result) {
+                  const quality = await scoreQuality(pageType, result.jsx, {
+                    componentType: pageType,
+                  });
+                  if (quality.score >= 5) {
+                    pageFiles = wrapForFramework(pageType, result.jsx, framework, ctx);
+                    logger.info(
+                      { pageType, score: quality.score, compositionId: comp.id },
+                      'Scaffold: composed page from ML'
+                    );
+                  }
                 }
               }
+            } catch (err) {
+              logger.warn({ err, pageType }, 'Scaffold: composition failed');
             }
-          } catch (err) {
-            logger.warn({ err, pageType }, 'Scaffold: composition failed');
           }
-        }
 
-        if (pageFiles) {
-          composedPages.push(...pageFiles);
+          if (pageFiles) {
+            composedPages.push(...pageFiles);
 
-          try {
-            const db = getDatabase();
-            const gen: IGeneration = {
-              id: `gen-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-              tool: 'generate_page_template',
-              params: {
-                template: pageType,
+            try {
+              const db = getDatabase();
+              const gen: IGeneration = {
+                id: `gen-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+                tool: 'generate_page_template',
+                params: {
+                  template: pageType,
+                  framework,
+                  ...(mood && { mood }),
+                  ...(industry && { industry }),
+                  ...(visual_style && { visual_style }),
+                },
+                componentType: pageType,
                 framework,
-                ...(mood && { mood }),
-                ...(industry && { industry }),
-                ...(visual_style && { visual_style }),
-              },
-              componentType: pageType,
-              framework,
-              outputHash: '',
-              timestamp: Date.now(),
-              sessionId: `session-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`,
-              mood,
-              industry,
-              style: visual_style,
-            };
-            recordGeneration(gen, pageFiles[0]?.content || '', db, pageType);
-          } catch (err) {
-            logger.warn({ error: err }, 'Scaffold: recording failed');
+                outputHash: '',
+                timestamp: Date.now(),
+                sessionId: `session-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`,
+                mood,
+                industry,
+                style: visual_style,
+              };
+              recordGeneration(gen, pageFiles[0]?.content || '', db, pageType);
+            } catch (err) {
+              logger.warn({ error: err }, 'Scaffold: recording failed');
+            }
           }
         }
-      }
 
-      const allFiles = [...files, ...composedPages];
+        const allFiles = [...files, ...composedPages];
 
-      const summary = [
-        `Scaffolded ${framework} project "${project_name}"`,
-        `Files generated: ${allFiles.length} (${files.length} infra + ${composedPages.length} composed pages)`,
-        `Architecture: ${architecture}`,
-        `State management: ${state_management}`,
-        composedPages.length > 0 ? `ML-composed pages: ${composedPages.map((f) => f.path).join(', ')}` : '',
-        '',
-        'Files:',
-        ...allFiles.map((f: IGeneratedFile) => `  ${f.path}`),
-      ]
-        .filter(Boolean)
-        .join('\n');
+        const summary = [
+          `Scaffolded ${framework} project "${project_name}"`,
+          `Files generated: ${allFiles.length} (${files.length} infra + ${composedPages.length} composed pages)`,
+          `Architecture: ${architecture}`,
+          `State management: ${state_management}`,
+          composedPages.length > 0 ? `ML-composed pages: ${composedPages.map((f) => f.path).join(', ')}` : '',
+          '',
+          'Files:',
+          ...allFiles.map((f: IGeneratedFile) => `  ${f.path}`),
+        ]
+          .filter(Boolean)
+          .join('\n');
 
-      return {
-        content: [
-          { type: 'text', text: summary },
-          {
-            type: 'text',
-            text: JSON.stringify({ files: allFiles }, null, 2),
-          },
-        ],
-      };
+        return {
+          content: [
+            { type: 'text', text: summary },
+            {
+              type: 'text',
+              text: JSON.stringify({ files: allFiles }, null, 2),
+            },
+          ],
+        };
+      });
     }
   );
 }

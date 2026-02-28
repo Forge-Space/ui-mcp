@@ -2,6 +2,7 @@ import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { buildPrototype } from '../lib/prototype-builder.js';
 import { designContextStore, type IDesignContext, type IScreenElement, type ITransition } from '@forgespace/siza-gen';
+import { withBrandContextSync } from '../lib/brand-context.js';
 
 // Helper for deep merging design context - handles one level of nesting
 function deepMergeContext(base: IDesignContext, override: Partial<IDesignContext>): IDesignContext {
@@ -58,6 +59,10 @@ const inputSchema = {
   navigation_flow: z.array(transitionSchema).describe('Navigation flow between screens'),
   design_context: designContextSchema.describe('Optional design context override'),
   output_format: z.enum(['html', 'html_bundle']).default('html').describe('Output format'),
+  brand_identity: z
+    .string()
+    .optional()
+    .describe('JSON string from branding-mcp generate_brand_identity. Overrides design context with brand tokens.'),
 };
 
 export function registerGeneratePrototype(server: McpServer): void {
@@ -65,42 +70,44 @@ export function registerGeneratePrototype(server: McpServer): void {
     'generate_prototype',
     'Create interactive HTML prototypes with screen flows, navigation, and transitions. Output is a standalone HTML file.',
     inputSchema,
-    ({ screens, navigation_flow, design_context, output_format: _output_format }) => {
-      const ctx: IDesignContext | undefined = design_context
-        ? deepMergeContext(designContextStore.get(), design_context)
-        : undefined;
+    ({ screens, navigation_flow, design_context, output_format: _output_format, brand_identity }) => {
+      return withBrandContextSync(brand_identity, () => {
+        const ctx: IDesignContext | undefined = design_context
+          ? deepMergeContext(designContextStore.get(), design_context)
+          : undefined;
 
-      const html = buildPrototype({
-        screens: screens as Array<{ name: string; description?: string; elements: IScreenElement[] }>,
-        navigationFlow: navigation_flow as ITransition[],
-        designContext: ctx,
-      });
+        const html = buildPrototype({
+          screens: screens as Array<{ name: string; description?: string; elements: IScreenElement[] }>,
+          navigationFlow: navigation_flow as ITransition[],
+          designContext: ctx,
+        });
 
-      const files = [
-        {
-          path: 'prototype.html',
-          content: html,
-        },
-      ];
-
-      const summary = [
-        `Generated interactive prototype with ${screens.length} screen(s)`,
-        `Navigation flows: ${navigation_flow.length}`,
-        `Output: prototype.html (${html.length} bytes)`,
-        '',
-        'Screens:',
-        ...screens.map((s) => `  - ${s.name}${s.description ? `: ${s.description}` : ''}`),
-      ].join('\n');
-
-      return {
-        content: [
-          { type: 'text', text: summary },
+        const files = [
           {
-            type: 'text',
-            text: JSON.stringify({ files, screenCount: screens.length }, null, 2),
+            path: 'prototype.html',
+            content: html,
           },
-        ],
-      };
+        ];
+
+        const summary = [
+          `Generated interactive prototype with ${screens.length} screen(s)`,
+          `Navigation flows: ${navigation_flow.length}`,
+          `Output: prototype.html (${html.length} bytes)`,
+          '',
+          'Screens:',
+          ...screens.map((s) => `  - ${s.name}${s.description ? `: ${s.description}` : ''}`),
+        ].join('\n');
+
+        return {
+          content: [
+            { type: 'text', text: summary },
+            {
+              type: 'text',
+              text: JSON.stringify({ files, screenCount: screens.length }, null, 2),
+            },
+          ],
+        };
+      });
     }
   );
 }

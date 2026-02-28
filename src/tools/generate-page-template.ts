@@ -18,6 +18,7 @@ import {
   type PageTemplateType,
   type VisualStyleId,
 } from '@forgespace/siza-gen';
+import { withBrandContext } from '../lib/brand-context.js';
 import {
   getAiChatBody,
   getChangelogBody,
@@ -122,6 +123,10 @@ const inputSchema = {
     ])
     .optional()
     .describe('Visual style layer to apply'),
+  brand_identity: z
+    .string()
+    .optional()
+    .describe('JSON string from branding-mcp generate_brand_identity. Overrides design context with brand tokens.'),
 };
 
 /**
@@ -152,93 +157,105 @@ export function registerGeneratePageTemplate(server: McpServer): void {
     'generate_page_template',
     'Generate pre-built page templates for common UI patterns: landing pages, dashboards, auth flows, pricing, settings, CRUD tables, blog listings, onboarding wizards, error pages, and ecommerce storefronts (PLP, PDP, cart, checkout). Supports all frameworks and component libraries.',
     inputSchema,
-    async ({ template, framework, component_library, dark_mode, project_name, mood, industry, visual_style }) => {
-      try {
-        initializeRegistry();
-
-        const ctx = designContextStore.get();
-        const appName = project_name ?? 'MyApp';
-        const files = await generateTemplate(template, framework, component_library, dark_mode, appName, ctx, {
-          mood,
-          industry,
-          visual_style,
-        });
-
+    async ({
+      template,
+      framework,
+      component_library,
+      dark_mode,
+      project_name,
+      mood,
+      industry,
+      visual_style,
+      brand_identity,
+    }) => {
+      return withBrandContext(brand_identity, async () => {
         try {
-          const db = getDatabase();
-          const gen: IGeneration = {
-            id: `gen-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-            tool: 'generate_page_template',
-            params: {
-              template,
-              framework,
-              ...(mood && { mood }),
-              ...(industry && { industry }),
-              ...(visual_style && { visual_style }),
-            },
-            componentType: template,
-            framework,
-            outputHash: '',
-            timestamp: Date.now(),
-            sessionId: `session-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`,
+          initializeRegistry();
+
+          const ctx = designContextStore.get();
+          const appName = project_name ?? 'MyApp';
+          const files = await generateTemplate(template, framework, component_library, dark_mode, appName, ctx, {
             mood,
             industry,
-            style: visual_style,
+            visual_style,
+          });
+
+          try {
+            const db = getDatabase();
+            const gen: IGeneration = {
+              id: `gen-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+              tool: 'generate_page_template',
+              params: {
+                template,
+                framework,
+                ...(mood && { mood }),
+                ...(industry && { industry }),
+                ...(visual_style && { visual_style }),
+              },
+              componentType: template,
+              framework,
+              outputHash: '',
+              timestamp: Date.now(),
+              sessionId: `session-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`,
+              mood,
+              industry,
+              style: visual_style,
+            };
+            recordGeneration(gen, files[0]?.content || '', db, template);
+          } catch (err) {
+            logger.warn({ error: err }, 'Generation recording failed');
+          }
+
+          const registrySize = getRegistrySize();
+          const designParams = [
+            mood && `Mood: ${mood}`,
+            industry && `Industry: ${industry}`,
+            visual_style && `Style: ${visual_style}`,
+          ]
+            .filter(Boolean)
+            .join(' | ');
+
+          const ragInfo =
+            registrySize > 0
+              ? `\n📚 RAG Registry: ${registrySize} snippets loaded${designParams ? ` | ${designParams}` : ''}`
+              : '';
+
+          const summary = [
+            `📄 Generated "${template}" page template for ${framework}`,
+            `Component library: ${component_library === 'none' ? 'Tailwind CSS (raw)' : component_library}`,
+            `Dark mode: ${dark_mode ? 'enabled' : 'disabled'}`,
+            `Files: ${files.length}`,
+            ragInfo,
+            '',
+            'Files:',
+            ...files.map((f) => `  ${f.path}`),
+          ].join('\n');
+
+          return {
+            content: [
+              { type: 'text', text: summary },
+              {
+                type: 'text',
+                text: JSON.stringify({ files, designContext: ctx }, null, 2),
+              },
+            ],
           };
-          recordGeneration(gen, files[0]?.content || '', db, template);
-        } catch (err) {
-          logger.warn({ error: err }, 'Generation recording failed');
+        } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : String(error);
+          logger.error(
+            { template, framework, component_library, dark_mode, project_name, error: errorMessage },
+            'Error in registerGeneratePageTemplate/generateTemplate'
+          );
+          return {
+            content: [
+              {
+                type: 'text',
+                text: `Error generating page template: ${errorMessage}`,
+              },
+            ],
+          };
         }
-
-        const registrySize = getRegistrySize();
-        const designParams = [
-          mood && `Mood: ${mood}`,
-          industry && `Industry: ${industry}`,
-          visual_style && `Style: ${visual_style}`,
-        ]
-          .filter(Boolean)
-          .join(' | ');
-
-        const ragInfo =
-          registrySize > 0
-            ? `\n📚 RAG Registry: ${registrySize} snippets loaded${designParams ? ` | ${designParams}` : ''}`
-            : '';
-
-        const summary = [
-          `📄 Generated "${template}" page template for ${framework}`,
-          `Component library: ${component_library === 'none' ? 'Tailwind CSS (raw)' : component_library}`,
-          `Dark mode: ${dark_mode ? 'enabled' : 'disabled'}`,
-          `Files: ${files.length}`,
-          ragInfo,
-          '',
-          'Files:',
-          ...files.map((f) => `  ${f.path}`),
-        ].join('\n');
-
-        return {
-          content: [
-            { type: 'text', text: summary },
-            {
-              type: 'text',
-              text: JSON.stringify({ files, designContext: ctx }, null, 2),
-            },
-          ],
-        };
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : String(error);
-        logger.error(
-          { template, framework, component_library, dark_mode, project_name, error: errorMessage },
-          'Error in registerGeneratePageTemplate/generateTemplate'
-        );
-        return {
-          content: [
-            {
-              type: 'text',
-              text: `Error generating page template: ${errorMessage}`,
-            },
-          ],
-        };
-      }
+      });
     }
   );
 }

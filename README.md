@@ -151,6 +151,20 @@ UI libraries:
 Each generator produces a component file **plus** a test file (React also
 generates a Storybook story).
 
+## Brand Identity Integration
+
+All 5 generation tools accept an optional `brand_identity` parameter — a JSON
+string from branding-mcp's `generate_brand_identity` tool. When provided, brand
+colors, typography, spacing, shadows, and border radii are injected into the
+design context for the duration of the generation request.
+
+```
+brand_identity: "<JSON from generate_brand_identity>"
+```
+
+Tools with brand support: `generate_ui_component`, `generate_page_template`,
+`scaffold_full_application`, `generate_design_image`, `generate_prototype`.
+
 ## Resource
 
 | URI                            | Description                                                             |

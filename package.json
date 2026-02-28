@@ -1,6 +1,6 @@
 {
   "name": "@forgespace/ui-mcp",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "description": "AI-driven UI generation via Model Context Protocol. Generate React, Next.js, Vue, Angular applications from natural language.",
   "type": "module",
   "main": "dist/index.js",
@@ -36,7 +36,7 @@
     "publish": "npm publish --access public"
   },
   "dependencies": {
-    "@forgespace/siza-gen": "^0.2.0",
+    "@forgespace/siza-gen": "^0.3.0",
     "@modelcontextprotocol/sdk": "^1.27.1",
     "@resvg/resvg-js": "^2.6.2",
     "better-sqlite3": "^12.6.2",
