@@ -37,7 +37,7 @@ export function registerManageTraining(server: McpServer): void {
     'manage_training',
     'Manage ML training jobs for the UIForge sidecar model. Actions: check_readiness (verify training prerequisites), start_training (begin LoRA fine-tuning), get_status (check job progress), cancel_training (stop running job), list_adapters (show available adapters), get_summary (get training statistics).',
     inputSchema,
-    ({ action, adapter_name }) => {
+    async ({ action, adapter_name }) => {
       try {
         switch (action) {
           case 'check_readiness': {
@@ -73,7 +73,7 @@ export function registerManageTraining(server: McpServer): void {
             }
 
             const db = getDatabase();
-            const job = startTrainingJob(adapter_name as AdapterType, 'qwen2.5-0.5b' as ModelId, db);
+            const job = await startTrainingJob(adapter_name as AdapterType, 'qwen2.5-0.5b' as ModelId, db);
             const summary = [
               '🚀 Training Job Started',
               `Job ID: ${job.jobId}`,

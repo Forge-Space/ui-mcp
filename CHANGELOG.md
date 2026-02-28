@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-02-28
+
+### Changed
+
+- Bump `@forgespace/siza-gen` from 0.3.0 to 0.5.0
+  - Gains Python ML sidecar support (embeddings, FAISS, quality scoring, training)
+  - Gains multi-provider LLM abstraction (Ollama, OpenAI, Anthropic, Gemini)
+  - Gains brand identity transform
+- Bump `actions/upload-artifact` from 4 to 7
+- Bump `actions/download-artifact` from 4 to 8
+- Bump `trufflesecurity/trufflehog` from 3.93.4 to 3.93.6
+- Overhaul README for public readability
+
 ## [0.11.0] - 2026-02-28
 
 ### Added
