@@ -23,7 +23,7 @@ Siza MCP is a thin protocol adapter. All AI/generation logic lives in
 ```
 siza-mcp (~355 KB)                 @forgespace/siza-gen (~1.8 MB)
 ├── src/index.ts (MCP server)      ├── ml/        (embeddings, quality, training)
-├── tools/     (21 tool defs)      ├── generators/ (react, vue, angular, svelte, html)
+├── tools/     (22 tool defs)      ├── generators/ (react, vue, angular, svelte, html)
 ├── services/  (figma, analysis)   ├── registry/   (502 snippets, compositions, packs)
 ├── resources/ (MCP resources)     ├── feedback/   (self-learning, pattern promotion)
 └── lib/       (browser, image)    └── quality/    (anti-generic rules, diversity)
