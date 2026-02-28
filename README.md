@@ -132,6 +132,7 @@ Built with the
 | 18  | `generate_api_route`          | Backend  | Generate production-ready API routes with validation, auth, and error handling                                                   |
 | 19  | `generate_backend_module`     | Backend  | Generate complete backend feature modules with routes, services, and middleware                                                  |
 | 20  | `scaffold_backend`            | Backend  | Generate full backend project scaffolds with auth, database, monitoring, and caching                                             |
+| 21  | `generate_form`               | Code     | Generate production-ready forms with validation (Zod/Yup), multi-step flows, and accessible markup                               |
 
 ## Component Library Support
 

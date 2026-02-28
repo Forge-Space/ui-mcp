@@ -26,6 +26,7 @@ import { registerGenerateFromPack } from './tools/generate-from-pack.js';
 import { registerGenerateApiRoute } from './tools/generate-api-route.js';
 import { registerGenerateBackendModule } from './tools/generate-backend-module.js';
 import { registerScaffoldBackend } from './tools/scaffold-backend.js';
+import { registerGenerateForm } from './tools/generate-form.js';
 
 // Load and validate configuration
 let config;
@@ -68,6 +69,7 @@ registerGenerateFromPack(server);
 registerGenerateApiRoute(server);
 registerGenerateBackendModule(server);
 registerScaffoldBackend(server);
+registerGenerateForm(server);
 try {
   registerForgeContextTools(server);
   logger.info('Forge context tools registered successfully');

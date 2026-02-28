@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-02-28
+
+### Added
+
+- `generate_form` tool — production-ready form generation with validation schemas, accessibility, and multi-step support
+  - 8 preset form types: login, signup, contact, checkout, settings, search, newsletter, custom
+  - Validation schema generation (Zod, Yup)
+  - Multi-step form support with progress indicator
+  - All 6 frameworks: React, Next.js, Vue, Angular, Svelte, HTML
+  - Component library styling (shadcn, Radix, Headless UI, Material)
+  - Brand identity integration via `brand_identity` parameter
+  - Full WCAG accessibility: labels, aria-describedby, role=alert
+
 ## [0.10.0] - 2026-02-28
 
 ### Added
