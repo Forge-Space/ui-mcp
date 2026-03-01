@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- 50 new unit tests for `generate_form` tool — field types, Zod/Yup schemas, framework-specific output, multi-step edge cases, accessibility attributes (PR #95, closes #94)
 - Jest mocks for `sharp` and `@resvg/resvg-js` native modules — fixes CI test failures on linux-x64
 - First npm publish: `npm install -g @forgespace/ui-mcp@0.14.0`
 
@@ -18,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - CI deploy pipeline: Docker login condition uses `env` context instead of `secrets` (PR #88, #89)
 - CI native binary compatibility: `npm install` step for platform-specific deps (PR #90)
+- Release job decoupled from Docker build dependency (PR #92)
 - 6 test suites that crashed on CI due to missing platform-specific native binaries
 
 ## [0.13.0] - 2026-03-01
