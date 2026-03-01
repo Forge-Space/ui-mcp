@@ -341,8 +341,8 @@ jobs:
   release:
     name: Create Release
     runs-on: ubuntu-latest
-    needs: [preflight, qa, build, docker]
-    if: needs.preflight.outputs.should_publish == 'true' && (github.event.inputs.create_release == 'true' || github.event.client_payload.create_release == 'true')
+    needs: [preflight, qa, build]
+    if: always() && needs.build.result == 'success' && (github.event.inputs.create_release == 'true' || github.event.client_payload.create_release == 'true')
     steps:
       - uses: actions/checkout@v4
         with:
