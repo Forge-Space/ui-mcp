@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.14.0] - 2026-03-01
+
+### Added
+
+- Jest mocks for `sharp` and `@resvg/resvg-js` native modules — fixes CI test failures on linux-x64
+- First npm publish: `npm install -g @forgespace/ui-mcp@0.14.0`
+
+### Fixed
+
+- CI deploy pipeline: Docker login condition uses `env` context instead of `secrets` (PR #88, #89)
+- CI native binary compatibility: `npm install` step for platform-specific deps (PR #90)
+- 6 test suites that crashed on CI due to missing platform-specific native binaries
+
 ## [0.13.0] - 2026-03-01
 
 ### Changed

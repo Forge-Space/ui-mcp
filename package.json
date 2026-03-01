@@ -1,6 +1,6 @@
 {
   "name": "@forgespace/ui-mcp",
-  "version": "0.13.1",
+  "version": "0.14.0",
   "description": "AI-driven UI generation via Model Context Protocol. Generate React, Next.js, Vue, Angular applications from natural language.",
   "type": "module",
   "main": "dist/index.js",
