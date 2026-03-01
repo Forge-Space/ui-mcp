@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.0] - 2026-03-01
+
+### Changed
+
+- **ESLint 9 → 10** — New recommended rules (`preserve-caught-error`, `no-useless-assignment`, `no-unassigned-vars`), config lookup from file directory, JSX reference tracking
+- **Jest 29 → 30** — 28% faster test execution, stricter type inference, glob v10 patterns
+- **Husky 8 → 9** — Simplified prepare script (`husky` replaces `husky install`)
+- **globals 14 → 17**, **eslint-config-prettier 9 → 10**, **@eslint/js 9 → 10**, **@types/jest 29 → 30**
+- **lint-staged 16.2 → 16.3**, **npm-check-updates 17 → 19**
+
+### Fixed
+
+- Add `{ cause: err }` to re-thrown errors in `analysis.service.ts` (4 catch blocks) — satisfies ESLint 10 `preserve-caught-error` rule
+- Remove useless initial assignment in `scaffold-backend.ts` — satisfies ESLint 10 `no-useless-assignment` rule
+
 ## [0.12.0] - 2026-02-28
 
 ### Changed

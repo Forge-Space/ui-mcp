@@ -60,7 +60,7 @@ export class AnalysisService {
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       logger.error(`Image analysis failed: ${msg}`);
-      throw new Error(`Image analysis failed: ${msg}`);
+      throw new Error(`Image analysis failed: ${msg}`, { cause: err });
     }
   }
 
@@ -128,7 +128,7 @@ export class AnalysisService {
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       logger.error(`Pattern detection failed: ${msg}`);
-      throw new Error(`Pattern detection failed: ${msg}`);
+      throw new Error(`Pattern detection failed: ${msg}`, { cause: err });
     }
   }
 
@@ -159,7 +159,7 @@ export class AnalysisService {
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       logger.error(`URL extraction failed: ${msg}`);
-      throw new Error(`URL extraction failed: ${msg}`);
+      throw new Error(`URL extraction failed: ${msg}`, { cause: err });
     }
   }
 
@@ -203,7 +203,7 @@ export class AnalysisService {
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       logger.error(`Tailwind mapping failed: ${msg}`);
-      throw new Error(`Tailwind mapping failed: ${msg}`);
+      throw new Error(`Tailwind mapping failed: ${msg}`, { cause: err });
     }
   }
 

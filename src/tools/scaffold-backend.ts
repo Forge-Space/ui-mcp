@@ -443,7 +443,7 @@ export const swaggerSpec = swaggerJsdoc({
   }
 
   // 9. Main entry point
-  let mainContent = '';
+  let mainContent: string;
   if (framework === 'nextjs') {
     mainContent = `// Next.js app is bootstrapped via next.config.js
 // Add middleware configuration in middleware.ts if needed
