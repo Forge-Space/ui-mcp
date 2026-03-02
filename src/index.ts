@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { captureException } from './lib/sentry.js';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { closeDatabase, loadConfig, logger } from '@forgespace/siza-gen';
@@ -27,6 +28,7 @@ import { registerGenerateApiRoute } from './tools/generate-api-route.js';
 import { registerGenerateBackendModule } from './tools/generate-backend-module.js';
 import { registerScaffoldBackend } from './tools/scaffold-backend.js';
 import { registerGenerateForm } from './tools/generate-form.js';
+import { registerPaymentsRefund } from './tools/payments-refund.js';
 
 // Load and validate configuration
 let config;
@@ -70,6 +72,7 @@ registerGenerateApiRoute(server);
 registerGenerateBackendModule(server);
 registerScaffoldBackend(server);
 registerGenerateForm(server);
+registerPaymentsRefund(server);
 try {
   registerForgeContextTools(server);
   logger.info('Forge context tools registered successfully');
@@ -113,12 +116,14 @@ process.on('SIGINT', () => {
 
 // Handle unhandled rejections
 process.on('unhandledRejection', (reason, promise) => {
+  captureException(reason instanceof Error ? reason : new Error(String(reason)));
   logger.error({ reason, promise }, 'Unhandled Rejection');
   process.exit(1);
 });
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (error) => {
+  captureException(error);
   logger.error({ error }, 'Uncaught Exception');
   try {
     closeDatabase();
