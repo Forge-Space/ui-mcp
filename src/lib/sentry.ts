@@ -18,3 +18,10 @@ export function captureException(error: unknown): void {
     Sentry.captureException(error);
   }
 }
+
+export async function captureExceptionAndFlush(error: unknown): Promise<void> {
+  if (dsn) {
+    Sentry.captureException(error);
+    await Sentry.close(2000);
+  }
+}

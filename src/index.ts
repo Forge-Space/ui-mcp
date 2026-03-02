@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { captureException } from './lib/sentry.js';
+import { captureExceptionAndFlush } from './lib/sentry.js';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { closeDatabase, loadConfig, logger } from '@forgespace/siza-gen';
@@ -114,21 +114,28 @@ process.on('SIGINT', () => {
   process.exit(0);
 });
 
-// Handle unhandled rejections
+// Handle unhandled rejections (flush Sentry before exit to avoid dropping events)
 process.on('unhandledRejection', (reason, promise) => {
-  captureException(reason instanceof Error ? reason : new Error(String(reason)));
-  logger.error({ reason, promise }, 'Unhandled Rejection');
-  process.exit(1);
+  const err = reason instanceof Error ? reason : new Error(String(reason));
+  captureExceptionAndFlush(err)
+    .then(() => {
+      logger.error({ reason, promise }, 'Unhandled Rejection');
+      process.exit(1);
+    })
+    .catch(() => process.exit(1));
 });
 
-// Handle uncaught exceptions
+// Handle uncaught exceptions (flush Sentry before exit to avoid dropping events)
 process.on('uncaughtException', (error) => {
-  captureException(error);
-  logger.error({ error }, 'Uncaught Exception');
-  try {
-    closeDatabase();
-  } catch (err) {
-    logger.error({ err }, 'Error closing database on uncaughtException');
-  }
-  process.exit(1);
+  captureExceptionAndFlush(error)
+    .then(() => {
+      logger.error({ error }, 'Uncaught Exception');
+      try {
+        closeDatabase();
+      } catch (err) {
+        logger.error({ err }, 'Error closing database on uncaughtException');
+      }
+      process.exit(1);
+    })
+    .catch(() => process.exit(1));
 });

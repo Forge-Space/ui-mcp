@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Unit tests for `payments_refund` (Zod schema validation: valid/invalid params, default currency, optional reason).
 - Unit tests for `generate_ui_component` producing `dashboard_payments` / `DashboardPayments` and for demo file existence.
 
+### Fixed
+
+- **Code review (PR #96)**: README tool count 22 and `SENTRY_DSN` in env table; Sentry flush before `process.exit` in uncaughtException/unhandledRejection to avoid dropping events; `payments_refund` schema: amount integer (minor units), currency ISO 4217 regex; handler response contract tests.
+
 ## [0.14.0] - 2026-03-01
 
 ### Added
