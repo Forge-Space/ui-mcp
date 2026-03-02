@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Sentry error reporting** — Optional `@sentry/node` integration; set `SENTRY_DSN` in env to report uncaught exceptions and unhandled rejections (org project: siza-mcp).
+- `payments_refund` MCP tool with Zod validation for payment refund requests (`payment_id`, `amount`, optional `reason`, `currency` default BRL). Stub handler returns structured confirmation.
+- Demo `DashboardPayments` React component (`demo/DashboardPayments.tsx`) — reference implementation for payments dashboard UI (shadcn-like, Tailwind). Usable as target for `generate_ui_component` with `component_type` "dashboard_payments" or "DashboardPayments".
+- Unit tests for `payments_refund` (Zod schema validation: valid/invalid params, default currency, optional reason).
+- Unit tests for `generate_ui_component` producing `dashboard_payments` / `DashboardPayments` and for demo file existence.
+
 ## [0.14.0] - 2026-03-01
 
 ### Added

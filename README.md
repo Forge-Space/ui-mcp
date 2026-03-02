@@ -87,6 +87,7 @@ Add to your MCP configuration (Claude Code, Windsurf, Cursor, VS Code):
 | `analyze_component_library`   | Context  | Analyze component library patterns                                                         |
 | `audit_accessibility`         | Quality  | WCAG 2.1 audit with fix suggestions                                                        |
 | `submit_feedback`             | Quality  | Submit feedback to improve future output                                                   |
+| `payments_refund`             | Backend  | Request payment refund with Zod-validated params (payment_id, amount, reason, currency)    |
 | `manage_training`             | ML       | Training data ingestion and fine-tuning                                                    |
 
 ## Framework & Library Support
