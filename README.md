@@ -3,7 +3,7 @@
     <img src="https://brand.forgespace.co/logos/wordmark.svg" alt="Forge Space" height="48">
   </a>
   <h1>Siza MCP Server</h1>
-  <p>AI-driven UI and backend code generation via Model Context Protocol. 21 tools, 5 frameworks, brand-aware — zero API keys required.</p>
+  <p>AI-driven UI and backend code generation via Model Context Protocol. 22 tools, 5 frameworks, brand-aware — zero API keys required.</p>
 </div>
 
 [![npm version](https://img.shields.io/npm/v/siza-mcp.svg)](https://www.npmjs.com/package/siza-mcp)
@@ -87,6 +87,7 @@ Add to your MCP configuration (Claude Code, Windsurf, Cursor, VS Code):
 | `analyze_component_library`   | Context  | Analyze component library patterns                                                         |
 | `audit_accessibility`         | Quality  | WCAG 2.1 audit with fix suggestions                                                        |
 | `submit_feedback`             | Quality  | Submit feedback to improve future output                                                   |
+| `payments_refund`             | Backend  | Request payment refund with Zod-validated params (payment_id, amount, reason, currency)    |
 | `manage_training`             | ML       | Training data ingestion and fine-tuning                                                    |
 
 ## Framework & Library Support
@@ -112,6 +113,7 @@ spacing are injected into the design context.
 | Variable             | Required             | Description                                                                     |
 | -------------------- | -------------------- | ------------------------------------------------------------------------------- |
 | `FIGMA_ACCESS_TOKEN` | Only for Figma tools | Token from [Figma Settings](https://www.figma.com/developers/api#access-tokens) |
+| `SENTRY_DSN`         | Optional             | Sentry DSN for error reporting (uncaught exceptions and unhandled rejections)   |
 
 ## Development
 
