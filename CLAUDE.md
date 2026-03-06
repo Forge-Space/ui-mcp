@@ -1,5 +1,12 @@
 # Siza MCP
 
+## Quick Reference
+
+```bash
+NODE_OPTIONS=--experimental-vm-modules npm run build
+NODE_OPTIONS=--experimental-vm-modules npm test
+```
+
 ## Project
 
 - Thin MCP protocol adapter for AI-powered UI/backend code generation
