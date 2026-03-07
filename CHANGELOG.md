@@ -7,17 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-03-07
+
 ### Added
 
-- **Sentry error reporting** — Optional `@sentry/node` integration; set `SENTRY_DSN` in env to report uncaught exceptions and unhandled rejections (org project: siza-mcp).
-- `payments_refund` MCP tool with Zod validation for payment refund requests (`payment_id`, `amount`, optional `reason`, `currency` default BRL). Stub handler returns structured confirmation.
-- Demo `DashboardPayments` React component (`demo/DashboardPayments.tsx`) — reference implementation for payments dashboard UI (shadcn-like, Tailwind). Usable as target for `generate_ui_component` with `component_type` "dashboard_payments" or "DashboardPayments".
-- Unit tests for `payments_refund` (Zod schema validation: valid/invalid params, default currency, optional reason).
-- Unit tests for `generate_ui_component` producing `dashboard_payments` / `DashboardPayments` and for demo file existence.
+- **Modern Horn brand assets** — Updated anvil-logo.svg and text-logo.svg to monochrome purple palette matching Forge Space rebrand (PR #102)
+- **Sentry error reporting** — Optional `@sentry/node` integration; set `SENTRY_DSN` in env to report uncaught exceptions and unhandled rejections (PR #102)
+- `payments_refund` MCP tool with Zod validation for payment refund requests (PR #96)
+- Demo `DashboardPayments` React component for payments dashboard UI (PR #96)
+- 50 new unit tests for `generate_form` tool (PR #95)
 
 ### Fixed
 
-- **Code review (PR #96)**: README tool count 22 and `SENTRY_DSN` in env table; Sentry flush before `process.exit` in uncaughtException/unhandledRejection to avoid dropping events; `payments_refund` schema: amount integer (minor units), currency ISO 4217 regex; handler response contract tests.
+- Sentry flush before `process.exit` to avoid dropping events (PR #96)
+- `payments_refund` schema: amount integer (minor units), currency ISO 4217 regex (PR #96)
 
 ## [0.14.0] - 2026-03-01
 
