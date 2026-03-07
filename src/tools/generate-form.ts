@@ -598,9 +598,16 @@ export function registerGenerateForm(server: McpServer): void {
       ' checkout) or fully custom field definitions.',
     {
       form_type: z
-        .enum(['login', 'signup', 'contact', 'checkout', 'settings', 'search', 'newsletter', 'custom'])
+        .enum(['login', 'signup', 'contact', 'checkout', 'settings', 'search', 'newsletter', 'custom'], {
+          message:
+            'Invalid form type. Valid types: login, signup, contact, checkout, settings, search, newsletter, custom',
+        })
         .describe('Type of form to generate'),
-      framework: z.enum(['react', 'nextjs', 'vue', 'angular', 'svelte', 'html']).describe('Target framework'),
+      framework: z
+        .enum(['react', 'nextjs', 'vue', 'angular', 'svelte', 'html'], {
+          message: 'Invalid framework. Valid frameworks: react, nextjs, vue, angular, svelte, html',
+        })
+        .describe('Target framework'),
       fields: z
         .array(
           z.object({
@@ -715,7 +722,7 @@ export function registerGenerateForm(server: McpServer): void {
               content: [
                 {
                   type: 'text' as const,
-                  text: 'Error: "custom" form_type requires' + ' a "fields" array.',
+                  text: 'Error: "custom" form_type requires a "fields" array. Use a preset (login, signup, contact, checkout, settings, search, newsletter) or provide custom fields.',
                 },
               ],
               isError: true,
