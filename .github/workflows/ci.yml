@@ -11,22 +11,15 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: Forge-Space/.github/.github/actions/setup-node@main
         with:
-          node-version: 22
-          cache: npm
+          install-command: "rm -f package-lock.json && npm install --legacy-peer-deps"
 
       - name: Cache ESLint
         uses: actions/cache@v5
         with:
           path: .eslintcache
           key: eslint-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Install dependencies
-        run: rm -f package-lock.json && npm install --legacy-peer-deps
 
       - name: Lint
         run: npm run lint
@@ -38,16 +31,9 @@ jobs:
     name: Type Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: Forge-Space/.github/.github/actions/setup-node@main
         with:
-          node-version: 22
-          cache: npm
-
-      - name: Install dependencies
-        run: rm -f package-lock.json && npm install --legacy-peer-deps
+          install-command: "rm -f package-lock.json && npm install --legacy-peer-deps"
 
       - name: Type check
         run: npx tsc --noEmit
@@ -59,15 +45,9 @@ jobs:
       matrix:
         node-version: [22]
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+      - uses: Forge-Space/.github/.github/actions/setup-node@main
         with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install dependencies
-        run: rm -f package-lock.json && npm install --legacy-peer-deps
+          install-command: "rm -f package-lock.json && npm install --legacy-peer-deps"
 
       - name: Run tests with coverage
         run: npm run test:coverage
@@ -117,15 +97,9 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: Forge-Space/.github/.github/actions/setup-node@main
         with:
-          node-version: 22
-
-      - name: Install dependencies
-        run: rm -f package-lock.json && npm install --legacy-peer-deps
+          install-command: "rm -f package-lock.json && npm install --legacy-peer-deps"
 
       - name: Build
         run: npm run build
@@ -161,7 +135,7 @@ jobs:
 
       - name: Check image size
         run: |
-          SIZE=$(docker image inspect uiforge-mcp:ci --format=\x27{{.Size}}\x27)
+          SIZE=$(docker image inspect uiforge-mcp:ci --format='{{.Size}}')
           SIZE_MB=$((SIZE / 1024 / 1024))
           echo "Image size: ${SIZE_MB}MB"
           if [ $SIZE_MB -gt 500 ]; then
@@ -172,16 +146,9 @@ jobs:
     name: Dependency Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: Forge-Space/.github/.github/actions/setup-node@main
         with:
-          node-version: 22
-          cache: npm
-
-      - name: Install dependencies
-        run: rm -f package-lock.json && npm install --legacy-peer-deps
+          install-command: "rm -f package-lock.json && npm install --legacy-peer-deps"
 
       - name: Check for outdated dependencies
         run: |
