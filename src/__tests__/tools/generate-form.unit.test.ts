@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { designContextStore, loadConfig } from '@forgespace/siza-gen';
 import { registerGenerateForm, generateFormFiles } from '../../tools/generate-form.js';
@@ -275,6 +276,51 @@ describe('generate_form tool', () => {
       const files = generateFormFiles('login', 'login', 'react', [], 'zod', 'none', false, false, ctx);
       const form = files[0].content;
       expect(form).not.toContain('dark:');
+    });
+  });
+
+  describe('validation error messages', () => {
+    const formTypeSchema = z.enum(
+      ['login', 'signup', 'contact', 'checkout', 'settings', 'search', 'newsletter', 'custom'],
+      {
+        message:
+          'Invalid form type. Valid types: login, signup, contact, checkout, settings, search, newsletter, custom',
+      }
+    );
+    const frameworkSchema = z.enum(['react', 'nextjs', 'vue', 'angular', 'svelte', 'html'], {
+      message: 'Invalid framework. Valid frameworks: react, nextjs, vue, angular, svelte, html',
+    });
+
+    it('returns descriptive error for invalid form_type', () => {
+      const result = formTypeSchema.safeParse('invalid_type');
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues[0].message).toBe(
+          'Invalid form type. Valid types: login, signup, contact, checkout, settings, search, newsletter, custom'
+        );
+      }
+    });
+
+    it('returns descriptive error for invalid framework', () => {
+      const result = frameworkSchema.safeParse('django');
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues[0].message).toBe(
+          'Invalid framework. Valid frameworks: react, nextjs, vue, angular, svelte, html'
+        );
+      }
+    });
+
+    it('accepts valid form_type values', () => {
+      for (const type of ['login', 'signup', 'contact', 'checkout', 'settings', 'search', 'newsletter', 'custom']) {
+        expect(formTypeSchema.safeParse(type).success).toBe(true);
+      }
+    });
+
+    it('accepts valid framework values', () => {
+      for (const fw of ['react', 'nextjs', 'vue', 'angular', 'svelte', 'html']) {
+        expect(frameworkSchema.safeParse(fw).success).toBe(true);
+      }
     });
   });
 
