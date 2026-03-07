@@ -79,7 +79,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ['*.config.js', '*.config.ts', '*.config.mjs'],
+    files: ['*.config.js', '*.config.ts', '*.config.mjs', '*.config.cjs'],
     rules: {
       'no-console': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
