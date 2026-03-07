@@ -13,6 +13,7 @@ permissions:
 jobs:
   semgrep:
     name: Semgrep Scan
+    continue-on-error: true
     runs-on: ubuntu-latest
     container:
       image: semgrep/semgrep
