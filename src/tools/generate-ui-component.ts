@@ -34,6 +34,7 @@ import {
 import { auditStyles } from '../lib/style-audit.js';
 import { withBrandContext } from '../lib/brand-context.js';
 import { extractDesignFromUrl } from '../lib/design-extractor.js';
+import { debugLogger, debugTiming } from '../lib/debug.js';
 
 // Track generation count for pattern promotion
 // Note: This is incremented after successful generation to avoid race conditions
@@ -194,7 +195,12 @@ export function registerGenerateUiComponent(server: McpServer): void {
       brand_identity,
     }) => {
       return withBrandContext(brand_identity, async () => {
-        // Initialize the component registry on first use
+        const endTotal = debugTiming('generate_ui_component');
+        debugLogger.debug(
+          { component_type, framework, component_library, mood, industry, visual_style, skip_ml },
+          '[generate_ui_component] params'
+        );
+
         initializeRegistry();
 
         const warnings: string[] = [];
@@ -230,6 +236,13 @@ export function registerGenerateUiComponent(server: McpServer): void {
             }
           }
         }
+
+        debugLogger.debug(
+          { enhanced: enhancedPromptText.length, original: component_type.length },
+          '[generate_ui_component] prompt enhanced (%d → %d chars)',
+          component_type.length,
+          enhancedPromptText.length
+        );
 
         // RAG: Semantic search for similar components and relevant rules
         let ragContext: {
@@ -339,6 +352,14 @@ export function registerGenerateUiComponent(server: McpServer): void {
           ragOptions || undefined,
           registryMatch,
           component_library
+        );
+
+        const totalChars = files.reduce((s, f) => s + f.content.length, 0);
+        debugLogger.debug(
+          { fileCount: files.length, totalChars, registryMatch: !!registryMatch },
+          '[generate_ui_component] generated %d files (%d chars)',
+          files.length,
+          totalChars
         );
 
         // ML: Quality scoring with RAG enhancement (unless skip_ml)
@@ -467,6 +488,14 @@ export function registerGenerateUiComponent(server: McpServer): void {
         ]
           .filter(Boolean)
           .join('\n');
+
+        const totalMs = endTotal();
+        debugLogger.debug(
+          { tool: 'generate_ui_component', totalMs, qualityScore: qualityScore?.score },
+          '[generate_ui_component] total: %dms, quality: %s',
+          totalMs,
+          qualityScore?.score ?? 'n/a'
+        );
 
         return {
           content: [

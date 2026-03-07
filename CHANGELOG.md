@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.1] - 2026-03-07
+
+### Added
+
+- **Debug/verbose logging** — Set `DEBUG=true` or `VERBOSE=true` to enable structured stderr logging with timing, params, and output size (closes #115)
+  - `src/lib/debug.ts`: `debugLogger`, `debugTiming()`, `withDebug()` wrapper, `isVerbose()`
+  - Integrated into `generate_ui_component` and `generate_form` handlers
+  - 5 new unit tests for debug module
+
 ## [0.15.0] - 2026-03-07
 
 ### Added
