@@ -10,17 +10,8 @@ permissions:
   security-events: write
 
 jobs:
-  trivy-fs:
-    name: Filesystem Scan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: fs
-          scan-ref: .
-          severity: HIGH,CRITICAL
-          exit-code: 1
-          format: table
+  trivy:
+    uses: Forge-Space/.github/.github/workflows/reusable-trivy.yml@main
+    permissions:
+      contents: read
+      security-events: write
