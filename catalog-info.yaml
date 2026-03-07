@@ -1,0 +1,17 @@
+apiVersion: backstage.io/v1alpha1
+kind: Service
+metadata:
+  name: ui-mcp
+  description: MCP server for AI-powered UI generation, templates, and component creation
+  tags:
+    - typescript
+    - mcp
+    - ai
+    - npm
+spec:
+  owner: forge-space
+  system: siza
+  lifecycle: production
+  dependsOn:
+    - forge-patterns
+    - siza-gen
