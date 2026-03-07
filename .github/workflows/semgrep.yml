@@ -1,0 +1,22 @@
+name: Semgrep CE
+
+on:
+  pull_request: {}
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/semgrep.yml
+
+permissions:
+  contents: read
+
+jobs:
+  semgrep:
+    name: Semgrep Scan
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep
+    if: (github.actor != 'dependabot[bot]')
+    steps:
+      - uses: actions/checkout@v4
+      - run: semgrep scan --config auto --error
