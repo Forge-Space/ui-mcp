@@ -3,20 +3,7 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { renderSvg, renderPng } from '../lib/image-renderer.js';
 import { designContextStore, type IDesignContext, type ImageType } from '@forgespace/siza-gen';
 import { withBrandContext } from '../lib/brand-context.js';
-
-// Helper for deep merging design context - handles one level of nesting
-function deepMergeContext(base: IDesignContext, override: Partial<IDesignContext>): IDesignContext {
-  return {
-    typography: override.typography ? { ...base.typography, ...override.typography } : base.typography,
-    colorPalette: override.colorPalette ? { ...base.colorPalette, ...override.colorPalette } : base.colorPalette,
-    spacing: override.spacing ? { ...base.spacing, ...override.spacing } : base.spacing,
-    borderRadius: override.borderRadius ? { ...base.borderRadius, ...override.borderRadius } : base.borderRadius,
-    shadows: override.shadows ? { ...base.shadows, ...override.shadows } : base.shadows,
-    iconSet: override.iconSet ?? base.iconSet,
-    animationLib: override.animationLib ?? base.animationLib,
-    buttonVariants: override.buttonVariants ?? base.buttonVariants,
-  };
-}
+import { deepMergeContext } from '../lib/design-context-merge.js';
 
 const inputSchema = {
   description: z.string().describe('What to render in the image (e.g., "Landing page with hero section and CTA")'),
