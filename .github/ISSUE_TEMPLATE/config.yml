@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Forge Space Discussions
+    url: https://github.com/orgs/Forge-Space/discussions
+    about: Ask questions and share ideas
+  - name: Security Policy
+    url: https://github.com/Forge-Space/.github/security/policy
+    about: Report security vulnerabilities
