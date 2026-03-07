@@ -13,6 +13,7 @@ import {
   type IGeneration,
 } from '@forgespace/siza-gen';
 import { withBrandContext } from '../lib/brand-context.js';
+import { debugLogger, debugTiming } from '../lib/debug.js';
 
 const logger = createLogger('generate-form');
 
@@ -711,6 +712,11 @@ export function registerGenerateForm(server: McpServer): void {
       visual_style: _visualStyle,
     }) => {
       return withBrandContext(brand_identity, async () => {
+        const endTotal = debugTiming('generate_form');
+        debugLogger.debug(
+          { form_type, framework, validation_library, component_library, multi_step },
+          '[generate_form] params'
+        );
         try {
           initializeRegistry();
           const ctx = designContextStore.get();
@@ -777,6 +783,15 @@ export function registerGenerateForm(server: McpServer): void {
             'Files:',
             ...files.map((f) => `  ${f.path}`),
           ].join('\n');
+
+          const totalMs = endTotal();
+          debugLogger.debug(
+            { tool: 'generate_form', totalMs, fileCount: files.length, fieldCount: resolvedFields.length },
+            '[generate_form] total: %dms, %d files, %d fields',
+            totalMs,
+            files.length,
+            resolvedFields.length
+          );
 
           return {
             content: [
