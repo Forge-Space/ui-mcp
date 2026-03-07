@@ -9,7 +9,7 @@ const __dirname = dirname(__filename);
 
 export default tseslint.config(
   {
-    ignores: ['node_modules/', 'dist/', 'build/', 'coverage/', '**/*.min.js', 'docs/'],
+    ignores: ['node_modules/', 'dist/', 'build/', 'coverage/', '**/*.min.js', 'docs/', 'commitlint.config.cjs'],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
