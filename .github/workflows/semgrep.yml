@@ -7,17 +7,6 @@ on:
     paths:
       - .github/workflows/semgrep.yml
 
-permissions:
-  contents: read
-
 jobs:
   semgrep:
-    name: Semgrep Scan
-    continue-on-error: true
-    runs-on: ubuntu-latest
-    container:
-      image: semgrep/semgrep
-    if: (github.actor != 'dependabot[bot]')
-    steps:
-      - uses: actions/checkout@v4
-      - run: semgrep scan --config auto --error
+    uses: Forge-Space/.github/.github/workflows/reusable-semgrep.yml@main
