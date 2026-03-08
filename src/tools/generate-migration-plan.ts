@@ -1,20 +1,13 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { assessProject, detectStrategy, type AssessmentContext, type AssessmentReport } from '@forgespace/core';
+import { execFileSync } from 'node:child_process';
 import pino from 'pino';
 
 const logger = pino({ name: 'generate-migration-plan' }, pino.destination(2));
 
 const inputSchema = {
   project_dir: z.string().describe('Absolute path to the project directory'),
-  language: z.string().optional().describe('Primary language'),
-  framework: z.string().optional().describe('Primary framework'),
-  test_framework: z.string().optional().describe('Test framework in use'),
-  has_linting: z.boolean().optional().describe('Whether linting is configured'),
-  has_type_checking: z.boolean().optional().describe('Whether type checking is configured'),
-  has_ci: z.boolean().optional().describe('Whether CI is configured'),
   target_framework: z.string().optional().describe('Target framework to migrate to'),
-  max_files: z.number().optional().describe('Max files to scan (default 500)'),
 };
 
 interface MigrationPhase {
@@ -70,7 +63,7 @@ function migrationPhases(): MigrationPhase[] {
         'Add performance monitoring and alerting',
         'Complete dependency modernization',
         'Remove deprecated APIs and dead code',
-        'Run full governance audit \u2014 target A/B grade',
+        'Run full governance audit — target A/B grade',
       ],
     },
   ];
@@ -87,31 +80,32 @@ function strategyDescription(strategy: string): string {
   return descriptions[strategy] ?? strategy;
 }
 
-type Params = z.infer<z.ZodObject<typeof inputSchema>>;
+export function handleGenerateMigrationPlan(params: z.infer<z.ZodObject<typeof inputSchema>>): string {
+  const result = execFileSync('npx', ['forge-ai-init', 'assess', '--json', '--dir', params.project_dir], {
+    encoding: 'utf-8',
+    timeout: 60000,
+  });
+  const report = JSON.parse(result) as {
+    overallScore: number;
+    overallGrade: string;
+    migrationReadiness: string;
+    migrationStrategy: string;
+    findings: Array<{
+      severity: string;
+      title?: string;
+      detail?: string;
+      file?: string;
+    }>;
+  };
 
-function buildContext(params: Params): AssessmentContext {
-  const ctx: AssessmentContext = { dir: params.project_dir };
-  if (params.language) ctx.language = params.language;
-  if (params.framework) ctx.framework = params.framework;
-  if (params.test_framework) ctx.testFramework = params.test_framework;
-  if (params.has_linting) ctx.hasLinting = params.has_linting;
-  if (params.has_type_checking) ctx.hasTypeChecking = params.has_type_checking;
-  if (params.has_ci) ctx.hasCi = params.has_ci;
-  return ctx;
-}
-
-export function handleGenerateMigrationPlan(params: Params): string {
-  const ctx = buildContext(params);
-  const report: AssessmentReport = assessProject(ctx, params.max_files ?? 500);
-  const strategy = detectStrategy(ctx);
-
+  const strategy = report.migrationStrategy;
   const phases = migrationPhases();
 
   let plan = '# Migration Plan\n\n';
   plan += '## Current State\n';
   plan += `- Health Score: ${report.overallScore}/100 `;
-  plan += `(${report.grade})\n`;
-  plan += `- Readiness: ${report.readiness}\n`;
+  plan += `(${report.overallGrade})\n`;
+  plan += `- Readiness: ${report.migrationReadiness}\n`;
   if (params.target_framework) {
     plan += `- Target: ${params.target_framework}\n`;
   }
@@ -142,7 +136,8 @@ export function handleGenerateMigrationPlan(params: Params): string {
     if (criticals.length > 0) {
       plan += '### Critical (fix immediately)\n';
       for (const f of criticals) {
-        plan += `- ${f.message}`;
+        const msg = f.title ?? f.detail ?? '';
+        plan += `- ${msg}`;
         if (f.file) plan += ` (${f.file})`;
         plan += '\n';
       }
@@ -151,7 +146,8 @@ export function handleGenerateMigrationPlan(params: Params): string {
     if (highs.length > 0) {
       plan += '### High (fix in Foundation phase)\n';
       for (const f of highs.slice(0, 10)) {
-        plan += `- ${f.message}`;
+        const msg = f.title ?? f.detail ?? '';
+        plan += `- ${msg}`;
         if (f.file) plan += ` (${f.file})`;
         plan += '\n';
       }
@@ -168,7 +164,7 @@ export function registerGenerateMigrationPlan(server: McpServer): void {
     'Generate a phased migration plan for a legacy ' +
       'codebase. Runs assessment, detects strategy, and ' +
       'produces a roadmap with quality gates ' +
-      '(40% \u2192 60% \u2192 80%).',
+      '(40% -> 60% -> 80%).',
     inputSchema,
     async (params) => {
       try {

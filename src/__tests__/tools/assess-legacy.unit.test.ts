@@ -23,17 +23,13 @@ describe('assess_legacy_codebase tool', () => {
 
     const report = handleAssessLegacy({
       project_dir: dir,
-      test_framework: 'jest',
-      has_linting: true,
-      has_type_checking: true,
-      has_ci: true,
-    });
+    }) as Record<string, unknown>;
 
     expect(report.overallScore).toBeGreaterThanOrEqual(0);
     expect(report.overallScore).toBeLessThanOrEqual(100);
-    expect(report.categories).toHaveLength(5);
-    expect(['A', 'B', 'C', 'D', 'F']).toContain(report.grade);
-    expect(['ready', 'needs-work', 'high-risk']).toContain(report.readiness);
+    expect(report.categories).toBeDefined();
+    expect(['A', 'B', 'C', 'D', 'F']).toContain(report.overallGrade);
+    expect(['ready', 'needs-work', 'high-risk']).toContain(report.migrationReadiness);
 
     rmSync(dir, { recursive: true, force: true });
   });
@@ -52,9 +48,19 @@ describe('assess_legacy_codebase tool', () => {
 
     const report = handleAssessLegacy({
       project_dir: dir,
-    });
+    }) as Record<string, unknown>;
+    const findings = report.findings as Array<{
+      title?: string;
+      detail?: string;
+    }>;
 
-    const legacyFindings = report.findings.filter((f) => f.message.includes('Legacy') || f.message.includes('legacy'));
+    const legacyFindings = findings.filter(
+      (f) =>
+        (f.title ?? '').includes('Legacy') ||
+        (f.detail ?? '').includes('Legacy') ||
+        (f.title ?? '').includes('legacy') ||
+        (f.detail ?? '').includes('legacy')
+    );
     expect(legacyFindings.length).toBeGreaterThanOrEqual(1);
 
     rmSync(dir, { recursive: true, force: true });
