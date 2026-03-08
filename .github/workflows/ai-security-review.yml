@@ -1,0 +1,17 @@
+name: AI Security Review
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  ai-review:
+    uses: Forge-Space/.github/.github/workflows/reusable-ai-security-review.yml@main
+    with:
+      exclude-directories: "dist/,node_modules/,.uiforge/"
+    secrets:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
