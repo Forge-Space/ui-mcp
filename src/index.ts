@@ -29,6 +29,8 @@ import { registerGenerateBackendModule } from './tools/generate-backend-module.j
 import { registerScaffoldBackend } from './tools/scaffold-backend.js';
 import { registerGenerateForm } from './tools/generate-form.js';
 import { registerPaymentsRefund } from './tools/payments-refund.js';
+import { registerAssessLegacy } from './tools/assess-legacy.js';
+import { registerGenerateMigrationPlan } from './tools/generate-migration-plan.js';
 
 // Load and validate configuration
 let config;
@@ -73,6 +75,8 @@ registerGenerateBackendModule(server);
 registerScaffoldBackend(server);
 registerGenerateForm(server);
 registerPaymentsRefund(server);
+registerAssessLegacy(server);
+registerGenerateMigrationPlan(server);
 try {
   registerForgeContextTools(server);
   logger.info('Forge context tools registered successfully');

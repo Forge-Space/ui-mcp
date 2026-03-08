@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **`assess_legacy_codebase` MCP tool** — Assess legacy codebase health using @forgespace/core migration module (5 collectors: dependencies, architecture, security, quality, migration-readiness)
+- **`generate_migration_plan` MCP tool** — Generate phased migration roadmap with strategy detection (strangler-fig, branch-by-abstraction, parallel-run, lift-and-shift)
+- Bumped `@forgespace/core` to ^1.10.1 (moved from devDependencies to dependencies)
+
 ## [0.16.0] - 2026-03-07
 
 ### Added
