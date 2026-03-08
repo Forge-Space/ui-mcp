@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.16.0] - 2026-03-07
+
+### Added
+
+- **IDP Service Catalog** — Added `catalog-info.yaml` for Backstage service discovery and ownership tracking
+- **Feature Request Template** — Added `.github/ISSUE_TEMPLATE/feature_request.yml` and `.github/ISSUE_TEMPLATE/config.yml` for structured feature proposals
+- **Import Cycle Detection** — Integrated `madge` for detecting circular dependencies during CI and local development (PR #113)
+- **Security Scanning** — Added Semgrep CE for SAST and Trivy for container/dependency scanning (PR #117)
+- **Org Composite Actions** — Migrated to shared Node.js setup action from `.github` repo for consistency (PR #122)
+
+### Changed
+
+- **Dependencies** — Bumped production dependencies: `@anthropic-ai/sdk` 0.39.1 → 0.39.3, `@resvg/resvg-js` 2.6.2 → 2.7.0 (PRs #106-112)
+- **Dependencies** — Bumped dev dependencies: `@types/node` 22.14.6 → 22.15.0, `lint-staged` 16.3.0 → 16.3.1, `madge` 9.1.0 → 9.2.0, `tsup` 8.3.5 → 8.3.7, `tsx` 4.19.5 → 4.19.6 (PRs #106-112)
+- **Dependencies** — Bumped `@forgespace/core` to `^1.6.0` for feature toggle management and post-gen scoring (PR #104)
+- **Dependencies** — Updated GitHub Actions: `trufflesecurity/trufflehog` 3.93.6 → 3.93.7, `docker/metadata-action` 5 → 6, `docker/login-action` 3 → 4, `docker/setup-buildx-action` 3 → 4, `docker/build-push-action` 6 → 7
+- **CI** — Replaced individual security workflows with org reusable workflow callers (PR #120)
+- **CI** — Added `.nvmrc` (22.17.0), `CODEOWNERS` (Lucas Santana), dependabot for npm and GitHub Actions
+- **Context Utilities** — Deduplicated `deepMergeContext` into shared lib in `@forgespace/siza-gen`
+
+### Fixed
+
+- **Form Validation** — Added descriptive error messages for invalid `formType` and `validationLibrary` enum values in `generate_form` tool (PR #118)
+
 ## [0.15.1] - 2026-03-07
 
 ### Added
