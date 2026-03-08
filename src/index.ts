@@ -34,6 +34,8 @@ import { registerGenerateMigrationPlan } from './tools/generate-migration-plan.j
 import { registerForgeScan } from './tools/forge-scan.js';
 import { registerForgeGate } from './tools/forge-gate.js';
 import { registerForgeDiff } from './tools/forge-diff.js';
+import { registerForgeAssess } from './tools/forge-assess.js';
+import { registerForgeMigrate } from './tools/forge-migrate.js';
 
 // Load and validate configuration
 let config;
@@ -83,6 +85,8 @@ registerGenerateMigrationPlan(server);
 registerForgeScan(server);
 registerForgeGate(server);
 registerForgeDiff(server);
+registerForgeAssess(server);
+registerForgeMigrate(server);
 try {
   registerForgeContextTools(server);
   logger.info('Forge context tools registered successfully');

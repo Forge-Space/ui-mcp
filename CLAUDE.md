@@ -13,14 +13,14 @@ NODE_OPTIONS=--experimental-vm-modules npm test
 - All AI/ML, generators, registry, feedback, and quality code lives in
   `@forgespace/siza-gen`
 - GitHub: Forge-Space/ui-mcp, default branch: `main`
-- Bundle: ~355 KB (tools, services, resources only)
+- Bundle: ~403 KB (tools, services, resources only)
 
 ## Architecture
 
 ```
 siza-mcp (this repo)              @forgespace/siza-gen
 ├── src/index.ts (MCP server)     ├── ml/        (embeddings, quality, training)
-├── tools/     (22 tool defs)     ├── generators/ (react, vue, angular, svelte, html)
+├── tools/     (32 tool defs)     ├── generators/ (react, vue, angular, svelte, html)
 ├── services/  (figma, analysis)  ├── registry/   (502 snippets, compositions, packs)
 ├── resources/ (MCP resources)    ├── feedback/   (self-learning, pattern promotion)
 └── lib/       (browser, image)   └── quality/    (anti-generic rules, diversity)
@@ -35,7 +35,7 @@ siza-mcp (this repo)              @forgespace/siza-gen
 
 - `npm run build` before `npm test`
 - Pre-push hook: lint → format:check → tsc → test → build
-- 33 test suites, 394 tests (tool-level + integration)
+- 45 test suites, 529 tests (tool-level + integration)
 - siza-gen has 343 additional tests for AI/registry internals
 
 ## What Stays Here

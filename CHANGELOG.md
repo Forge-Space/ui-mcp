@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.18.0] - 2026-03-08
+
+### Added
+
+- **`forge_assess` MCP tool** — Run full project health assessment via `forge-ai-init` programmatic API. Returns scores across 5 categories (dependencies, architecture, security, quality, migration-readiness), grades, migration readiness, and prioritized critical/high findings
+- **`forge_migrate` MCP tool** — Generate complete migration plan combining health assessment with strategy recommendation, strangler boundaries, TypeScript migration plan, dependency risks, and phased roadmap with quality gates
+
+### Changed
+
+- Bumped `forge-ai-init` to `^0.20.0` for programmatic API access
+- Bundle size: 381 KB → 403 KB (+22 KB for 2 new governance tools)
+- Test count: 437 → 529 (+92 tests across 45 suites)
+
 ## [0.17.0] - 2026-03-08
 
 ### Added
