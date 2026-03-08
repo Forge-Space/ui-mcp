@@ -31,6 +31,9 @@ import { registerGenerateForm } from './tools/generate-form.js';
 import { registerPaymentsRefund } from './tools/payments-refund.js';
 import { registerAssessLegacy } from './tools/assess-legacy.js';
 import { registerGenerateMigrationPlan } from './tools/generate-migration-plan.js';
+import { registerForgeScan } from './tools/forge-scan.js';
+import { registerForgeGate } from './tools/forge-gate.js';
+import { registerForgeDiff } from './tools/forge-diff.js';
 
 // Load and validate configuration
 let config;
@@ -77,6 +80,9 @@ registerGenerateForm(server);
 registerPaymentsRefund(server);
 registerAssessLegacy(server);
 registerGenerateMigrationPlan(server);
+registerForgeScan(server);
+registerForgeGate(server);
+registerForgeDiff(server);
 try {
   registerForgeContextTools(server);
   logger.info('Forge context tools registered successfully');
