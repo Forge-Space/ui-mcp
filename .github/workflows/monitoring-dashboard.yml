@@ -24,6 +24,7 @@ on:
 
 permissions:
   contents: read
+  security-events: write
   issues: write
   pull-requests: read
 
