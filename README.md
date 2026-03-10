@@ -123,6 +123,9 @@ npm test                  # 437 tests, 35 suites
 npm run validate          # lint + format + typecheck + test
 ```
 
+Scheduled monitoring runs that execute CodeQL require job-scoped
+`security-events: write` permission for SARIF upload.
+
 ## License
 
 MIT
