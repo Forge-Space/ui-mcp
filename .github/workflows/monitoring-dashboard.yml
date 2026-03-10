@@ -24,7 +24,6 @@ on:
 
 permissions:
   contents: read
-  security-events: write
   issues: write
   pull-requests: read
 
@@ -230,6 +229,9 @@ jobs:
   security-scan:
     name: Security Scan
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
     steps:
       - uses: actions/checkout@v4
 
