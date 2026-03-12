@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CI: Added job-scoped `security-events: write` permission to the
   `Monitoring Dashboard` security scan so scheduled CodeQL analysis can upload
   SARIF results successfully.
+- CI: Hardened scheduled `Security Monitoring` coverage job by removing
+  Codecov action usage from the scheduled workflow path, preventing false
+  failures caused by third-party action download errors.
 
 ## [0.18.0] - 2026-03-08
 

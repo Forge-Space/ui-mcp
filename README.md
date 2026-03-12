@@ -126,6 +126,10 @@ npm run validate          # lint + format + typecheck + test
 Scheduled monitoring runs that execute CodeQL require job-scoped
 `security-events: write` permission for SARIF upload.
 
+The scheduled `Security Monitoring` workflow intentionally skips Codecov upload
+and relies on local coverage summary generation to reduce false alerting from
+third-party action download instability.
+
 ## License
 
 MIT

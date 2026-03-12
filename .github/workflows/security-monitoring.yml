@@ -65,19 +65,11 @@ jobs:
       - name: Run tests with coverage
         run: npm run test:coverage
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          files: ./coverage/coverage-final.json,./coverage/lcov.info
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: false
-          token: ${{ secrets.CODECOV_TOKEN }}
-          verbose: true
-
       - name: Generate coverage report
         run: |
           echo "## Coverage Monitoring Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Codecov upload is intentionally skipped in scheduled monitoring to avoid third-party action download failures." >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
           if [ -f coverage/coverage-summary.json ]; then
