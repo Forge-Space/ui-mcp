@@ -134,32 +134,30 @@ describe('generate_page_template tool', () => {
       const emptyCtx = {
         colorPalette: {
           primary: '',
+          primaryForeground: '',
           secondary: '',
+          secondaryForeground: '',
           accent: '',
+          accentForeground: '',
           background: '',
           foreground: '',
           muted: '',
           mutedForeground: '',
-          card: '',
-          cardForeground: '',
-          popover: '',
-          popoverForeground: '',
           border: '',
-          input: '',
-          ring: '',
           destructive: '',
           destructiveForeground: '',
         },
         typography: {
           fontFamily: '',
           headingFont: '',
-          fontSize: { base: '', sm: '', lg: '', xl: '', '2xl': '' },
+          fontSize: { xs: '', sm: '', base: '', lg: '', xl: '', '2xl': '', '3xl': '' },
           fontWeight: { normal: '', medium: '', semibold: '', bold: '' },
           lineHeight: { tight: '', normal: '', relaxed: '' },
         },
-        spacing: { xs: '', sm: '', md: '', lg: '', xl: '' },
-        borderRadius: { sm: '', md: '', lg: '' },
-        iconSet: 'lucide' as const,
+        spacing: { unit: 4, scale: [] },
+        borderRadius: { sm: '', md: '', lg: '', full: '' },
+        shadows: { sm: '', md: '', lg: '' },
+        iconSet: 'lucide',
       } as typeof ctx;
 
       const files = await generateTemplate('landing', 'react', 'none', false, 'MyApp', emptyCtx);
@@ -176,6 +174,43 @@ describe('generate_page_template tool', () => {
       }
 
       expect(files[0].content).toContain('MyApp');
+    });
+
+    it('uses react as fallback for unknown framework', async () => {
+      const files = await generateTemplate('landing', 'unknown-framework' as 'react', 'none', false, 'TestApp', ctx);
+      expect(files).toBeDefined();
+      expect(files.length).toBeGreaterThan(0);
+      expect(files[0].content).toBeDefined();
+    });
+
+    it('passes mood option through to template generation', async () => {
+      const files = await generateTemplate('landing', 'react', 'none', false, 'TestApp', ctx, { mood: 'playful' });
+      expect(files).toBeDefined();
+      expect(files.length).toBeGreaterThan(0);
+    });
+
+    it('passes industry option through to template generation', async () => {
+      const files = await generateTemplate('landing', 'react', 'none', false, 'TestApp', ctx, { industry: 'fintech' });
+      expect(files).toBeDefined();
+      expect(files.length).toBeGreaterThan(0);
+    });
+
+    it('passes visual_style option through to template generation', async () => {
+      const files = await generateTemplate('landing', 'react', 'none', false, 'TestApp', ctx, {
+        visual_style: 'minimal',
+      });
+      expect(files).toBeDefined();
+      expect(files.length).toBeGreaterThan(0);
+    });
+
+    it('passes combined mood + industry + visual_style options', async () => {
+      const files = await generateTemplate('landing', 'react', 'none', false, 'TestApp', ctx, {
+        mood: 'professional',
+        industry: 'saas',
+        visual_style: 'modern',
+      });
+      expect(files).toBeDefined();
+      expect(files.length).toBeGreaterThan(0);
     });
   });
 });

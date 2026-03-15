@@ -114,4 +114,54 @@ describe('forge context tools', () => {
     const result = handler({}, {});
     expect(result.content[0].type).toBe('text');
   });
+
+  it('get_project_context returns error when project is missing', () => {
+    registerForgeContextTools(server);
+    const handler = getHandler(server, 'get_project_context');
+    if (!handler) return;
+
+    const result = handler({ project: '' }, {});
+    expect(result.isError).toBe(true);
+    expect(result.content[0].text).toContain('Error');
+  });
+
+  it('get_project_context returns error when project is undefined', () => {
+    registerForgeContextTools(server);
+    const handler = getHandler(server, 'get_project_context');
+    if (!handler) return;
+
+    const result = handler({ project: undefined }, {});
+    expect(result.isError).toBe(true);
+    expect(result.content[0].text).toContain('Missing required argument');
+  });
+
+  it('update_project_context returns error when required args are missing', () => {
+    registerForgeContextTools(server);
+    const handler = getHandler(server, 'update_project_context');
+    if (!handler) return;
+
+    const result = handler({ project: 'my-project', title: '', description: '', content: '' }, {});
+    expect(result.isError).toBe(true);
+    expect(result.content[0].text).toContain('Missing required arguments');
+  });
+
+  it('update_project_context returns error when project is missing', () => {
+    registerForgeContextTools(server);
+    const handler = getHandler(server, 'update_project_context');
+    if (!handler) return;
+
+    const result = handler({ project: '', title: 'Title', description: 'desc', content: 'content' }, {});
+    expect(result.isError).toBe(true);
+    expect(result.content[0].text).toContain('Error');
+  });
+
+  it('get_project_context error message uses error.message for Error instances', () => {
+    registerForgeContextTools(server);
+    const handler = getHandler(server, 'get_project_context');
+    if (!handler) return;
+
+    const result = handler({ project: null }, {});
+    expect(result.isError).toBe(true);
+    expect(result.content[0].text).toMatch(/^Error: /);
+  });
 });
