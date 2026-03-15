@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.22.2] - 2026-03-15
+
+### Fixed
+
+- Fix MCP Registry name casing: use io.github.Forge-Space/ui-mcp (capital F and S)
+  to match GitHub OIDC org token — previous lowercase caused 403 Forbidden on every publish
+- Also update package.json mcpName to match
+
+
 ## [0.22.1] - 2026-03-15
 
 ### Fixed
