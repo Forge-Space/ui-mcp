@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.22.3] - 2026-03-15
+
+### Added
+
+- Unit tests for figma-push-variables tool (35% to 100%) and current-styles resource (56% to 100%)
+- Overall statement coverage: 81.3% to 81.8%
+
+
 ## [0.22.2] - 2026-03-15
 
 ### Fixed
