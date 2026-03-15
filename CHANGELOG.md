@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.21.0] - 2026-03-15
+
+### Added
+
+- **Unit tests for 6 previously-uncovered tools** — `generate-api-route`, `generate-backend-module`,
+  `generate-from-pack`, `scaffold-backend`, `setup-component-library`, `forge-context` (51 suites,
+  580 tests total; statement coverage 67% → 79%)
+- **`knip.config.ts`** — Knip dead-code configuration tracking unused files, deps, and exports
+
+### Changed
+
+- **`strictNullChecks: true`** — Enabled across all lib and tool files. Fixed 67 null-safety
+  errors in 11 files using non-null assertions guarded by surrounding null-checks
+- **`eslint.config.js`** — Disabled `@typescript-eslint/no-non-null-assertion` (redundant when
+  TypeScript enforces null safety at compile time via strictNullChecks)
+- **`tsconfig.json`** — Removed stale `ts-node` config section and unused path aliases
+- **`jest.config.ts`** — Removed stale `prototype-shell.ts` exclusion (file removed in v0.20.0)
+- **Publish pipeline** — Fixed fragile `continue-on-error` npm publish pattern with a
+  pre-check via unauthenticated curl, eliminating false CI failures when version is already
+  published (PR #141)
+
+### Fixed
+
+- MCP publish workflow now skips npm publish when version already exists on registry
+  instead of treating it as a failure, allowing MCP Registry publish and GitHub release
+  creation to always proceed
+
 ## [0.20.0] - 2026-03-16
 
 ### Added
