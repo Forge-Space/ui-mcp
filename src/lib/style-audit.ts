@@ -12,12 +12,12 @@ export function parseTailwindConfig(configString: string): StyleAuditResult {
   try {
     const colorsMatch = configString.match(/colors\s*:\s*\{([^}]+(?:\{[^}]*\}[^}]*)*)\}/s);
     if (colorsMatch) {
-      const colorsBlock = colorsMatch[1];
+      const colorsBlock = colorsMatch[1]!;
       const colorPalette: Record<string, string> = {};
 
       const colorEntries = colorsBlock.matchAll(/['"]?(\w+)['"]?\s*:\s*['"]([#\w]+)['"]/g);
       for (const match of colorEntries) {
-        colorPalette[match[1]] = match[2];
+        colorPalette[match[1]!] = match[2]!;
       }
 
       if (Object.keys(colorPalette).length > 0) {
@@ -43,7 +43,7 @@ export function parseTailwindConfig(configString: string): StyleAuditResult {
     const fontFamilyMatch = configString.match(/fontFamily\s*:\s*\{[^}]*sans\s*:\s*\[['"]([^'"]+)['"]/s);
     if (fontFamilyMatch) {
       tokens.typography = {
-        fontFamily: fontFamilyMatch[1],
+        fontFamily: fontFamilyMatch[1]!,
         fontSize: {
           xs: '0.75rem',
           sm: '0.875rem',
@@ -60,11 +60,11 @@ export function parseTailwindConfig(configString: string): StyleAuditResult {
 
     const borderRadiusMatch = configString.match(/borderRadius\s*:\s*\{([^}]+)\}/s);
     if (borderRadiusMatch) {
-      const radiusBlock = borderRadiusMatch[1];
+      const radiusBlock = borderRadiusMatch[1]!;
       const radiusEntries: Record<string, string> = {};
       const matches = radiusBlock.matchAll(/['"]?(\w+)['"]?\s*:\s*['"]([^'"]+)['"]/g);
       for (const match of matches) {
-        radiusEntries[match[1]] = match[2];
+        radiusEntries[match[1]!] = match[2]!;
       }
       if (Object.keys(radiusEntries).length > 0) {
         tokens.borderRadius = {
@@ -89,8 +89,8 @@ export function parseCssVariables(cssString: string): StyleAuditResult {
   try {
     const varMatches = cssString.matchAll(/--([a-zA-Z0-9-]+)\s*:\s*([^;]+);/g);
     for (const match of varMatches) {
-      const name = match[1].trim();
-      const value = match[2].trim();
+      const name = match[1]!.trim();
+      const value = match[2]!.trim();
 
       if (
         name.includes('color') ||

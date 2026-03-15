@@ -117,7 +117,7 @@ export function registerScaffoldFullApplication(server: McpServer): void {
         const generator = GeneratorFactory.getInstance().createGenerator(framework);
         const files = generator.generateProject(project_name, architecture, mappedStateManagement, ctx);
 
-        const pageTypes = ARCH_PAGES[architecture] ?? ARCH_PAGES['flat'];
+        const pageTypes = (ARCH_PAGES[architecture] ?? ARCH_PAGES['flat'])!;
         const composedPages: IGeneratedFile[] = [];
         const useML = !!(mood || industry || visual_style);
 

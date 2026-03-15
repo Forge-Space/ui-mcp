@@ -243,8 +243,8 @@ export function buildSuggestedContext(patterns: IPatternMatch[]): Partial<IDesig
 
   if (fontPatterns.length > 0) {
     ctx.typography = {
-      fontFamily: `${fontPatterns[0].pattern}, system-ui, sans-serif`,
-      headingFont: fontPatterns.length > 1 ? fontPatterns[1].pattern : undefined,
+      fontFamily: `${fontPatterns[0]!.pattern}, system-ui, sans-serif`,
+      headingFont: fontPatterns.length > 1 ? fontPatterns[1]!.pattern : undefined,
       fontSize: {
         xs: '0.75rem',
         sm: '0.875rem',
@@ -319,8 +319,8 @@ function normalizeSpacing(spacing: string): string | null {
 
   const match = spacing.match(/^(\d+(?:\.\d+)?)(px|rem|em)$/);
   if (!match) return null;
-  const value = parseFloat(match[1]);
-  const unit = match[2];
+  const value = parseFloat(match[1]!);
+  const unit = match[2]!;
   if (unit === 'px' && value > 0 && value <= MAX_SPACING_PX) return spacing;
   if ((unit === 'rem' || unit === 'em') && value > 0 && value <= MAX_SPACING_REM) return spacing;
   return null;

@@ -286,9 +286,9 @@ function componentToHex(component: number): string {
 export function rgbToHex(rgb: string): string | null {
   const match = rgb.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
   if (!match) return null;
-  const r = parseInt(match[1], RADIX_DECIMAL);
-  const g = parseInt(match[2], RADIX_DECIMAL);
-  const b = parseInt(match[3], RADIX_DECIMAL);
+  const r = parseInt(match[1]!, RADIX_DECIMAL);
+  const g = parseInt(match[2]!, RADIX_DECIMAL);
+  const b = parseInt(match[3]!, RADIX_DECIMAL);
 
   // Validate RGB values are in valid range (0-255)
   // Note: parseInt with \d+ regex cannot produce negative numbers, so only check upper bound and NaN

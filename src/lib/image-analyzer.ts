@@ -56,9 +56,12 @@ function quantizeColors(pixels: Buffer, pixelCount: number, maxColors: number): 
 
   for (let pixelIndex = 0; pixelIndex < expectedSize; pixelIndex += 3) {
     // Quantize RGB values with clamping to prevent overflow (e.g., 255/32*32 = 256)
-    const red = Math.min(255, Math.round(pixels[pixelIndex] / COLOR_QUANTIZATION_STEP) * COLOR_QUANTIZATION_STEP);
-    const green = Math.min(255, Math.round(pixels[pixelIndex + 1] / COLOR_QUANTIZATION_STEP) * COLOR_QUANTIZATION_STEP);
-    const blue = Math.min(255, Math.round(pixels[pixelIndex + 2] / COLOR_QUANTIZATION_STEP) * COLOR_QUANTIZATION_STEP);
+    const red = Math.min(255, Math.round(pixels[pixelIndex]! / COLOR_QUANTIZATION_STEP) * COLOR_QUANTIZATION_STEP);
+    const green = Math.min(
+      255,
+      Math.round(pixels[pixelIndex + 1]! / COLOR_QUANTIZATION_STEP) * COLOR_QUANTIZATION_STEP
+    );
+    const blue = Math.min(255, Math.round(pixels[pixelIndex + 2]! / COLOR_QUANTIZATION_STEP) * COLOR_QUANTIZATION_STEP);
     const key = `${red},${green},${blue}`;
 
     const existing = bucketMap.get(key);
@@ -66,11 +69,11 @@ function quantizeColors(pixels: Buffer, pixelCount: number, maxColors: number): 
       const oldCount = existing.count;
       existing.count++;
       // Accumulate actual values for averaging (fixed off-by-one error)
-      existing.r = Math.round((existing.r * oldCount + pixels[pixelIndex]) / existing.count);
-      existing.g = Math.round((existing.g * oldCount + pixels[pixelIndex + 1]) / existing.count);
-      existing.b = Math.round((existing.b * oldCount + pixels[pixelIndex + 2]) / existing.count);
+      existing.r = Math.round((existing.r * oldCount + pixels[pixelIndex]!) / existing.count);
+      existing.g = Math.round((existing.g * oldCount + pixels[pixelIndex + 1]!) / existing.count);
+      existing.b = Math.round((existing.b * oldCount + pixels[pixelIndex + 2]!) / existing.count);
     } else {
-      bucketMap.set(key, { r: pixels[pixelIndex], g: pixels[pixelIndex + 1], b: pixels[pixelIndex + 2], count: 1 });
+      bucketMap.set(key, { r: pixels[pixelIndex]!, g: pixels[pixelIndex + 1]!, b: pixels[pixelIndex + 2]!, count: 1 });
     }
   }
 
@@ -168,9 +171,9 @@ export async function detectLayoutRegions(imageBuffer: Buffer): Promise<RegionIn
 
       for (let pixelIndex = 0; pixelIndex < data.length; pixelIndex += 3) {
         totalBrightness +=
-          (data[pixelIndex] * BRIGHTNESS_RED_WEIGHT +
-            data[pixelIndex + 1] * BRIGHTNESS_GREEN_WEIGHT +
-            data[pixelIndex + 2] * BRIGHTNESS_BLUE_WEIGHT) /
+          (data[pixelIndex]! * BRIGHTNESS_RED_WEIGHT +
+            data[pixelIndex + 1]! * BRIGHTNESS_GREEN_WEIGHT +
+            data[pixelIndex + 2]! * BRIGHTNESS_BLUE_WEIGHT) /
           BRIGHTNESS_DIVISOR;
       }
       bandBrightness.push(totalBrightness / pixelCount);
@@ -190,8 +193,8 @@ export async function detectLayoutRegions(imageBuffer: Buffer): Promise<RegionIn
     regions.push({ role: 'main-content', bounds: { x: 0, y: mainTop, width, height: mainHeight } });
 
     // Check if top band is significantly different from middle (nav bar detection)
-    const topBrightness = bandBrightness[0];
-    const midBrightness = bandBrightness[Math.floor(bandBrightness.length / 2)];
+    const topBrightness = bandBrightness[0]!;
+    const midBrightness = bandBrightness[Math.floor(bandBrightness.length / 2)]!;
     if (Math.abs(topBrightness - midBrightness) > BRIGHTNESS_DIFFERENCE_THRESHOLD) {
       regions.push({ role: 'navigation', bounds: { x: 0, y: 0, width, height: bandHeight } });
     }

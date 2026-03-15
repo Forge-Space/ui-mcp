@@ -64,49 +64,49 @@ const LINE_HEIGHT_SCALE: [string, string][] = [
 function closestSpacing(px: number): string {
   if (!Number.isFinite(px) || px < 0) {
     logger.warn({ px }, 'Invalid spacing value (NaN, Infinity, -Infinity, or negative), defaulting to 0');
-    return SPACING_SCALE[0][0];
+    return SPACING_SCALE[0]![0]!;
   }
-  let closestMatch = SPACING_SCALE[0];
-  let closestDifference = Math.abs(px - closestMatch[1]);
+  let closestMatch = SPACING_SCALE[0]!;
+  let closestDifference = Math.abs(px - closestMatch[1]!);
   for (const scaleEntry of SPACING_SCALE) {
-    const difference = Math.abs(px - scaleEntry[1]);
+    const difference = Math.abs(px - scaleEntry[1]!);
     if (difference < closestDifference) {
       closestMatch = scaleEntry;
       closestDifference = difference;
     }
   }
   // Use arbitrary value if the closest match is too far off
-  return closestDifference <= SPACING_TOLERANCE_PX ? closestMatch[0] : `[${px}px]`;
+  return closestDifference <= SPACING_TOLERANCE_PX ? closestMatch[0]! : `[${px}px]`;
 }
 
 function closestFontSize(value: string): string {
   const numericRem = parseFloat(value);
   if (isNaN(numericRem)) return `[${value}]`;
-  let closestMatch = FONT_SIZE_SCALE[0];
-  let closestDifference = Math.abs(numericRem - parseFloat(closestMatch[1]));
+  let closestMatch = FONT_SIZE_SCALE[0]!;
+  let closestDifference = Math.abs(numericRem - parseFloat(closestMatch[1]!));
   for (const scaleEntry of FONT_SIZE_SCALE) {
-    const difference = Math.abs(numericRem - parseFloat(scaleEntry[1]));
+    const difference = Math.abs(numericRem - parseFloat(scaleEntry[1]!));
     if (difference < closestDifference) {
       closestMatch = scaleEntry;
       closestDifference = difference;
     }
   }
-  return closestDifference <= FONT_SIZE_TOLERANCE_REM ? closestMatch[0] : `[${value}]`;
+  return closestDifference <= FONT_SIZE_TOLERANCE_REM ? closestMatch[0]! : `[${value}]`;
 }
 
 function closestLineHeight(value: string): string {
   const numericValue = parseFloat(value);
   if (isNaN(numericValue)) return `[${value}]`;
-  let closestMatch = LINE_HEIGHT_SCALE[0];
-  let closestDifference = Math.abs(numericValue - parseFloat(closestMatch[1]));
+  let closestMatch = LINE_HEIGHT_SCALE[0]!;
+  let closestDifference = Math.abs(numericValue - parseFloat(closestMatch[1]!));
   for (const scaleEntry of LINE_HEIGHT_SCALE) {
-    const difference = Math.abs(numericValue - parseFloat(scaleEntry[1]));
+    const difference = Math.abs(numericValue - parseFloat(scaleEntry[1]!));
     if (difference < closestDifference) {
       closestMatch = scaleEntry;
       closestDifference = difference;
     }
   }
-  return closestDifference <= LINE_HEIGHT_TOLERANCE ? closestMatch[0] : `[${value}]`;
+  return closestDifference <= LINE_HEIGHT_TOLERANCE ? closestMatch[0]! : `[${value}]`;
 }
 
 function classifyShadow(val: string): string {
@@ -114,7 +114,7 @@ function classifyShadow(val: string): string {
   if (lower === 'none' || lower === '0') return 'shadow-none';
   // Heuristic: classify by vertical offset size
   const match = val.match(/\d+\s+(\d+)/);
-  const yOffset = match ? parseInt(match[1], 10) : 0;
+  const yOffset = match ? parseInt(match[1]!, 10) : 0;
   if (yOffset <= 1) return 'shadow-sm';
   if (yOffset <= 3) return 'shadow';
   if (yOffset <= 6) return 'shadow-md';

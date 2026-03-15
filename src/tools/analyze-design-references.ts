@@ -90,14 +90,14 @@ export function registerAnalyzeDesignReferences(server: McpServer): void {
       // --- Phase 2: Analyze attached images ---
       if (images && images.length > 0) {
         for (let imageIndex = 0; imageIndex < images.length; imageIndex++) {
-          const imageData = images[imageIndex];
+          const imageData = images[imageIndex]!;
           try {
             const buffer = Buffer.from(imageData.data, 'base64');
             const label = imageData.label ?? `image-${imageIndex + 1}`;
             const analysis = await analyzeImage(buffer, label);
             imageAnalyses.push(analysis);
           } catch (error) {
-            const label = imageData.label ?? `image-${imageIndex + 1}`;
+            const label = imageData?.label ?? `image-${imageIndex + 1}`;
             logger.error({ label, error }, 'Failed to analyze image');
             warnings.push(`Failed to analyze image ${label}: ${String(error)}`);
           }

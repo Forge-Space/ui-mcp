@@ -53,7 +53,9 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/prefer-optional-chain': 'warn',
-      '@typescript-eslint/no-non-null-assertion': 'warn',
+      // Non-null assertions are acceptable and necessary with noUncheckedIndexedAccess +
+      // strictNullChecks. TypeScript enforces null safety at compile time.
+      '@typescript-eslint/no-non-null-assertion': 'off',
     },
   },
   {
