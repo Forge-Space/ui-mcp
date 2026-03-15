@@ -374,10 +374,10 @@ function hexToFigmaColor(hex: string): { r: number; g: number; b: number; a: num
   // Normalize 3/4 digit shorthand to 6/8 digit format
   if (clean.length === 3) {
     // #RGB -> #RRGGBB
-    clean = clean[0] + clean[0] + clean[1] + clean[1] + clean[2] + clean[2];
+    clean = clean[0]! + clean[0]! + clean[1]! + clean[1]! + clean[2]! + clean[2]!;
   } else if (clean.length === 4) {
     // #RGBA -> #RRGGBBAA
-    clean = clean[0] + clean[0] + clean[1] + clean[1] + clean[2] + clean[2] + clean[3] + clean[3];
+    clean = clean[0]! + clean[0]! + clean[1]! + clean[1]! + clean[2]! + clean[2]! + clean[3]! + clean[3]!;
   }
 
   const r = parseInt(clean.substring(0, 2), 16) / 255;

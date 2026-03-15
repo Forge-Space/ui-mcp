@@ -125,19 +125,19 @@ async function enrichIssuesWithRAG(report: IAccessibilityReport): Promise<void> 
       const matches = semanticSearch(queryVector, 'rule', db, 3, 0.4);
 
       if (matches.length > 0) {
-        const best = matches[0];
+        const best = matches[0]!;
         const ruleIdMatch = best.text.match(/a11y rule ([^:]+)/);
         const wcagMatch = best.text.match(/\d+\.\d+\.\d+/);
         const fixMatch = best.text.match(/Fix:\s*(.+)/);
 
         if (ruleIdMatch) {
-          issue.rule = `${issue.rule} (axe: ${ruleIdMatch[1].trim()})`;
+          issue.rule = `${issue.rule} (axe: ${ruleIdMatch[1]!.trim()})`;
         }
         if (wcagMatch && !issue.wcagCriteria) {
-          issue.wcagCriteria = `WCAG ${wcagMatch[0]}`;
+          issue.wcagCriteria = `WCAG ${wcagMatch[0]!}`;
         }
-        if (fixMatch && fixMatch[1].trim().length > issue.suggestion.length) {
-          issue.suggestion = fixMatch[1].trim();
+        if (fixMatch && fixMatch[1]!.trim().length > issue.suggestion.length) {
+          issue.suggestion = fixMatch[1]!.trim();
         }
       }
     }
@@ -331,7 +331,7 @@ function checkLandmarks(code: string, issues: IAccessibilityIssue[], passed: str
 }
 
 function checkHeadingHierarchy(code: string, issues: IAccessibilityIssue[], passed: string[]): void {
-  const headings = [...code.matchAll(/<h([1-6])/gi)].map((m) => parseInt(m[1], 10));
+  const headings = [...code.matchAll(/<h([1-6])/gi)].map((m) => parseInt(m[1]!, 10));
 
   if (headings.length === 0 && code.length > 300) {
     issues.push({
@@ -346,12 +346,12 @@ function checkHeadingHierarchy(code: string, issues: IAccessibilityIssue[], pass
 
   // Check for skipped levels
   for (let i = 1; i < headings.length; i++) {
-    if (headings[i] > headings[i - 1] + 1) {
+    if (headings[i]! > headings[i - 1]! + 1) {
       issues.push({
         rule: 'heading-order',
         severity: 'warning',
-        message: `Heading level skipped: h${headings[i - 1]} → h${headings[i]}`,
-        suggestion: `Use sequential heading levels. Consider h${headings[i - 1] + 1} instead of h${headings[i]}.`,
+        message: `Heading level skipped: h${headings[i - 1]!} → h${headings[i]!}`,
+        suggestion: `Use sequential heading levels. Consider h${headings[i - 1]! + 1} instead of h${headings[i]!}.`,
         wcagCriteria: 'WCAG 1.3.1 Info and Relationships',
       });
       break;

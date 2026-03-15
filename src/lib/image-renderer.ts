@@ -41,7 +41,7 @@ async function fetchTtfFromGoogleFonts(family: string, weight: number): Promise<
   // Extract the font URL from the CSS @font-face src
   const urlMatch = css.match(/src:\s*url\(([^)]+)\)/);
   if (!urlMatch) throw new Error(`No font URL found in Google Fonts CSS for ${family}:${weight}`);
-  const fontUrl = urlMatch[1];
+  const fontUrl = urlMatch[1]!;
   const fontRes = await fetch(fontUrl, { signal: AbortSignal.timeout(15_000) });
   return fontRes.arrayBuffer();
 }

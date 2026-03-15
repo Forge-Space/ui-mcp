@@ -39,7 +39,9 @@ function isPrivateOrLocalUrl(url: string): boolean {
     // Block private IPv4 ranges
     const ipv4Match = hostname.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
     if (ipv4Match) {
-      const [, firstOctet, secondOctet] = ipv4Match.map(Number);
+      const ipv4Octets = ipv4Match.map(Number) as [number, number, number, number, number];
+      const firstOctet = ipv4Octets[1];
+      const secondOctet = ipv4Octets[2];
 
       // Validate parsed values are valid numbers
       if (isNaN(firstOctet) || isNaN(secondOctet)) {
@@ -80,7 +82,9 @@ function isPrivateOrLocalUrl(url: string): boolean {
           // Invalid format after ::ffff: - block it
           return true;
         }
-        const [, firstOctet, secondOctet] = ipv4Match.map(Number);
+        const ipv4Octets2 = ipv4Match.map(Number) as [number, number, number, number, number];
+        const firstOctet = ipv4Octets2[1];
+        const secondOctet = ipv4Octets2[2];
 
         // Validate parsed values are valid numbers
         if (isNaN(firstOctet) || isNaN(secondOctet)) {
@@ -191,7 +195,7 @@ function extractColorsFromHtml(html: string): string[] {
   // Meta theme-color
   const themeColorMatch = html.match(/<meta[^>]*name=["']theme-color["'][^>]*content=["']([^"']+)["']/i);
   if (themeColorMatch) {
-    colors.add(themeColorMatch[1].toLowerCase());
+    colors.add(themeColorMatch[1]!.toLowerCase());
   }
 
   return [...colors].slice(0, MAX_COLORS_TO_EXTRACT);
@@ -204,15 +208,15 @@ function extractTypographyFromHtml(html: string): { fonts: string[]; sizes: stri
   // Google Fonts links
   const gfMatches = html.matchAll(/fonts\.googleapis\.com\/css2?\?family=([^"&]+)/g);
   for (const m of gfMatches) {
-    const familyStr = decodeURIComponent(m[1]);
-    const families = familyStr.split('|').map((f) => f.split(':')[0].replace(/\+/g, ' '));
+    const familyStr = decodeURIComponent(m[1]!);
+    const families = familyStr.split('|').map((f) => f.split(':')[0]!.replace(/\+/g, ' '));
     families.forEach((f) => fonts.add(f));
   }
 
   // font-family declarations
   const ffMatches = html.matchAll(/font-family\s*:\s*['"]?([^;'"}\n]+)/g);
   for (const m of ffMatches) {
-    const firstFont = m[1].split(',')[0].trim().replace(/['"]/g, '');
+    const firstFont = m[1]!.split(',')[0]!.trim().replace(/['"]/g, '');
     if (firstFont && !firstFont.startsWith('var(')) {
       fonts.add(firstFont);
     }
@@ -221,7 +225,7 @@ function extractTypographyFromHtml(html: string): { fonts: string[]; sizes: stri
   // font-size declarations
   const fsMatches = html.matchAll(/font-size\s*:\s*([\d.]+(?:px|rem|em|pt|vw))/g);
   for (const m of fsMatches) {
-    sizes.add(m[1]);
+    sizes.add(m[1]!);
   }
 
   return {
