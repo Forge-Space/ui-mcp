@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.22.0] - 2026-03-15
+
+### Added
+
+- **Unit tests for 4 lib modules** — `tailwind-mapper` (48% → 94%), `style-audit` (56% → 98%),
+  `design-context-merge` (21% → 100%), `assess-legacy` handler (22% → 100% via mocked `execFileSync`)
+- **Overall statement coverage: 78.8% → 81.3%** (55 suites, 638 tests total)
+
+### Changed
+
+- `@forgespace/core` devDep updated to `^1.11.2`
+
 ## [0.21.0] - 2026-03-15
 
 ### Added
