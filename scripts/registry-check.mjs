@@ -66,6 +66,10 @@ function collectFindings(pkg, server, packPaths, publishedVersions) {
   if (publishedVersions[pkg.version]) {
     warnings.push(`npm already has published version ${pkg.version}; bump before the next release tag.`);
   }
+  // MCP Registry enforces description <= 100 chars
+  if (server.description && server.description.length > 100) {
+    errors.push(`server.json description is ${server.description.length} chars (max 100 for MCP Registry).`);
+  }
   return { errors, warnings };
 }
 

@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.22.1] - 2026-03-15
+
+### Fixed
+
+- Truncate server.json description to 73 chars (MCP Registry enforces max 100 chars; the 136-char
+  value caused 422 validation on every publish, breaking MCP Registry distribution)
+- registry:check script now validates server.json description length before publish
+
+
 ## [0.22.0] - 2026-03-15
 
 ### Added
