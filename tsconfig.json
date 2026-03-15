@@ -29,12 +29,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./"],
-      "@patterns/*": ["./patterns/*"],
-      "@docs/*": ["./docs/*"]
-    }
+    "baseUrl": "."
   },
   "include": ["src/**/*.ts", "scripts/**/*.ts"],
   "exclude": [
@@ -46,9 +41,5 @@
     "**/*.test.js",
     "**/*.spec.ts",
     "**/*.spec.js"
-  ],
-  "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
-  }
+  ]
 }
