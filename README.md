@@ -2,11 +2,11 @@
   <a href="https://forgespace.co">
     <img src="https://brand.forgespace.co/logos/wordmark.svg" alt="Forge Space" height="48">
   </a>
-  <h1>Siza MCP Server</h1>
-  <p>AI-driven UI and backend code generation via Model Context Protocol. 22 tools, 5 frameworks, brand-aware — zero API keys required.</p>
+  <h1>@forgespace/ui-mcp</h1>
+  <p>AI-driven UI and backend code generation via Model Context Protocol. 22 tools, 5 frameworks, brand-aware, npm-published, and MCP Registry-ready.</p>
 </div>
 
-[![npm version](https://img.shields.io/npm/v/siza-mcp.svg)](https://www.npmjs.com/package/siza-mcp)
+[![npm version](https://img.shields.io/npm/v/%40forgespace%2Fui-mcp?label=npm)](https://www.npmjs.com/package/@forgespace/ui-mcp)
 [![CI](https://img.shields.io/github/actions/workflow/status/Forge-Space/ui-mcp/ci.yml?label=CI)](https://github.com/Forge-Space/ui-mcp/actions/workflows/ci.yml)
 [![Coverage](https://img.shields.io/badge/coverage-82%25-brightgreen)](https://github.com/Forge-Space/ui-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -20,11 +20,11 @@ Part of the [Forge Space](https://github.com/Forge-Space) ecosystem.
 
 ## Architecture
 
-Siza MCP is a thin protocol adapter. All AI/generation logic lives in
-[`@forgespace/siza-gen`](https://github.com/Forge-Space/siza-gen):
+`@forgespace/ui-mcp` is a thin protocol adapter. All AI/generation logic lives
+in [`@forgespace/siza-gen`](https://github.com/Forge-Space/siza-gen):
 
 ```
-siza-mcp (~355 KB)                 @forgespace/siza-gen (~1.8 MB)
+@forgespace/ui-mcp (~355 KB)       @forgespace/siza-gen (~1.8 MB)
 ├── src/index.ts (MCP server)      ├── ml/        (embeddings, quality, training)
 ├── tools/     (22 tool defs)      ├── generators/ (react, vue, angular, svelte, html)
 ├── services/  (figma, analysis)   ├── registry/   (502 snippets, compositions, packs)
@@ -36,13 +36,13 @@ siza-mcp (~355 KB)                 @forgespace/siza-gen (~1.8 MB)
 
 ```bash
 # NPX (instant)
-npx -y siza-mcp@latest
+npx -y @forgespace/ui-mcp@latest
 
 # Global install
-npm install -g siza-mcp && siza-mcp
+npm install -g @forgespace/ui-mcp && forgespace-ui-mcp
 
 # Docker
-docker build -t siza-mcp . && docker run --rm -i siza-mcp
+docker build -t forgespace-ui-mcp . && docker run --rm -i forgespace-ui-mcp
 ```
 
 ### IDE Integration
@@ -52,9 +52,9 @@ Add to your MCP configuration (Claude Code, Windsurf, Cursor, VS Code):
 ```json
 {
   "mcpServers": {
-    "siza-mcp": {
+    "forgespace-ui-mcp": {
       "command": "npx",
-      "args": ["-y", "siza-mcp@latest"],
+      "args": ["-y", "@forgespace/ui-mcp@latest"],
       "env": {
         "FIGMA_ACCESS_TOKEN": "your_token_here"
       }
@@ -115,6 +115,20 @@ spacing are injected into the design context.
 | `FIGMA_ACCESS_TOKEN` | Only for Figma tools | Token from [Figma Settings](https://www.figma.com/developers/api#access-tokens) |
 | `SENTRY_DSN`         | Optional             | Sentry DSN for error reporting (uncaught exceptions and unhandled rejections)   |
 
+## Distribution
+
+- **npm** — published as
+  [`@forgespace/ui-mcp`](https://www.npmjs.com/package/@forgespace/ui-mcp)
+- **MCP Registry metadata** — repository includes [`server.json`](server.json)
+  and `mcpName` metadata for registry submission
+- **Tag release automation** — pushing `v*` runs npm publish with provenance,
+  then publishes the same version to the MCP Registry via GitHub OIDC
+- **Weekly registry ops** — `.github/workflows/mcp-registry-status.yml`
+  refreshes one issue with npm and MCP Registry drift, visibility, and next
+  actions
+- **GitHub** — source, issues, releases, and Discussions live under
+  [Forge Space](https://github.com/Forge-Space)
+
 ## Development
 
 ```bash
@@ -122,6 +136,12 @@ npm install && npm run build
 npm test                  # 437 tests, 35 suites
 npm run validate          # lint + format + typecheck + test
 ```
+
+## Community
+
+- [Documentation](https://docs.forgespace.co/docs)
+- [GitHub Discussions](https://github.com/orgs/Forge-Space/discussions)
+- [Issue Tracker](https://github.com/Forge-Space/ui-mcp/issues)
 
 Scheduled monitoring runs that execute CodeQL require job-scoped
 `security-events: write` permission for SARIF upload.

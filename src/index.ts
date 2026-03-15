@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 
+import { createRequire } from 'node:module';
 import { captureExceptionAndFlush } from './lib/sentry.js';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { closeDatabase, loadConfig, logger } from '@forgespace/siza-gen';
+
+const require = createRequire(import.meta.url);
+const { version: PKG_VERSION } = require('../package.json') as { version: string };
 import { registerCurrentStylesResource } from './resources/current-styles.js';
 import { registerForgeContextResources } from './resources/forge-context.js';
 import { registerScaffoldFullApplication } from './tools/scaffold-full-application.js';
@@ -50,7 +54,7 @@ logger.info({ config: { NODE_ENV: config.NODE_ENV, LOG_LEVEL: config.LOG_LEVEL }
 
 const server = new McpServer({
   name: 'uiforge',
-  version: '0.1.0',
+  version: PKG_VERSION,
 });
 
 // Register resources

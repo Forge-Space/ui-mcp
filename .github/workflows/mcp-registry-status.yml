@@ -1,0 +1,101 @@
+name: MCP Registry Status
+
+on:
+  schedule:
+    - cron: "0 12 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  registry-status:
+    name: Refresh MCP registry status issue
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci --legacy-peer-deps
+      - run: node scripts/mcp-registry-status.mjs --output-dir artifacts/mcp-registry-status
+
+      - name: Read report
+        id: report
+        run: |
+          {
+            echo "body<<EOF"
+            cat artifacts/mcp-registry-status/report.md
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Create or update issue
+        uses: actions/github-script@v8
+        env:
+          REPORT_BODY: ${{ steps.report.outputs.body }}
+        with:
+          script: |
+            const labels = [
+              { name: 'distribution-ops', color: '0e8a16', description: 'Recurring distribution operations status' },
+              { name: 'mcp-registry', color: '1d76db', description: 'MCP Registry publishing and discovery tracking' },
+              { name: 'automated', color: '5319e7', description: 'Updated by automation' },
+            ];
+            for (const label of labels) {
+              try {
+                await github.rest.issues.getLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label.name,
+                });
+              } catch (error) {
+                if (error.status !== 404) {
+                  throw error;
+                }
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ...label,
+                });
+              }
+            }
+
+            const title = 'MCP Registry Status';
+            const body = `${process.env.REPORT_BODY}\n\n---\n\n_Updated automatically by \`${context.workflow}\`._`;
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100,
+            });
+            const existing = issues.data.find((issue) => !issue.pull_request && issue.title === title);
+
+            if (existing) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing.number,
+                title,
+                body,
+                labels: labels.map((label) => label.name),
+              });
+              return;
+            }
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body,
+              labels: labels.map((label) => label.name),
+            });
+
+      - name: Upload registry status artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mcp-registry-status-${{ github.run_id }}
+          path: artifacts/mcp-registry-status
+          if-no-files-found: error
