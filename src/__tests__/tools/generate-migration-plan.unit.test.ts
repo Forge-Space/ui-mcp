@@ -1,13 +1,11 @@
-import { mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { handleGenerateMigrationPlan, registerGenerateMigrationPlan } from '../../tools/generate-migration-plan.js';
 
 function makeTmpDir(): string {
-  const dir = join(tmpdir(), `mcp-test-${Date.now()}-${Math.random().toString(36).slice(2)}`);
-  mkdirSync(dir, { recursive: true });
-  return dir;
+  return mkdtempSync(join(tmpdir(), 'mcp-test-'));
 }
 
 describe('generate_migration_plan tool', () => {
