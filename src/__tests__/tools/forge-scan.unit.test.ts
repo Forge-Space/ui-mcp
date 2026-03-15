@@ -6,7 +6,7 @@ jest.unstable_mockModule('forge-ai-init', () => ({
   scanProject: mockScanProject,
 }));
 
-const { buildForgeScanResponse } = await import('../../tools/forge-scan.js');
+const { buildForgeScanResponse, registerForgeScan } = await import('../../tools/forge-scan.js');
 
 describe('forge_scan tool', () => {
   beforeEach(() => {
@@ -96,5 +96,29 @@ describe('forge_scan tool', () => {
     const text = result.content[0].text;
     expect(text).toContain('sql-injection');
     expect(text).not.toContain('console-log');
+  });
+
+  it('registers forge_scan tool on MCP server', async () => {
+    const { McpServer } = await import('@modelcontextprotocol/sdk/server/mcp.js');
+    const server = new McpServer({ name: 'test', version: '0.0.1' });
+    expect(() => registerForgeScan(server)).not.toThrow();
+    const tools = (server as unknown as { _registeredTools: Record<string, unknown> })._registeredTools;
+    expect(tools['forge_scan']).toBeDefined();
+  });
+
+  it('shows no critical section when only low-severity findings exist', () => {
+    mockScanProject.mockReturnValue({
+      score: 85,
+      grade: 'B',
+      filesScanned: 20,
+      findings: [{ rule: 'console-log', severity: 'low', file: 'utils.ts', line: 5, message: 'Remove console.log' }],
+      summary: [],
+      topFiles: [],
+    });
+
+    const result = buildForgeScanResponse({ directory: '/tmp/project', max_files: 500 });
+    const text = result.content[0].text;
+    expect(text).toContain('85/100');
+    expect(text).not.toContain('Critical & High Findings');
   });
 });

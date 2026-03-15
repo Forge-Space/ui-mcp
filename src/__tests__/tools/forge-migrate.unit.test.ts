@@ -10,7 +10,7 @@ jest.unstable_mockModule('forge-ai-init', () => ({
   analyzeMigration: mockAnalyzeMigration,
 }));
 
-const { buildForgeMigrateResponse } = await import('../../tools/forge-migrate.js');
+const { buildForgeMigrateResponse, registerForgeMigrate } = await import('../../tools/forge-migrate.js');
 
 describe('forge_migrate tool', () => {
   beforeEach(() => {
@@ -173,5 +173,13 @@ describe('forge_migrate tool', () => {
 
     expect(result.content[0].text).toContain('Migration analysis failed');
     expect(result.content[0].text).toContain('Cannot read directory');
+  });
+
+  it('registers forge_migrate tool on MCP server', async () => {
+    const { McpServer } = await import('@modelcontextprotocol/sdk/server/mcp.js');
+    const server = new McpServer({ name: 'test', version: '0.0.1' });
+    expect(() => registerForgeMigrate(server)).not.toThrow();
+    const tools = (server as unknown as { _registeredTools: Record<string, unknown> })._registeredTools;
+    expect(tools['forge_migrate']).toBeDefined();
   });
 });

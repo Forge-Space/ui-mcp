@@ -8,7 +8,7 @@ jest.unstable_mockModule('forge-ai-init', () => ({
   detectStack: mockDetectStack,
 }));
 
-const { buildForgeAssessResponse } = await import('../../tools/forge-assess.js');
+const { buildForgeAssessResponse, registerForgeAssess } = await import('../../tools/forge-assess.js');
 
 describe('forge_assess tool', () => {
   beforeEach(() => {
@@ -119,5 +119,36 @@ describe('forge_assess tool', () => {
 
     expect(result.content[0].text).toContain('Assessment failed');
     expect(result.content[0].text).toContain('Not a project directory');
+  });
+
+  it('registers forge_assess tool on MCP server', async () => {
+    const { McpServer } = await import('@modelcontextprotocol/sdk/server/mcp.js');
+    const server = new McpServer({ name: 'test', version: '0.0.1' });
+    expect(() => registerForgeAssess(server)).not.toThrow();
+    const tools = (server as unknown as { _registeredTools: Record<string, unknown> })._registeredTools;
+    expect(tools['forge_assess']).toBeDefined();
+  });
+
+  it('shows critical and high findings with file and line location', () => {
+    mockAssessProject.mockReturnValue({
+      overallScore: 30,
+      overallGrade: 'F',
+      migrationReadiness: 'Not ready',
+      migrationStrategy: 'Rewrite',
+      filesScanned: 10,
+      categories: [],
+      findings: [
+        { severity: 'critical', title: 'XSS risk', detail: 'Unescaped output', file: 'src/view.ts', line: 42 },
+        { severity: 'high', title: 'SQL injection', detail: 'Raw query', file: 'src/db.ts', line: 15 },
+      ],
+      summary: 'Severe issues found.',
+    });
+
+    const result = buildForgeAssessResponse({ directory: '/tmp/project', max_files: 500 });
+    const text = result.content[0].text;
+    expect(text).toContain('XSS risk');
+    expect(text).toContain('src/view.ts:42');
+    expect(text).toContain('SQL injection');
+    expect(text).toContain('src/db.ts:15');
   });
 });
