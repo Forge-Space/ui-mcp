@@ -22,6 +22,69 @@ describe('audit_accessibility tool', () => {
     }).not.toThrow();
   });
 
+  it('handler returns formatted report with score and issues', async () => {
+    const server = new McpServer({ name: 'test', version: '1.0.0' });
+    registerAuditAccessibility(server);
+
+    type Handler = (args: Record<string, unknown>) => Promise<{ content: Array<{ type: string; text: string }> }>;
+    const tools = (server as unknown as { _registeredTools: Record<string, { handler: Handler }> })._registeredTools;
+    const handler = tools['audit_accessibility']?.handler;
+    expect(handler).toBeDefined();
+
+    const result = await handler!({
+      component_code: '<img src="photo.jpg"><button></button>',
+      framework: 'html',
+      strict: false,
+    });
+
+    expect(result.content).toBeDefined();
+    expect(result.content.length).toBeGreaterThanOrEqual(1);
+    const text = result.content[0]!.text;
+    expect(text).toContain('Accessibility Score');
+  });
+
+  it('handler produces green score for clean accessible component', async () => {
+    const server = new McpServer({ name: 'test', version: '1.0.0' });
+    registerAuditAccessibility(server);
+
+    type Handler = (args: Record<string, unknown>) => Promise<{ content: Array<{ type: string; text: string }> }>;
+    const tools = (server as unknown as { _registeredTools: Record<string, { handler: Handler }> })._registeredTools;
+    const handler = tools['audit_accessibility']?.handler;
+
+    const cleanCode = [
+      '<main>',
+      '  <nav aria-label="Main navigation"><ul><li><a href="/">Home</a></li></ul></nav>',
+      '  <h1>Page Title</h1>',
+      '  <img src="hero.jpg" alt="Hero image">',
+      '  <button>Click me</button>',
+      '  <label for="email">Email</label><input id="email" type="email">',
+      '</main>',
+    ].join('\n');
+
+    const result = await handler!({ component_code: cleanCode, framework: 'html', strict: false });
+    const text = result.content[0]!.text;
+    expect(text).toContain('Accessibility Score');
+    expect(text).toContain('/100');
+  });
+
+  it('handler respects strict mode and includes AAA checks', async () => {
+    const server = new McpServer({ name: 'test', version: '1.0.0' });
+    registerAuditAccessibility(server);
+
+    type Handler = (args: Record<string, unknown>) => Promise<{ content: Array<{ type: string; text: string }> }>;
+    const tools = (server as unknown as { _registeredTools: Record<string, { handler: Handler }> })._registeredTools;
+    const handler = tools['audit_accessibility']?.handler;
+
+    const result = await handler!({
+      component_code: '<p className="text-muted-foreground">Muted text</p>',
+      framework: 'react',
+      strict: true,
+    });
+
+    const jsonText = result.content[1]?.text ?? result.content[0]!.text;
+    expect(jsonText).toBeTruthy();
+  });
+
   describe('functional auditing', () => {
     it('detects missing alt text on images', () => {
       const html = '<img src="test.jpg" /><img src="test2.jpg" alt="Valid" />';

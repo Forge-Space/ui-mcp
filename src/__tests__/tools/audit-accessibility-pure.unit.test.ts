@@ -1,5 +1,6 @@
 import { describe, it, expect } from '@jest/globals';
-import { auditAccessibility } from '../../tools/audit-accessibility.js';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { auditAccessibility, registerAuditAccessibility } from '../../tools/audit-accessibility.js';
 
 // All tests exercise auditAccessibility() which drives all the private check functions.
 // This covers the previously-uncovered pure functions:
@@ -302,6 +303,126 @@ describe('auditAccessibility pure functions', () => {
       const code = '<label htmlFor="name">Name</label><input id="name" className="input">';
       const r = auditAccessibility(code, 'nextjs', false);
       expect(r.issues.some((i) => i.rule === 'input-label')).toBe(false);
+    });
+  });
+
+  // ── checkTables ────────────────────────────────────────────────────────────
+  describe('checkTables', () => {
+    it('reports error for table without th header cells', () => {
+      const code = '<table><tr><td>Cell</td></tr></table>';
+      const r = auditAccessibility(code, 'html', false);
+      expect(r.issues.some((i) => i.rule === 'table-header')).toBe(true);
+    });
+
+    it('reports info for table without caption or aria-label', () => {
+      const code = '<table><tr><th>Header</th></tr></table>';
+      const r = auditAccessibility(code, 'html', false);
+      expect(r.issues.some((i) => i.rule === 'table-caption')).toBe(true);
+    });
+
+    it('passes when table has caption', () => {
+      const code = '<table><caption>Summary</caption><tr><th>Name</th></tr></table>';
+      const r = auditAccessibility(code, 'html', false);
+      expect(r.issues.some((i) => i.rule === 'table-caption')).toBe(false);
+    });
+
+    it('passes when table has aria-label on table element', () => {
+      const code = '<table aria-label="User data"><tr><th>Name</th></tr></table>';
+      const r = auditAccessibility(code, 'html', false);
+      expect(r.issues.some((i) => i.rule === 'table-caption')).toBe(false);
+    });
+
+    it('records passed check when th has scope attribute', () => {
+      const code = '<table><caption>Data</caption><tr><th scope="col">Name</th></tr></table>';
+      const r = auditAccessibility(code, 'html', false);
+      expect(r.passed.some((p) => p.includes('scope'))).toBe(true);
+    });
+
+    it('ignores code with no table element', () => {
+      const code = '<div>No table here</div>';
+      const r = auditAccessibility(code, 'html', false);
+      expect(r.issues.some((i) => i.rule === 'table-header' || i.rule === 'table-caption')).toBe(false);
+    });
+  });
+
+  // ── checkLanguage ─────────────────────────────────────────────────────────
+  describe('checkLanguage', () => {
+    it('reports error for html element without lang attribute', () => {
+      const code = '<html><body>Content</body></html>';
+      const r = auditAccessibility(code, 'html', false);
+      expect(r.issues.some((i) => i.rule === 'html-lang')).toBe(true);
+    });
+
+    it('passes when html element has lang attribute', () => {
+      const code = '<html lang="en"><body>Content</body></html>';
+      const r = auditAccessibility(code, 'html', false);
+      expect(r.issues.some((i) => i.rule === 'html-lang')).toBe(false);
+      expect(r.passed.some((p) => p.includes('lang'))).toBe(true);
+    });
+
+    it('ignores code without html element', () => {
+      const code = '<div>Just a component</div>';
+      const r = auditAccessibility(code, 'react', false);
+      expect(r.issues.some((i) => i.rule === 'html-lang')).toBe(false);
+    });
+  });
+
+  // ── checkAutoPlay ─────────────────────────────────────────────────────────
+  describe('checkAutoPlay', () => {
+    it('reports warning for autoplay attribute', () => {
+      const code = '<video autoplay src="video.mp4"></video>';
+      const r = auditAccessibility(code, 'html', false);
+      expect(r.issues.some((i) => i.rule === 'no-autoplay')).toBe(true);
+    });
+
+    it('reports warning for camelCase autoPlay', () => {
+      const code = '<video autoPlay src="video.mp4"></video>';
+      const r = auditAccessibility(code, 'react', false);
+      expect(r.issues.some((i) => i.rule === 'no-autoplay')).toBe(true);
+    });
+
+    it('passes when no autoplay present', () => {
+      const code = '<video controls src="video.mp4"></video>';
+      const r = auditAccessibility(code, 'html', false);
+      expect(r.issues.some((i) => i.rule === 'no-autoplay')).toBe(false);
+    });
+  });
+
+  // ── checkStrictMode ────────────────────────────────────────────────────────
+  describe('checkStrictMode (strict=true)', () => {
+    it('reports info for text-muted-foreground class in strict mode', () => {
+      const code = '<p className="text-muted-foreground">Muted text</p>';
+      const r = auditAccessibility(code, 'react', true);
+      expect(r.issues.some((i) => i.rule === 'contrast-enhanced')).toBe(true);
+    });
+
+    it('always reports text-spacing info in strict mode', () => {
+      const code = '<div>Any content</div>';
+      const r = auditAccessibility(code, 'html', true);
+      expect(r.issues.some((i) => i.rule === 'text-spacing')).toBe(true);
+    });
+
+    it('reports target-size info for small padding in strict mode', () => {
+      const code = '<button className="p-1">Click</button>';
+      const r = auditAccessibility(code, 'react', true);
+      expect(r.issues.some((i) => i.rule === 'target-size')).toBe(true);
+    });
+
+    it('does not report strict issues when strict=false', () => {
+      const code = '<p className="text-muted-foreground">Muted</p>';
+      const r = auditAccessibility(code, 'react', false);
+      expect(r.issues.some((i) => i.rule === 'contrast-enhanced')).toBe(false);
+      expect(r.issues.some((i) => i.rule === 'text-spacing')).toBe(false);
+    });
+  });
+
+  // ── registerAuditAccessibility ────────────────────────────────────────────
+  describe('registerAuditAccessibility', () => {
+    it('registers audit_accessibility tool on MCP server', () => {
+      const server = new McpServer({ name: 'test', version: '0.0.1' });
+      expect(() => registerAuditAccessibility(server)).not.toThrow();
+      const tools = (server as unknown as { _registeredTools: Record<string, unknown> })._registeredTools;
+      expect(tools['audit_accessibility']).toBeDefined();
     });
   });
 });
