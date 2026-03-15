@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.20.0] - 2026-03-15
+
+### Added
+
+- **`setup_component_library` MCP tool** — Set up a complete project with a component library (shadcn, radix, headlessui, material) including config files, dependencies, and initial components. Previously implemented but unregistered; now wired into the MCP server.
+- **`knip.config.ts`** — Added knip dead-code configuration to track unused files, dependencies, and exports with accurate ignore rules.
+- **`@jest/globals` devDependency** — Added explicitly to resolve knip "unlisted" warnings; was imported in 14 test files without being declared.
+
+### Changed
+
+- **Dependencies** — Updated dev dependencies: `prettier` ^3.0.0 → ^3.8.1, `typescript` ^5.1.6 → ^5.9.3, `jest` ^30.2.0 → ^30.3.0, `typescript-eslint` ^8.55.0 → ^8.57.0, `eslint` ^10.0.2 → ^10.0.3, `lint-staged` ^16.3.0 → ^16.4.0, `globals` ^17.3.0 → ^17.4.0, `zod` ^4.0.0 → ^4.3.6, `knip` ^5.85.0 → ^5.86.0, `@sentry/node` ^10.42.0 → ^10.43.0, `@commitlint/*` ^20.4.3 → ^20.4.4
+- **Lint config** — Extended `require-await: off` to `src/tools/**` and `**/__mocks__/**` so async tool handler callbacks (needed for MCP SDK interface) no longer generate spurious warnings.
+- **Husky** — Fixed deprecated `#!/bin/sh` + `. "$(dirname "$0")/_/husky.sh"` shebang in pre-push hook to modern `#!/usr/bin/env bash` style matching Husky v9.
+- **Bundle size** — 403 KB → 419 KB (+16 KB for `setup_component_library` registration)
+- **Test count** — 529 → 528 (removed one test that referenced deleted demo file)
+
+### Removed
+
+- **Stale demo/test files** — Deleted `demo/DashboardPayments.tsx`, `docs/interactive-docs-enhanced.tsx`, `docs/interactive-docs-react.tsx`, `docs/archive/legacy-scripts/lint.js`, `run-tests.mjs`, `scripts/test-mcp-server.mjs`, `scripts/test-mcp-simple.mjs`, `src/lib/templates/prototype-shell.ts`
+- **Unused dependencies** — Removed `better-sqlite3`, `pino-pretty`, `@forgespace/core` from production deps (moved core to devDeps; sqlite3 and pino-pretty are transitive via siza-gen)
+- **Unused devDependencies** — Removed `eslint-config-prettier`, `ts-node`, `@types/fs-extra`, `@types/react`, `@types/semver`, `@types/better-sqlite3`
+
+### Fixed
+
+- **Security** — Patched `flatted` vulnerability (DoS in parse revive phase) via `npm audit fix`
+
 ## [0.19.0] - 2026-03-15
 
 ### Added

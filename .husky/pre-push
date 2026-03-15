@@ -1,64 +1,52 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+#!/usr/bin/env bash
+set -euo pipefail
 
-echo "🚀 Running pre-push validations (final CI/CD check)...\n"
+echo "Running pre-push validations..."
 
 FAILED=0
 
 # 1. Lint check
-echo "📝 Running lint check..."
+echo "  lint..."
 if ! npm run lint; then
-  echo "❌ Lint check failed."
+  echo "  FAIL: lint"
   FAILED=1
-else
-  echo "✅ Lint check passed."
 fi
 
 # 2. Format check
-echo "\n🎨 Running format check..."
+echo "  format..."
 if ! npm run format:check; then
-  echo "❌ Format check failed."
+  echo "  FAIL: format"
   FAILED=1
-else
-  echo "✅ Format check passed."
 fi
 
 # 3. Type check
-echo "\n🔍 Running TypeScript type check..."
+echo "  tsc --noEmit..."
 if ! npx tsc --noEmit; then
-  echo "❌ Type check failed."
+  echo "  FAIL: type check"
   FAILED=1
-else
-  echo "✅ Type check passed."
 fi
 
 # 4. Tests
-echo "\n🧪 Running tests..."
+echo "  tests..."
 if ! npm test; then
-  echo "❌ Tests failed."
+  echo "  FAIL: tests"
   FAILED=1
-else
-  echo "✅ Tests passed."
 fi
 
 # 5. Build
-echo "\n📦 Running build..."
+echo "  build..."
 if ! npm run build; then
-  echo "❌ Build failed."
+  echo "  FAIL: build"
   FAILED=1
-else
-  echo "✅ Build passed."
 fi
 
-# Summary
-echo "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 if [ $FAILED -eq 0 ]; then
-  echo "✅ All pre-push validations passed!"
-  echo "� Safe to push to remote."
+  echo "All pre-push validations passed."
+  echo "Safe to push to remote."
 else
-  echo "❌ Some validations failed. Please fix the issues above."
-  echo "💡 All validation steps were run to show all issues at once."
-  echo "💡 You can skip this check with: git push --no-verify (not recommended)"
+  echo "Some validations failed. Fix the issues above."
+  echo "You can skip with: git push --no-verify (not recommended)"
   exit 1
 fi
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

@@ -40,6 +40,7 @@ import { registerForgeGate } from './tools/forge-gate.js';
 import { registerForgeDiff } from './tools/forge-diff.js';
 import { registerForgeAssess } from './tools/forge-assess.js';
 import { registerForgeMigrate } from './tools/forge-migrate.js';
+import { registerSetupComponentLibrary } from './tools/setup-component-library.js';
 
 // Load and validate configuration
 let config;
@@ -91,6 +92,7 @@ registerForgeGate(server);
 registerForgeDiff(server);
 registerForgeAssess(server);
 registerForgeMigrate(server);
+registerSetupComponentLibrary(server);
 try {
   registerForgeContextTools(server);
   logger.info('Forge context tools registered successfully');

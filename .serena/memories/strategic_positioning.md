@@ -1,4 +1,4 @@
-# Forge Space Strategic Positioning
+# Forge Space Strategic Positioning (updated 2026-03-15)
 
 ## Identity
 
@@ -7,31 +7,37 @@
 - **Problem**: Nobody owns the full-stack integration layer between AI code
   generation and production deployment
 
-## siza-mcp Role
+## siza-mcp (ui-mcp) Role
 
 - Specialized MCP server for UI generation, template management, and design
-  context (12 tools)
-- Rebranded from UIForge MCP → Siza MCP (Feb 2026)
+  context (33 tool files)
+- npm: @forgespace/ui-mcp, MCP Registry: io.github.forge-space/ui-mcp
 - Core of the AI component generation pipeline: brand context (branding-mcp) →
-  UI generation (siza-mcp) → routing (mcp-gateway) → web app (siza)
+  UI generation (ui-mcp) → routing (mcp-gateway) → web app (siza)
 
 ## Differentiation
 
-1. **MCP-Native Architecture** — composable tools, swap AI providers, chain
-   tools
+1. **MCP-Native Architecture** — composable tools, swap AI providers, chain tools
 2. **Low Cost, Generous Free Tier** — scalable infrastructure, high free-tier limits
 3. **Privacy-First BYOK** — client-side AES-256, we cannot read user keys
 4. **Self-Hostable** — Docker, MIT, full infrastructure control
 
-## Ecosystem (5 repos)
+## Ecosystem (6 repos)
 
-| Repo           | GitHub                   | Role                                        |
-| -------------- | ------------------------ | ------------------------------------------- |
-| siza           | Forge-Space/siza         | Web app + API (Next.js, Cloudflare Workers) |
-| forge-patterns | Forge-Space/core         | Shared patterns, MCP context, security      |
-| mcp-gateway    | Forge-Space/mcp-gateway  | MCP aggregation, routing, auth              |
-| siza-mcp       | Forge-Space/ui-mcp       | UI generation MCP server (12 tools)         |
-| branding-mcp   | Forge-Space/branding-mcp | Brand identity MCP server (7 tools)         |
+| Repo         | GitHub                   | Role                                          |
+| ------------ | ------------------------ | --------------------------------------------- |
+| siza         | Forge-Space/siza         | Web app + API (Next.js, Cloudflare Workers)   |
+| core         | Forge-Space/core         | Shared patterns, MCP context, security        |
+| mcp-gateway  | Forge-Space/mcp-gateway  | MCP aggregation, routing, auth                |
+| ui-mcp       | Forge-Space/ui-mcp       | UI generation MCP server (33 tool files)      |
+| siza-gen     | Forge-Space/siza-gen     | AI generation library (ML, registry, quality) |
+| branding-mcp | Forge-Space/branding-mcp | Brand identity MCP server (7 tools)           |
+
+## Distribution
+
+- npm + MCP Registry (tag-driven publish.yml)
+- Weekly registry status tracking via GitHub Issues automation
+- Binary: forgespace-ui-mcp (npx @forgespace/ui-mcp)
 
 ## Pricing
 

@@ -1,5 +1,3 @@
-import { existsSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { registerGenerateUiComponent, generateComponent } from '../../tools/generate-ui-component.js';
 import { DEFAULT_DESIGN_CONTEXT, type IDesignContext } from '@forgespace/siza-gen';
@@ -275,14 +273,6 @@ describe('generate_ui_component tool', () => {
         const files = generateComponent('DashboardPayments', 'react', designContext);
         expect(files.length).toBeGreaterThan(0);
         expect(files[0].path).toBeDefined();
-      });
-
-      it('demo DashboardPayments component file exists and has expected structure', () => {
-        const demoPath = join(process.cwd(), 'demo', 'DashboardPayments.tsx');
-        expect(existsSync(demoPath)).toBe(true);
-        const content = readFileSync(demoPath, 'utf-8');
-        expect(content).toContain('DashboardPayments');
-        expect(content).toMatch(/payment|Payment|refund|Refund/);
       });
     });
 
