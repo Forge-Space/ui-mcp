@@ -129,4 +129,63 @@ describe('generate_migration_plan tool', () => {
     expect(Array.isArray(result.content)).toBe(true);
     rmSync(dir, { recursive: true, force: true });
   });
+
+  it('includes critical findings section when severity is critical', () => {
+    const criticalReport = {
+      ...fakeReport,
+      migrationStrategy: 'strangler-fig',
+      findings: [
+        { severity: 'critical', title: 'Security vulnerability', detail: 'CVE-2023-1234' },
+        { severity: 'high', title: 'Outdated dep', detail: 'express 3.x EOL' },
+      ],
+    };
+    mockExecFileSync.mockReturnValue(JSON.stringify(criticalReport));
+    const dir = makeTmpDir();
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ dependencies: {} }));
+    const plan = handleGenerateMigrationPlan({ project_dir: dir });
+    expect(plan).toContain('Critical');
+    rmSync(dir, { recursive: true, force: true });
+  });
+
+  it('includes file reference in findings when file property exists', () => {
+    const reportWithFile = {
+      ...fakeReport,
+      findings: [
+        { severity: 'high', title: 'Issue in file', file: 'src/index.ts' },
+        { severity: 'medium', title: 'No file' },
+      ],
+    };
+    mockExecFileSync.mockReturnValue(JSON.stringify(reportWithFile));
+    const dir = makeTmpDir();
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ dependencies: {} }));
+    const plan = handleGenerateMigrationPlan({ project_dir: dir });
+    expect(plan).toContain('src/index.ts');
+    rmSync(dir, { recursive: true, force: true });
+  });
+
+  it('uses strategy name as fallback for unknown strategy', () => {
+    const unknownStrategyReport = {
+      ...fakeReport,
+      migrationStrategy: 'custom-unknown-strategy',
+    };
+    mockExecFileSync.mockReturnValue(JSON.stringify(unknownStrategyReport));
+    const dir = makeTmpDir();
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ dependencies: {} }));
+    const plan = handleGenerateMigrationPlan({ project_dir: dir });
+    expect(plan).toContain('custom-unknown-strategy');
+    rmSync(dir, { recursive: true, force: true });
+  });
+
+  it('uses detail as fallback when finding has no title', () => {
+    const reportNoTitle = {
+      ...fakeReport,
+      findings: [{ severity: 'high', detail: 'Only detail, no title' }],
+    };
+    mockExecFileSync.mockReturnValue(JSON.stringify(reportNoTitle));
+    const dir = makeTmpDir();
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ dependencies: {} }));
+    const plan = handleGenerateMigrationPlan({ project_dir: dir });
+    expect(plan).toContain('Only detail, no title');
+    rmSync(dir, { recursive: true, force: true });
+  });
 });
