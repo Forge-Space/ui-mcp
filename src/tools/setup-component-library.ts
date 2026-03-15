@@ -13,6 +13,7 @@ import {
   type ComponentLibrarySetupOptions,
   type IDesignContext,
 } from '@forgespace/siza-gen';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { designService } from '../services/index.js';
 
 const logger = createLogger('setup-component-library');
@@ -276,3 +277,21 @@ export const getComponentLibraryStatusTool = {
   }),
   handler: ({ projectPath }: { projectPath: string }) => getComponentLibraryStatusHandler(projectPath),
 };
+
+export function registerSetupComponentLibrary(server: McpServer): void {
+  server.tool(
+    'setup_component_library',
+    'Set up a complete project with a component library (shadcn, radix, headlessui, material) including config files, dependencies, and initial components.',
+    inputSchema.shape,
+    async (input) => {
+      try {
+        const result = await setupComponentLibraryHandler(input as SetupComponentLibraryInput);
+        return { content: [{ type: 'text' as const, text: JSON.stringify(result, null, 2) }] };
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        logger.error(`setup_component_library failed: ${msg}`);
+        return { content: [{ type: 'text' as const, text: `Error: ${msg}` }], isError: true };
+      }
+    }
+  );
+}

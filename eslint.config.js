@@ -57,7 +57,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ['**/__tests__/**', '**/*.test.*', '**/*.spec.*'],
+    files: ['**/__tests__/**', '**/*.test.*', '**/*.spec.*', '**/__mocks__/**'],
     languageOptions: {
       parserOptions: {
         projectService: false,
@@ -90,6 +90,14 @@ export default tseslint.config(
     files: ['scripts/**/*.js', 'scripts/**/*.ts', 'scripts/**/*.mjs', 'run-tests.mjs'],
     rules: {
       'no-console': 'off',
+    },
+  },
+  {
+    // Tool handlers use async for MCP SDK interface consistency even when no
+    // await is currently needed. Suppress require-await for tool files.
+    files: ['src/tools/**/*.ts'],
+    rules: {
+      'require-await': 'off',
     },
   }
 );
