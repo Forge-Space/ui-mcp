@@ -66,7 +66,23 @@ jobs:
 
       - name: Publish to npm
         if: steps.npm-check.outputs.already_published == 'false'
-        run: npm publish --provenance --access public
+        run: |
+          VERSION="${{ steps.npm-check.outputs.version }}"
+          # Attempt publish; npm may return E403 even on success (provenance race condition)
+          if npm publish --provenance --access public; then
+            echo "::notice::Published @forgespace/ui-mcp@${VERSION} to npm"
+          else
+            # E403 "cannot publish over" = version already published (race condition or retry)
+            sleep 5
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+              "https://registry.npmjs.org/@forgespace%2fui-mcp/${VERSION}")
+            if [ "$STATUS" = "200" ]; then
+              echo "::warning::npm returned E403 but v${VERSION} is live — treating as success"
+            else
+              echo "::error::npm publish failed and v${VERSION} is not on the registry"
+              exit 1
+            fi
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
