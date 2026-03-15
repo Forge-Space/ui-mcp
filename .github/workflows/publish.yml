@@ -49,25 +49,26 @@ jobs:
       - run: npm ci --legacy-peer-deps
       - run: npm run build
 
+      - name: Check if version already on npm
+        id: npm-check
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          # Use unauthenticated curl to avoid scoped-package auth issues
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            "https://registry.npmjs.org/@forgespace%2fui-mcp/${VERSION}")
+          if [ "$STATUS" = "200" ]; then
+            echo "already_published=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::v${VERSION} already on npm — skipping publish"
+          else
+            echo "already_published=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Publish to npm
-        id: npm-publish
-        continue-on-error: true
+        if: steps.npm-check.outputs.already_published == 'false'
         run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Check npm publish result
-        run: |
-          if [ "${{ steps.npm-publish.outcome }}" = "failure" ]; then
-            VERSION=$(node -p "require('./package.json').version")
-            # Check if version already exists on npm (not a real failure)
-            if npm view "@forgespace/ui-mcp@${VERSION}" version 2>/dev/null; then
-              echo "::warning::npm already has v${VERSION} — skipping publish"
-            else
-              echo "::error::npm publish failed for a reason other than duplicate version"
-              exit 1
-            fi
-          fi
 
       - name: Install MCP publisher
         run: |
@@ -93,3 +94,4 @@ jobs:
       - uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
+          make_latest: true
