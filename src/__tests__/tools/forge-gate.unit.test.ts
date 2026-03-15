@@ -6,7 +6,7 @@ jest.unstable_mockModule('forge-ai-init', () => ({
   runGate: mockRunGate,
 }));
 
-const { buildForgeGateResponse } = await import('../../tools/forge-gate.js');
+const { buildForgeGateResponse, registerForgeGate } = await import('../../tools/forge-gate.js');
 
 describe('forge_gate tool', () => {
   beforeEach(() => {
@@ -88,5 +88,13 @@ describe('forge_gate tool', () => {
     });
 
     expect(mockRunGate).toHaveBeenCalledWith('/tmp/project', 'production', 75);
+  });
+
+  it('registers forge_gate tool on MCP server', async () => {
+    const { McpServer } = await import('@modelcontextprotocol/sdk/server/mcp.js');
+    const server = new McpServer({ name: 'test', version: '0.0.1' });
+    expect(() => registerForgeGate(server)).not.toThrow();
+    const tools = (server as unknown as { _registeredTools: Record<string, unknown> })._registeredTools;
+    expect(tools['forge_gate']).toBeDefined();
   });
 });

@@ -6,7 +6,7 @@ jest.unstable_mockModule('forge-ai-init', () => ({
   analyzeDiff: mockAnalyzeDiff,
 }));
 
-const { buildForgeDiffResponse } = await import('../../tools/forge-diff.js');
+const { buildForgeDiffResponse, registerForgeDiff } = await import('../../tools/forge-diff.js');
 
 describe('forge_diff tool', () => {
   beforeEach(() => {
@@ -115,5 +115,30 @@ describe('forge_diff tool', () => {
       head: 'feature/x',
       staged: true,
     });
+  });
+
+  it('registers forge_diff tool on MCP server', async () => {
+    const { McpServer } = await import('@modelcontextprotocol/sdk/server/mcp.js');
+    const server = new McpServer({ name: 'test', version: '0.0.1' });
+    expect(() => registerForgeDiff(server)).not.toThrow();
+    const tools = (server as unknown as { _registeredTools: Record<string, unknown> })._registeredTools;
+    expect(tools['forge_diff']).toBeDefined();
+  });
+
+  it('shows neutral delta icon when score is unchanged', () => {
+    mockAnalyzeDiff.mockReturnValue({
+      changedFiles: [],
+      beforeScore: 75,
+      afterScore: 75,
+      delta: 0,
+      improved: false,
+      newFindings: [],
+      resolvedFindings: [],
+      summary: 'No quality change.',
+    });
+
+    const result = buildForgeDiffResponse({ directory: '/tmp/project', staged: false });
+    expect(result.content[0].text).toContain('75/100');
+    expect(result.content[0].text).toContain('No quality change');
   });
 });
