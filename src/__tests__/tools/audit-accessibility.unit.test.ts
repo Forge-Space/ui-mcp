@@ -60,7 +60,7 @@ describe('audit_accessibility tool', () => {
       const html = '<form><input type="text" name="email" /></form>';
       const report = auditAccessibility(html, 'html', false);
 
-      const labelIssue = report.issues.find((i) => i.rule === 'form-label');
+      const labelIssue = report.issues.find((i) => i.rule === 'input-label');
       expect(labelIssue).toBeDefined();
       expect(labelIssue?.severity).toBe('error');
       expect(labelIssue?.wcagCriteria).toContain('1.3.1');

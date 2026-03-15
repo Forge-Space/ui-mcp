@@ -13,12 +13,6 @@ if (dsn) {
   });
 }
 
-export function captureException(error: unknown): void {
-  if (dsn) {
-    Sentry.captureException(error);
-  }
-}
-
 export async function captureExceptionAndFlush(error: unknown): Promise<void> {
   if (dsn) {
     Sentry.captureException(error);

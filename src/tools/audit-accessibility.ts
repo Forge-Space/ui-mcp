@@ -223,15 +223,21 @@ export function auditAccessibility(code: string, framework: Framework, strict: b
 
 function checkImageAlt(code: string, issues: IAccessibilityIssue[], passed: string[]): void {
   const imgTags = code.match(/<img[^>]*>/gi) ?? [];
-  const missingAlt = imgTags.filter((tag) => !/alt=/i.test(tag));
+  const problematic = imgTags.filter((tag) => {
+    if (!/alt=/i.test(tag)) return true;
+    // Empty alt with role="img" is invalid — decorative images must NOT have role="img"
+    if (/alt=["']["']/i.test(tag) && /role=["']img["']/i.test(tag)) return true;
+    return false;
+  });
 
-  if (missingAlt.length > 0) {
+  if (problematic.length > 0) {
     issues.push({
       rule: 'img-alt',
       severity: 'error',
-      message: `${missingAlt.length} image(s) missing alt attribute`,
-      element: missingAlt[0],
-      suggestion: 'Add descriptive alt text to all <img> elements. Use alt="" for decorative images.',
+      message: `${problematic.length} image(s) missing alt attribute or have invalid alt usage`,
+      element: problematic[0],
+      suggestion:
+        'Add descriptive alt text to all <img> elements. Use alt="" for decorative images (without role="img").',
       wcagCriteria: 'WCAG 1.1.1 Non-text Content',
     });
   } else if (imgTags.length > 0) {
@@ -243,13 +249,22 @@ function checkFormLabels(code: string, forAttr: string, issues: IAccessibilityIs
   const inputs = code.match(/<input[^>]*>/gi) ?? [];
   const visibleInputs = inputs.filter((tag) => !/type=["']hidden["']/i.test(tag));
 
-  const unlabeled = visibleInputs.filter(
-    (tag) => !/aria-label=/i.test(tag) && !/aria-labelledby=/i.test(tag) && !/id=/i.test(tag)
-  );
+  // Inputs are labeled if they have aria-label, aria-labelledby, or an id that matches a label
+  const labeledIds = [...code.matchAll(new RegExp(`${forAttr}=["']([^"']+)["']`, 'gi'))].map((m) => m[1]);
+
+  const unlabeled = visibleInputs.filter((tag) => {
+    if (/aria-label=/i.test(tag) || /aria-labelledby=/i.test(tag)) return false;
+    const idMatch = tag.match(/id=["']([^"']+)["']/i);
+    if (idMatch) {
+      const id = idMatch[1];
+      return !labeledIds.includes(id);
+    }
+    return true;
+  });
 
   if (unlabeled.length > 0) {
     issues.push({
-      rule: 'form-label',
+      rule: 'input-label',
       severity: 'error',
       message: `${unlabeled.length} form input(s) without associated labels`,
       suggestion: `Add <label ${forAttr}="inputId"> or aria-label attribute to each input.`,
@@ -369,7 +384,7 @@ function checkHeadingHierarchy(code: string, issues: IAccessibilityIssue[], pass
       wcagCriteria: 'WCAG 1.3.1 Info and Relationships',
     });
   } else if (headings.length > 0) {
-    passed.push('Heading hierarchy is correct');
+    passed.push('heading hierarchy is correct');
   }
 }
 
@@ -517,21 +532,26 @@ function checkAriaUsage(code: string, issues: IAccessibilityIssue[], passed: str
 function checkKeyboardAccess(code: string, issues: IAccessibilityIssue[], passed: string[]): void {
   // Check for onClick on non-interactive elements without keyboard handlers
   if (/onClick/i.test(code)) {
-    const divClicks = code.match(/<div[^>]*onClick/gi) ?? [];
-    const spanClicks = code.match(/<span[^>]*onClick/gi) ?? [];
+    const divClicks = code.match(/<div[^>]*onClick[^>]*/gi) ?? [];
+    const spanClicks = code.match(/<span[^>]*onClick[^>]*/gi) ?? [];
     const nonInteractive = [...divClicks, ...spanClicks];
 
     if (nonInteractive.length > 0) {
-      const hasKeyboard = nonInteractive.some((el) => /onKeyDown|onKeyUp|onKeyPress|role=["']button["']/i.test(el));
-      if (!hasKeyboard) {
+      // An element is accessible if it has BOTH a keyboard handler AND a role
+      const inaccessible = nonInteractive.filter(
+        (el) => !(/onKeyDown|onKeyUp|onKeyPress/i.test(el) && /role=["']button["']/i.test(el))
+      );
+      if (inaccessible.length > 0) {
         issues.push({
           rule: 'click-keyboard',
           severity: 'error',
-          message: `${nonInteractive.length} non-interactive element(s) with onClick but no keyboard handler`,
+          message: `${inaccessible.length} non-interactive element(s) with onClick but no keyboard handler`,
           suggestion: 'Add role="button", tabIndex={0}, and onKeyDown handler, or use a <button> element instead.',
           wcagCriteria: 'WCAG 2.1.1 Keyboard',
         });
       }
+    } else {
+      passed.push('No keyboard accessibility issues with click handlers');
     }
   } else {
     passed.push('No keyboard accessibility issues with click handlers');

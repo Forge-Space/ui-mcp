@@ -35,7 +35,7 @@ const inputSchema = z.object({
 
 export type SetupComponentLibraryInput = z.infer<typeof inputSchema>;
 
-const outputSchema = z.object({
+const _outputSchema = z.object({
   setupFiles: z.array(z.object({ path: z.string(), content: z.string() })).describe('Generated setup files'),
   instructions: z.array(z.string()).describe('Setup instructions'),
   nextSteps: z.array(z.string()).describe('Next steps'),
@@ -43,7 +43,7 @@ const outputSchema = z.object({
   devDependencies: z.array(z.string()).describe('Development dependencies'),
 });
 
-export type SetupComponentLibraryOutput = z.infer<typeof outputSchema>;
+export type SetupComponentLibraryOutput = z.infer<typeof _outputSchema>;
 
 export function setupComponentLibraryHandler(input: SetupComponentLibraryInput): Promise<SetupComponentLibraryOutput> {
   logger.info(`Setting up ${input.library} for ${input.framework} project: ${input.projectName}`);
@@ -238,46 +238,6 @@ function generateNextSteps(
   return steps;
 }
 
-export const setupComponentLibraryTool = {
-  name: 'setup_component_library',
-  description: 'Set up a complete project with a component library',
-  inputSchema,
-  outputSchema,
-  handler: setupComponentLibraryHandler,
-};
-
-export const validateComponentLibrarySetupTool = {
-  name: 'validate_component_library_setup',
-  description: 'Validate component library setup in a project',
-  inputSchema: z.object({
-    projectPath: z.string(),
-    library: z.enum(['shadcn', 'radix', 'headlessui', 'material', 'primevue', 'none']),
-  }),
-  outputSchema: z.object({
-    isValid: z.boolean(),
-    errors: z.array(z.string()),
-    warnings: z.array(z.string()),
-    recommendations: z.array(z.string()),
-  }),
-  handler: ({ projectPath, library }: { projectPath: string; library: ComponentLibraryId }) =>
-    validateComponentLibrarySetupHandler(projectPath, library),
-};
-
-export const getComponentLibraryStatusTool = {
-  name: 'get_component_library_status',
-  description: 'Get component library setup status for a project',
-  inputSchema: z.object({ projectPath: z.string() }),
-  outputSchema: z.object({
-    library: z.enum(['shadcn', 'radix', 'headlessui', 'material', 'primevue', 'none']).nullable(),
-    isConfigured: z.boolean(),
-    components: z.array(z.string()),
-    patterns: z.array(z.string()),
-    version: z.string(),
-    lastUpdated: z.string(),
-  }),
-  handler: ({ projectPath }: { projectPath: string }) => getComponentLibraryStatusHandler(projectPath),
-};
-
 export function registerSetupComponentLibrary(server: McpServer): void {
   server.tool(
     'setup_component_library',
@@ -290,6 +250,41 @@ export function registerSetupComponentLibrary(server: McpServer): void {
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
         logger.error(`setup_component_library failed: ${msg}`);
+        return { content: [{ type: 'text' as const, text: `Error: ${msg}` }], isError: true };
+      }
+    }
+  );
+
+  server.tool(
+    'validate_component_library_setup',
+    'Validate that a component library is correctly configured in a project directory.',
+    {
+      projectPath: z.string().describe('Absolute path to the project directory'),
+      library: z
+        .enum(['shadcn', 'radix', 'headlessui', 'material', 'primevue', 'none'])
+        .describe('Component library to validate'),
+    },
+    async ({ projectPath, library }) => {
+      try {
+        const result = await validateComponentLibrarySetupHandler(projectPath, library);
+        return { content: [{ type: 'text' as const, text: JSON.stringify(result, null, 2) }] };
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        return { content: [{ type: 'text' as const, text: `Error: ${msg}` }], isError: true };
+      }
+    }
+  );
+
+  server.tool(
+    'get_component_library_status',
+    'Get the current component library setup status for a project directory.',
+    { projectPath: z.string().describe('Absolute path to the project directory') },
+    async ({ projectPath }) => {
+      try {
+        const result = await getComponentLibraryStatusHandler(projectPath);
+        return { content: [{ type: 'text' as const, text: JSON.stringify(result, null, 2) }] };
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
         return { content: [{ type: 'text' as const, text: `Error: ${msg}` }], isError: true };
       }
     }
