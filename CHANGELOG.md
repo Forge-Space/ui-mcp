@@ -7,22 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.19.0] - 2026-03-15
+
 ### Added
 
-- MCP Registry metadata via `server.json` and npm `mcpName` for official
-  registry submission readiness.
-- Tag-driven publish automation for npm provenance + MCP Registry publishing.
-- Weekly MCP Registry status workflow that updates one distribution issue with
-  npm/registry drift and discovery state.
+- **MCP Registry metadata** — `server.json` with MCP Registry schema and npm
+  `mcpName` field for official registry submission readiness.
+- **Tag-driven publish pipeline** — `publish.yml` replaces `deploy.yml` +
+  `release-automation.yml`: push `v*` tag → npm publish with provenance → MCP
+  Registry publish via GitHub OIDC → GitHub release.
+- **Weekly MCP Registry status** — `mcp-registry-status.yml` refreshes one
+  tracking issue with npm/registry drift and discovery state.
+- **Registry validation script** — `registry:check` validates server.json ↔
+  package.json alignment before publish (version, name, mcpName, files).
 
 ### Changed
 
 - npm distribution docs now use the scoped package
   `@forgespace/ui-mcp` and the `forgespace-ui-mcp` binary consistently.
-- MCP server runtime version is now read from `package.json` at startup instead
-  of being hardcoded, so it always matches the published version.
-- `server.json` now uses the current MCP Registry schema field names so
-  release automation and registry validation stay aligned.
+- MCP server runtime version is now read from `package.json` at startup via
+  `createRequire`, so it always matches the published version automatically.
+- `server.json` uses the current MCP Registry schema field names so release
+  automation and registry validation stay aligned.
+- Bundle size: 403 KB (unchanged)
+- Test count: 529 tests across 45 suites (unchanged)
 
 ### Fixed
 
