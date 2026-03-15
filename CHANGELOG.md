@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- MCP Registry metadata via `server.json` and npm `mcpName` for official
+  registry submission readiness.
+- Tag-driven publish automation for npm provenance + MCP Registry publishing.
+- Weekly MCP Registry status workflow that updates one distribution issue with
+  npm/registry drift and discovery state.
+
+### Changed
+
+- npm distribution docs now use the scoped package
+  `@forgespace/ui-mcp` and the `forgespace-ui-mcp` binary consistently.
+- MCP server runtime version is now read from `package.json` at startup instead
+  of being hardcoded, so it always matches the published version.
+- `server.json` now uses the current MCP Registry schema field names so
+  release automation and registry validation stay aligned.
+
 ### Fixed
 
 - CI: Added job-scoped `security-events: write` permission to the

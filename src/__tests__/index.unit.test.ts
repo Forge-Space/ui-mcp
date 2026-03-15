@@ -1,5 +1,9 @@
+import { createRequire } from 'node:module';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { loadConfig } from '@forgespace/siza-gen';
+
+const require = createRequire(import.meta.url);
+const pkg = require('../../package.json') as { version: string };
 
 describe('MCP Server Index', () => {
   beforeAll(() => {
@@ -39,8 +43,9 @@ describe('MCP Server Index', () => {
     expect(registerCurrentStylesResource).toBeDefined();
   });
 
-  it('can create MCP server instance', () => {
-    const server = new McpServer({ name: 'uiforge', version: '0.1.0' });
+  it('can create MCP server instance with package version', () => {
+    const server = new McpServer({ name: 'uiforge', version: pkg.version });
     expect(server).toBeDefined();
+    expect(pkg.version).toMatch(/^\d+\.\d+\.\d+/);
   });
 });

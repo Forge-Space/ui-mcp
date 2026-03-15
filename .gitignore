@@ -12,6 +12,7 @@ Thumbs.db
 
 # Coverage
 coverage/
+artifacts/
 
 # Runtime data
 .uiforge/

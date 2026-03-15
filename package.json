@@ -1,5 +1,6 @@
 {
   "name": "@forgespace/ui-mcp",
+  "mcpName": "io.github.forge-space/ui-mcp",
   "version": "0.18.0",
   "description": "AI-driven UI generation via Model Context Protocol. Generate React, Next.js, Vue, Angular applications from natural language.",
   "type": "module",
@@ -29,6 +30,7 @@
     "deps:check": "ncu",
     "deps:update": "ncu -u",
     "deps:update-interactive": "ncu -i",
+    "registry:check": "node scripts/registry-check.mjs",
     "check:cycles": "madge --circular --extensions ts src/",
     "prepare": "husky || true",
     "prepublishOnly": "npm run build",
@@ -82,19 +84,27 @@
   "engines": {
     "node": ">=22"
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "files": [
     "dist",
     "bin",
+    "server.json",
     "README.md",
     "LICENSE"
   ],
   "keywords": [
     "mcp",
     "model-context-protocol",
+    "mcp-server",
     "ai",
     "ui-generation",
     "react",
     "nextjs",
+    "agent-tools",
+    "internal-developer-platform",
     "forgespace",
     "typescript"
   ],

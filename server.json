@@ -1,0 +1,34 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.forge-space/ui-mcp",
+  "description": "Forge Space UI MCP server for full-stack UI and backend generation. Ships as a stdio npm package for MCP clients and registry discovery.",
+  "version": "0.18.0",
+  "repository": {
+    "url": "https://github.com/Forge-Space/ui-mcp",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@forgespace/ui-mcp",
+      "version": "0.18.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ],
+  "environmentVariables": [
+    {
+      "name": "FIGMA_ACCESS_TOKEN",
+      "description": "Optional Figma access token for Figma import and token sync tools.",
+      "isRequired": false,
+      "isSecret": true
+    },
+    {
+      "name": "SENTRY_DSN",
+      "description": "Optional Sentry DSN for uncaught exception reporting.",
+      "isRequired": false,
+      "isSecret": true
+    }
+  ]
+}
