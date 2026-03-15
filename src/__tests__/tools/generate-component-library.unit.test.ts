@@ -1,8 +1,10 @@
 import { loadConfig } from '@forgespace/siza-gen';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import {
   generateComponentLibraryHandler,
   getAvailableComponentsHandler,
   getAvailableLibrariesHandler,
+  registerGenerateComponentLibrary,
   type GenerateComponentLibraryInput,
 } from '../../tools/generate-component-library.js';
 
@@ -246,6 +248,17 @@ describe('generate-component-library tool', () => {
         includeStories: true,
       });
       expect(Array.isArray(result.component)).toBe(true);
+    });
+  });
+
+  describe('registerGenerateComponentLibrary', () => {
+    it('registers 3 tools on MCP server', () => {
+      const server = new McpServer({ name: 'test', version: '0.0.1' });
+      expect(() => registerGenerateComponentLibrary(server)).not.toThrow();
+      const tools = (server as unknown as { _registeredTools: Record<string, unknown> })._registeredTools;
+      expect(tools['generate_component_library']).toBeDefined();
+      expect(tools['get_available_components']).toBeDefined();
+      expect(tools['get_available_libraries']).toBeDefined();
     });
   });
 });

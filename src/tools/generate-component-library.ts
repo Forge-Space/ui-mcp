@@ -14,6 +14,7 @@ import {
   type ComponentLibraryId,
   type IDesignContext,
 } from '@forgespace/siza-gen';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { designService } from '../services/index.js';
 
 const logger = createLogger('generate-component-library');
@@ -34,8 +35,8 @@ const inputSchema = z.object({
 
 export type GenerateComponentLibraryInput = z.infer<typeof inputSchema>;
 
-// Output schema
-const outputSchema = z.object({
+// Output schema (used for type inference only)
+const _outputSchema = z.object({
   component: z
     .array(
       z.object({
@@ -49,7 +50,7 @@ const outputSchema = z.object({
   setupInstructions: z.array(z.string()).describe('Setup instructions'),
 });
 
-export type GenerateComponentLibraryOutput = z.infer<typeof outputSchema>;
+export type GenerateComponentLibraryOutput = z.infer<typeof _outputSchema>;
 
 /**
  * Generate component from specified library
@@ -363,45 +364,52 @@ function generateSetupInstructions(library: ComponentLibraryId, framework: strin
   return instructions;
 }
 
-// Tool registration
-export const generateComponentLibraryTool = {
-  name: 'generate_component_library',
-  description: 'Generate components from various component libraries with full customization',
-  inputSchema,
-  outputSchema,
-  handler: generateComponentLibraryHandler,
-};
+export function registerGenerateComponentLibrary(server: McpServer): void {
+  server.tool(
+    'generate_component_library',
+    'Generate components from shadcn, radix, headlessui, or material UI libraries. Supports themes, custom props, test/story generation, and framework-specific output.',
+    inputSchema.shape,
+    async (input) => {
+      try {
+        const result = await generateComponentLibraryHandler(input as GenerateComponentLibraryInput);
+        return { content: [{ type: 'text' as const, text: JSON.stringify(result, null, 2) }] };
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        logger.error(`generate_component_library failed: ${msg}`);
+        return { content: [{ type: 'text' as const, text: `Error: ${msg}` }], isError: true };
+      }
+    }
+  );
 
-export const getAvailableComponentsTool = {
-  name: 'get_available_components',
-  description: 'Get available components for a specific component library',
-  inputSchema: z.object({
-    library: z.enum(['shadcn', 'radix', 'headlessui', 'material', 'primevue', 'none']),
-  }),
-  outputSchema: z.object({
-    components: z.array(z.string()),
-    library: z.string(),
-    description: z.string(),
-  }),
-  handler: ({ library }: { library: ComponentLibraryId }) => {
-    return getAvailableComponentsHandler(library);
-  },
-};
+  server.tool(
+    'get_available_components',
+    'List all available components for a given component library (shadcn, radix, headlessui, material).',
+    {
+      library: z.enum(['shadcn', 'radix', 'headlessui', 'material', 'primevue', 'none']).describe('Component library'),
+    },
+    async ({ library }) => {
+      try {
+        const result = await getAvailableComponentsHandler(library);
+        return { content: [{ type: 'text' as const, text: JSON.stringify(result, null, 2) }] };
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        return { content: [{ type: 'text' as const, text: `Error: ${msg}` }], isError: true };
+      }
+    }
+  );
 
-export const getAvailableLibrariesTool = {
-  name: 'get_available_libraries',
-  description: 'Get all available component libraries',
-  inputSchema: z.object({}),
-  outputSchema: z.object({
-    libraries: z.array(
-      z.object({
-        id: z.string(),
-        name: z.string(),
-        description: z.string(),
-        componentCount: z.number(),
-        patternCount: z.number(),
-      })
-    ),
-  }),
-  handler: () => getAvailableLibrariesHandler(),
-};
+  server.tool(
+    'get_available_libraries',
+    'List all available component libraries with their component counts and descriptions.',
+    {},
+    async () => {
+      try {
+        const result = await getAvailableLibrariesHandler();
+        return { content: [{ type: 'text' as const, text: JSON.stringify(result, null, 2) }] };
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        return { content: [{ type: 'text' as const, text: `Error: ${msg}` }], isError: true };
+      }
+    }
+  );
+}

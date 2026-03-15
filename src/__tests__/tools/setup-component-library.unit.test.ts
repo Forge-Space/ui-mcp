@@ -15,10 +15,12 @@ describe('setup_component_library tool', () => {
     expect(() => registerSetupComponentLibrary(server)).not.toThrow();
   });
 
-  it('registers the correct tool name', () => {
+  it('registers 3 tools: setup, validate, and status', () => {
     registerSetupComponentLibrary(server);
     const tools = (server as unknown as { _registeredTools: Record<string, unknown> })._registeredTools;
     expect(tools?.['setup_component_library']).toBeDefined();
+    expect(tools?.['validate_component_library_setup']).toBeDefined();
+    expect(tools?.['get_component_library_status']).toBeDefined();
   });
 
   it('sets up radix for react project', async () => {
