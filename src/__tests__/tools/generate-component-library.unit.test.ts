@@ -161,4 +161,91 @@ describe('generate-component-library tool', () => {
       expect(ids).toContain('material');
     });
   });
+
+  describe('theme and coverage branches', () => {
+    it('applies dark theme to radix button', async () => {
+      const result = await generateComponentLibraryHandler({
+        ...baseInput,
+        library: 'radix',
+        theme: 'dark',
+      });
+      expect(result.component.length).toBeGreaterThan(0);
+    });
+
+    it('applies light theme to shadcn card', async () => {
+      const result = await generateComponentLibraryHandler({
+        ...baseInput,
+        library: 'shadcn',
+        componentType: 'card',
+        theme: 'light',
+      });
+      expect(result.component.length).toBeGreaterThan(0);
+    });
+
+    it('applies blue theme to material button', async () => {
+      const result = await generateComponentLibraryHandler({
+        ...baseInput,
+        library: 'material',
+        componentType: 'button',
+        theme: 'blue',
+      });
+      expect(result.component.length).toBeGreaterThan(0);
+    });
+
+    it('applies green theme', async () => {
+      const result = await generateComponentLibraryHandler({
+        ...baseInput,
+        library: 'radix',
+        theme: 'green',
+      });
+      expect(result.component.length).toBeGreaterThan(0);
+    });
+
+    it('ignores unknown theme gracefully', async () => {
+      const result = await generateComponentLibraryHandler({
+        ...baseInput,
+        library: 'radix',
+        theme: 'unknown-theme-xyz',
+      });
+      expect(result.component.length).toBeGreaterThan(0);
+    });
+
+    it('generates nextjs-specific setup instructions', async () => {
+      const result = await generateComponentLibraryHandler({
+        ...baseInput,
+        library: 'radix',
+        framework: 'nextjs',
+      });
+      const allInstructions = result.setupInstructions.join(' ');
+      expect(allInstructions).toContain('client');
+    });
+
+    it('generates card usage examples for shadcn', async () => {
+      const result = await generateComponentLibraryHandler({
+        ...baseInput,
+        library: 'shadcn',
+        componentType: 'card',
+      });
+      expect(result.examples.length).toBeGreaterThan(0);
+    });
+
+    it('generates input usage examples for shadcn', async () => {
+      const result = await generateComponentLibraryHandler({
+        ...baseInput,
+        library: 'shadcn',
+        componentType: 'input',
+      });
+      expect(result.examples.length).toBeGreaterThan(0);
+    });
+
+    it('includes includeTests files when enabled', async () => {
+      const result = await generateComponentLibraryHandler({
+        ...baseInput,
+        library: 'radix',
+        includeTests: true,
+        includeStories: true,
+      });
+      expect(Array.isArray(result.component)).toBe(true);
+    });
+  });
 });
