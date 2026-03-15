@@ -1,14 +1,42 @@
+import { jest, describe, it, expect, beforeEach, afterEach } from '@jest/globals';
 import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { handleGenerateMigrationPlan, registerGenerateMigrationPlan } from '../../tools/generate-migration-plan.js';
+
+const mockExecFileSync = jest.fn<() => string>();
+
+jest.unstable_mockModule('node:child_process', () => ({
+  execFileSync: mockExecFileSync,
+}));
+
+const { handleGenerateMigrationPlan, registerGenerateMigrationPlan } =
+  await import('../../tools/generate-migration-plan.js');
 
 function makeTmpDir(): string {
   return mkdtempSync(join(tmpdir(), 'mcp-test-'));
 }
 
+const fakeReport = {
+  overallScore: 72,
+  overallGrade: 'C',
+  migrationReadiness: 'needs-work',
+  migrationStrategy: 'strangler-fig',
+  findings: [
+    { severity: 'high', title: 'Outdated dependency', detail: 'express 3.x is EOL' },
+    { severity: 'medium', title: 'Missing tests', detail: 'No test files found' },
+  ],
+};
+
 describe('generate_migration_plan tool', () => {
+  beforeEach(() => {
+    mockExecFileSync.mockReturnValue(JSON.stringify(fakeReport));
+  });
+
+  afterEach(() => {
+    mockExecFileSync.mockReset();
+  });
+
   it('generates a plan with phases', () => {
     const dir = makeTmpDir();
     writeFileSync(
@@ -55,13 +83,11 @@ describe('generate_migration_plan tool', () => {
 
   it('includes Priority Findings section for projects with issues', () => {
     const dir = makeTmpDir();
-    // A bare project with no tests triggers critical findings
     writeFileSync(join(dir, 'package.json'), JSON.stringify({ dependencies: { express: '3.0.0' } }));
     writeFileSync(join(dir, 'index.js'), 'var x = 1;');
 
     const plan = handleGenerateMigrationPlan({ project_dir: dir });
 
-    // Either has priority findings or doesn't — both paths are valid
     expect(typeof plan).toBe('string');
     expect(plan.length).toBeGreaterThan(100);
 
@@ -74,7 +100,6 @@ describe('generate_migration_plan tool', () => {
 
     const plan = handleGenerateMigrationPlan({ project_dir: dir });
 
-    // The plan is a string — verify structure regardless of findings
     expect(plan).toContain('## Assessment');
     expect(plan).toContain('## Strategy:');
 

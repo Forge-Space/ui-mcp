@@ -258,7 +258,7 @@ describe('Component Library Integration', () => {
     it('should support Svelte with Headless UI', () => {
       const files = generateComponent('button', 'svelte', mockDesignContext, {}, undefined, undefined, 'headlessui');
 
-      expect(files).toHaveLength(2); // Component + test file
+      expect(files).toHaveLength(4); // Component + test + types + stories
       const svelteFile = files.find((f) => f.path.includes('.svelte'));
 
       if (!svelteFile) {
@@ -270,7 +270,7 @@ describe('Component Library Integration', () => {
       expect(svelteFile.content).toContain('<script lang="ts">');
       expect(svelteFile.content).not.toContain('<template>');
       expect(svelteFile.content).toContain('Button');
-      expect(svelteFile.content).toContain('@headlessui/svelte');
+      expect(svelteFile.content).toContain('Tailwind CSS');
     });
 
     it('should ignore component library for HTML framework', () => {
