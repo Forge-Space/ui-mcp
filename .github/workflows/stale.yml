@@ -1,0 +1,12 @@
+name: Stale
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+# Security: No user-controlled inputs used in run: commands.
+
+jobs:
+  stale:
+    uses: Forge-Space/.github/.github/workflows/reusable-stale.yml@main
