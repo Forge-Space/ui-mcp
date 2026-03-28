@@ -151,7 +151,8 @@ This repository follows the shared Forge Space GitHub work-management baseline:
 - Issues for actionable delivery work
 - Projects for roadmap visibility and cross-repo reporting
 
-See [Forge-Space/.github `GOVERNANCE.md`](https://github.com/Forge-Space/.github/blob/main/GOVERNANCE.md)
+See
+[Forge-Space/.github `GOVERNANCE.md`](https://github.com/Forge-Space/.github/blob/main/GOVERNANCE.md)
 for the org-wide contract.
 
 Scheduled monitoring runs that execute CodeQL require job-scoped
