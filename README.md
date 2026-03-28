@@ -143,6 +143,17 @@ npm run validate          # lint + format + typecheck + test
 - [GitHub Discussions](https://github.com/orgs/Forge-Space/discussions)
 - [Issue Tracker](https://github.com/Forge-Space/ui-mcp/issues)
 
+## GitHub Workflow
+
+This repository follows the shared Forge Space GitHub work-management baseline:
+
+- Discussions for ideas, RFCs, Q&A, and announcements
+- Issues for actionable delivery work
+- Projects for roadmap visibility and cross-repo reporting
+
+See [Forge-Space/.github `GOVERNANCE.md`](https://github.com/Forge-Space/.github/blob/main/GOVERNANCE.md)
+for the org-wide contract.
+
 Scheduled monitoring runs that execute CodeQL require job-scoped
 `security-events: write` permission for SARIF upload.
 
