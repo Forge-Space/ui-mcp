@@ -1,10 +1,16 @@
 name: PR Governance
+
 on:
   pull_request:
     types: [opened, edited, synchronize, reopened]
 
 # Security: No user-controlled inputs used in run: commands.
 
+permissions:
+  pull-requests: write
+
 jobs:
   governance:
-    uses: Forge-Space/.github/.github/workflows/reusable-pr-governance.yml@main
+    uses: Forge-Space/.github/.github/workflows/reusable-pr-governance.yml@2ab6ca5b58984ce40dcbbaa71ff26ea81675513b
+    permissions:
+      pull-requests: write
