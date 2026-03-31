@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- This repo now inherits the Forge Space org-level GitHub issue forms and
+  work-management governance from `Forge-Space/.github`, keeping Discussions
+  for intake, Issues for actionable delivery work, and Projects for
+  roadmap/reporting.
+
 ## [0.24.5] - 2026-03-15
 
 ### Changed
