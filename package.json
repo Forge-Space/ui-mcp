@@ -118,5 +118,7 @@
       "prettier --write"
     ]
   },
-  "overrides": {}
+  "overrides": {
+    "axios": ">=0.0.0 <1.14.1 || >=1.14.2"
+  }
 }
