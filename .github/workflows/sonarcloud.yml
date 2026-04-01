@@ -29,7 +29,7 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Run tests with coverage
-        run: NODE_OPTIONS=--experimental-vm-modules jest --ci --coverage
+        run: NODE_OPTIONS=--experimental-vm-modules npx jest --ci --coverage
         continue-on-error: true
 
       - name: Validate Sonar token policy

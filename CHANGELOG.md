@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Cognitive Complexity**: Refactored `src/tools/generate-ui-component.ts` to reduce cyclomatic complexity from 81 to <15 by extracting 8 helper functions (`enhanceComponentPrompt`, `buildRagContext`, `applyStyleRecommendation`, `applyDesignContextFromUrl`, `getRegistryMatch`, `scoreComponentQuality`, `recordGenerationMetrics`, `checkAndPromotePatterns`, `buildResponseSummary`). This improves maintainability without changing behavior.
+- **Test Coverage**: Added comprehensive test coverage for lib utilities:
+  - `src/__tests__/design-context-merge.unit.test.ts` (12 new tests)
+  - `src/__tests__/debug.unit.test.ts` (14 new tests)
+  All tests verify business logic, edge cases, and error conditions.
+
 ### Changed
 
 - This repo now inherits the Forge Space org-level GitHub issue forms and
