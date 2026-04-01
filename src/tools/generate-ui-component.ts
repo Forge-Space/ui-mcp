@@ -174,6 +174,295 @@ export function ${componentName}() {
   }
 }
 
+// =============================================================================
+// Helper Functions: Reduce cognitive complexity of registerGenerateUiComponent
+// =============================================================================
+
+/**
+ * Enhance component prompt with RAG or fallback
+ */
+async function enhanceComponentPrompt(
+  componentType: string,
+  framework: string,
+  visualStyle: string | undefined,
+  mood: string | undefined,
+  industry: string | undefined,
+  skipML: boolean
+): Promise<{ enhancedPromptText: string; promptEnhancement: any }> {
+  let enhancedPromptText = componentType;
+  let promptEnhancement = null;
+
+  if (!skipML) {
+    try {
+      promptEnhancement = await enhancePromptWithRAG(componentType, {
+        componentType,
+        framework,
+        style: visualStyle || undefined,
+        mood: mood || undefined,
+        industry: industry || undefined,
+      });
+      enhancedPromptText = promptEnhancement.enhanced;
+    } catch (err) {
+      logger.warn({ error: err }, 'RAG prompt enhancement failed, trying basic');
+      try {
+        promptEnhancement = await enhancePrompt(componentType, {
+          componentType,
+          framework,
+          style: visualStyle || undefined,
+          mood: mood || undefined,
+          industry: industry || undefined,
+        });
+        enhancedPromptText = promptEnhancement.enhanced;
+      } catch (err2) {
+        logger.warn({ error: err2 }, 'Prompt enhancement failed, using original');
+      }
+    }
+  }
+  return { enhancedPromptText, promptEnhancement };
+}
+
+/**
+ * Build RAG context from embeddings
+ */
+async function buildRagContext(
+  enhancedPromptText: string,
+  skipML: boolean
+): Promise<{
+  similarComponents: Array<{ id: string; similarity: number; text: string }>;
+  a11yRules: Array<{ id: string; similarity: number; text: string }>;
+  designTokens: Array<{ id: string; similarity: number; text: string }>;
+} | null> {
+  if (skipML) return null;
+  try {
+    const db = getDatabase();
+    const hasEmbeddings =
+      getEmbeddingCount('component', db) > 0 || getEmbeddingCount('rule', db) > 0 || getEmbeddingCount('token', db) > 0;
+    if (hasEmbeddings) {
+      const queryVector = await embed(enhancedPromptText);
+      return {
+        similarComponents: semanticSearch(queryVector, 'component', db, 3, 0.5),
+        a11yRules: semanticSearch(queryVector, 'rule', db, 5, 0.4),
+        designTokens: semanticSearch(queryVector, 'token', db, 3, 0.4),
+      };
+    }
+  } catch (err) {
+    logger.warn({ error: err }, 'RAG retrieval failed');
+  }
+  return null;
+}
+
+/**
+ * Apply style recommendation if available
+ */
+async function applyStyleRecommendation(
+  enhancedPromptText: string,
+  visualStyle: string | undefined,
+  mood: string | undefined,
+  industry: string | undefined,
+  skipML: boolean
+): Promise<void> {
+  if (skipML || visualStyle) return;
+  try {
+    const styleRec = await recommendStyle(enhancedPromptText, {
+      industry: industry || undefined,
+      mood: mood || undefined,
+    });
+    if (styleRec.confidence > 0.5) {
+      const context = designContextStore.get();
+      context.colorPalette.primary = styleRec.primaryColor;
+      context.typography.fontFamily = styleRec.fontFamily;
+      designContextStore.set(context);
+    }
+  } catch (err) {
+    logger.debug({ error: err }, 'Style recommendation skipped');
+  }
+}
+
+/**
+ * Apply design context from URL
+ */
+async function applyDesignContextFromUrl(designReferenceUrl: string | undefined, warnings: string[]): Promise<void> {
+  if (!designReferenceUrl) return;
+  try {
+    const designData = await extractDesignFromUrl(designReferenceUrl);
+    if (designData.colors.length > 0) {
+      const context = designContextStore.get();
+      context.colorPalette.primary = designData.colors[0] ?? context.colorPalette.primary;
+      if (designData.colors[1]) context.colorPalette.secondary = designData.colors[1];
+      if (designData.colors[2]) context.colorPalette.accent = designData.colors[2];
+      designContextStore.set(context);
+    }
+    if (designData.typography.fonts.length > 0) {
+      const context = designContextStore.get();
+      context.typography.fontFamily = `${designData.typography.fonts[0]}, system-ui, sans-serif`;
+      designContextStore.set(context);
+    }
+  } catch (error) {
+    warnings.push(`Design extraction failed: ${String(error)}`);
+  }
+}
+
+/**
+ * Get registry match with feedback boosting
+ */
+async function getRegistryMatch(
+  componentType: string,
+  ragOptions: IRagOptions,
+  skipML: boolean
+): Promise<ReturnType<typeof getBestMatch> | undefined> {
+  if (!skipML) {
+    try {
+      const db = getDatabase();
+      return getBestMatchWithFeedback(componentType, ragOptions, db);
+    } catch (err) {
+      logger.warn({ error: err }, 'Feedback-boosted search failed, using standard search');
+      return getBestMatch(componentType, ragOptions);
+    }
+  }
+  return getBestMatch(componentType, ragOptions);
+}
+
+/**
+ * Score component quality
+ */
+async function scoreComponentQuality(
+  enhancedPromptText: string,
+  componentType: string,
+  framework: string,
+  visualStyle: string | undefined,
+  files: IGeneratedFile[],
+  skipML: boolean
+): Promise<any> {
+  if (skipML || files.length === 0) return null;
+  try {
+    const mainFile = files[0];
+    if (mainFile?.content) {
+      return await scoreQualityWithRAG(enhancedPromptText, mainFile.content, {
+        componentType,
+        framework,
+        style: visualStyle || undefined,
+      });
+    }
+  } catch (err) {
+    logger.warn({ error: err }, 'RAG quality scoring failed, trying basic');
+    try {
+      const mainFile = files[0];
+      if (mainFile?.content) {
+        return await scoreQuality(enhancedPromptText, mainFile.content, {
+          componentType,
+          framework,
+          style: visualStyle || undefined,
+        });
+      }
+    } catch (err2) {
+      logger.warn({ error: err2 }, 'Quality scoring failed');
+    }
+  }
+  return null;
+}
+
+/**
+ * Record generation metrics
+ */
+async function recordGenerationMetrics(
+  componentType: string,
+  framework: string,
+  props: Record<string, string> | undefined,
+  componentLibrary: string | undefined,
+  designReferenceUrl: string | undefined,
+  existingTailwindConfig: string | undefined,
+  existingCssVariables: string | undefined,
+  variant: string | undefined,
+  mood: string | undefined,
+  industry: string | undefined,
+  visualStyle: string | undefined,
+  skipMlStr: string,
+  files: IGeneratedFile[]
+): Promise<void> {
+  if (files.length === 0) return;
+  try {
+    const db = getDatabase();
+    const generationRecord = {
+      id: `gen-${Date.now()}-${randomUUID().slice(0, 8)}`,
+      tool: 'generate_ui_component' as const,
+      params: {
+        component_type: componentType,
+        framework,
+        props: props ? JSON.stringify(props) : '',
+        component_library: componentLibrary || '',
+        design_reference_url: designReferenceUrl || '',
+        existing_tailwind_config: existingTailwindConfig || '',
+        existing_css_variables: existingCssVariables || '',
+        variant: variant || '',
+        mood: mood || '',
+        industry: industry || '',
+        visual_style: visualStyle || '',
+        skip_ml: skipMlStr,
+      },
+      componentType,
+      framework,
+      outputHash: '',
+      timestamp: Date.now(),
+      sessionId: `session-${Date.now()}-${randomUUID().slice(0, 8)}`,
+    };
+    recordGeneration(generationRecord, files[0]?.content || '', db, componentType);
+  } catch (err) {
+    logger.warn({ error: err }, 'Generation recording failed');
+  }
+}
+
+/**
+ * Check and trigger pattern promotion
+ */
+async function checkAndPromotePatterns(): Promise<void> {
+  try {
+    generationCount++;
+    if (generationCount % 10 === 0) {
+      const db = getDatabase();
+      const promoted = triggerPatternPromotion(db);
+      if (promoted > 0) {
+        logger.info({ promoted, generationCount }, 'Auto-promoted patterns to registry');
+      }
+    }
+  } catch (err) {
+    logger.warn({ error: err }, 'Pattern promotion failed');
+  }
+}
+
+/**
+ * Build response summary
+ */
+function buildResponseSummary(
+  componentType: string,
+  framework: string,
+  files: IGeneratedFile[],
+  registryMatch: ReturnType<typeof getBestMatch> | undefined,
+  ragContext: any,
+  warnings: string[]
+): string {
+  const ragInfo = registryMatch
+    ? `\n📚 RAG Match: "${registryMatch.name}" (${registryMatch.id})` +
+      `\n   Quality: ${registryMatch.quality.inspirationSource}` +
+      `\n   A11y: ${registryMatch.a11y.keyboardNav}${
+        registryMatch.quality.antiGeneric.length > 0
+          ? `\n   Anti-generic: ${registryMatch.quality.antiGeneric.join(', ')}`
+          : ''
+      }`
+    : '\n📚 RAG: No registry match — using fallback template';
+  const embeddingInfo = ragContext
+    ? `\n🧠 Embedding RAG: ${ragContext.similarComponents.length} components, ${ragContext.a11yRules.length} rules, ${ragContext.designTokens.length} tokens matched`
+    : '';
+  return [
+    `Generated ${componentType} component for ${framework}`,
+    `Files: ${files.length}`,
+    ragInfo,
+    embeddingInfo,
+    ...(warnings.length > 0 ? ['Warnings:', ...warnings.map((w) => `  ⚠ ${w}`)] : []),
+  ]
+    .filter(Boolean)
+    .join('\n');
+}
+
 export function registerGenerateUiComponent(server: McpServer): void {
   server.tool(
     'generate_ui_component',
@@ -207,35 +496,14 @@ export function registerGenerateUiComponent(server: McpServer): void {
         const skipML = skip_ml ?? false;
 
         // ML: Prompt enhancement with RAG (always-on unless skip_ml)
-        let enhancedPromptText = component_type;
-        let promptEnhancement = null;
-
-        if (!skipML) {
-          try {
-            promptEnhancement = await enhancePromptWithRAG(component_type, {
-              componentType: component_type,
-              framework,
-              style: visual_style || undefined,
-              mood: mood || undefined,
-              industry: industry || undefined,
-            });
-            enhancedPromptText = promptEnhancement.enhanced;
-          } catch (err) {
-            logger.warn({ error: err }, 'RAG prompt enhancement failed, trying basic');
-            try {
-              promptEnhancement = await enhancePrompt(component_type, {
-                componentType: component_type,
-                framework,
-                style: visual_style || undefined,
-                mood: mood || undefined,
-                industry: industry || undefined,
-              });
-              enhancedPromptText = promptEnhancement.enhanced;
-            } catch (err2) {
-              logger.warn({ error: err2 }, 'Prompt enhancement failed, using original');
-            }
-          }
-        }
+        const { enhancedPromptText, promptEnhancement } = await enhanceComponentPrompt(
+          component_type,
+          framework,
+          visual_style,
+          mood,
+          industry,
+          skipML
+        );
 
         debugLogger.debug(
           { enhanced: enhancedPromptText.length, original: component_type.length },
@@ -245,50 +513,10 @@ export function registerGenerateUiComponent(server: McpServer): void {
         );
 
         // RAG: Semantic search for similar components and relevant rules
-        let ragContext: {
-          similarComponents: Array<{ id: string; similarity: number; text: string }>;
-          a11yRules: Array<{ id: string; similarity: number; text: string }>;
-          designTokens: Array<{ id: string; similarity: number; text: string }>;
-        } | null = null;
-
-        if (!skipML) {
-          try {
-            const db = getDatabase();
-            const hasEmbeddings =
-              getEmbeddingCount('component', db) > 0 ||
-              getEmbeddingCount('rule', db) > 0 ||
-              getEmbeddingCount('token', db) > 0;
-
-            if (hasEmbeddings) {
-              const queryVector = await embed(enhancedPromptText);
-              ragContext = {
-                similarComponents: semanticSearch(queryVector, 'component', db, 3, 0.5),
-                a11yRules: semanticSearch(queryVector, 'rule', db, 5, 0.4),
-                designTokens: semanticSearch(queryVector, 'token', db, 3, 0.4),
-              };
-            }
-          } catch (err) {
-            logger.warn({ error: err }, 'RAG retrieval failed');
-          }
-        }
+        const ragContext = await buildRagContext(enhancedPromptText, skipML);
 
         // Style recommendation from RAG tokens
-        if (!skipML && !visual_style) {
-          try {
-            const styleRec = await recommendStyle(enhancedPromptText, {
-              industry: industry || undefined,
-              mood: mood || undefined,
-            });
-            if (styleRec.confidence > 0.5) {
-              const context = designContextStore.get();
-              context.colorPalette.primary = styleRec.primaryColor;
-              context.typography.fontFamily = styleRec.fontFamily;
-              designContextStore.set(context);
-            }
-          } catch (err) {
-            logger.debug({ error: err }, 'Style recommendation skipped');
-          }
-        }
+        await applyStyleRecommendation(enhancedPromptText, visual_style, mood, industry, skipML);
 
         // Component library is now supported, no warning needed
 
@@ -300,27 +528,7 @@ export function registerGenerateUiComponent(server: McpServer): void {
         }
 
         // Design URL extraction
-        if (design_reference_url) {
-          try {
-            const designData = await extractDesignFromUrl(design_reference_url);
-            if (designData.colors.length > 0) {
-              // designContextStore.get() returns a deep clone, safe to mutate
-              const context = designContextStore.get();
-              context.colorPalette.primary = designData.colors[0] ?? context.colorPalette.primary;
-              if (designData.colors[1]) context.colorPalette.secondary = designData.colors[1];
-              if (designData.colors[2]) context.colorPalette.accent = designData.colors[2];
-              designContextStore.set(context);
-            }
-            if (designData.typography.fonts.length > 0) {
-              // designContextStore.get() returns a deep clone, safe to mutate
-              const context = designContextStore.get();
-              context.typography.fontFamily = `${designData.typography.fonts[0]}, system-ui, sans-serif`;
-              designContextStore.set(context);
-            }
-          } catch (error) {
-            warnings.push(`Design extraction failed: ${String(error)}`);
-          }
-        }
+        await applyDesignContextFromUrl(design_reference_url, warnings);
 
         const designContext = designContextStore.get();
         const ragOptions = {
@@ -331,18 +539,7 @@ export function registerGenerateUiComponent(server: McpServer): void {
         };
 
         // Get registry match with feedback boosting (unless skip_ml)
-        let registryMatch;
-        if (!skipML) {
-          try {
-            const db = getDatabase();
-            registryMatch = getBestMatchWithFeedback(component_type, ragOptions, db);
-          } catch (err) {
-            logger.warn({ error: err }, 'Feedback-boosted search failed, using standard search');
-            registryMatch = getBestMatch(component_type, ragOptions);
-          }
-        } else {
-          registryMatch = getBestMatch(component_type, ragOptions);
-        }
+        const registryMatch = await getRegistryMatch(component_type, ragOptions, skipML);
 
         const files = generateComponent(
           component_type,
