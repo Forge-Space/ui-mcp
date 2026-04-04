@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.24.6] - 2026-04-04
+
 ### Fixed
 
 - **Cognitive Complexity**: Refactored `src/tools/generate-ui-component.ts` to reduce cyclomatic complexity from 81 to <15 by extracting 8 helper functions (`enhanceComponentPrompt`, `buildRagContext`, `applyStyleRecommendation`, `applyDesignContextFromUrl`, `getRegistryMatch`, `scoreComponentQuality`, `recordGenerationMetrics`, `checkAndPromotePatterns`, `buildResponseSummary`). This improves maintainability without changing behavior.
