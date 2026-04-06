@@ -41,7 +41,7 @@
     "publish": "npm publish --access public"
   },
   "dependencies": {
-    "@forgespace/siza-gen": "^0.13.2",
+    "@forgespace/siza-gen": "^0.14.1",
     "@modelcontextprotocol/sdk": "^1.27.1",
     "@resvg/resvg-js": "^2.6.2",
     "@sentry/node": "^10.43.0",
