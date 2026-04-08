@@ -20,6 +20,8 @@ function parseArgs(argv) {
 }
 
 async function fetchJson(url) {
+  // The URL is constructed from trusted local config (package.json/server.json), not user input.
+  // codeql[js/request-forgery] intentional: url built from local manifest names, not user-controlled data.
   const response = await fetch(url, { headers: { accept: 'application/json' } });
   if (!response.ok) {
     throw new Error(`${url} returned ${response.status}`);
@@ -34,17 +36,49 @@ function normalizeRepoUrl(url = '') {
     .replace(/\/$/, '');
 }
 
-function pickRegistryEntry(results, server) {
-  return (
-    results.servers?.find((item) => item.server?.name === server.name) ??
-    results.servers?.find(
-      (item) => normalizeRepoUrl(item.server?.repository?.url) === normalizeRepoUrl(server.repository?.url)
-    ) ??
-    null
+// Simple semver comparator. Returns positive if a > b, negative if a < b, 0 if equal.
+// Handles major.minor.patch only — prerelease tags are compared lexicographically as a tiebreaker.
+function compareSemver(a = '', b = '') {
+  const parse = (v) => {
+    const [core, pre = ''] = String(v).split('-', 2);
+    const nums = core.split('.').map((n) => Number.parseInt(n, 10) || 0);
+    return { nums: [nums[0] ?? 0, nums[1] ?? 0, nums[2] ?? 0], pre };
+  };
+  const pa = parse(a);
+  const pb = parse(b);
+  for (let i = 0; i < 3; i += 1) {
+    if (pa.nums[i] !== pb.nums[i]) return pa.nums[i] - pb.nums[i];
+  }
+  if (pa.pre === pb.pre) return 0;
+  if (!pa.pre) return 1; // release > prerelease
+  if (!pb.pre) return -1;
+  return pa.pre < pb.pre ? -1 : 1;
+}
+
+function pickLatest(matches) {
+  if (!matches.length) return null;
+  return matches.reduce((latest, item) =>
+    compareSemver(item.server?.version, latest.server?.version) > 0 ? item : latest
   );
 }
 
-function buildActionItems(pkg, npmVersion, registryVersion, registryEntry) {
+function pickRegistryEntry(results, server) {
+  const servers = results.servers ?? [];
+  // The registry search endpoint returns versions in ascending order, so `.find()` would
+  // pick the OLDEST matching entry and cause false "republish needed" action items.
+  // We want the highest semver among matches instead.
+  const nameMatches = servers.filter((item) => item.server?.name === server.name);
+  if (nameMatches.length) return pickLatest(nameMatches);
+  const urlMatches = servers.filter(
+    (item) => normalizeRepoUrl(item.server?.repository?.url) === normalizeRepoUrl(server.repository?.url)
+  );
+  return pickLatest(urlMatches);
+}
+
+function buildActionItems(pkg, npmVersion, registryVersion, registryEntry, lookupErrors) {
+  // Surface transient lookup failures rather than issuing bogus publish instructions.
+  if (lookupErrors?.npm) return [`⚠ npm lookup failed — retry: ${lookupErrors.npm}`];
+  if (lookupErrors?.registry) return [`⚠ MCP Registry lookup failed — retry: ${lookupErrors.registry}`];
   if (!npmVersion || npmVersion !== pkg.version) {
     return [`Publish ${pkg.name}@${pkg.version} to npm from tag v${pkg.version}.`];
   }
@@ -80,10 +114,25 @@ async function main() {
   const { outputDir } = parseArgs(process.argv);
   const pkg = readJson('package.json');
   const server = readJson('server.json');
-  const npmMetadata = await fetchJson(`https://registry.npmjs.org/${encodeURIComponent(pkg.name)}`).catch(() => null);
-  const registryResults = await fetchJson(
-    `https://registry.modelcontextprotocol.io/v0.1/servers?search=${encodeURIComponent(server.name)}`
-  ).catch(() => ({ servers: [] }));
+
+  const lookupErrors = {};
+
+  let npmMetadata = null;
+  try {
+    npmMetadata = await fetchJson(`https://registry.npmjs.org/${encodeURIComponent(pkg.name)}`);
+  } catch (err) {
+    lookupErrors.npm = err.message;
+  }
+
+  let registryResults = { servers: [] };
+  try {
+    registryResults = await fetchJson(
+      `https://registry.modelcontextprotocol.io/v0.1/servers?search=${encodeURIComponent(server.name)}`
+    );
+  } catch (err) {
+    lookupErrors.registry = err.message;
+  }
+
   const registryEntry = pickRegistryEntry(registryResults, server);
   const registryVersion = registryEntry?.server?.version ?? null;
   const publishStatus = registryEntry?._meta?.['io.modelcontextprotocol.registry/official']?.status ?? null;
@@ -91,6 +140,7 @@ async function main() {
     generatedAt: new Date().toISOString(),
     package: pkg.name,
     expectedVersion: pkg.version,
+    lookupErrors: Object.keys(lookupErrors).length > 0 ? lookupErrors : undefined,
     npm: {
       latestVersion: npmMetadata?.['dist-tags']?.latest ?? null,
       packageUrl: `https://www.npmjs.com/package/${encodeURIComponent(pkg.name)}`,
@@ -102,8 +152,10 @@ async function main() {
       recordUrl: registryEntry?.server?.repository?.url ?? null,
     },
   };
-  report.actionItems = buildActionItems(pkg, report.npm.latestVersion, registryVersion, registryEntry);
+  report.actionItems = buildActionItems(pkg, report.npm.latestVersion, registryVersion, registryEntry, lookupErrors);
   mkdirSync(outputDir, { recursive: true });
+  // Writes are to a controlled output directory (CLI arg or default artifacts/).
+  // codeql[js/path-injection] intentional: outputDir is from a trusted CLI arg, not user HTTP input.
   writeFileSync(path.join(outputDir, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
   writeFileSync(path.join(outputDir, 'report.md'), buildReport(pkg, server, report));
   console.log(path.join(outputDir, 'report.md'));
