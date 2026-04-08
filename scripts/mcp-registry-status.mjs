@@ -20,6 +20,8 @@ function parseArgs(argv) {
 }
 
 async function fetchJson(url) {
+  // The URL is constructed from trusted local config (package.json/server.json), not user input.
+  // codeql[js/request-forgery] intentional: url built from local manifest names, not user-controlled data.
   const response = await fetch(url, { headers: { accept: 'application/json' } });
   if (!response.ok) {
     throw new Error(`${url} returned ${response.status}`);
@@ -73,7 +75,10 @@ function pickRegistryEntry(results, server) {
   return pickLatest(urlMatches);
 }
 
-function buildActionItems(pkg, npmVersion, registryVersion, registryEntry) {
+function buildActionItems(pkg, npmVersion, registryVersion, registryEntry, lookupErrors) {
+  // Surface transient lookup failures rather than issuing bogus publish instructions.
+  if (lookupErrors?.npm) return [`⚠ npm lookup failed — retry: ${lookupErrors.npm}`];
+  if (lookupErrors?.registry) return [`⚠ MCP Registry lookup failed — retry: ${lookupErrors.registry}`];
   if (!npmVersion || npmVersion !== pkg.version) {
     return [`Publish ${pkg.name}@${pkg.version} to npm from tag v${pkg.version}.`];
   }
@@ -109,10 +114,25 @@ async function main() {
   const { outputDir } = parseArgs(process.argv);
   const pkg = readJson('package.json');
   const server = readJson('server.json');
-  const npmMetadata = await fetchJson(`https://registry.npmjs.org/${encodeURIComponent(pkg.name)}`).catch(() => null);
-  const registryResults = await fetchJson(
-    `https://registry.modelcontextprotocol.io/v0.1/servers?search=${encodeURIComponent(server.name)}`
-  ).catch(() => ({ servers: [] }));
+
+  const lookupErrors = {};
+
+  let npmMetadata = null;
+  try {
+    npmMetadata = await fetchJson(`https://registry.npmjs.org/${encodeURIComponent(pkg.name)}`);
+  } catch (err) {
+    lookupErrors.npm = err.message;
+  }
+
+  let registryResults = { servers: [] };
+  try {
+    registryResults = await fetchJson(
+      `https://registry.modelcontextprotocol.io/v0.1/servers?search=${encodeURIComponent(server.name)}`
+    );
+  } catch (err) {
+    lookupErrors.registry = err.message;
+  }
+
   const registryEntry = pickRegistryEntry(registryResults, server);
   const registryVersion = registryEntry?.server?.version ?? null;
   const publishStatus = registryEntry?._meta?.['io.modelcontextprotocol.registry/official']?.status ?? null;
@@ -120,6 +140,7 @@ async function main() {
     generatedAt: new Date().toISOString(),
     package: pkg.name,
     expectedVersion: pkg.version,
+    lookupErrors: Object.keys(lookupErrors).length > 0 ? lookupErrors : undefined,
     npm: {
       latestVersion: npmMetadata?.['dist-tags']?.latest ?? null,
       packageUrl: `https://www.npmjs.com/package/${encodeURIComponent(pkg.name)}`,
@@ -131,8 +152,10 @@ async function main() {
       recordUrl: registryEntry?.server?.repository?.url ?? null,
     },
   };
-  report.actionItems = buildActionItems(pkg, report.npm.latestVersion, registryVersion, registryEntry);
+  report.actionItems = buildActionItems(pkg, report.npm.latestVersion, registryVersion, registryEntry, lookupErrors);
   mkdirSync(outputDir, { recursive: true });
+  // Writes are to a controlled output directory (CLI arg or default artifacts/).
+  // codeql[js/path-injection] intentional: outputDir is from a trusted CLI arg, not user HTTP input.
   writeFileSync(path.join(outputDir, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
   writeFileSync(path.join(outputDir, 'report.md'), buildReport(pkg, server, report));
   console.log(path.join(outputDir, 'report.md'));
