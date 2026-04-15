@@ -8,7 +8,7 @@ _(none)_
 
 ## Next (proposed)
 
-- **2026-04-15-ui-mcp-roadmap-specs**  _(proposed)_  `roadmap,specs,mcp`
+- **2026-04-15-ui-mcp-roadmap-specs** _(proposed)_ `roadmap,specs,mcp`
 
 ## Recently shipped
 
