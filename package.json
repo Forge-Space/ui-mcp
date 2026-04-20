@@ -71,7 +71,7 @@
     "knip": "^6.1.0",
     "lint-staged": "^16.4.0",
     "madge": "^8.0.0",
-    "npm-check-updates": "^20.0.0",
+    "npm-check-updates": "^21.0.2",
     "prettier": "^3.8.1",
     "ts-jest": "^29.4.6",
     "tsup": "^8.5.1",
